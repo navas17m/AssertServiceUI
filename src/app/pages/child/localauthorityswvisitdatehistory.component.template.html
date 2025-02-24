@@ -1,0 +1,84 @@
+﻿<style>
+    .datepickerwidth {
+        width: 36%;
+    }
+</style>
+<form [formGroup]="_Form1">
+    <div class="row col-lg-12">
+        <div class="form-group col-lg-6">
+            <label class="">Date of Last Visit by CCSW:</label>
+            <input formControlName="DateofLastVisit" required type="text" placeholder="DD/MM/YYYY" readonly class="form-control form-control-date"
+                   [(ngModel)]="objVisitDateHistoryDTO.DateofLastVisit" [value]="objVisitDateHistoryDTO.DateofLastVisit" datepicker>
+
+            <div *ngIf="(!_Form1.controls.DateofLastVisit.valid && listsubmitted && _Form1.controls.DateofLastVisit.errors.required)" class="alert alert-danger">
+                Please enter the Date of Last Visit
+            </div>
+        </div>
+        <div class="form-group col-lg-6">
+            <label class="">Comments:</label>
+            <textarea formControlName="Comments" type="text" class="form-control"
+                      [(ngModel)]="objVisitDateHistoryDTO.Comments"></textarea>
+        </div>
+    </div>
+    <div>
+        <button *ngIf="!isEdit" type="button" id="btnModuleConfig"
+                class="btn btn-primary" (click)="AddDetails(_Form1)">
+            Add
+        </button>
+        <button *ngIf="isEdit" type="button" id="btnUpdate" class="btn btn-primary"
+                (click)="UpdateDetails(_Form1)">
+            Update
+        </button>
+        <button type="button" id="btnCancel" class="btn btn-primary" (click)="SubmitCancel()">
+            Cancel
+        </button>
+
+        <div class="changeColor" style="padding-top:20px">
+            <div widget class="card">
+                <div class="card-header">
+                    <span class="text-uppercase">Date of Last Visit Details</span>
+                </div>
+
+                <div class="card-body widget-body">
+                    <div>
+                            <ngx-datatable [rows]="objVisitDateHistoryList"
+                                class="bootstrap"
+                                rowHeight="auto"
+                                [columnMode]="'force'"
+                                [limit]="limit"
+                                rowHeight="auto"
+                                [scrollbarH]="true"
+                                [footerHeight]="50"
+                                [messages]="footerMessage">
+
+                                <ngx-datatable-column name="Date of Last Visit by CCSW" prop="DateofLastVisit" [sortable]="true">
+                                    <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                                     <div *ngIf="row.IsActive">   {{value | dateFormat:'dd/MM/yyyy' }}</div>
+                                    </ng-template>
+                                </ngx-datatable-column>
+                                <ngx-datatable-column name="Comments" prop="Comments" [sortable]="true">
+                                    <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                                        <div *ngIf="row.IsActive">   {{value  }}</div>
+                                       </ng-template>
+                                </ngx-datatable-column>
+                                <ngx-datatable-column name="Edit" [sortable]="false">
+                                    <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                                        <div *ngIf="row.IsActive">
+                                            <button class="btn  btn-warning" (click)="EditData(row,rowIndex)"><i style="font-size:20px" class="fa  fa fa-edit"></i></button>
+                                        </div>
+                                    </ng-template>
+                                </ngx-datatable-column>
+                                <ngx-datatable-column name="Delete" [sortable]="false">
+                                    <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                                        <div *ngIf="row.IsActive">
+                                            <button *ngIf="deletbtnAccess" [disabled]="isEdit" class="btn  btn-danger" (click)="DeleteData(row)"><i style="font-size:20px" class="fa fa-trash-o"></i></button>
+                                        </div>
+                                    </ng-template>
+                                </ngx-datatable-column>
+                            </ngx-datatable>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

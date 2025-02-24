@@ -1,0 +1,58 @@
+﻿<form [formGroup]="_Form">
+    <ViewDisable></ViewDisable>
+
+    <div class="col-xl-12 col-lg-12 col-12 bottom-30">
+        <ApprovedCarerHeader *ngIf="objQeryVal.mid == 3"></ApprovedCarerHeader>
+        <CarerHeader *ngIf="objQeryVal.mid == 13"></CarerHeader>
+        <div widget class="card">
+            <div class="card-header">
+                <span>Carer Management Decision</span>
+                <div class="widget-controls">
+                    <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                    <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                    <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+                    <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+                    <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a>
+                </div>
+            </div>
+            <div class="card-body widget-body">
+                <div class="row mbm-20">
+                    <div class="col-lg-12 col-12 bottom-30">
+                        <div class="clearfix">
+                            <ul class="nav nav-tabs top pull-left w-100p">
+                                <li class="nav-item" (click)="fnManagementDecision()">
+                                    <a class="nav-link {{ManagementDecisionActive}}" data-toggle="tab" href="#ManagementDecision">
+                                         Management Decision Appointment
+                                    </a>
+                                </li>
+                                <li class="nav-item" (click)="fnDocumentDetail()">
+                                    <a class="nav-link {{DocumentActive}}" data-toggle="tab" href="#UploadDocuments">Upload Documents</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="tab-content top">
+                            <div class="tab-pane {{ManagementDecisionActive}}" id="ManagementDecision">
+                                <Dynamic-Form #dynamic [dynamicformcontrols]="dynamicformcontrol" [formbuilder]="_Form"
+                                              [submitted]="submitted"></Dynamic-Form>
+                                <EmailNotification #Notification [FormCnfgId]="formId"  ></EmailNotification>
+                            </div>
+                            <div class="tab-pane {{DocumentActive}}" id="UploadDocuments">
+                                <Upload-Documents #uploads [formCnfgId]="formId" [primaryKeyId]="tblPrimaryKey"
+                                                   [submittedUpload]="submittedUpload"
+                                                  [userTypeCnfgId]="4" [typeId]="TypeId"></Upload-Documents>
+
+                            </div>
+                            <div class="form-group col-md-5">
+                                <SubmitButton (Click)="clicksubmit(dynamic.dynamicformcontrols,dynamic.formbuilder,
+                                    uploads.UploadDocIds,uploads.IsUpload,uploads.formbuilder
+     ,Notification.AddtionalEmailIds,Notification.EmailIds)" [IsLoading]="isLoading"></SubmitButton>
+                                <BackButton></BackButton>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+

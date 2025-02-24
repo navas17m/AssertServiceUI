@@ -1,0 +1,819 @@
+﻿<div class="col-lg-12 col-sm-12 bottom-30">
+    <Child-Header></Child-Header>
+    <div widget class="card">
+        <div class="card-header">
+            <span>Child Chronology of Events </span>
+            <div class="widget-controls">
+                <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a>
+            </div>
+        </div>
+        <div class="card-body widget-body feed">
+            <div class="feed-messages-container" slim-scroll [slimScrollOptions]="{height: 1750}">
+                <div class="feed-message" (click)="expandMessage(1)">
+                    <!--<div class="message-icon" *ngIf="insReferral">
+                        <img class="photo-icon" [attr.src]="fnSetImage(insReferral.ImageString)">
+                    </div>-->
+                    <div class="text-block text-message">
+                        <div class="message-header">
+                            <h5 class="d-inline text-capitalize pull-left">Referral</h5><br /><br />
+                        </div>
+                        <div class="message-content line-clamp" [ngClass]="{'line-clamp-2' : !referralsExpanded}" *ngIf="insReferral">
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <b> Referrer Name :</b>
+                                        {{insReferral.ReferralName}}
+                                    </div>
+                                    <div class="col-md-6">
+                                        <strong> Referral Date</strong>
+                                        {{insReferral.ReferralDate | date:"dd/MM/yyyy"}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div [ngClass]="{'hidden': !referralsExpanded}" class="message-time" style="color:#555" *ngIf="insReferral">
+                            <div class="post-time">
+                                <i class="fa fa-user"></i>&nbsp;{{insReferral.UpdatedUserName}}
+                            </div>
+                            <div class="ago-time">
+                                <i class="fa fa-clock-o"></i>&nbsp;{{insReferral.UpdatedDate | date:"dd/MM/yyyy"}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="feed-message" (click)="expandMessage(2)">
+                    <!--<div class="message-icon" *ngIf="insChildPlacement">
+                        <img class="photo-icon" [attr.src]="fnSetImage(insChildPlacement.ImageString)">
+                    </div>-->
+                    <div class="text-block text-message">
+                        <div class="message-header">
+                            <h5 class="d-inline text-capitalize pull-left">Placement </h5><br />
+                        </div><br />
+                        <div class="message-content line-clamp" [ngClass]="{'line-clamp-2' : !placementExpanded}" *ngIf="insChildPlacement">
+
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <strong>Carer Name :</strong>
+                                        {{insChildPlacement.PCCarerName}}
+                                    </div>
+                                    <div class="col-md-6">
+                                        <b> Placement Date/Time :</b>
+                                        {{insChildPlacement.PlacementDate|dateFormat:'dd/MM/yyyy HH:mm'}}
+                                    </div>
+                                    <div class="col-md-12">
+                                        &nbsp;
+                                    </div>
+                                    <div class="col-md-6">
+                                        <strong>Placement Type :</strong>
+                                        {{insChildPlacement.PlacementType}}
+                                    </div>
+                                    <div class="col-md-6">
+                                        <strong> Placement Reason :</strong>
+                                        {{insChildPlacement.PlacementReason}}
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="message-content line-clamp" [ngClass]="{'line-clamp-2' : !placementExpanded}" *ngIf="!insChildPlacement">
+
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-6 text-center">
+                                        <b> No Records found.</b>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div [ngClass]="{'hidden': !placementExpanded}" class="message-time" style="color:#555" *ngIf="insChildPlacement">
+                            <div class="post-time">
+                                <i class="fa fa-user"></i>&nbsp;{{insChildPlacement.UpdatedUserName}}
+                            </div>
+                            <div class="ago-time">
+                                <i class="fa fa-clock-o"></i>&nbsp;{{insChildPlacement.UpdatedDate | date:"dd/MM/yyyy"}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="feed-message" (click)="expandMessage(3)">
+                    <!--<div class="message-icon" *ngFor="let item of insDayLog | filter : 'FieldName':'UpdatedUserId'">
+                        <img class="photo-icon" [attr.src]="fnSetImage(item.ImageString)">
+                    </div>-->
+                    <div class="text-block text-message">
+                        <div class="message-header">
+                            <h5 class="d-inline text-capitalize pull-left" *ngIf="insChronologyData" >{{insChronologyData.ChildDayLogDisplayName}} </h5><br />
+                        </div><br />
+                        <div class="message-content line-clamp" [ngClass]="{'line-clamp-2' : !daylogExpanded}">
+                            <div class="table-responsive datatable">
+                                <table class="table table-striped table-hover table-sm">
+                                    <tbody *ngIf="insDayLog.length==0">
+                                        <tr>
+                                            <th colspan="8" class="text-center">
+                                                No Records found.
+                                            </th>
+                                        </tr>
+                                    </tbody>
+                                    <tbody *ngIf="insDayLog.length>0">
+                                        <tr *ngFor="let item of insDayLog">
+                                            <div *ngIf="item.FieldName !='UpdatedDate' && item.FieldName !='UpdatedUserId'">
+                                                <td class="class1">{{item.FieldName}}</td>
+                                                <td>
+                                                    :
+                                                    <span *ngIf="item.FieldType=='string' || item.FieldType=='Dropdown'">
+                                                        {{item.FieldValue}}
+                                                    </span>
+                                                    <span *ngIf="item.FieldType=='date'">{{item.FieldValue|dateFormat:'dd/MM/yyyy'}}</span>
+                                                    <span *ngIf="item.FieldType=='datetime'">{{item.FieldValue|dateFormat:'dd/MM/yyyy HH:mm'}}</span>
+                                                    <span *ngIf="item.FieldType=='bit'||item.FieldType=='radio'">{{item.FieldValue==1?'Yes':'No'}}</span>
+                                                </td>
+                                            </div>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div [ngClass]="{'hidden': !daylogExpanded}" class="message-time" style="color:#555">
+                            <div class="post-time" *ngFor="let subitem of insDayLog | filter : 'FieldName':'UpdatedUserId'">
+                                <i class="fa fa-user"></i>&nbsp;{{ subitem.FieldValue }}
+                            </div>
+                            <div class="ago-time" *ngFor="let subitem of insDayLog | filter : 'FieldName':'UpdatedDate'">
+                                <i class="fa fa-clock-o"></i>&nbsp;{{subitem.FieldValue | date:"dd/MM/yyyy"}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="feed-message" (click)="expandMessage(4)" *ngIf="insChronologyData && insChronologyData.ChildOOHFormAccess">
+                    <!--<div class="message-icon" *ngFor="let item of insOohReport | filter : 'FieldName':'UpdatedUserId'">
+                        <img class="photo-icon" [attr.src]="fnSetImage(item.ImageString)">
+                    </div>-->
+                    <div class="text-block text-message">
+                        <div class="message-header">
+                            <h5 class="d-inline text-capitalize pull-left">
+                                OOH Reports
+                            </h5><br />
+                        </div><br />
+                        <div class="message-content line-clamp" [ngClass]="{'line-clamp-2' : !oohReportExpanded}">
+                            <div class="table-responsive datatable">
+                                <table class="table table-striped table-hover table-sm">
+                                    <tbody *ngIf="insOohReport.length==0">
+                                        <tr>
+                                            <th colspan="8" class="text-center">
+                                                No Records found.
+                                            </th>
+                                        </tr>
+                                    </tbody>
+                                    <tbody *ngIf="insOohReport.length>0">
+                                        <tr *ngFor="let item of insOohReport">
+                                            <div *ngIf="item.FieldName !='UpdatedDate' && item.FieldName !='UpdatedUserId'">
+                                                <td class="class1">{{item.FieldName}}</td>
+                                                <td>
+                                                    :
+                                                    <span *ngIf="item.FieldType=='string'||item.FieldType=='Time'||item.FieldType=='label' || item.FieldType=='Dropdown'">{{item.FieldValue}}</span>
+                                                     <span *ngIf="item.FieldType=='date'">{{item.FieldValue|dateFormat:'dd/MM/yyyy'}}</span>
+                                                    <span *ngIf="item.FieldType=='datetime'">{{item.FieldValue|dateFormat:'dd/MM/yyyy HH:mm'}}</span>
+                                                    <span *ngIf="item.FieldType=='bit'||item.FieldType=='radio'">{{item.FieldValue==1?'Yes':'No'}}</span>
+                                                </td>
+                                            </div>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div [ngClass]="{'hidden': !oohReportExpanded}" class="message-time" style="color:#555">
+                            <div class="post-time" *ngFor="let item of insOohReport | filter : 'FieldName':'UpdatedUserId'">
+                                <i class="fa fa-user"></i>&nbsp;{{ item.FieldValue }}
+                            </div>
+                            <div class="ago-time" *ngFor="let item of insOohReport | filter : 'FieldName':'UpdatedDate'">
+                                <i class="fa fa-clock-o"></i>&nbsp;{{item.FieldValue | date:"dd/MM/yyyy"}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="feed-message" (click)="expandMessage(5)" *ngIf="insChronologyData && insChronologyData.ChildOfstedNotificationFormAccess">
+                    <!--<div class="message-icon" *ngFor="let item of insOfstedNoti | filter : 'FieldName':'UpdatedUserId'">
+                        <img class="photo-icon" [attr.src]="fnSetImage(item.ImageString)">
+                    </div>-->
+                    <div class="text-block text-message">
+                        <div class="message-header">
+                            <h5 class="d-inline text-capitalize pull-left">
+                                Ofsted Notifications
+                            </h5><br />
+                        </div><br />
+                        <div class="message-content line-clamp" [ngClass]="{'line-clamp-2' : !OfstedNotiExpanded}">
+                            <div class="table-responsive datatable">
+                                <table class="table table-striped table-hover table-sm">
+                                    <tbody *ngIf="insOfstedNoti.length==0">
+                                        <tr>
+                                            <th colspan="8" class="text-center">
+                                                No Records found.
+                                            </th>
+                                        </tr>
+                                    </tbody>
+                                    <tbody *ngIf="insOfstedNoti.length>0">
+                                        <tr *ngFor="let item of insOfstedNoti">
+                                            <div *ngIf="item.FieldName !='UpdatedDate' && item.FieldName !='UpdatedUserId'">
+                                                <td class="class1"><p [innerHTML]="''+item.FieldName+''"></p></td>
+                                                <td>
+                                                    :
+                                                    <span *ngIf="item.FieldType=='string' || item.FieldType=='Dropdown'">{{item.FieldValue}}</span>
+                                                    <span *ngIf="item.FieldType=='date'">{{item.FieldValue|dateFormat:'dd/MM/yyyy'}}</span>
+                                                   
+                                                    <span *ngIf="item.FieldType=='datetime'">{{item.FieldValue|dateFormat:'dd/MM/yyyy HH:mm'}}</span>
+                                                    <span *ngIf="item.FieldType=='bit'||item.FieldType=='radio'">{{item.FieldValue==1?'Yes':'No'}}</span>
+                                                </td>
+                                            </div>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div [ngClass]="{'hidden': !OfstedNotiExpanded}" class="message-time" style="color:#555">
+                            <div class="post-time" *ngFor="let item of insOfstedNoti | filter : 'FieldName':'UpdatedUserId'">
+                                <i class="fa fa-user"></i>&nbsp;{{ item.FieldValue }}
+                            </div>
+                            <div class="ago-time" *ngFor="let item of insOfstedNoti | filter : 'FieldName':'UpdatedDate'">
+                                <i class="fa fa-clock-o"></i>&nbsp;{{item.FieldValue | date:"dd/MM/yyyy"}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="feed-message" (click)="expandMessage(6)">
+                    <!--<div class="message-icon" *ngFor="let item of insMissingPlace | filter : 'FieldName':'UpdatedUserId'">
+                        <img class="photo-icon" [attr.src]="fnSetImage(item.ImageString)">
+                    </div>-->
+                    <div class="text-block text-message">
+                        <div class="message-header">
+                            <h5 class="d-inline text-capitalize pull-left" *ngIf="insChronologyData">
+                            {{insChronologyData.ChildMissinngPlacementDisplayName}}
+                            </h5><br />
+                        </div><br />
+                        <div class="message-content line-clamp" [ngClass]="{'line-clamp-2' : !missingPlaceExpanded}">
+                            <div class="table-responsive datatable">
+                                <table class="table table-striped table-hover table-sm">
+                                    <tbody *ngIf="insMissingPlace.length==0">
+                                        <tr>
+                                            <th colspan="8" class="text-center">
+                                                No Records found.
+                                            </th>
+                                        </tr>
+                                    </tbody>
+                                    <tbody *ngIf="insMissingPlace.length>0">
+                                        <tr *ngFor="let item of insMissingPlace">
+                                            <div *ngIf="item.FieldName !='UpdatedDate' && item.FieldName !='UpdatedUserId'">
+                                                <td class="class1">{{item.FieldName}}</td>
+                                                <td>
+                                                    :
+                                                    <span *ngIf="item.FieldType=='string' || item.FieldType=='Dropdown'">{{item.FieldValue}}</span>
+                                                    <span *ngIf="item.FieldType=='date'">{{item.FieldValue|dateFormat:'dd/MM/yyyy'}}</span>
+                                                    <span *ngIf="item.FieldType=='datetime'">{{item.FieldValue|dateFormat:'dd/MM/yyyy HH:mm'}}</span>
+                                                    <span *ngIf="item.FieldType=='bit'||item.FieldType=='radio'">{{item.FieldValue==1?'Yes':'No'}}</span>
+                                                </td>
+                                            </div>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div [ngClass]="{'hidden': !missingPlaceExpanded}" class="message-time" style="color:#555">
+                            <div class="post-time" *ngFor="let item of insMissingPlace | filter : 'FieldName':'UpdatedUserId'">
+                                <i class="fa fa-user"></i>&nbsp;{{ item.FieldValue }}
+                            </div>
+                            <div class="ago-time" *ngFor="let item of insMissingPlace | filter : 'FieldName':'UpdatedDate'">
+                                <i class="fa fa-clock-o"></i>&nbsp;{{item.FieldValue | date:"dd/MM/yyyy"}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="feed-message" (click)="expandMessage(7)">
+                    <!--<div class="message-icon" *ngFor="let item of insAbsenceInfo | filter : 'FieldName':'UpdatedUserId'">
+                        <img class="photo-icon" [attr.src]="fnSetImage(item.ImageString)">
+                    </div>-->
+                    <div class="text-block text-message">
+                        <div class="message-header">
+                            <h5 class="d-inline text-capitalize pull-left">
+                                Absence Info
+                            </h5><br />
+                        </div><br />
+                        <div class="message-content line-clamp" [ngClass]="{'line-clamp-2' : !absenceInfoExpanded}">
+                            <div class="table-responsive datatable">
+                                <table class="table table-striped table-hover table-sm">
+                                    <tbody *ngIf="insAbsenceInfo.length==0">
+                                        <tr>
+                                            <th colspan="8" class="text-center">
+                                                No Records found.
+                                            </th>
+                                        </tr>
+                                    </tbody>
+                                    <tbody *ngIf="insAbsenceInfo.length>0">
+                                        <tr *ngFor="let item of insAbsenceInfo">
+                                            <div *ngIf="item.FieldName !='UpdatedDate' && item.FieldName !='UpdatedUserId'">
+                                                <td class="class1">{{item.FieldName}}</td>
+                                                <td>
+                                                    :
+                                                    <span *ngIf="item.FieldType=='string' || item.FieldType=='Dropdown'">{{item.FieldValue}}</span>
+                                                    <span *ngIf="item.FieldType=='date'">{{item.FieldValue|dateFormat:'dd/MM/yyyy'}}</span>
+                                                    <span *ngIf="item.FieldType=='datetime'">{{item.FieldValue|dateFormat:'dd/MM/yyyy HH:mm'}}</span>
+                                                    <span *ngIf="item.FieldType=='bit'||item.FieldType=='radio'">{{item.FieldValue==1?'Yes':'No'}}</span>
+                                                </td>
+                                            </div>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div [ngClass]="{'hidden': !absenceInfoExpanded}" class="message-time" style="color:#555">
+                            <div class="post-time" *ngFor="let item of insAbsenceInfo | filter : 'FieldName':'UpdatedUserId'">
+                                <i class="fa fa-user"></i>&nbsp;{{ item.FieldValue }}
+                            </div>
+                            <div class="ago-time" *ngFor="let item of insAbsenceInfo | filter : 'FieldName':'UpdatedDate'">
+                                <i class="fa fa-clock-o"></i>&nbsp;{{item.FieldValue | date:"dd/MM/yyyy"}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="feed-message" (click)="expandMessage(8)">
+                    <!--<div class="message-icon" *ngFor="let item of insExclusionInfo | filter : 'FieldName':'UpdatedUserId'">
+                        <img class="photo-icon" [attr.src]="fnSetImage(item.ImageString)">
+                    </div>-->
+                    <div class="text-block text-message">
+                        <div class="message-header">
+                            <h5 class="d-inline text-capitalize pull-left">
+                                Exclusion Info
+                            </h5><br />
+                        </div><br />
+                        <div class="message-content line-clamp" [ngClass]="{'line-clamp-2' : !exclusionInfoExpanded}">
+                            <div class="table-responsive datatable">
+                                <table class="table table-striped table-hover table-sm">
+                                    <tbody *ngIf="insExclusionInfo.length==0">
+                                        <tr>
+                                            <th colspan="8" class="text-center">
+                                                No Records found.
+                                            </th>
+                                        </tr>
+                                    </tbody>
+                                    <tbody *ngIf="insExclusionInfo.length>0">
+                                        <tr *ngFor="let item of insExclusionInfo">
+                                            <div *ngIf="item.FieldName !='UpdatedDate' && item.FieldName !='UpdatedUserId'">
+                                                <td class="class1">{{item.FieldName}}</td>
+                                                <td>
+                                                    :
+                                                    <span *ngIf="item.FieldType=='string' || item.FieldType=='Dropdown'">{{item.FieldValue}}</span>
+                                                    <span *ngIf="item.FieldType=='date'">{{item.FieldValue|dateFormat:'dd/MM/yyyy'}}</span>
+                                                    <span *ngIf="item.FieldType=='datetime'">{{item.FieldValue|dateFormat:'dd/MM/yyyy HH:mm'}}</span>
+                                                    <span *ngIf="item.FieldType=='bit'||item.FieldType=='radio'">{{item.FieldValue==1?'Yes':'No'}}</span>
+                                                </td>
+                                            </div>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div [ngClass]="{'hidden': !exclusionInfoExpanded}" class="message-time" style="color:#555">
+                            <div class="post-time" *ngFor="let item of insExclusionInfo | filter : 'FieldName':'UpdatedUserId'">
+                                <i class="fa fa-user"></i>&nbsp;{{ item.FieldValue }}
+                            </div>
+                            <div class="ago-time" *ngFor="let item of insExclusionInfo | filter : 'FieldName':'UpdatedDate'">
+                                <i class="fa fa-clock-o"></i>&nbsp;{{item.FieldValue | date:"dd/MM/yyyy"}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="feed-message" (click)="expandMessage(9)">
+                    <!--<div class="message-icon" *ngFor="let item of insSATSInfo | filter : 'FieldName':'UpdatedUserId'">
+                        <img class="photo-icon" [attr.src]="fnSetImage(item.ImageString)">
+                    </div>-->
+                    <div class="text-block text-message">
+                        <div class="message-header">
+                            <h5 class="d-inline text-capitalize pull-left">
+                                SATS/Exam/Grade
+                            </h5><br />
+                        </div><br />
+                        <div class="message-content line-clamp" [ngClass]="{'line-clamp-2' : !satsInfoExpanded}">
+                            <div class="table-responsive datatable">
+                                <table class="table table-striped table-hover table-sm">
+                                    <tbody *ngIf="insSATSInfo.length==0">
+                                        <tr>
+                                            <th colspan="8" class="text-center">
+                                                No Records found.
+                                            </th>
+                                        </tr>
+                                    </tbody>
+                                    <tbody *ngIf="insSATSInfo.length>0">
+                                        <tr *ngFor="let item of insSATSInfo">
+                                            <div *ngIf="item.FieldName !='UpdatedDate' && item.FieldName !='UpdatedUserId'">
+                                                <td class="class1">{{item.FieldName}}</td>
+                                                <td>
+                                                    :
+                                                    <span *ngIf="item.FieldType=='string' || item.FieldType=='Dropdown'">{{item.FieldValue}}</span>
+                                                    <span *ngIf="item.FieldType=='date'">{{item.FieldValue|dateFormat:'dd/MM/yyyy'}}</span>
+                                                    <span *ngIf="item.FieldType=='datetime'">{{item.FieldValue|dateFormat:'dd/MM/yyyy HH:mm'}}</span>
+                                                    <span *ngIf="item.FieldType=='bit'||item.FieldType=='radio'">{{item.FieldValue==1?'Yes':'No'}}</span>
+                                                </td>
+                                            </div>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div [ngClass]="{'hidden': !satsInfoExpanded}" class="message-time" style="color:#555">
+                            <div class="post-time" *ngFor="let item of insSATSInfo | filter : 'FieldName':'UpdatedUserId'">
+                                <i class="fa fa-user"></i>&nbsp;{{ item.FieldValue }}
+                            </div>
+                            <div class="ago-time" *ngFor="let item of insSATSInfo | filter : 'FieldName':'UpdatedDate'">
+                                <i class="fa fa-clock-o"></i>&nbsp;{{item.FieldValue | date:"dd/MM/yyyy"}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="feed-message" (click)="expandMessage(10)">
+                    <!--<div class="message-icon" *ngFor="let item of insVocational | filter : 'FieldName':'UpdatedUserId'">
+                        <img class="photo-icon" [attr.src]="fnSetImage(item.ImageString)">
+                    </div>-->
+                    <div class="text-block text-message">
+                        <div class="message-header">
+                            <h5 class="d-inline text-capitalize pull-left">
+                                Vocational Course
+                            </h5><br />
+                        </div><br />
+                        <div class="message-content line-clamp" [ngClass]="{'line-clamp-2' : !vocationalExpanded}">
+                            <div class="table-responsive datatable">
+                                <table class="table table-striped table-hover table-sm">
+                                    <tbody *ngIf="insVocational.length==0">
+                                        <tr>
+                                            <th colspan="8" class="text-center">
+                                                No Records found.
+                                            </th>
+                                        </tr>
+                                    </tbody>
+                                    <tbody *ngIf="insVocational.length>0">
+                                        <tr *ngFor="let item of insVocational">
+                                            <div *ngIf="item.FieldName !='UpdatedDate' && item.FieldName !='UpdatedUserId'">
+                                                <td class="class1">{{item.FieldName}}</td>
+                                                <td>
+                                                    :
+                                                    <span *ngIf="item.FieldType=='string' || item.FieldType=='Dropdown'">{{item.FieldValue}}</span>
+                                                    <span *ngIf="item.FieldType=='date'">{{item.FieldValue|dateFormat:'dd/MM/yyyy'}}</span>
+                                                    <span *ngIf="item.FieldType=='datetime'">{{item.FieldValue|dateFormat:'dd/MM/yyyy HH:mm'}}</span>
+                                                    <span *ngIf="item.FieldType=='bit'||item.FieldType=='radio'">{{item.FieldValue==1?'Yes':'No'}}</span>
+                                                </td>
+                                            </div>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div [ngClass]="{'hidden': !vocationalExpanded}" class="message-time" style="color:#555">
+                            <div class="post-time" *ngFor="let item of insVocational | filter : 'FieldName':'UpdatedUserId'">
+                                <i class="fa fa-user"></i>&nbsp;{{ item.FieldValue }}
+                            </div>
+                            <div class="ago-time" *ngFor="let item of insVocational | filter : 'FieldName':'UpdatedDate'">
+                                <i class="fa fa-clock-o"></i>&nbsp;{{item.FieldValue | date:"dd/MM/yyyy"}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="feed-message" (click)="expandMessage(11)">
+                    <!--<div class="message-icon" *ngFor="let item of insHospitalization | filter : 'FieldName':'UpdatedUserId'">
+                        <img class="photo-icon" [attr.src]="fnSetImage(item.ImageString)">
+                    </div>-->
+                    <div class="text-block text-message">
+                        <div class="message-header">
+                            <h5 class="d-inline text-capitalize pull-left">
+                                Hospitalization Info
+                            </h5><br />
+                        </div><br />
+                        <div class="message-content line-clamp" [ngClass]="{'line-clamp-2' : !hospitalizationExpanded}">
+                            <div class="table-responsive datatable">
+                                <table class="table table-striped table-hover table-sm">
+                                    <tbody *ngIf="insHospitalization.length==0">
+                                        <tr>
+                                            <th colspan="8" class="text-center">
+                                                No Records found.
+                                            </th>
+                                        </tr>
+                                    </tbody>
+                                    <tbody *ngIf="insHospitalization.length>0">
+                                        <tr *ngFor="let item of insHospitalization">
+                                            <div *ngIf="item.FieldName !='UpdatedDate' && item.FieldName !='UpdatedUserId'">
+                                                <td class="class1">{{item.FieldName}}</td>
+                                                <td>
+                                                    :
+                                                    <span *ngIf="item.FieldType=='string' || item.FieldType=='Dropdown'">{{item.FieldValue}}</span>
+                                                    <span *ngIf="item.FieldType=='date'">{{item.FieldValue|dateFormat:'dd/MM/yyyy'}}</span>
+                                                    <span *ngIf="item.FieldType=='datetime'">{{item.FieldValue|dateFormat:'dd/MM/yyyy HH:mm'}}</span>
+                                                    <span *ngIf="item.FieldType=='bit'||item.FieldType=='radio'">{{item.FieldValue==1?'Yes':'No'}}</span>
+                                                </td>
+                                            </div>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div [ngClass]="{'hidden': !hospitalizationExpanded}" class="message-time" style="color:#555">
+                            <div class="post-time" *ngFor="let item of insHospitalization | filter : 'FieldName':'UpdatedUserId'">
+                                <i class="fa fa-user"></i>&nbsp;{{ item.FieldValue }}
+                            </div>
+                            <div class="ago-time" *ngFor="let item of insHospitalization | filter : 'FieldName':'UpdatedDate'">
+                                <i class="fa fa-clock-o"></i>&nbsp;{{item.FieldValue | date:"dd/MM/yyyy"}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="feed-message" (click)="expandMessage(12)">
+                    <!--<div class="message-icon" *ngFor="let item of insTherapy | filter : 'FieldName':'UpdatedUserId'">
+                        <img class="photo-icon" [attr.src]="fnSetImage(item.ImageString)">
+                    </div>-->
+                    <div class="text-block text-message">
+                        <div class="message-header">
+                            <h5 class="d-inline text-capitalize pull-left">
+                                Therapy Info
+                            </h5><br />
+                        </div><br />
+                        <div class="message-content line-clamp" [ngClass]="{'line-clamp-2' : !therapyExpanded}">
+                            <div class="table-responsive datatable">
+                                <table class="table table-striped table-hover table-sm">
+                                    <tbody *ngIf="insTherapy.length==0">
+                                        <tr>
+                                            <th colspan="8" class="text-center">
+                                                No Records found.
+                                            </th>
+                                        </tr>
+                                    </tbody>
+                                    <tbody *ngIf="insTherapy.length>0">
+                                        <tr *ngFor="let item of insTherapy">
+                                            <div *ngIf="item.FieldName !='UpdatedDate' && item.FieldName !='UpdatedUserId'">
+                                                <td class="class1">{{item.FieldName}}</td>
+                                                <td>
+                                                    :
+                                                    <span *ngIf="item.FieldType=='string'|| item.FieldType=='smallint' || item.FieldType=='Dropdown'">{{item.FieldValue}}</span>
+                                                    <span *ngIf="item.FieldType=='date'">{{item.FieldValue|dateFormat:'dd/MM/yyyy'}}</span>
+                                                    <span *ngIf="item.FieldType=='datetime'">{{item.FieldValue|dateFormat:'dd/MM/yyyy HH:mm'}}</span>
+                                                    <span *ngIf="item.FieldType=='bit'||item.FieldType=='radio'">{{item.FieldValue==1?'Yes':'No'}}</span>
+                                                </td>
+                                            </div>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div [ngClass]="{'hidden': !therapyExpanded}" class="message-time" style="color:#555">
+                            <div class="post-time" *ngFor="let item of insTherapy | filter : 'FieldName':'UpdatedUserId'">
+                                <i class="fa fa-user"></i>&nbsp;{{ item.FieldValue }}
+                            </div>
+                            <div class="ago-time" *ngFor="let item of insTherapy | filter : 'FieldName':'UpdatedDate'">
+                                <i class="fa fa-clock-o"></i>&nbsp;{{item.FieldValue | date:"dd/MM/yyyy"}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="feed-message" (click)="expandMessage(17)">
+                    <!--<div class="message-icon" *ngFor="let item of insRiskAssessment | filter : 'FieldName':'UpdatedUserId'">
+                        <img class="photo-icon" [attr.src]="fnSetImage(item.ImageString)">
+                    </div>-->
+                    <div class="text-block text-message">
+                        <div class="message-header">
+                            <h5 class="d-inline text-capitalize pull-left"> Risk Assessment New</h5><br />
+                        </div><br />
+                        <div class="message-content line-clamp" [ngClass]="{'line-clamp-2' : !RiskAssessmentExpanded}">
+                            <div class="table-responsive datatable">
+                                <table class="table table-striped table-hover table-sm">
+                                    <tbody *ngIf="insRiskAssessment.length==0">
+                                        <tr>
+                                            <th colspan="8" class="text-center">
+                                                No Records found.
+                                            </th>
+                                        </tr>
+                                    </tbody>
+                                    <tbody *ngIf="insRiskAssessment.length>0">
+                                        <tr *ngFor="let item of insRiskAssessment">
+                                            <div *ngIf="item.FieldName !='UpdatedDate' && item.FieldName !='UpdatedUserId'">
+                                                <td class="class1">{{item.FieldName}}</td>
+                                                <td>
+                                                    :
+                                                    <span *ngIf="item.FieldType=='string' || item.FieldType=='Dropdown'">{{item.FieldValue}}</span>
+                                                    <span *ngIf="item.FieldType=='date'">{{item.FieldValue|dateFormat:'dd/MM/yyyy'}}</span>
+                                                    <span *ngIf="item.FieldType=='datetime'">{{item.FieldValue|dateFormat:'dd/MM/yyyy HH:mm'}}</span>
+                                                    <span *ngIf="item.FieldType=='bit'||item.FieldType=='radio'">{{item.FieldValue==1?'Yes':'No'}}</span>
+                                                </td>
+                                            </div>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div [ngClass]="{'hidden': !RiskAssessmentExpanded}" class="message-time" style="color:#555">
+                            <div class="post-time" *ngFor="let subitem of insRiskAssessment | filter : 'FieldName':'UpdatedUserId'">
+                                <i class="fa fa-user"></i>&nbsp;{{ subitem.FieldValue }}
+                            </div>
+                            <div class="ago-time" *ngFor="let subitem of insRiskAssessment | filter : 'FieldName':'UpdatedDate'">
+                                <i class="fa fa-clock-o"></i>&nbsp;{{subitem.FieldValue | date:"dd/MM/yyyy"}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="feed-message" (click)="expandMessage(13)">
+                    <!--<div class="message-icon" *ngFor="let item of insImmunisations | filter : 'FieldName':'UpdatedUserId'">
+                        <img class="photo-icon" [attr.src]="fnSetImage(item.ImageString)">
+                    </div>-->
+                    <div class="text-block text-message">
+                        <div class="message-header">
+                            <h5 class="d-inline text-capitalize pull-left"> Immunisation Info </h5><br />
+                        </div><br />
+                        <div class="message-content line-clamp" [ngClass]="{'line-clamp-2' : !ImmunisationsExpanded}">
+                            <div class="table-responsive datatable">
+                                <table class="table table-striped table-hover table-sm">
+                                    <tbody *ngIf="insImmunisations.length==0">
+                                        <tr>
+                                            <th colspan="8" class="text-center">
+                                                No Records found.
+                                            </th>
+                                        </tr>
+                                    </tbody>
+                                    <tbody *ngIf="insImmunisations.length>0">
+                                        <tr *ngFor="let item of insImmunisations">
+                                            <div *ngIf="item.FieldName !='UpdatedDate' && item.FieldName !='UpdatedUserId'">
+                                                <td class="class1">{{item.FieldName}}</td>
+                                                <td>
+                                                    :
+                                                    <span *ngIf="item.FieldType=='string' || item.FieldType=='Dropdown'">{{item.FieldValue}}</span>
+                                                    <span *ngIf="item.FieldType=='date'">{{item.FieldValue|dateFormat:'dd/MM/yyyy'}}</span>
+                                                    <span *ngIf="item.FieldType=='datetime'">{{item.FieldValue|dateFormat:'dd/MM/yyyy HH:mm'}}</span>
+                                                    <span *ngIf="item.FieldType=='bit'||item.FieldType=='radio'">{{item.FieldValue==1?'Yes':'No'}}</span>
+                                                </td>
+                                            </div>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div [ngClass]="{'hidden': !ImmunisationsExpanded}" class="message-time" style="color:#555">
+                            <div class="post-time" *ngFor="let subitem of insImmunisations | filter : 'FieldName':'UpdatedUserId'">
+                                <i class="fa fa-user"></i>&nbsp;{{ subitem.FieldValue }}
+                            </div>
+                            <div class="ago-time" *ngFor="let subitem of insImmunisations | filter : 'FieldName':'UpdatedDate'">
+                                <i class="fa fa-clock-o"></i>&nbsp;{{subitem.FieldValue | date:"dd/MM/yyyy"}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="feed-message" (click)="expandMessage(14)" *ngIf="insChronologyData && insChronologyData.ChildAllegationFormAccess">
+                    <!--<div class="message-icon" *ngFor="let item of insAllegation | filter : 'FieldName':'Updated UserId'">
+                        <img class="photo-icon" [attr.src]="fnSetImage(item.ImageString)">
+                    </div>-->
+                    <div class="text-block text-message">
+                        <div class="message-header">
+                            <h5 class="d-inline text-capitalize pull-left"> Allegation </h5><br />
+                        </div><br />
+                        <div class="message-content line-clamp" [ngClass]="{'line-clamp-2' : !AllegationExpanded}">
+                            <div class="table-responsive datatable">
+                                <table class="table table-striped table-hover table-sm">
+                                    <tbody *ngIf="insAllegation.length==0">
+                                        <tr>
+                                            <th colspan="8" class="text-center">
+                                                No Records found.
+                                            </th>
+                                        </tr>
+                                    </tbody>
+                                    <tbody *ngIf="insAllegation.length>0">
+                                        <tr *ngFor="let item of insAllegation">
+                                            <div *ngIf="item.FieldName !='Updated Date' && item.FieldName !='Updated UserId'">
+                                                <td class="class1">{{item.FieldName}}</td>
+                                                <td>
+                                                    :
+                                                    <span *ngIf="item.FieldType=='string' || item.FieldType=='Dropdown'">{{item.FieldValue}}</span>
+                                                    <span *ngIf="item.FieldType=='date'">{{item.FieldValue|dateFormat:'dd/MM/yyyy'}}</span>
+                                                    <span *ngIf="item.FieldType=='datetime'">{{item.FieldValue|dateFormat:'dd/MM/yyyy HH:mm'}}</span>
+                                                    <span *ngIf="item.FieldType=='bit'||item.FieldType=='radio'">{{item.FieldValue==1?'Yes':'No'}}</span>
+                                                </td>
+                                            </div>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div [ngClass]="{'hidden': !AllegationExpanded}" class="message-time" style="color:#555">
+                            <div class="post-time" *ngFor="let subitem of insAllegation | filter : 'FieldName':'Updated UserId'">
+                                <i class="fa fa-user"></i>&nbsp;{{ subitem.FieldValue }}
+                            </div>
+                            <div class="ago-time" *ngFor="let subitem of insAllegation | filter : 'FieldName':'Updated Date'">
+                                <i class="fa fa-clock-o"></i>&nbsp;{{subitem.FieldValue | date:"dd/MM/yyyy"}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="feed-message" (click)="expandMessage(15)"  *ngIf="insChronologyData && insChronologyData.ChildComplaintsFormAccess">
+                    <!--<div class="message-icon" *ngFor="let item of insComplaint | filter : 'FieldName':'Updated UserId'">
+                        <img class="photo-icon" [attr.src]="fnSetImage(item.ImageString)">
+                    </div>-->
+                    <div class="text-block text-message">
+                        <div class="message-header">
+                            <h5 class="d-inline text-capitalize pull-left"> Complaints </h5><br />
+                        </div><br />
+                        <div class="message-content line-clamp" [ngClass]="{'line-clamp-2' : !ComplaintExpanded}">
+                            <div class="table-responsive datatable">
+                                <table class="table table-striped table-hover table-sm">
+                                    <tbody *ngIf="insComplaint.length==0">
+                                        <tr>
+                                            <th colspan="8" class="text-center">
+                                                No Records found.
+                                            </th>
+                                        </tr>
+                                    </tbody>
+                                    <tbody *ngIf="insComplaint.length>0">
+                                        <tr *ngFor="let item of insComplaint">
+                                            <div *ngIf="item.FieldName !='Updated Date' && item.FieldName !='Updated UserId'">
+                                                <td class="class1">{{item.FieldName}}</td>
+                                                <td>
+                                                    :
+                                                    <span *ngIf="item.FieldType=='string' || item.FieldType=='Dropdown'">{{item.FieldValue}}</span>
+                                                    <span *ngIf="item.FieldType=='date'">{{item.FieldValue|dateFormat:'dd/MM/yyyy'}}</span>
+                                                    <span *ngIf="item.FieldType=='datetime'">{{item.FieldValue|dateFormat:'dd/MM/yyyy HH:mm'}}</span>
+                                                    <span *ngIf="item.FieldType=='bit'||item.FieldType=='radio'">{{item.FieldValue==1?'Yes':'No'}}</span>
+                                                </td>
+                                            </div>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div [ngClass]="{'hidden': !ComplaintExpanded}" class="message-time" style="color:#555">
+                            <div class="post-time" *ngFor="let subitem of insComplaint | filter : 'FieldName':'Updated UserId'">
+                                <i class="fa fa-user"></i>&nbsp;{{ subitem.FieldValue }}
+                            </div>
+                            <div class="ago-time" *ngFor="let subitem of insComplaint | filter : 'FieldName':'Updated Date'">
+                                <i class="fa fa-clock-o"></i>&nbsp;{{subitem.FieldValue | date:"dd/MM/yyyy"}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="feed-message" (click)="expandMessage(16)" *ngIf="insChronologyData && insChronologyData.ChildIncidentFormAccess">
+                    <!--<div class="message-icon" *ngFor="let item of insIncident | filter : 'FieldName':'Updated UserId'">
+                        <img class="photo-icon" [attr.src]="fnSetImage(item.ImageString)">
+                    </div>-->
+                    <div class="text-block text-message">
+                        <div class="message-header">
+                            <h5 class="d-inline text-capitalize pull-left"> Incident </h5><br />
+                        </div><br />
+                        <div class="message-content line-clamp" [ngClass]="{'line-clamp-2' : !IncidentExpanded}">
+                            <div class="table-responsive datatable">
+                                <table class="table table-striped table-hover table-sm">
+                                    <tbody *ngIf="insIncident.length==0">
+                                        <tr>
+                                            <th colspan="8" class="text-center">
+                                                No Records found.
+                                            </th>
+                                        </tr>
+                                    </tbody>
+                                    <tbody *ngIf="insIncident.length>0">
+                                        <tr *ngFor="let item of insIncident">
+                                            <div *ngIf="item.FieldName !='Updated Date' && item.FieldName !='Updated UserId'">
+                                                <td class="class1">{{item.FieldName}}</td>
+                                                <td>
+                                                    :
+                                                    <span *ngIf="item.FieldType=='string' || item.FieldType=='Dropdown'">{{item.FieldValue}}</span>
+                                                    <span *ngIf="item.FieldType=='date'">{{item.FieldValue|dateFormat:'dd/MM/yyyy'}}</span>
+                                                    <span *ngIf="item.FieldType=='datetime'">{{item.FieldValue|dateFormat:'dd/MM/yyyy HH:mm'}}</span>
+                                                    <span *ngIf="item.FieldType=='bit'||item.FieldType=='radio'">{{item.FieldValue==1?'Yes':'No'}}</span>
+                                                </td>
+                                            </div>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div [ngClass]="{'hidden': !IncidentExpanded}" class="message-time" style="color:#555">
+                            <div class="post-time" *ngFor="let subitem of insIncident | filter : 'FieldName':'Updated UserId'">
+                                <i class="fa fa-user"></i>&nbsp;{{ subitem.FieldValue }}
+                            </div>
+                            <div class="ago-time" *ngFor="let subitem of insIncident | filter : 'FieldName':'Updated Date'">
+                                <i class="fa fa-clock-o"></i>&nbsp;{{subitem.FieldValue | date:"dd/MM/yyyy"}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<style>
+    .class1 {
+        font-weight: bold;
+        width: 200px;
+    }
+
+    .feed-message .text-block.text-message {
+        max-width: 100%;
+    }
+
+    .feed-message .text-block {
+        margin: 0 0 0 0;
+    }
+</style>

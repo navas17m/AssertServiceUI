@@ -1,0 +1,140 @@
+<form [formGroup]="_Form">
+    <style>
+        .class1 {
+            font-weight: bold;
+        }
+    </style>
+    <div class="col-xl-12 col-lg-12 col-12 bottom-30">
+        <ViewDisable></ViewDisable>
+        <ApprovedCarerHeader *ngIf="objQeryVal.mid == 3"></ApprovedCarerHeader>
+        <CarerHeader *ngIf="objQeryVal.mid == 13"></CarerHeader>
+        <div widget class="card">
+            <div class="card-header">
+                <span>Assessor Tracker</span>
+                <div class="widget-controls">
+                    <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                    <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                    <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+                    <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+                    <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a>
+                </div>
+            </div>
+            <div class="card-body widget-body">
+                <div class="row mbm-20">
+                    <div class="col-lg-12 col-12 bottom-30">
+                        <div class="clearfix">
+                            <ul class="nav nav-tabs top pull-left w-100p">
+                                <li class="nav-item" (click)="fnD3InfoActive()">
+                                    <a class="nav-link {{insd3InfoActive}}" data-toggle="tab" href="#CarerApprovalDetails">
+                                        Assessor Tracker
+                                    </a>
+                                </li>
+                                <li class="nav-item" (click)="fnDocumentActive()">
+                                    <a class="nav-link {{insDocumentActive}}" data-toggle="tab" href="#UploadDocuments">Upload Documents</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="tab-content top">
+                            <div class="tab-pane {{insd3InfoActive}}" id="CarerApprovalDetails">
+                                <div class="row">
+                                <div class="form-group col-md-6">
+                                    <label class="">Assessor Name:</label>
+                                    <input formControlName="AssessorName" type="text"
+                                     class="form-control" [(ngModel)]="objCarerAssessorTrackDTO.AssessorName"
+                                      required />
+                                    <div *ngIf="(!_Form.controls.AssessorName.valid && submitted && _Form.controls.AssessorName.errors )" class="alert alert-danger">
+                                         Assessor Name is required
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label class="">Assessment Allocated Date:</label>
+                                    <input formControlName="AssessmentAllocatedDate" type="text" placeholder="DD/MM/YYYY"
+                                     class="form-control form-control-date1" [(ngModel)]="objCarerAssessorTrackDTO.AssessmentAllocatedDate"
+                                      [value]="objCarerAssessorTrackDTO.AssessmentAllocatedDate" datepicker
+                                           required />
+                                    <div *ngIf="(!_Form.controls.AssessmentAllocatedDate.valid && submitted && _Form.controls.AssessmentAllocatedDate.errors )" class="alert alert-danger">
+                                        Please Select Assessment Allocated Date
+                                    </div>
+                                </div>
+                                <!-- <div class="form-group col-md-6">
+                                    <label class="">Telephone:</label>
+                                    <input formControlName="Telephone" type="text"  pattern="[0-9\s]*"
+                                     class="form-control" [(ngModel)]="objCarerAssessorTrackDTO.Telephone"/>
+                                     <div *ngIf="(!_Form.controls.Telephone.valid && submitted && _Form.controls.Telephone.errors)">
+                                        <div class="alert alert-danger" *ngIf="_Form.controls.Telephone.errors.required">Please enter TelePhone</div>
+                                        <div class="alert alert-danger" *ngIf="_Form.controls.Telephone.errors.pattern">TelePhone should be only numbers</div>
+                                        <div class="alert alert-danger" *ngIf="_Form.controls.Telephone.errors.minlength ||_Form.controls.Telephone.errors.maxlength">TelePhone number will be allowed in 10 to 20 max digit</div>
+
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label class="">Email Id:</label>
+                                    <input formControlName="EmailId" type="text"
+                                     class="form-control" [(ngModel)]="objCarerAssessorTrackDTO.EmailId"/>
+                                     <div *ngIf="(!_Form.controls.EmailId.valid && submitted && _Form.controls.EmailId.errors)">
+                                        <div class="alert alert-danger" *ngIf="_Form.controls.EmailId.errors.required">Please enter email</div>
+                                        <div class="alert alert-danger" *ngIf="_Form.controls.EmailId.errors.NotValidEmailFormat && !_Form.controls.EmailId.errors.required">Please enter valid email Id</div>
+                                    </div>
+                                </div> -->
+                                <div class="form-group col-md-6">
+                                    <label class="">Fee:</label>
+                                    <input formControlName="Fee" type="text"
+                                     class="form-control" [(ngModel)]="objCarerAssessorTrackDTO.Fee"/>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label class="">Independent Assessor Contract (date sent):</label>
+                                    <input formControlName="AssessorDateSent" type="text" placeholder="DD/MM/YYYY"
+                                     class="form-control form-control-date1" [(ngModel)]="objCarerAssessorTrackDTO.AssessorDateSent"
+                                      [value]="objCarerAssessorTrackDTO.AssessorDateSent" datepicker/>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label class="">Independent Assessor Contract (date received back when signed):</label>
+                                    <input formControlName="AssessorDateReceived" type="text" placeholder="DD/MM/YYYY"
+                                     class="form-control form-control-date1" [(ngModel)]="objCarerAssessorTrackDTO.AssessorDateReceived"
+                                      [value]="objCarerAssessorTrackDTO.AssessorDateReceived" datepicker/>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label class="">Checklist for Transfer of Files (date sent):</label>
+                                    <input formControlName="TransferDateSent" type="text" placeholder="DD/MM/YYYY"
+                                     class="form-control form-control-date1" [(ngModel)]="objCarerAssessorTrackDTO.TransferDateSent"
+                                      [value]="objCarerAssessorTrackDTO.TransferDateSent" datepicker/>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label class="">Form F Assessor Checklist (date sent):</label>
+                                    <input formControlName="FormFDateSent" type="text" placeholder="DD/MM/YYYY"
+                                     class="form-control form-control-date1" [(ngModel)]="objCarerAssessorTrackDTO.FormFDateSent"
+                                      [value]="objCarerAssessorTrackDTO.FormFDateSent" datepicker/>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label class="">Expected Completion Date:</label>
+                                    <input formControlName="CompletionDate" type="text" placeholder="DD/MM/YYYY"
+                                     class="form-control form-control-date1" [(ngModel)]="objCarerAssessorTrackDTO.CompletionDate"
+                                      [value]="objCarerAssessorTrackDTO.CompletionDate" datepicker/>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label class="">	Panel date confirmed:</label>
+                                    <input formControlName="PanelDate" type="text" placeholder="DD/MM/YYYY"
+                                     class="form-control form-control-date1" [(ngModel)]="objCarerAssessorTrackDTO.PanelDate"
+                                      [value]="objCarerAssessorTrackDTO.PanelDate" datepicker/>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="tab-pane {{insDocumentActive}}" id="UploadDocuments">
+                                <div class="tab-pane" id="tb">
+                                    <Upload-Documents #uploads [formCnfgId]="formId" [primaryKeyId]="tblPrimaryKey"  [submittedUpload]="submittedUpload"
+                                                      [userTypeCnfgId]="4" [typeId]="TypeId"></Upload-Documents>
+
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-5">
+                                <SubmitButton FormCnfgId="303" (Click)="clicksubmit(_Form,
+                                 uploads.UploadDocIds,uploads.IsUpload,uploads.formbuilder)" [IsLoading]="isLoading"></SubmitButton>
+                                <BackButton></BackButton>
+                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

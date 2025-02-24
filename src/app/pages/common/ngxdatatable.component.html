@@ -1,0 +1,99 @@
+<style>
+  .button-active{
+    background-color: rgb(107, 107, 170) !important;
+    color: white !important;
+  }
+  .rowSelected{
+    background-color: #344154 !important;
+    color: white !important;
+  }
+</style>
+<div *ngIf="searchFilter" class="w-200 pull-right bottom-15">
+  <div class="input-group input-group-sm">
+      <span class="input-group-addon"><i class="fa fa-search"></i></span>
+      <input class="form-control" id="table-search-input" [(ngModel)]="searchText" type="text" placeholder="Search...">
+  </div>
+</div>
+<div class="table table-responsive">
+<ngx-datatable [rows]="rows | SearchFilter : searchFields : searchText"
+  class="bootstrap"
+  rowHeight="auto"
+  [columnMode]="'force'"
+  [limit]="pageSize"
+  [scrollbarH]="true"
+  [footerHeight]="footerHeight == null ? 50 : footerHeight"
+  [messages]="my_messages">
+  <ngx-datatable-column *ngFor="let col of columns; let i = index" [name]="col.name" [prop]="col.prop" [sortable]="col.sortable" [width]="col.width">
+    <ng-template ngx-datatable-header-template >{{ col.name }}</ng-template>
+    <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+      <div>
+      <div *ngIf="col.prop == 'IsDocumentExist' && row.IsDocumentExist==true"><span style="font-size:20px" class="fa fa-paperclip"></span></div>
+      <div *ngIf="col.prop == 'IsDocumentExist' && row.IsDocumentExist==false"></div>
+      </div>
+      <div *ngIf="col.prop == 'IsFCSignatureSigned'">
+        <div *ngIf="row.IsFCSignatureSigned==true"><a title="signed" style="color: white;cursor: pointer;"  class="btn btn-success" routerLink="" (click)="onClickSign(row)"><i class="fa fa-check"></i></a></div>
+        <div *ngIf="row.IsFCSignatureSigned==false"><a title="not signed" style="color: white;cursor: pointer;"  class="btn btn-primary" routerLink="" (click)="onClickSign(row)"><i class="fa fa-pencil"></i></a></div>
+      </div>
+      <div *ngIf="col.prop == 'SignatureStatus'">
+        <div *ngIf="row.SignatureStatus=='Signed'"><a title="Signed" style="color: white;cursor: pointer;"  class="btn btn-success" routerLink="" (click)="onClickSign(row)"><i class="fa fa-check"></i></a></div>
+        <div *ngIf="row.SignatureStatus=='Partial Signed'"><a title="Partial Signed" style="color: white;cursor: pointer;"  class="btn btn-warning" routerLink="" (click)="onClickSign(row)"><i class="fa fa-pencil"></i></a></div>
+        <div *ngIf="row.SignatureStatus=='Not Signed'"><a title="Not Signed" style="color: white;cursor: pointer;"  class="btn btn-primary" routerLink="" (click)="onClickSign(row)"><i class="fa fa-pencil"></i></a></div>
+      </div>
+      <div *ngIf="col.prop =='Edit'">
+        <span *ngIf="row.IsLocked != 'Yes'">
+        <EditButton [FormCnfgId]="formCnfgId" [IsSaveAsDraft]="row.SaveAsDraftStatus=='Submitted'?'0':'1'"  [Size]="S" (Click)="onEditColumn(row)"></EditButton>
+        </span>
+      </div>
+      <div *ngIf="col.prop == 'View'">
+        <ViewButton [FormCnfgId]="formCnfgId" [Size]="S" (Click)="onEditColumn(row)" [Size]="col.size"></ViewButton>
+      </div>
+      <div *ngIf="col.prop == 'Download'">
+        <DownloadButton [FormCnfgId]="formCnfgId" [Size]="S" (Click)="onDownloadClick(row)" [Size]="col.size"></DownloadButton>
+      </div>
+      <div *ngIf="col.prop == 'finView'">
+        <ViewButton [FormCnfgId]="formCnfgId" (Click)="onFinView(row)"></ViewButton>
+      </div>
+      <div *ngIf="col.prop =='Add'">
+        <AddButton [FormCnfgId]="formCnfgId" (Click)="onAddDetails(row)" [Size]="col.size" [Text]="col.name"></AddButton>
+      </div>
+      <div *ngIf="col.prop == 'Delete'">
+        <span *ngIf="row.IsLocked !='Yes' ">
+        <DeleteButton [SequenceNo]="row.SequenceNo" [FormCnfgId]="formCnfgId" (Click)="onDeleteColumn(row)"></DeleteButton>
+        </span>
+      </div>
+      <div *ngIf="col.prop == 'Button'">
+        <button [class]="col.class" (click)="onButtonClick(col.name,row)">{{col.label}}</button>
+      </div>
+      <div *ngIf="col.name == 'Anchor'">
+        <a [title]="col.title"  [style]="col.style" (click)="onButtonClick(col.name,row)">{{value |uppercase}}  </a>
+      </div>
+      <div *ngIf="col.date=='Y'">{{value | dateFormat :'dd/MM/yyyy'}}</div>
+      <div *ngIf="col.datetime=='Y'">{{value | dateFormat :'dd/MM/yyyy HH:mm'}}</div>
+      <div *ngIf="col.prop != 'SignatureStatus' && col.prop != 'IsDocumentExist' && col.prop!='IsFCSignatureSigned' && col.date!='Y' && col.datetime!='Y' && col.name!='Anchor'" [style]="col.style">{{value}}</div>
+    </ng-template>
+ </ngx-datatable-column>
+</ngx-datatable>
+</div>
+<div>
+<table class="tableOne" *ngIf="rows.length>10">
+  <tr>
+  <td>
+  <ul class="pagination loat-sm-right" (click)="setRowsPerPage($event)">
+      <li class="page-item" [ngClass]="{'active': pageSize == 10}">
+        <a class="page-link" style="cursor: pointer">10</a>
+      </li>
+      <li class="page-item" [ngClass]="{'active': pageSize == 25}">
+        <a class="page-link" style="cursor: pointer">25</a>
+      </li>
+      <li class="page-item" [ngClass]="{'active': pageSize == 50}">
+        <a class="page-link" style="cursor: pointer">50</a>
+      </li>
+      <li class="page-item" [ngClass]="{'active': pageSize == 100}">
+        <a class="page-link" style="cursor: pointer">100</a>
+      </li>
+  </ul>
+  </td>
+  </tr>
+</table>
+</div>
+

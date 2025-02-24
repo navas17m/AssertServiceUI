@@ -1,0 +1,124 @@
+
+    <div class="col-xl-12 col-lg-12 col-12 bottom-30">
+        <AutoSavedMessage [Text]="saveDraftText" [Time]="draftSavedTime" [Visible]="showAutoSave"></AutoSavedMessage>
+        <Child-Header></Child-Header>
+        <!-- <div style="text-align:right" *ngIf="showAutoSave">
+            <b>{{saveDraftText}}  {{draftSavedTime | date: 'HH:mm'}}</b>
+        </div> -->
+        <ViewDisable></ViewDisable>
+        <div widget class="card">
+            <div class="card-header">
+                <span>Parent Child Daily/Weekly Recording</span>
+                <div class="widget-controls">
+                    <i class="fa fa-file-pdf-o" (click)="fnDonloadPDF()" style="font-size:18px;color:white;cursor:pointer;" title="Download PDF"></i>
+                    <i class="fa fa-file-word-o" (click)="fnDonloadWord()" style="font-size:18px;color:white;cursor:pointer;padding-left:5px;" title="Download Word"></i>
+                    <i class="fa fa-print" (click)="fnPrint()" style="font-size:18px;color:white;cursor:pointer;padding-left:5px;padding-right:5px" title="Print"></i>
+                    <i class="fa fa-envelope-open" (click)="fnShowEmail()" style="font-size:18px;color:white;cursor:pointer;" title="Email"></i>
+                </div>
+            </div>
+            <div class="card-body widget-body">
+                <div class="row mbm-20">
+                    <div class="col-lg-12 col-12 bottom-30">
+                        <form [formGroup]="_Form">
+                            <div class="clearfix">
+                                <ul class="nav nav-tabs top pull-left w-100p">
+                                    <li class="nav-item" (click)="fnChildDetailTab()">
+                                        <a class="nav-link {{ChildDetailTabActive}}" data-toggle="tab" href="#ChildDetails">Parent Child Daily/Weekly Recording</a>
+                                    </li>
+                                    <li class="nav-item" (click)="fnDocumentDetailTab()">
+                                        <a class="nav-link {{DocumentActive}}" data-toggle="tab" href="#UploadDocument">Upload Document</a>
+                                    </li>
+
+                                </ul>
+                            </div>
+                            <div class="tab-content top">
+                                <div class="tab-pane {{ChildDetailTabActive}}" id="ChildDetails">
+                                    <div class="row">
+                                        <div class="form-group col-md-6">
+                                            Foster Carer/s Name (Code) :<b>  {{carerName}}</b>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            Supervising Social Worker : <b> {{SocialWorkerName}}</b>
+                                         </div>
+                                         <div class="form-group col-md-6">
+                                            Placing Authority :<b>  {{ChildLocalAuthorityName}}</b>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            LA Social Worker : <b> {{ChildLASocialWorkerName}}</b>
+                                         </div>
+                                    </div>
+
+                                    <Dynamic-Form #SectionChildDetails [dynamicformcontrols]="dynamicformcontrol| filter : 'ControlLoadFormat' : 'Default'"
+                                                  [formbuilder]="_Form" [submitted]="submitted"
+                                                  (OnValChange)="DynamicOnValChange($event)"></Dynamic-Form>
+                                </div>
+                                <div class="tab-pane {{DocumentActive}}" id="UploadDocument">
+                                    <Upload-Documents #uploads [formCnfgId]="formId" [primaryKeyId]="tblPrimaryKey"
+                                                       [submittedUpload]="submittedUpload"
+                                                      [userTypeCnfgId]="5" [typeId]="TypeId"></Upload-Documents>
+                                                      <!-- [IsUpload] [formbuilder] -->
+                                </div>
+                                <div class="form-group col-lg-12">
+                                    <EmailNotification #Notification [FormCnfgId]="formId" ></EmailNotification>
+                                    <!-- [AddtionalEmailIds] [EmailIds] -->
+                                </div>
+                                <div class="form-group col-lg-5">
+
+                                    <button *ngIf="showbtnSaveDraft" #btnSaveDraft (click)="fnSaveDraft(SectionChildDetails.dynamicformcontrols,
+                                            uploads.IsUpload,
+                                            uploads.formbuilder)" class="btn btn-primary">Save as Draft</button>
+                                    <SubmitButton #btnSubmit (Click)="clicksubmit(_Form,
+                                        SectionChildDetails.dynamicformcontrols,SectionChildDetails.formbuilder,
+                                        uploads.UploadDocIds,
+                                        uploads.IsUpload,
+                                        uploads.formbuilder,
+                                        Notification.AddtionalEmailIds,Notification.EmailIds)" [IsLoading]="isLoading"></SubmitButton>
+                                    <BackButton></BackButton>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<div>
+    <button #btnPrint type="button" [hidden]="true" class="btn btn-primary" data-toggle="modal" data-target="#lg-modal1">Large</button>
+    <div class="modal fade" id="lg-modal1" tabindex="-1" role="dialog" aria-labelledby="modal-large-label" style="display: none;">
+        <div class="modal-dialog modal-lg" role="document">
+            <form [formGroup]="_FormPrint">
+                <div class="modal-content">
+                    <div class="modal-header state modal-primary">
+                        <h4 class="modal-title" id="modal-large-label">
+                            <i class="fa fa-print"></i>Email
+                        </h4>
+                        <div *ngIf="isLoading"><i class="fa fa-spinner fa-spin"></i> Sending email please wait...</div>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="form-group">
+                            Enter Email Subject:
+                            <input type="text" [(ngModel)]="subject" class="form-control" formControlName="subject" required />
+                            <div *ngIf="(!_FormPrint.controls.subject.valid && submittedprint && _FormPrint.controls.subject.errors.required )" class="alert alert-danger">
+                                Please enter Email Subject
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            Enter Email Address(es):
+                            <textarea [(ngModel)]="eAddress" class="form-control" formControlName="eAddress" required></textarea>
+                            <div *ngIf="(!_FormPrint.controls.eAddress.valid && submittedprint && _FormPrint.controls.eAddress.errors.required )" class="alert alert-danger">
+                                Please enter Email Address(es)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success" (click)="fnEmail(_FormPrint)" [disabled]="isLoading">Email</button>
+                        <button #btnCancel type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,63 @@
+﻿<div class="col-xl-12 col-lg-12 col-12 bottom-30">
+    <Child-Header></Child-Header>
+    <ViewDisable></ViewDisable>
+    <div >
+        <div widget class="card">
+            <div class="card-header">
+                <span>Pathway plan Info </span>
+                <div class="widget-controls">
+                    <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                    <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                    <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+                    <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+                    <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a>
+                </div>
+            </div>
+            <div class="card-body widget-body">
+                <form [formGroup]="_Form">
+                    <div class="clearfix">
+                        <ul class="nav nav-tabs top pull-left w-100p">
+                            <li class="nav-item" (click)="fnPathwayPlanTab()">
+                                <a class="nav-link {{PathwayTabActive}}" data-toggle="tab" href="#ta">Child Pathway plan Info</a>
+                            </li>
+                            <li class="nav-item" (click)="fnTransitionPlanTab()">
+                                <a class="nav-link {{TransitionPlanActive}}" data-toggle="tab" href="#ta">Child Transition Plan</a>
+                            </li>
+                            <li class="nav-item" (click)="fnDocumentDetailTab()">
+                                <a class="nav-link {{DocumentActive}}" data-toggle="tab" href="#tb">Upload Documents</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="tab-content top">
+                        <div class="tab-pane {{PathwayTabActive}}" id="ta">
+                            <Dynamic-Form #dynamic [dynamicformcontrols]="dynamicformcontrol | filter : 'ControlLoadFormat' : 'Default'" [formbuilder]="_Form" [submitted]="submitted"></Dynamic-Form>
+
+                        </div>
+                        <div class="tab-pane {{TransitionPlanActive}}" id="ta">
+                            <Dynamic-Form #SectionBDynamic [dynamicformcontrols]="dynamicformcontrol | filter : 'ControlLoadFormat' : 'SectionA'" [formbuilder]="_Form" [submitted]="submitted"></Dynamic-Form>
+
+                        </div>
+                        <div class="tab-pane {{DocumentActive}}" id="tb">
+                            <Upload-Documents #uploads [formCnfgId]="formId" [primaryKeyId]="tblPrimaryKey"
+                                               [submittedUpload]="submittedUpload"
+                                              [userTypeCnfgId]="5" [typeId]="TypeId"></Upload-Documents>
+                                              <!-- [IsUpload] [formbuilder] -->
+                        </div>
+                        <div class="form-group col-lg-12">
+                            <EmailNotification #Notification [FormCnfgId]="formId" ></EmailNotification>
+                            <!-- [AddtionalEmailIds] [EmailIds] -->
+                        </div>
+                        <div class="form-group col-md-5">
+                            <SubmitButton (Click)="clicksubmit(_Form,dynamic.dynamicformcontrols,dynamic.formbuilder,
+                            SectionBDynamic.dynamicformcontrols,SectionBDynamic.formbuilder,
+                            uploads.UploadDocIds,uploads.IsUpload,uploads.formbuilder,
+                                          Notification.AddtionalEmailIds,Notification.EmailIds)" [IsLoading]="isLoading"></SubmitButton>
+                            <BackButton></BackButton>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    </div>
+

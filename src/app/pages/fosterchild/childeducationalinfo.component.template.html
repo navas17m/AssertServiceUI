@@ -1,0 +1,71 @@
+﻿<div class="col-xl-12 col-lg-12 col-12 bottom-30"><ViewDisable></ViewDisable>
+    <Child-Header></Child-Header>
+    <div >
+        <div widget class="card">
+            <div class="card-header">
+                <span> Child Educational Info</span>
+                <div class="widget-controls">
+                    <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                    <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                    <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+                    <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+                    <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a>
+                </div>
+            </div>
+            <div class="card-body widget-body">
+                <form [formGroup]="_Form">
+                    <div class="clearfix">
+                        <ul class="nav nav-tabs top pull-left w-100p">
+                            <li class="nav-item" (click)="fnEducationInfoTab()">
+                                <a class="nav-link {{EducationInfoTabActive}}" data-toggle="tab" href="#ta">Educational Info</a>
+                            </li>
+                            <li class="nav-item" (click)="fnDocumentDetailTab()">
+                                <a class="nav-link {{DocumentActive}}" data-toggle="tab" href="#tb">Upload Documents</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="tab-content top">
+                        <div class="tab-pane {{EducationInfoTabActive}}" id="ta">
+                            <div style="text-align: right;">
+                               <i class="fa fa-plus-circle" (click)="fnShowSchoolInfo()"  style="font-size:15px;cursor:pointer;text-decoration:none;text-align:left" title="Add New School"> Add New School</i>
+                           </div>
+                            <Dynamic-Form #dynamic [dynamicformcontrols]="dynamicformcontrol"
+                                         (OnValChange)="DynamicOnValChange($event)" [formbuilder]="_Form" [submitted]="submitted"></Dynamic-Form>
+                        </div>
+                        <div class="tab-pane {{DocumentActive}}" id="tb">
+                            <Upload-Documents #uploads [formCnfgId]="formId" [primaryKeyId]="tblPrimaryKey"
+                                               [submittedUpload]="submittedUpload"
+                                              [userTypeCnfgId]="5" [typeId]="TypeId"></Upload-Documents>
+                                              <!-- [IsUpload] [formbuilder] -->
+                        </div>
+                        <div class="form-group col-md-5">
+                            <SubmitButton (Click)="clicksubmit(_Form,dynamic.dynamicformcontrols,dynamic.formbuilder,uploads.UploadDocIds,uploads.IsUpload,uploads.formbuilder)" [IsLoading]="isLoading"></SubmitButton>
+                            <BackButton></BackButton>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div>
+    <button #btnSchollInfo type="button" [hidden]="true" class="btn btn-primary" data-toggle="modal" data-target="#LASW-modal">Large</button>
+    <div class="modal fade" id="LASW-modal" tabindex="-1" role="dialog" aria-labelledby="modal-large-label" style="display: none;">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header state modal-primary">
+                    <h4 class="modal-title" id="modal-large-label">
+                        <i class="fa fa-file-o"></i>School Info
+                    </h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                </div>
+                <div class="modal-body">
+
+                   <childschooldetailinfo (SuccessSave)="fnSuccessNewSchool($event)"></childschooldetailinfo>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+    <!--(OnValChange)="DnamicOnValChange($event)"-->

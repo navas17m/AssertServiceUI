@@ -1,0 +1,260 @@
+﻿<form [formGroup]="_Form"><ViewDisable></ViewDisable>
+    <div class="col-xl-12 col-lg-12 col-12 bottom-30">
+        <!-- <div style="text-align:right" *ngIf="showAutoSave">
+            <b>{{saveDraftText}}  {{draftSavedTime | date: 'HH:mm'}}</b>
+        </div>    -->
+        <AutoSavedMessage [Text]="saveDraftText" [Time]="draftSavedTime" [Visible]="showAutoSave"></AutoSavedMessage>
+        <ApprovedCarerHeader *ngIf="objQeryVal.mid == 3"></ApprovedCarerHeader>
+        <CarerHeader *ngIf="objQeryVal.mid == 13"></CarerHeader>
+        <div widget class="card">
+            <div class="card-header">
+                <span>Backup Carer</span>
+                <div class="widget-controls">
+                    <i class="fa fa-file-pdf-o" (click)="fnDonloadPDF()" style="font-size:18px;color:white;cursor:pointer;" title="Download PDF"></i>
+                    <i class="fa fa-file-word-o" (click)="fnDonloadWord()" style="font-size:18px;color:white;cursor:pointer;padding-left:5px;" title="Download Word"></i>
+                    <i class="fa fa-print" (click)="fnPrint()" style="font-size:18px;color:white;cursor:pointer;padding-left:5px;padding-right:5px" title="Print"></i>
+                    <i class="fa fa-envelope-open" (click)="fnShowEmail()" style="font-size:18px;color:white;cursor:pointer;" title="Email"></i>                </div>
+            </div>
+            <div class="card-body widget-body">
+                <div class="row mbm-20">
+                    <div class="col-lg-12 col-12 bottom-30">
+                        <div class="clearfix">
+                            <ul class="nav nav-tabs top pull-left w-100p">
+                                <li class="nav-item" (click)="fnBackupCarer()" >
+                                    <a class="nav-link {{BackupCarerActive}}" data-toggle="tab" href="#BackupCarer">Backup Carer</a>
+                                </li>
+                                <li class="nav-item" *ngIf="CarerId!=0" (click)="fnTrainingDetails()" >
+                                  <a class="nav-link {{TrainingDetailsActive}}" data-toggle="tab" href="#TrainingDetails">Training Details</a>
+                                </li>
+                                <li class="nav-item" *ngIf="CarerId!=0" (click)="fnStatutoryChecks()" >
+                                  <a class="nav-link {{StatutoryChecksActive}}" data-toggle="tab" href="#StatutoryChecks">Statutory Checks</a>
+                                </li>
+                                <li class="nav-item" (click)="fnDocumentDetail()">
+                                    <a class="nav-link {{DocumentActive}}" data-toggle="tab" href="#UploadDocuments">Upload Documents</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="tab-content top">
+                            <div class="tab-pane {{BackupCarerActive}}" id="BackupCarer">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <!--Personalinfo-->
+                                        <personalinfo #Personalinfo [personalinfoval1]="objBackUpCarerDTO.BackupCarerInfo.PersonalInfo" [formbuilder]="submitted" [Visible]="objPersonalInfoVisible"></personalinfo>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <!--Contact Info-->
+                                        <contact #ConatactInfo [contactval1]="objBackUpCarerDTO.BackupCarerInfo.ContactInfo" [formbuilder]="submitted" [Visible]="objContactVisible"></contact>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label class="">Ethnicity</label>
+                                        <ng-select #ngSelect *ngIf="ethinicityList.length > 0" formControlName="EthinicityId" class="form-control" required [(ngModel)]="objBackUpCarerDTO.BackupCarerInfo.EthinicityId"
+                                            [items]="ethinicityList" bindValue="CofigTableValuesId" bindLabel="Value" placeholder="Select an Ethnicity">
+                                        </ng-select>
+                                        <div *ngIf="(!_Form.controls.EthinicityId.valid && submitted && _Form.controls.EthinicityId.errors )" class="alert alert-danger">
+                                            Please select an Ethnicity
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="">Languages spoken </label>
+                                        <ListBoxUC #languagesSpoken [listoptions]="languagesSpokenList" [SelectedValue]="objBackUpCarerDTO.BackupCarerInfo.LanguagesSpokenIds"></ListBoxUC>
+                                    </div>
+
+                                    <div class="form-group col-md-6">
+                                        <label class="">Religion</label>
+                                        <ng-select #ngSelect *ngIf="religionList.length > 0" formControlName="ReligionId" class="form-control" required [(ngModel)]="objBackUpCarerDTO.BackupCarerInfo.ReligionId"
+                                            [items]="religionList" bindValue="CofigTableValuesId" bindLabel="Value" placeholder="Select a Religion">
+                                        </ng-select>
+                                        <div *ngIf="(!_Form.controls.ReligionId.valid && submitted && _Form.controls.ReligionId.errors )" class="alert alert-danger">
+                                            Please select a Religion
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label class="">Practicing Status</label>
+                                        <select formControlName="BCPractisingStatus" class="form-control" [(ngModel)]="objBackUpCarerDTO.BackupCarerInfo.PractisingStatus">
+                                            <option value="" [attr.selected]="objBackUpCarerDTO.BackupCarerInfo.PractisingStatus == null ? true : null">Select</option>
+                                            <option value="true">Yes</option>
+                                            <option value="false">No</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="">Are Checks Required?</label>
+                                        <input type="checkbox" formControlName="IsChecksRequired"
+                                               [(ngModel)]="objBackUpCarerDTO.BackupCarerInfo.IsChecksRequired" checked />
+                                    </div>
+                                    <div class="col-md-12">
+                                        <Dynamic-Form #dynamic [dynamicformcontrols]="dynamicformcontrol" [formbuilder]="_Form" (OnValChange)="DynamicOnValChange($event)" [submitted]="submitted"></Dynamic-Form>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="tab-pane {{TrainingDetailsActive}}" id="TrainingDetails">
+
+                              <div class="changeColor" style="padding-top:20px">
+                                  <div widget class="card">
+                                      <div class="card-header">
+                                          <span class="text-uppercase">Training Details</span>
+                                      </div>
+                                      <div class="card-body widget-body">
+                                          <div class="table-responsive datatable">
+                                              <div class="table-responsive datatable">
+                                                  <table class="table table-striped table-hover table-sm">
+                                                      <thead>
+                                                          <tr>
+                                                              <!-- <th>Carer</th> -->
+                                                              <th>Course</th>
+                                                              <th>Date</th>
+                                                              <th>Status</th>
+                                                          </tr>
+                                                      </thead>
+                                                      <tbody *ngIf="lstCarerTrainingProfile">
+                                                          <tr *ngFor="let item of lstCarerTrainingProfile | groupBy:'SequenceNo'">
+                                                              <!-- <td>
+                                                                  {{ item.value[0].CarerName}}
+                                                                  <br *ngIf="item.value[0].SCarerName" /> {{item.value[0].SCarerName}}
+                                                              </td> -->
+                                                              <td *ngFor="let subitem of item.value | filter : 'FieldName':'CourseAttendedId'">{{ subitem.FieldValue }}</td>
+                                                              <td>
+                                                                  <span *ngFor="let subitem of item.value[0].TrainingCourseDate | filter : 'FieldName':'CourseAttendedDate'">
+                                                                      {{subitem.FieldValue |dateFormat:'dd/MM/yyyy'}}<br />
+                                                                  </span>
+
+                                                              </td>
+                                                              <td>
+                                                                  <span *ngFor="let subitem of item.value[0].TrainingCourseDate | filter : 'FieldName':'CourseStatusId'">
+                                                                      <!-- {{subitem.FieldValue==877?'Attended':subitem.FieldValue==878?'Not Attended':subitem.FieldValue==879?'Online':''}}<br /> -->
+                                                                      {{subitem.FieldValue}}<br>
+                                                                  </span>
+                                                              </td>
+                                                          </tr>
+                                                      </tbody>
+
+
+                                                  </table>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="tab-pane {{StatutoryChecksActive}}" id="StatutoryChecks">
+                              <div class="form-group">
+                              <!--Backup Carer Checks-->
+                              <div class="changeColor" style="padding-top:20px" >
+                                      <div widget class="card">
+                                          <div class="card-header">
+                                              <span class="text-uppercase">Backup Carer Checks</span>
+                                          </div>
+                                          <div class="card-body widget-body">
+
+                                              <div class="table-responsive datatable">
+                                                  <div *ngFor="let item of globalBackupCarerCheckList;let i=index">
+                                                      <table class="table table-striped table-hover table-sm" >
+                                                          <thead>
+                                                              <tr>
+                                                                  <!-- <th *ngFor="let item of globalBackupCarerCheckList[i]|slice:0:1" class="tdWidth">Backup Carer Name</th> -->
+                                                                  <th *ngFor="let item of globalBackupCarerCheckList[i]|slice:0:1" class="tdWidth">Check Name</th>
+                                                                  <th *ngFor="let item of globalBackupCarerCheckList[i]|slice:0:3" class="tdWidth">
+                                                                      {{item.DisplayName}}
+                                                                  </th>
+                                                              </tr>
+                                                          </thead>
+                                                          <tbody>
+                                                              <tr>
+                                                                  <!-- <td *ngFor="let item of globalBackupCarerCheckList[i]|slice:0:1">
+                                                                      {{item.MemberName}}
+                                                                  </td> -->
+                                                                  <td *ngFor="let item of globalBackupCarerCheckList[i]|slice:0:1">
+                                                                      {{item.CheckName}}
+                                                                  </td>
+
+                                                                  <td *ngFor="let subitem of globalBackupCarerCheckList[i]|slice:0:3">
+                                                                      <span *ngIf="subitem.FieldDataTypeName=='date'">
+                                                                          {{subitem.FieldValue | dateFormat:'dd/MM/yyyy'}}
+                                                                      </span>
+                                                                      <span *ngIf="subitem.FieldDataTypeName =='Dropdown'">
+                                                                          {{subitem.FieldValueText}}
+                                                                      </span>
+                                                                      <span *ngIf="subitem.FieldDataTypeName !='date' &&subitem.FieldDataTypeName !='Dropdown'">
+                                                                          {{subitem.FieldValue}}
+                                                                      </span>
+                                                                  </td>
+
+                                                              </tr>
+                                                          </tbody>
+                                                      </table>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </div>
+                              </div>
+                              </div>
+                          </div>
+                            <div class="tab-pane {{DocumentActive}}" id="UploadDocuments">
+                                <Upload-Documents #uploads [formCnfgId]="formId"
+                                                  [primaryKeyId]="tblPrimaryKey"
+                                                   [submittedUpload]="submittedUpload"
+                                                  [userTypeCnfgId]="4" [typeId]="TypeId"></Upload-Documents>
+                            </div>
+                            <div class="col-lg-5  form-group">
+                                <button *ngIf="showbtnSaveDraft" #btnSaveDraft (click)="fnSaveDraft(_Form,Personalinfo.personalinfoval1,Personalinfo.formbuilder,
+                    ConatactInfo.contactval1,ConatactInfo.formbuilder,languagesSpoken.SelectedValue,
+                    dynamic.dynamicformcontrols,dynamic.formbuilder,uploads.UploadDocIds,uploads.IsUpload,
+                                  uploads.formbuilder)" class="btn btn-primary">
+                                    Save Draft
+                                </button>
+                                <SubmitButton #btnSubmit1 (Click)="clicksubmit(_Form,Personalinfo.personalinfoval1,Personalinfo.formbuilder,
+                    ConatactInfo.contactval1,ConatactInfo.formbuilder,languagesSpoken.SelectedValue,
+                    dynamic.dynamicformcontrols,dynamic.formbuilder,uploads.UploadDocIds,uploads.IsUpload,
+                                  uploads.formbuilder)" [IsLoading]="isLoading"></SubmitButton>
+                                <BackButton></BackButton>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<div>
+    <button #btnPrint type="button" [hidden]="true" class="btn btn-primary" data-toggle="modal" data-target="#lg-modal1">Large</button>
+    <div class="modal fade" id="lg-modal1" tabindex="-1" role="dialog" aria-labelledby="modal-large-label" style="display: none;">
+        <div class="modal-dialog modal-lg" role="document">
+            <form [formGroup]="_FormPrint">
+                <div class="modal-content">
+                    <div class="modal-header state modal-primary">
+                        <h4 class="modal-title" id="modal-large-label">
+                            <i class="fa fa-print"></i>Email
+                        </h4>
+                        <div *ngIf="isLoading"><i class="fa fa-spinner fa-spin"></i> Sending email please wait...</div>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="form-group">
+                            Enter Email Subject:
+                            <input type="text" [(ngModel)]="subject" class="form-control" formControlName="subject" required />
+                            <div *ngIf="(!_FormPrint.controls.subject.valid && submittedprint && _FormPrint.controls.subject.errors.required )" class="alert alert-danger">
+                                Please enter Email Subject
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            Enter Email Address(es):
+                            <textarea [(ngModel)]="eAddress" class="form-control" formControlName="eAddress" required></textarea>
+                            <div *ngIf="(!_FormPrint.controls.eAddress.valid && submittedprint && _FormPrint.controls.eAddress.errors.required )" class="alert alert-danger">
+                                Please enter Email Address(es)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <!--<button type="button" class="btn btn-success" (click)="fnPrint()">Print</button>-->
+                        <button type="button" class="btn btn-success" (click)="fnEmail(_FormPrint)" [disabled]="isLoading">Email</button>
+                        <button #btnCancel type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>

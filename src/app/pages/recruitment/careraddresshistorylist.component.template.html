@@ -1,0 +1,30 @@
+﻿<div>
+    <ApprovedCarerHeader *ngIf="objQeryVal.mid == 3"></ApprovedCarerHeader>
+    <CarerHeader *ngIf="objQeryVal.mid == 13"></CarerHeader>
+    <div style="padding-bottom:10px">
+        <AddButton [FormCnfgId]="FormCnfgId" (Click)="fnAddData()"></AddButton>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div widget class="card">
+                <div class="card-header">
+                    <span>Carer Address History</span>
+                    <div class="widget-controls">
+                        <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                        <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                        <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+                        <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+                        <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a>
+                    </div>
+                </div>
+                <div class="card-body widget-body">                       
+                    <div class="table-responsive datatable" *ngIf="carerAddresses.length>0">
+                        <ngxdatatable [rows]="carerAddresses" [formCnfgId]="FormCnfgId" [columns]="columns" limit="10" (onEdit)="onEdit($event)" searchFilter="true" searchFields="ContactInfo.City,ContactInfo.AddressLine1,ContactInfo.PostalCode"></ngxdatatable>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>

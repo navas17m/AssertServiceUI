@@ -1,0 +1,203 @@
+﻿<form [formGroup]="_Form">
+    <div class="col-xl-12 col-lg-12 col-12 bottom-30">
+        <ApprovedCarerHeader *ngIf="objQeryVal.mid == 3"></ApprovedCarerHeader>
+        <CarerHeader *ngIf="objQeryVal.mid == 13"></CarerHeader>
+        <div widget class="card">
+            <div class="card-header">
+                <span>Health and Safety Signature</span>
+                <div class="widget-controls">
+                    <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                    <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                    <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+                    <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+                    <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a>
+                </div>
+            </div>
+            <div class="card-body widget-body">
+                <div class="row mbm-20">
+                    <div class="col-lg-12 col-12 bottom-30">
+                        <div class="clearfix">
+                            <ul class="nav nav-tabs top pull-left w-100p">
+                                <li class="nav-item" (click)="fnPageHCA()">
+                                    <a class="nav-link {{PageHCAActive}}" data-toggle="tab" href="#t1">Household Conditions - A</a>
+                                </li>
+                                <li class="nav-item" (click)="fnPageHCB()" [hidden]="PageHCBVisibleTab">
+                                    <a class="nav-link {{PageHCBActive}}" data-toggle="tab" href="#t2">B</a>
+                                </li>
+                                <li class="nav-item" (click)="fnPageIndoorA()" [hidden]="PageIndoorAVisibleTab">
+                                    <a class="nav-link {{PageIndoorAActive}}" data-toggle="tab" href="#t3">Safety Factors - Indoors A</a>
+                                </li>
+                                <li class="nav-item" (click)="fnPageIndoorB()" [hidden]="PageIndoorBVisibleTab">
+                                    <a class="nav-link {{PageIndoorBActive}}" data-toggle="tab" href="#t4">B</a>
+                                </li>
+                                <li class="nav-item" (click)="fnPageIndoorC()" [hidden]="PageIndoorCVisibleTab">
+                                    <a class="nav-link {{PageIndoorCActive}}" data-toggle="tab" href="#t5">C</a>
+                                </li>
+                                <li class="nav-item" (click)="fnPageIndoorD()" [hidden]="PageIndoorDVisibleTab">
+                                    <a class="nav-link {{PageIndoorDActive}}" data-toggle="tab" href="#t6">D</a>
+                                </li>
+                                <li class="nav-item" (click)="fnPageIndoorE()" [hidden]="PageIndoorEVisibleTab">
+                                    <a class="nav-link {{PageIndoorEActive}}" data-toggle="tab" href="#t7">E</a>
+                                </li>
+                                <li class="nav-item" (click)="fnPageOutdoor()" [hidden]="PageOutdoorVisibleTab">
+                                    <a class="nav-link {{PageOutdoorActive}}" data-toggle="tab" href="#t8">Safety Factors - Outdoors</a>
+                                </li>
+                                <li class="nav-item" (click)="fnPageBrief()" [hidden]="PageBriefVisibleTab">
+                                    <a class="nav-link {{PageBriefActive}}" data-toggle="tab" href="#t9">Brief IHV</a>
+                                </li>
+                                <li class="nav-item" (click)="fnDocumentDetail()">
+                                    <a class="nav-link {{DocumentActive}}" data-toggle="tab" href="#UploadDocuments">Signature</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="tab-content top">
+                           <div class="tab-pane {{PageHCAActive}}" id="t1">
+                                <div class="table-responsive datatable">
+                                    <table class="table table-striped table-hover table-sm">
+                                        <tbody *ngIf="lstCarerSecA.length==0">
+                                            <tr>
+                                                <th colspan="11" class="text-center">
+                                                    <i class="fa fa-spinner fa-spin"></i> Loading please wait...
+                                                </th>
+                                            </tr>
+                                        </tbody>
+                                        <tbody *ngIf="lstCarerSecA.length>0">
+                                            <tr *ngFor="let item of lstCarerSecA|filter:'ControlLoadFormat':'Conditions A'">
+                                                <td width="50%"><span [innerHTML]="''+item.DisplayName+''"></span> </td>
+                                                <td width="50%"> : {{item.FieldValue}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="tab-pane {{PageHCBActive}}" id="t2">
+                                <div class="table-responsive datatable">
+                                    <table class="table table-striped table-hover table-sm">
+                                        <tbody *ngIf="lstCarerSecA.length>0">
+                                            <tr *ngFor="let item of lstCarerSecA|filter:'ControlLoadFormat':'Conditions B'">
+                                                <td width="50%"><span [innerHTML]="''+item.DisplayName+''"></span> </td>
+                                                <td width="50%"> : {{item.FieldValue}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="tab-pane {{PageIndoorAActive}}" id="t3">
+                                <div class="table-responsive datatable">
+                                    <table class="table table-striped table-hover table-sm">
+                                        <tbody *ngIf="lstCarerSecA.length>0">
+                                            <tr *ngFor="let item of lstCarerSecA|filter:'ControlLoadFormat':'Indoors A'">
+                                                <td width="50%"><span [innerHTML]="''+item.DisplayName+''"></span> </td>
+                                                <td width="50%"> : {{item.FieldValue}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="tab-pane {{PageIndoorBActive}}" id="t4">
+                                <div class="table-responsive datatable">
+                                    <table class="table table-striped table-hover table-sm">
+                                        <tbody *ngIf="lstCarerSecA.length>0">
+                                            <tr *ngFor="let item of lstCarerSecA|filter:'ControlLoadFormat':'Indoors B'">
+                                                <td width="50%"><span [innerHTML]="''+item.DisplayName+''"></span> </td>
+                                                <td width="50%"> : {{item.FieldValue}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="tab-pane {{PageIndoorCActive}}" id="t5">
+                                <div class="table-responsive datatable">
+                                    <table class="table table-striped table-hover table-sm">
+                                        <tbody *ngIf="lstCarerSecA.length>0">
+                                            <tr *ngFor="let item of lstCarerSecA|filter:'ControlLoadFormat':'Indoors C'">
+                                                <td width="50%"><span [innerHTML]="''+item.DisplayName+''"></span> </td>
+                                                <td width="50%"> : {{item.FieldValue}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="tab-pane {{PageIndoorDActive}}" id="t6">
+                                <div class="table-responsive datatable">
+                                    <table class="table table-striped table-hover table-sm">
+                                        <tbody *ngIf="lstCarerSecA.length>0">
+                                            <tr *ngFor="let item of lstCarerSecA|filter:'ControlLoadFormat':'Indoors D'">
+                                                <td width="50%"><span [innerHTML]="''+item.DisplayName+''"></span> </td>
+                                                <td width="50%"> : {{item.FieldValue}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="tab-pane {{PageIndoorEActive}}" id="t7">
+                                <div class="table-responsive datatable">
+                                    <table class="table table-striped table-hover table-sm">
+                                        <tbody *ngIf="lstCarerSecA.length>0">
+                                            <tr *ngFor="let item of lstCarerSecA|filter:'ControlLoadFormat':'Indoors E'">
+                                                <td width="50%"><span [innerHTML]="''+item.DisplayName+''"></span> </td>
+                                                <td width="50%"> : {{item.FieldValue}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="tab-pane {{PageOutdoorActive}}" id="t8">
+                                <div class="table-responsive datatable">
+                                    <table class="table table-striped table-hover table-sm">
+                                        <tbody *ngIf="lstCarerSecA.length>0">
+                                            <tr *ngFor="let item of lstCarerSecA|filter:'ControlLoadFormat':'Outdoors'">
+                                                <td width="50%"><span [innerHTML]="''+item.DisplayName+''"></span> </td>
+                                                <td width="50%"> : {{item.FieldValue}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="tab-pane {{PageBriefActive}}" id="t9">
+                                <div class="table-responsive datatable">
+                                    <table class="table table-striped table-hover table-sm">
+                                        <tbody *ngIf="lstCarerSecA.length>0">
+                                            <tr *ngFor="let item of lstCarerSecA|filter:'ControlLoadFormat':'Brief'">
+                                                <td width="50%"><span [innerHTML]="''+item.DisplayName+''"></span> </td>
+                                                <td width="50%"> : {{item.FieldValue}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="tab-pane {{DocumentActive}}" id="UploadDocuments">
+                                <div class="form-group" [hidden]="AgencySignatureHidden">
+                                    <label class="">Signature Type  </label>
+
+                                    <select required  *ngIf="lstAgencySignatureCnfg.length>0" #selectSignature (change)="AgencySignatureCnfgChange(selectSignature.value)"
+                                            formControlName="AgencySignatureCnfgId" class="form-control" [(ngModel)]="objCarerHealthAndSafetyDTO.AgencySignatureCnfgId">
+                                        <option value="" [attr.selected]="objCarerHealthAndSafetyDTO.AgencySignatureCnfgId == null ? true : null">Select Signature Type</option>
+                                        <option *ngFor="let op of lstAgencySignatureCnfg" value="{{op.AgencySignatureCnfgId}}">
+                                            {{op.Signature}}
+                                        </option>
+                                    </select>
+                                    <div *ngIf="(!_Form.controls.AgencySignatureCnfgId.valid && submitted && _Form.controls.AgencySignatureCnfgId.errors )" class="alert alert-danger">
+                                        Please select Signature Type
+                                    </div>
+                                </div>
+                                <Dynamic-Form #SectionAdynamic [dynamicformcontrols]="dynamicformcontrol"
+                                              [formbuilder]="_Form"
+                                              [submitted]="submitted"></Dynamic-Form>
+
+                               <EmailNotification #Notification [FormCnfgId]="26"  ></EmailNotification>
+
+                            </div>
+                            <div class="form-group col-lg-12">
+                                <SubmitButton #btnSubmitAdd (Click)="clicksubmit(SectionAdynamic.dynamicformcontrols,SectionAdynamic.formbuilder,
+                                Notification.AddtionalEmailIds,Notification.EmailIds)" [IsLoading]="isLoading" [Text]="'Submit'">
+                                </SubmitButton>
+                                <BackButton></BackButton>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

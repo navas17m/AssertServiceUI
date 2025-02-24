@@ -1,0 +1,211 @@
+﻿<div>
+
+    <div class="row col-md-12">
+        <div class="col-md-8"><AddButton FormCnfgId="17" (Click)="fnAddData()"></AddButton></div>
+        <div class="col-md-1">&nbsp;</div>
+        <div class="col-md-3">
+            <button style="cursor:pointer;float:right;" (click)="fnUserShow()" class="btn btn-success">{{showActiveUser==true?'Show Deactivated Users':'Show Active Users'}}</button>
+        </div>
+
+    </div>
+    <br />
+    <div class="row bottom-15" >
+        <div class="col">
+            <div widget class="card">
+                <div class="card-header">
+                    <span>User License Count Details</span>
+                </div>
+                <div class="card-body widget-body">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 ">
+                            <div class="card card-outline-default p-3">
+                                <div class="row" *ngIf="insLicenseType!=true">
+                                    <div class="col-12 col-md-4 col-lg-4 pt-1 pb-1"><span class="badge badge badge-pill badge-success">{{UserLicenseCount}}</span>&nbsp;Active User Account Limit</div>
+                                    <div class="col-12 col-md-4 col-lg-4 pt-1 pb-1"><span class="badge badge badge-pill badge-default">{{UsedLicenseCount}}</span>&nbsp;User Account in Use</div>
+                                    <div  class="col-12 col-md-4 col-lg-4 pt-1 pb-1"><span class="badge badge badge-pill badge-info">{{UserLicenseCount - UsedLicenseCount}}</span>&nbsp;User Account Left</div>
+                                </div>
+                                <div class="row" *ngIf="insLicenseType==true">
+                                    <div class="col-12 col-md-6 col-lg-6 pt-1 pb-1" style="text-align:center"><span class="badge badge badge-pill badge-success">{{UserLicenseCount}}</span>&nbsp;Active User Account Limit</div>
+                                    <div class="col-12 col-md-6 col-lg-6 pt-1 pb-1" style="text-align:center"><span class="badge badge badge-pill badge-default">{{UsedLicenseCount}}</span>&nbsp;User Account in Use</div>
+
+                                </div>
+                                <!--<div class="row" *ngIf="PanleUserLicenseCount!=0">
+                                    <div class="col-12 col-md-4 col-lg-4 pt-1 pb-1"><span class="badge badge badge-pill badge-success">{{PanleUserLicenseCount}}</span>&nbsp;Panel Active User Account Limit</div>
+                                    <div class="col-12 col-md-4 col-lg-4 pt-1 pb-1"><span class="badge badge badge-pill badge-default">{{PanelUsedLicenseCount}}</span>&nbsp;Panel User Account in use</div>
+                                    <div class="col-12 col-md-4 col-lg-4 pt-1 pb-1"><span class="badge badge badge-pill badge-info">{{PanleUserLicenseCount-PanelUsedLicenseCount}}</span>&nbsp;Panel User Account left</div>
+                                </div>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!--<div widget class="card card-outline-default">
+        <div class="row bottom-15">
+            <div class="col-lg-4 col-sm-12">
+                Active User Account Limit
+            </div>
+            <div class="col-lg-4 col-sm-12">
+                User Account in use
+            </div>
+            <div class="col-lg-4 col-sm-12">
+                User Account left
+            </div>
+        </div>
+    </div>-->
+    <div class="row">
+        <div class="col">
+            <div widget class="card">
+                <div class="card-header">
+                    <span>User Profile List</span>
+                    <div class="widget-controls">
+                        <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                        <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                        <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+                        <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+                        <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a>
+                    </div>
+                </div>
+                <div class="card-body widget-body">
+                    <div class="w-200 pull-right bottom-15">
+                        <div class="input-group input-group-sm">
+                            <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                            <input class="form-control" id="table-search-input" [(ngModel)]="searchText" type="text" placeholder="Search...">
+                        </div>
+                    </div>
+
+                    <div class="table-responsive datatable">
+                        <ngx-datatable [rows]="userprofileList | SearchFilter : 'LoginId,RoleProfile.RoleName,PersonalInfo.FirstName,PersonalInfo.MiddleName,PersonalInfo.lastName': searchText"
+                                class="bootstrap"
+                                [columnMode]="'force'"
+                                [limit]="limitPerPage"
+                                [limit]="10"
+                                rowHeight="auto"
+                                [scrollbarH]="true"
+                                [footerHeight]="50"
+                                [messages]="footerMessage">
+
+                                <ngx-datatable-column name="Login Id" prop="LoginId" [sortable]="true" width="60">
+                                    <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                                        {{value}}
+                                    </ng-template>
+                                </ngx-datatable-column>
+                                <ngx-datatable-column name="Role" prop="RoleProfile.RoleName" sortable="true" width="60">
+                                    <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                                    {{value}}
+                                    </ng-template>
+                                </ngx-datatable-column>
+                                <ngx-datatable-column name="Name" prop="PersonalInfo.FirstName" sortable="true" width="100">
+                                    <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                                        {{row.PersonalInfo.FirstName}} {{row.PersonalInfo.MiddleName}} {{row.PersonalInfo.lastName}}
+                                    </ng-template>
+                                </ngx-datatable-column>
+                                <ngx-datatable-column *ngIf="showActiveUser" name="Password" [sortable]="false" width="30">
+                                    <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                                        <button style="cursor:pointer;" title="Password Change" (click)="fnPwdChange(row.UserProfileId)" class="btn btn-primary "><i style="font-size:20px" class="fa fa-pinterest-p"></i></button>
+                                    </ng-template>
+                                </ngx-datatable-column>
+                                <ngx-datatable-column *ngIf="showActiveUser" name="Lock" [sortable]="false" width="30">
+                                    <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                                        <button *ngIf="!row.IsAccountLocked && insLockResetBtnVisible" style="cursor:pointer;" title="Click to lock" (click)="fnLockConfirm(row.UserProfileId)" class="btn btn-success ">
+                                            <i style="font-size:16px" class="fa fa-unlock"></i>
+                                          </button>
+
+                                          <button *ngIf="row.IsAccountLocked && insLockResetBtnVisible" style="cursor:pointer;" title="Click to unlock" (click)="fnunLockConfirm(row.UserProfileId)" class="btn btn-danger ">
+                                              <i style="font-size:20px" class="fa fa-lock"></i>
+                                          </button>
+                                    </ng-template>
+                                </ngx-datatable-column>
+                                <ngx-datatable-column *ngIf="showActiveUser" name="Reset" [sortable]="false" width="30">
+                                    <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                                        <button *ngIf="insLockResetBtnVisible" style="cursor:pointer;" title="Click to reset secret qustion" (click)="fnResetSecretQue(row.UserProfileId)" class="btn btn-warning ">
+                                            <i style="font-size:20px" class="fa fa-refresh"></i>
+                                        </button>
+                                    </ng-template>
+                                </ngx-datatable-column>
+                                <ngx-datatable-column  name="{{showActiveUser==true?'Deactivate':'Activate'}}" [sortable]="false" width="30">
+                                    <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                                        <button style="cursor:pointer;" title="{{showActiveUser==true?'Deactivate User':'Activate User'}}" (click)="fnActiveDeactiveUser(row.UserProfileId)" class="btn btn-main ">
+                                            <i style="font-size:20px"
+                                               [ngClass]="showActiveUser==true?'fa fa-user-times':'fa fa-user-plus'"></i>
+                                        </button>
+                                    </ng-template>
+                                </ngx-datatable-column>
+                                <ngx-datatable-column *ngIf="showActiveUser" name="Edit" [sortable]="false" width="30">
+                                    <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                                        <EditButton FormCnfgId="17" (Click)="editUserProfile(row.UserProfileId)"></EditButton>
+                                    </ng-template>
+                                </ngx-datatable-column>
+                                <ngx-datatable-column  name="View" [sortable]="false" width="30">
+                                    <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                                        <ViewButton FormCnfgId="17" (Click)="editUserProfile(row.UserProfileId)"></ViewButton>
+                                    </ng-template>
+                                </ngx-datatable-column>
+                                <ngx-datatable-column *ngIf="showActiveUser" name="Delete" [sortable]="false" width="30">
+                                    <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                                        <DeleteButton FormCnfgId="17" (Click)="deleteUserProfile(row.UserProfileId)"
+                                                      [SequenceNo]="row.UserProfileId"></DeleteButton>
+                                    </ng-template>
+                                </ngx-datatable-column>
+                        </ngx-datatable>
+                    </div>
+                </div>
+                <PageSize (childPageSizeEvent)="setPageSize($event)"></PageSize>
+            </div>
+        </div>
+    </div>
+</div>
+
+<button id="btnConfirmLock" #btnConfirmLock [hidden]="true" type="button" class="btn btn-danger" data-toggle="modal" data-target="#error-modal-confirmlock">Danger</button>
+<div  class="modal fade" id="error-modal-confirmlock" tabindex="-1" role="dialog" aria-labelledby="modal-error-label">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header state modal-danger">
+                <h5 class="modal-title" id="modal-error-label"><i class="fa fa-warning"></i> Are you sure you want to lock this user?</h5>
+                <button type="button" class="close closebtn" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger closebtn" data-dismiss="modal" (click)="fnSubmitLockUnlock()">Yes</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" (click)="fnCalcel()">No</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<button id="btnConfirmUnLock" #btnConfirmUnLock [hidden]="true" type="button" class="btn btn-danger" data-toggle="modal" data-target="#error-modal-confirmUnlock">Danger</button>
+<div  class="modal fade" id="error-modal-confirmUnlock" tabindex="-1" role="dialog" aria-labelledby="modal-error-label">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header state modal-danger">
+                <h5 class="modal-title" id="modal-error-label"><i class="fa fa-warning"></i> Are you sure you want to unlock this user?</h5>
+                <button type="button" class="close closebtn" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger closebtn" data-dismiss="modal" (click)="fnSubmitLockUnlock()">Yes</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" (click)="fnCalcel()">No</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<button id="btnConfirmResetSecretQue" #btnConfirmResetSecretQue [hidden]="true" type="button" class="btn btn-danger" data-toggle="modal" data-target="#error-modal-confirmSecrectQue">Danger</button>
+<div class="modal fade" id="error-modal-confirmSecrectQue" tabindex="-1" role="dialog" aria-labelledby="modal-error-label">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header state modal-danger">
+                <h5 class="modal-title" id="modal-error-label"><i class="fa fa-warning"></i>Are you sure you want to reset the secret question and answer for this user?</h5>
+                <button type="button" class="close closebtn" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger closebtn" data-dismiss="modal" (click)="fnSubmitResetSecreQue()">Yes</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" (click)="fnCalcel()">No</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,132 @@
+﻿<div class="row bottom-30">
+    <div class="col">
+        <div widget class="card">
+            <div class="card-header">
+                <span> User Profile </span>
+                <div class="widget-controls">
+                    <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                    <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                    <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+                    <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+                    <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a>
+                </div>
+            </div>
+            <div class="card-body widget-body">
+                <form [formGroup]="_userForm"><ViewDisable></ViewDisable>
+                    <div>
+                        <div>
+                            <!--<h2>Area Office Mapping</h2>-->
+                            <table class="table table-condensed">
+                                <thead>
+                                    <tr>
+                                        <td>Select</td>
+                                        <th>Area Office Name</th>
+                                    </tr>
+                                </thead>
+                                <tbody *ngIf="areaofficeList==null">
+                                    <tr>
+                                        <td colspan="4" class="text-center">No records found.</td>
+                                    </tr>
+                                </tbody>
+                                <tbody *ngIf="areaofficeList != null">
+                                    <tr *ngFor="let item of areaofficeList">
+                                        <td>
+                                            <!--<input name="IsItAreaOffice" type="checkbox" [(ngModel)]="item.IsActive" />-->
+
+                                            <input type="checkbox" [value]="item.AreaOfficeProfileId"
+                                                   [checked]="item.IsActive" (change)="updateAreaoffMappingChecked($event.target.checked,item.AreaOfficeProfileId)" />
+
+                                            <!--<input formControlName="chkSelect-{{item.AreaOfficeProfileId}}" type="checkbox" [(ngModel)]="item.IsActive" (change)="fnUnSelectDefault(item,$event.target.checked)" />-->
+
+                                            <!--<input type="checkbox" [value]="item.IsActive"
+                                                    />-->
+
+                                        </td>
+                                        <td>{{item.AreaOfficeName}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+                        <div class="form-group" [hidden]="objUserProfile.UserTypeCnfg.UserTypeId ==4">
+                            <label class="">User Type </label>
+                            <select id="UserTypeId" formControlName="UserTypeId" *ngIf="UserType != null" class="form-control" required [(ngModel)]="objUserProfile.UserTypeCnfg.UserTypeId" #select (change)="userTypeChange(select.value,1)">
+                                <option value="" [attr.selected]="objUserProfile.UserTypeCnfg.UserTypeId == null ? true : null">Select a User Type</option>
+                                <option *ngFor="let item of UserType" value="{{item.UserTypeId}}">
+                                    {{item.UserTypeName}}
+                                </option>
+                            </select>
+                            <div class="alert alert-danger" *ngIf="(!_userForm.controls.UserTypeId.valid && submitted && _userForm.controls.UserTypeId.errors.required)">
+                                Please Select a User Type
+                            </div>
+                        </div>
+                        <div class="form-group" [hidden]="objUserProfile.UserTypeCnfg.UserTypeId ==4">
+                            <label class="">Role Profile</label>
+                            <select id="RoleProfileId" formControlName="RoleProfileId" *ngIf="RoleProfile != null" class="form-control" required [(ngModel)]="objUserProfile.RoleProfile.RoleProfileId">
+                                <option value="" [attr.selected]="objUserProfile.RoleProfile.RoleProfileId == null ? true : null">Select a Role Profile</option>
+                                <option *ngFor="let item of RoleProfile" value="{{item.RoleProfileId}}">
+                                    {{item.RoleName}}
+                                </option>
+                            </select>
+                            <div class="alert alert-danger" *ngIf="(!_userForm.controls.RoleProfileId.valid && submitted && _userForm.controls.RoleProfileId.errors.required)">
+                                Please Select a Role Profile
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="">Login Id</label>
+                            <input id="LoginId" formControlName="LoginId" type="text" class="form-control" [(ngModel)]="objUserProfile.LoginId"
+                                   required />
+                            <div class="alert alert-danger" *ngIf="(!_userForm.controls.LoginId.valid && submitted && _userForm.controls.LoginId.errors.required)">
+                                Please enter Login Id
+                            </div>
+                            <div *ngIf="_userForm.controls.LoginId.pending">Checking Login Id...</div>
+                            <div class="alert alert-danger" *ngIf="IsAvailLoginId">
+                                Login Id Already Exists
+                            </div>
+                           
+                        </div>
+                        <!--<div class="form-group" *ngIf="IsVisible">
+                            <label class="">Password</label>
+                            <input formControlName="Password" type="password" class="form-control" [(ngModel)]="objUserProfile.Password"
+                                   required />
+                            <div class="alert alert-danger" *ngIf="(!_userForm.controls.Password.valid && submitted && _userForm.controls.Password.errors.required)">
+                                Please enter Password
+                            </div>
+                        </div>-->
+                        <!--<h2>Personal Info</h2>-->
+                      
+                        <personalinfo #Personalinfo [personalinfoval1]="personalInfoVal1" [Visible]="objPersonalInfoVisible" [formbuilder]="submitted"></personalinfo>
+                        <!--<h2>Contact Info</h2>-->
+                        <contact #ConatactInfo [contactval1]="contactVal1" [Visible]="objContactVisible" [formbuilder]="submitted"></contact>
+                        <div class="form-group">
+                            <label class="">Do you want this user to see all the Children?</label>
+                            <input formControlName="CanSeeAllChildren" type="checkbox"  [(ngModel)]="objUserProfile.CanSeeAllChildren"/>
+                        </div>
+                        <div class="form-group">
+                            <label class="">Do you want this user to see all the Carers?</label>
+                            <input formControlName="CanSeeAllCarer" type="checkbox"  [(ngModel)]="objUserProfile.CanSeeAllCarer" />
+                        </div>
+                        <div class="form-group">
+                            <label class="">Do you want this user to see all the Employees?</label>
+                            <select formControlName="CanSeeAllEmployee" class="form-control" [(ngModel)]="objUserProfile.CanSeeAllEmployee">
+                                <option value="1">Not Applicable</option>
+                                <option value="2">Yes</option>
+                                <option value="3">No</option>
+                            </select>
+                            
+                        </div>
+                        <div class="form-group">
+                            <label class="">See Dashboard?</label>
+                            <input id="IsShowDashboard" formControlName="IsShowDashboard" type="checkbox" [(ngModel)]="objUserProfile.IsShowDashboard" />
+                        </div>
+                        <div class="form-group">
+                            <SubmitButton (Click)="userprofileSubmit(_userForm,ConatactInfo.contactval1,Personalinfo.personalinfoval1,ConatactInfo.formbuilder,Personalinfo.formbuilder)"
+                                          [IsLoading]="isLoading"></SubmitButton>
+                            <BackButton></BackButton>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

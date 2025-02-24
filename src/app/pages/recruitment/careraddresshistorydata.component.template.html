@@ -1,0 +1,76 @@
+﻿<div class="col-xl-12 col-lg-12 col-12 bottom-30">
+    <ApprovedCarerHeader *ngIf="objQeryVal.mid == 3"></ApprovedCarerHeader>
+    <CarerHeader *ngIf="objQeryVal.mid == 13"></CarerHeader>
+    <ViewDisable></ViewDisable>
+    <div widget class="card">
+        <div class="card-header">
+            <span>Carer Address History </span>
+            <div class="widget-controls">
+                <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+                <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+                <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a>
+            </div>
+        </div>
+        <div class="card-body widget-body">
+            <form [formGroup]="_Form">
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label class="">Type</label>
+                        <input formControlName="IsPostApprove" type="radio" [value]="1" [(ngModel)]="objCarerAddressHistoryDTO.IsPostApprove" checked="checked">Pre Approved
+                        <span *ngIf="objQeryVal.mid == 3"><input formControlName="IsPostApprove" type="radio" [value]="2" [(ngModel)]="objCarerAddressHistoryDTO.IsPostApprove">Post Approved</span>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label class="">Current Address.?</label>
+                        <input formControlName="IsCurrentAddress" required type="radio" [value]="1" [(ngModel)]="objCarerAddressHistoryDTO.IsCurrentAddress" checked>Yes
+                        <input formControlName="IsCurrentAddress" required type="radio" [value]="0" [(ngModel)]="objCarerAddressHistoryDTO.IsCurrentAddress">No
+                        <div *ngIf="(!_Form.controls.IsCurrentAddress.valid && submitted && _Form.controls.IsCurrentAddress.errors.required )" class="alert alert-danger">
+                            Please Select a Current Address
+                        </div>
+
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label class="">Date Moved</label>
+                        <input type="text" class="form-control"  [(ngModel)]="objCarerAddressHistoryDTO.DateMoved" required
+                               placeholder="dd/mm/yyyy" formControlName="DateMoved" [value]="objCarerAddressHistoryDTO.DateMoved"
+                               datepicker />
+                        <div *ngIf="(!_Form.controls.DateMoved.valid && submitted && _Form.controls.DateMoved.errors )" class="alert alert-danger">
+                            Please select a Date Moved
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <!--Personalinfo-->
+                        <contact #ConatactInfo   [contactval1]="objCarerAddressHistoryDTO.ContactInfo" [formbuilder]="submitted" [Visible]="objContactVisible"></contact>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label class="">Date Moved Out</label>
+                        <input formControlName="DateMovedOut" type="text" class="form-control" [(ngModel)]="objCarerAddressHistoryDTO.DateMovedOut"
+                               placeholder="dd/mm/yyyy" datepicker [value]="objCarerAddressHistoryDTO.DateMovedOut" />
+                    </div>
+                    <!-- <div class="form-group col-md-6">
+                        <label class="">Local Authority</label>
+                        <select *ngIf="LocalAuthorityList.length>0" formControlName="LocalAuthorityId" class="form-control" [(ngModel)]="objCarerAddressHistoryDTO.LocalAuthorityId">
+                            <option value="" [attr.selected]="objCarerAddressHistoryDTO.LocalAuthorityId == null ? true : null">Select a Local Authority</option>
+                            <option *ngFor="let op of LocalAuthorityList" value="{{op.LocalAuthorityId}}">
+                                {{op.LocalAuthorityName}}
+                            </option>
+                        </select>
+                    </div> -->
+                    <div class="form-group col-md-6">
+                        <label class="">Local Authority</label>
+                        <ng-select *ngIf="LocalAuthorityList?.length>0" formControlName="LocalAuthorityId" class="form-control" [items]="LocalAuthorityList"
+                            bindLabel="LocalAuthorityName" bindValue="LocalAuthorityId" [(ngModel)]="objCarerAddressHistoryDTO.LocalAuthorityId" placeholder="Select a Local Authority">
+                        </ng-select>
+                    </div>
+                    <div class="form-group col-md-12">
+                        <SubmitButton (Click)="clicksubmit(ConatactInfo.contactval1,ConatactInfo.formbuilder,ConatactInfo.countyElement, ConatactInfo.countyElement)"
+                                      [IsLoading]="isLoading"></SubmitButton>
+                        <BackButton></BackButton>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

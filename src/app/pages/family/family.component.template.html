@@ -1,0 +1,213 @@
+﻿<form [formGroup]="_Form">
+
+        <div widget class="card" *ngIf="AllowInsert">
+            <div class="card-header">
+                <span *ngIf="formName!='ApplicationFormNew'">Carer Family Details</span>
+                <span *ngIf="formName=='ApplicationFormNew'">Children Details</span>
+                <div class="widget-controls">
+                    <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                    <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                    <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+                    <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+                    <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a>
+                </div>
+            </div>
+            <div class="card-body widget-body">
+                    <div  class="row ">
+                        <div class="form-group col-md-6">
+                            <label class="">First Name</label>
+                            <input formControlName="FirstName" required type="text" class="form-control"
+                                   [(ngModel)]="objFamilyDTO.PersonalInfo.FirstName" />
+                            <div *ngIf="(!_Form.controls.FirstName.valid && submitted && _Form.controls.FirstName.errors )" class="alert alert-danger">
+                                Please Enter a First Name
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="">Middle  Name</label>
+                            <input formControlName="MiddleName" type="text" class="form-control"
+                                   [(ngModel)]="objFamilyDTO.PersonalInfo.MiddleName" />
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="">Last Name</label>
+                            <input formControlName="lastName" type="text" required class="form-control" [(ngModel)]="objFamilyDTO.PersonalInfo.lastName" />
+                            <div *ngIf="(!_Form.controls.lastName.valid && submitted && _Form.controls.lastName.errors )" class="alert alert-danger">
+                                Please Enter a First Name
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="">Date Of Birth</label>
+                            <input formControlName="DateOfBirth" type="text" placeholder="DD/MM/YYYY" readonly class="form-control form-control-date" [(ngModel)]="objFamilyDTO.PersonalInfo.DateOfBirth" [value]="objFamilyDTO.PersonalInfo.DateOfBirth" datepicker />
+                            <div *ngIf="(!_Form.controls.DateOfBirth.valid && submitted && _Form.controls.DateOfBirth.errors.required )" class="alert alert-danger">
+                                Please Enter Date Of Birth
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6" *ngIf="formName!='ApplicationFormNew'">
+                            <label class="">Relation </label>
+                            <ng-select *ngIf="relationList !=null" formControlName="RelationshipId" #Relationship class="form-control" [(ngModel)]="objFamilyDTO.RelationshipId" required (change)="fnChangeRelationship(objFamilyDTO.RelationshipId)"
+                                [items]="relationList" bindValue="CofigTableValuesId" bindLabel="Value" placeholder="Select a Relation">
+                            </ng-select>
+                            <div *ngIf="(!_Form.controls.RelationshipId.valid && submitted && _Form.controls.RelationshipId.errors )" class="alert alert-danger">
+                                Please select a Relation
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6" *ngIf="formName=='ApplicationFormNew'">
+                          <label class="">Relation </label>
+                          <ng-select *ngIf="relationLst !=null" formControlName="RelationshipId" #Relationship class="form-control" [(ngModel)]="objFamilyDTO.RelationshipId" required (change)="fnChangeRelationship(objFamilyDTO.RelationshipId)"
+                              [items]="relationLst" bindValue="CofigTableValuesId" bindLabel="Value" placeholder="Select a Relation">
+                          </ng-select>
+                          <div *ngIf="(!_Form.controls.RelationshipId.valid && submitted && _Form.controls.RelationshipId.errors )" class="alert alert-danger">
+                              Please select a Relation
+                          </div>
+                      </div>
+                        <div class="form-group col-md-6" *ngIf="formName!='ApplicationFormNew'">
+                            <label class="">Ethnicity</label>
+                            <ng-select *ngIf="ethinicityList.length > 0" formControlName="EthinicityId" class="form-control" [(ngModel)]="objFamilyDTO.EthinicityId"
+                                [items]="ethinicityList" bindValue="CofigTableValuesId" bindLabel="Value" placeholder="Select an Ethnicity">
+                            </ng-select>
+                            <div *ngIf="(!_Form.controls.EthinicityId.valid && submitted && _Form.controls.EthinicityId.errors )" class="alert alert-danger">
+                                Please select an Ethnicity
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-6" *ngIf="formName!='ApplicationFormNew'">
+                            <label class="">Religion</label>
+                            <ng-select *ngIf="religionList.length > 0" formControlName="ReligionId" class="form-control" [(ngModel)]="objFamilyDTO.ReligionId"
+                                [items]="religionList" bindValue="CofigTableValuesId" bindLabel="Value" placeholder="Select a Religion">
+                            </ng-select>
+                            <div *ngIf="(!_Form.controls.ReligionId.valid && submitted && _Form.controls.ReligionId.errors )" class="alert alert-danger">
+                                Please select a Religion
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6" *ngIf="formName!='ApplicationFormNew'">
+                            <label class="">Telephone Number</label>
+                            <input formControlName="TelePhoneNumber" type="text" class="form-control"
+                                   [(ngModel)]="objFamilyDTO.TelePhoneNumber" />
+                            <div *ngIf="(!_Form.controls.TelePhoneNumber.valid && submitted && _Form.controls.TelePhoneNumber.errors && _Form.controls.TelePhoneNumber.value)">
+                                <div class="alert alert-danger" *ngIf="_Form.controls.TelePhoneNumber.errors.NotValidPhoneNumber">Please enter valid Telephon Number </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-6" *ngIf="formName!='ApplicationFormNew'">
+                            <label class="">Email Id</label>
+                            <input formControlName="EmailId" type="text" class="form-control"
+                                   [(ngModel)]="objFamilyDTO.EmailId" />
+                        </div>
+
+                        <div class="form-group col-md-6" *ngIf="formName!='ApplicationFormNew'">
+                            <label class="">Are Checks Required? </label>
+                            <input type="checkbox" formControlName="IsChecksRequired"
+                                   [(ngModel)]="objFamilyDTO.IsChecksRequired" />
+                        </div>
+                        <div class="form-group col-md-6" *ngIf="!IsStayingPut">
+                            <label class="">Living at Home?</label>
+                            <input type="checkbox" formControlName="IsLivingAtHome"
+                                   [(ngModel)]="objFamilyDTO.IsLivingAtHome" />
+                        </div>
+                        <div class="form-group col-md-6" *ngIf="!IsStayingPut && formName!='ApplicationFormNew'">
+                            <label class="">Other than Family Member?</label>
+                            <input type="checkbox" formControlName="IsOtherFamilyMember"
+                                   [(ngModel)]="objFamilyDTO.IsOtherFamilyMember" />
+                        </div>
+                        </div>
+                        <div class="form-group col-md-12" *ngIf="!objFamilyDTO.IsLivingAtHome && !IsStayingPut">
+                          <label class=""> Address</label>
+                          <textarea formControlName="Address" type="text" class="form-control" [(ngModel)]="objFamilyDTO.ContactInfo.AddressLine1"></textarea>
+                         </div>
+                        <div class="form-group col-md-12" *ngIf="IsSchoolNameVisible">
+                            <label class="">School Name & Address</label>
+                            <textarea formControlName="SchoolNameAndAddress" type="text" class="form-control" [(ngModel)]="objFamilyDTO.SchoolNameAndAddress"></textarea>
+
+                        </div>
+
+
+                        <div *ngIf="!IsView" class="form-group col-md-12">
+                            <SubmitButton *ngIf="!isEdit" [FormCnfgId]="FormCnfgId" (Click)="Submitfamilyinfo(_Form)" [IsLoading]="isLoading"></SubmitButton>
+                            <SubmitButton *ngIf="isEdit" [FormCnfgId]="FormCnfgId" (Click)="Submitfamilyinfo(_Form)" [IsLoading]="isLoading" [Text]="'Update'"></SubmitButton>
+
+
+                            <button type="button" id="btnReset" class="btn btn-danger" (click)="SubmitCancel()">
+                                Cancel
+                            </button>
+                        </div>
+                        <div *ngIf="IsView" class="form-group col-md-12">
+                            <button  type="button" id="btnReset" class="btn btn-danger" (click)="SubmitCancel()">
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                    <input type="hidden" formControlName="hdnFamilyId" [(ngModel)]="familyId" />
+        </div>
+        
+    <div widget class="card mt-2">
+        <div class="card-header">
+            <span class="text-uppercase" *ngIf="formName!='ApplicationFormNew'">Existing Family Members/Support Network</span>
+            <span class="text-uppercase" *ngIf="formName=='ApplicationFormNew'">Children Details</span>
+        </div>
+        <div class="card-body widget-body">
+          <div class="table-responsive datatable">
+              <ngx-datatable [rows]="objCarerFamilyList"
+                      class="bootstrap"
+                      rowHeight="auto"
+                      [columnMode]="'force'"
+                      [limit]="10"
+                      [scrollbarH]="true"
+                      [footerHeight]="50"
+                      [messages]="footerMessage">
+                      <ngx-datatable-column name="Name" prop="PersonalInfo.FirstName" width="100" [sortable]="true">
+                          <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                            {{row.PersonalInfo.FirstName}} {{row.PersonalInfo.MiddleName}}  {{row.PersonalInfo.lastName}}
+                          </ng-template>
+                      </ngx-datatable-column>
+                      <ngx-datatable-column name="Date of Birth" prop="PersonalInfo.DateOfBirth" [sortable]="false" width="80">
+                          <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                            {{value | date:'dd/MM/yyyy'}}
+                          </ng-template>
+                      </ngx-datatable-column>
+                      <ngx-datatable-column  *ngIf="formName!='ApplicationFormNew'" name="Relation" prop="RelationshipName" [sortable]="false" width="80">
+                        <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                          {{value}}
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column *ngIf="formName=='ApplicationFormNew'" name="Male/Female" prop="RelationshipName" [sortable]="false" width="80">
+                      <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                        {{value == "SON" ? "Male" : "Female"}}
+                      </ng-template>
+                  </ngx-datatable-column>
+                    <ngx-datatable-column *ngIf="formName!='ApplicationFormNew'" name="Are Checks Required?" prop="IsChecksRequired" [sortable]="false" width="80">
+                      <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                        <td>{{value==true?'Yes':'No'}}</td>
+                      </ng-template>
+                  </ngx-datatable-column>
+                  <ngx-datatable-column name="Living at Home?" prop="IsLivingAtHome" [sortable]="false" width="80">
+                    <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                      <td>{{value==true?'Yes':'No'}}</td>
+                    </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column *ngIf="formName=='ApplicationFormNew'" name="School Name & Address" prop="SchoolNameAndAddress" [sortable]="false" width="80">
+                  <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                    <td>{{value}}</td>
+                  </ng-template>
+              </ngx-datatable-column>
+                  <ngx-datatable-column name="Edit" [sortable]="false" width="30" *ngIf="AllowInsert">
+                    <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                      <span *ngIf="AllowInsert"><EditButton (click)="EditData(row,rowIndex)" [FormCnfgId]="FormCnfgId"></EditButton></span>
+                    </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column name="View" [sortable]="false" width="30" *ngIf="AllowInsert">
+                  <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                    <span *ngIf="AllowInsert"><ViewButton (click)="ViewData(row,rowIndex)" [FormCnfgId]="FormCnfgId"> </ViewButton></span>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column name="Delete" [sortable]="false" width="30" *ngIf="AllowInsert">
+                  <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                   <span *ngIf="AllowInsert"> <DeleteButton [FormCnfgId]="FormCnfgId" (Click)="DeleteFamily(row.CarerFamilyInfoId)" [SequenceNo]="row.CarerFamilyInfoId">
+                    </DeleteButton></span>
+                  </ng-template>
+                </ngx-datatable-column>
+
+              </ngx-datatable>
+          </div>
+
+      </div>
+    </div>
+</form>

@@ -1,0 +1,683 @@
+﻿import { Component, Pipe,ElementRef, Renderer2,ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Common } from '../common';
+import { PagesComponent } from '../pages.component';
+import { APICallService } from '../services/apicallservice.service';
+//import { CarerInfoService } from '../services/carerinfo.services'
+import { CarerInfo } from './DTO/carerinfo';
+import { CarerTrainingCourseDateDTO } from './DTO/carertrainingcoursedatedto';
+import { CarerTrainingProfileComboDTO } from './DTO/carertrainingprofilecombodto';
+import { TrainingAttendedStatusDTO } from './DTO/trainingattendedstatus';
+import { ValChangeDTO } from '../dynamic/valchangeDTO';
+import { FormNotificationDTO } from '../systemadmin/DTO/formnotificationdto';
+import { environment } from '../../../environments/environment';
+import * as moment from 'moment';
+//.@Pipe({ name: 'groupBy' })
+@Component({
+    selector: 'carertrainingprofiledata',
+    templateUrl: './carertrainingprofiledata.component.template.html',
+//     styles: [`[required]  {
+//         border-left: 5px solid blue;
+//     }
+
+//    .ng-valid[required], .ng-valid.required  {
+//             border-left: 5px solid #42A948; /* green */
+// }
+//    label + .ng-invalid:not(form)  {
+//         border-left: 5px solid #a94442; /* red */
+// }`],
+})
+
+export class CarerTrainingProfileDataComponent {
+    controllerName = "CarerTrainingProfile";
+    objAttendedStatusList: TrainingAttendedStatusDTO[] = [];
+    globalObjAtteStatusList = [];
+    objCarerTrainingCourseDateList: CarerTrainingCourseDateDTO[] = [];
+    objCarerTrainingProfileComboDTO: CarerTrainingProfileComboDTO = new CarerTrainingProfileComboDTO();
+    objCarerInfo: CarerInfo = new CarerInfo();
+    submitted = false;
+    submittedStatus = false;
+    coursedatesubmitted = false;
+    dynamicformcontroldata = [];
+    dynamicformcontroldataGrid = [];
+    dynamicformcontroldataOrginal = [];
+    dynamicformcontrolgrid;
+    _Form: FormGroup;
+    isVisibleMandatoryMsg;
+    SequenceNo;
+    objQeryVal; CarerList = [];
+    AttendedDateValid = false;
+    //Doc
+    FormCnfgId;
+    formId;
+    tblPrimaryKey;
+    TypeId;
+    submittedUpload = false;
+    @ViewChild('uploads') uploadCtrl;
+    CarerParentId: number;
+    AgencyProfileId: number;
+    lstcarerIdsSelectValues = [];
+    TrainingProfileActive = "active";
+    DocumentActive;
+    isLoading: boolean = false;
+    deletbtnAccess = false;
+    subColumns=[
+    {prop:'Status', name:'Status'},
+    {prop:'AttendedDate', name:'Date'}
+    ];
+    isPPDP=false;
+    //Print
+    insCarerDetails;
+    CarerCode;
+    apiURL = environment.api_url + "/api/GeneratePDF/";
+    @ViewChild('btnPrint') infoPrint: ElementRef;
+    @ViewChild('btnCancel') infoCancel: ElementRef;
+    subject; eAddress; submittedprint = false; _FormPrint: FormGroup;
+    objNotificationDTO: FormNotificationDTO = new FormNotificationDTO();
+    constructor(private _formBuilder: FormBuilder,
+        private route: ActivatedRoute,
+        private _router: Router, private module: PagesComponent, private renderer: Renderer2, private apiService: APICallService
+    ) {
+
+        this.route.params.subscribe(data => this.objQeryVal = data);
+
+        if(this.objQeryVal.ppdp==1)
+        {
+            this.isPPDP=true;
+        }
+        //if (this.objQeryVal.mid == 3 && (Common.GetSession("ACarerParentId") == null || Common.GetSession("ACarerParentId") == "0")) {
+        //    this._router.navigate(['/pages/fostercarer/approvedcarerlist', 3, 10]);
+        //}
+        //if (this.objQeryVal.mid == 13 && (Common.GetSession("CarerParentId") == null || Common.GetSession("CarerParentId") == "0")) {
+        //    this._router.navigate(['/pages/recruitment/applicantlist', 13, 10]);
+        //}
+
+        this._FormPrint = _formBuilder.group({
+            subject: ['', Validators.required],
+            eAddress: ['', Validators.required],
+            signature: ['']
+        });
+
+        if (this.objQeryVal.mid == 3) {
+            this.FormCnfgId = 48;
+            this.CarerParentId = parseInt(Common.GetSession("ACarerParentId"));
+            if (Common.GetSession("SelectedCarerProfile") != null) {
+                this.insCarerDetails = JSON.parse(Common.GetSession("SelectedCarerProfile"));
+                this.CarerCode = this.insCarerDetails.CarerCode;
+            }
+        }
+        else if (this.objQeryVal.mid == 13) {
+            this.FormCnfgId = 28;
+            this.CarerParentId = parseInt(Common.GetSession("CarerParentId"));
+            if (Common.GetSession("SelectedApplicantProfile") != null) {
+                this.insCarerDetails = JSON.parse(Common.GetSession("SelectedApplicantProfile"));
+                this.CarerCode = this.insCarerDetails.CarerCode;
+            }
+        }
+
+        this.deletbtnAccess = this.module.GetDeletAccessPermission(this.FormCnfgId);
+
+        this.AgencyProfileId = parseInt(Common.GetSession("AgencyProfileId"));
+        this.objCarerTrainingProfileComboDTO.AgencyProfileId = this.AgencyProfileId;
+        this.objCarerTrainingProfileComboDTO.CarerParentId = this.CarerParentId;
+        this.objCarerTrainingProfileComboDTO.ControlLoadFormat = ["Default", "Default1", "Grid"];
+        this.SequenceNo = this.objQeryVal.Id;
+
+        //Doc
+        this.formId = 28;
+        this.TypeId = this.CarerParentId;
+        this.tblPrimaryKey = this.SequenceNo;
+
+        if (this.SequenceNo != 0 && this.SequenceNo != null) {
+            this.objCarerTrainingProfileComboDTO.SequenceNo = this.SequenceNo;
+        } else {
+            this.objCarerTrainingProfileComboDTO.SequenceNo = 0;
+        }
+
+        this.apiService.post(this.controllerName, "GetDynamicControlsvalueData", this.objCarerTrainingProfileComboDTO).then(data => {
+            // tpServics.getTrainingProfileDynamicControls(this.objCarerTrainingProfileComboDTO).then(data => {
+            this.ResponseTrainingProfileDataDyanmic(data);
+        });
+
+        this._Form = _formBuilder.group({
+            CarerId: ['0', Validators.required],
+        });
+
+        this.BindCarer();
+    }
+
+    private BindCarer() {
+
+        this.apiService.get(this.controllerName, "GetCarerandFamilyByCarerParentId", this.CarerParentId).then(data => {
+            if(this.isPPDP)
+            {
+                this.CarerList = data.filter(x=>x.CarerTypeid==1||x.CarerTypeid==2);
+            }
+            else
+            {
+                this.CarerList = data;
+            }
+        })
+    }
+
+
+    fnBack()
+    {
+
+        if (this.objQeryVal.mid == 13)
+        this._router.navigate(['/pages/recruitment/carertrainingprofilelist/13/'+this.objQeryVal.apage]);
+        else
+        this._router.navigate(['/pages/fostercarer/carertrainingprofilelist/3/'+this.objQeryVal.apage]);
+
+    }
+
+    CarerChange(options) {
+
+
+        this.lstcarerIdsSelectValues = Array.apply(null, options)  // convert to real Array
+            .filter(option => option.selected)
+            .map(option => option.value)
+    }
+
+    private ResponseTrainingProfileDataDyanmic(data) {
+        if (data != null) {
+            this.dynamicformcontroldataOrginal = data.LstCarerTrainingProfile;
+            this.dynamicformcontroldata = data.LstCarerTrainingProfile;
+            this.dynamicformcontroldataGrid = this.dynamicformcontroldata.filter(item => item.ControlLoadFormat == 'Default.Grid.0');
+            this.LoadAlreadyStoreDate(data.LstCarerTrainingCourseDate);
+            if (this.SequenceNo > 0)
+                this.objCarerTrainingProfileComboDTO.strCarerId = data.strCarerId;
+        }
+    }
+
+    fnTrainingProfileTab() {
+        this.TrainingProfileActive = "active";
+        this.DocumentActive = "";
+    }
+    fnDocumentDetailTab() {
+        this.TrainingProfileActive = "";
+        this.DocumentActive = "active";
+    }
+
+    DocOk = true;
+    IsOk = true;
+    clicksubmitdata(_Form, dynamicValA, dynamicFormA, dynamicValB, dynamicFormB, dynamicValC, dynamicFormC, UploadDocIds, IsUpload, uploadFormBuilder) {
+        this.submitted = true;
+        this.DocOk = true;
+        this.IsOk = true;
+        if (IsUpload) {
+            this.submittedUpload = true;
+            if (uploadFormBuilder.valid) {
+                this.DocOk = true;
+            }
+            else
+                this.DocOk = false;
+        }
+
+        //check Attended Date and status count
+        //AttendedDateValid
+        //let AttendedDatecount = this.objAttendedStatusListInsert.filter(x => x.StatusId != 3);
+        //if (AttendedDatecount.length > 0) {
+        //    this.AttendedDateValid = false;
+        //}
+        //else
+        //  this.AttendedDateValid = true;
+
+        if (!_Form.valid) {
+            this.TrainingProfileActive = "active";
+            this.DocumentActive = "";
+            this.module.GetErrorFocus(_Form);
+        } else if (!dynamicFormA.valid) {
+            this.TrainingProfileActive = "active";
+            this.DocumentActive = "";
+            this.module.GetErrorFocus(dynamicFormA);
+        } else if (IsUpload && !uploadFormBuilder.valid) {
+            this.TrainingProfileActive = "";
+            this.DocumentActive = "active";
+            this.module.GetErrorFocus(uploadFormBuilder);
+        }
+        //else if (AttendedDatecount == null || AttendedDatecount.length == 0) {
+        //    this.TrainingProfileActive = "active";
+        //    this.DocumentActive = "";
+        //    this.module.GetErrorFocus(dynamicFormB);
+        //}
+        else {
+            this.TrainingProfileActive = "active";
+            this.DocumentActive = "";
+        }
+
+
+        if (this.SequenceNo == 0 && this.lstcarerIdsSelectValues.length == 0)
+        {
+            this.IsOk = false;
+        }
+
+        // && AttendedDatecount.length > 0
+        if (this.IsOk && _Form.valid && dynamicFormA.valid && dynamicFormC.valid && this.DocOk) {
+            this.isLoading = true;
+            let type = "save";
+            if (this.SequenceNo > 0)
+                type = "update";
+
+            dynamicValA.forEach(item => {
+                dynamicValC.push(item);
+            });
+
+            if (dynamicValB != null) {
+                let val = dynamicValB.filter(x => x.FieldCnfgId == 89);
+                val.forEach(item => {
+                    dynamicValC.push(item);
+                });
+            }
+
+            this.objCarerTrainingProfileComboDTO.LstCarerTrainingCourseDate = this.globalObjAtteStatusList;      
+            this.objCarerTrainingProfileComboDTO.CarerParentId = this.CarerParentId;
+            this.objCarerTrainingProfileComboDTO.CarerIds = this.lstcarerIdsSelectValues;
+
+           // console.log(dynamicValC)
+            //  this.tpServics.post(this.objCarerTrainingProfileComboDTO, type).then(data => this.Respone(data, type, IsUpload));
+            let fieldISppdp=dynamicValC.filter(x=>x.FieldName=="PPDPCompleted");
+            if(fieldISppdp.length>0 && this.isPPDP)
+            {
+                fieldISppdp[0].FieldValue="1";
+            }
+            else if(fieldISppdp.length>0){
+                fieldISppdp[0].FieldValue='0'; 
+            }
+
+            this.objCarerTrainingProfileComboDTO.DynamicValue = dynamicValC;
+            if (type == "update")
+                this.apiService.save(this.controllerName, this.objCarerTrainingProfileComboDTO, type).then(data => this.Respone(data, type, IsUpload));
+            else
+                this.apiService.post(this.controllerName, "SaveMultiByCarerIds", this.objCarerTrainingProfileComboDTO).then(data => this.Respone(data, type, IsUpload));
+        }
+    }
+
+    private Respone(data, type, IsUpload) {
+        this.isLoading = false;
+        if (data.IsError == true) {
+            this.module.alertDanger(data.ErrorMessage)
+        }
+        else if (data.IsError == false) {
+            if (type == "save") {
+                this.module.alertSuccess(Common.GetSaveSuccessfullMsg);
+                if (IsUpload) {
+                    this.uploadCtrl.fnUploadAllForMultiUser(data.OtherSequenceNumber);
+                }
+            }
+            else {
+                this.module.alertSuccess(Common.GetUpdateSuccessfullMsg);
+                if (IsUpload) {
+                    this.uploadCtrl.fnUploadAll(this.SequenceNo);
+                }
+            }
+            if (this.objQeryVal.mid == 13)
+                this._router.navigate(['/pages/recruitment/carertrainingprofilelist/13/'+this.objQeryVal.apage]);
+            else
+                this._router.navigate(['/pages/fostercarer/carertrainingprofilelist/3/'+this.objQeryVal.apage]);
+        }
+    }
+    ngxList=[];
+    convertToGridData(objInput){
+      this.ngxList = [];
+      objInput.forEach(item =>{
+          let temp:any= {};
+          item.forEach(subitem => {
+          temp.StatusId = subitem.StatusId;
+          if(subitem.FieldName==="CourseAttendedDate")
+              temp.AttendedDate = moment(subitem.FieldValue).format("DD/MM/YYYY");
+          else if (subitem.FieldName ==="CourseStatusId")
+              temp.Status=subitem.FieldValueText;
+          });
+          this.ngxList.push(temp);
+      });
+      this.ngxList = [...this.ngxList];
+    }
+
+    //---Dynamic Grid
+    objAttendedStatusListInsert = [];
+    LoadAlreadyStoreDate(data) {
+
+        if (data != null) {
+            data.forEach(item => {
+                this.objAttendedStatusList = [];
+                item.forEach(subItem => {
+                    let add: TrainingAttendedStatusDTO = new TrainingAttendedStatusDTO();
+                    add.FieldCnfgId = subItem.FieldCnfgId;
+                    add.FieldName = subItem.FieldName;
+                    add.FieldValue = subItem.FieldValue;
+                    add.FieldDataTypeName = subItem.FieldDataTypeName;
+                    add.FieldValueText = subItem.FieldValueText;
+                    add.UniqueID = subItem.UniqueID;
+                    add.SequenceNo = subItem.SequenceNo;
+                    add.StatusId = 4;
+                    this.objAttendedStatusList.push(add);
+                    this.objAttendedStatusListInsert.push(add);
+                });
+                this.globalObjAtteStatusList.push(this.objAttendedStatusList);
+            });
+        }
+        this.convertToGridData(this.globalObjAtteStatusList);
+    }
+
+    AddAttendedDetails(dynamicVal, dynamicForm) {
+        this.objAttendedStatusList = [];
+
+        if (dynamicForm.valid) {
+            dynamicVal.forEach(item => {
+                let add: TrainingAttendedStatusDTO = new TrainingAttendedStatusDTO();
+                add.FieldCnfgId = item.FieldCnfgId;
+                add.FieldName = item.FieldName;
+                add.FieldValue = item.FieldValue;
+                add.FieldDataTypeName = item.FieldDataTypeName;
+                add.FieldValueText = item.FieldValueText;
+                add.StatusId = 1;
+                add.UniqueID = 0;
+                this.objAttendedStatusList.push(add);
+                this.objAttendedStatusListInsert.push(add);
+                this.AttendedDateValid = false;
+
+            })
+            this.globalObjAtteStatusList.push(this.objAttendedStatusList);
+            this.submittedStatus = false;
+            this.convertToGridData(this.globalObjAtteStatusList);
+            this.dynamicformcontroldataGrid.forEach(itemTemp => {
+                this.dynamicformcontroldataGrid.filter(item => item.FieldValue = null);
+
+            });
+            //  this.dynamicformcontroldata = this.dynamicformcontroldataOrginal;
+            //this.dynamicformcontroldataGrid = this.dynamicformcontroldata.filter(item => item.ControlLoadFormat == 'Default.Grid.0');
+        }
+        else
+            this.submittedStatus = true;
+    }
+
+    EditAttendedStatusList(index) {
+        this.AttendedStatusId = index;
+        this.isEdit = true;
+        let tempObj = this.globalObjAtteStatusList[index];
+        tempObj.forEach(itemTemp => {
+            let val = this.dynamicformcontroldataGrid.filter(item => item.FieldCnfg.FieldCnfgId == itemTemp.FieldCnfgId);
+            if (val.length > 0) {
+                switch (val[0].FieldCnfg.FieldDataTypeCnfg.Name) {
+                    case "date":
+                        {
+                            val[0].FieldValue = this.module.GetDateEditFormat(itemTemp.FieldValue);
+                            break;
+                        }
+                    case "datetime":
+                        {
+                            val[0].FieldValue = this.module.GetDateTimeEditFormat(itemTemp.FieldValue);
+                            break;
+                        }
+                    default: {
+                        val[0].FieldValue = itemTemp.FieldValue;
+                    }
+                }
+            }
+        });
+        //  this.dynamicformcontroldata = this.dynamicformcontroldataOrginal;
+    }
+
+    DeleteAttendedStatusList(index) {
+        let temp = this.globalObjAtteStatusList[index];
+        temp.forEach(item => {
+            item.StatusId = 3;
+        });
+        this.ngxList[index].StatusId =3;
+        this.ngxList=[...this.ngxList];
+    }
+
+    UpdateAttendedDetails(dynamicVal, dynamicForm) {
+
+        if (dynamicForm.valid) {
+            this.isEdit = false;
+            let temp = this.globalObjAtteStatusList[this.AttendedStatusId];
+            temp.forEach(item => {
+                item.FieldValue = dynamicVal.filter(subItem => subItem.FieldCnfgId == item.FieldCnfgId)[0].FieldValue;
+                let FieldValueText = dynamicVal.filter(subItem => subItem.FieldCnfgId == item.FieldCnfgId)[0].FieldValueText;
+                if(FieldValueText)
+                  item.FieldValueText =FieldValueText;
+                item.StatusId = 2;
+            });
+            this.convertToGridData(this.globalObjAtteStatusList);
+            this.dynamicformcontroldataGrid.forEach(itemTemp => {
+                this.dynamicformcontroldataGrid.filter(item => item.FieldValue = null);
+
+            });
+            this.submittedStatus = false;
+        }
+        else
+            this.submittedStatus = true;
+        this.AttendedStatusId = null;
+    }
+
+    CancelEdit() {
+        this.isEdit = false;
+        this.AttendedStatusId = null;
+        this.dynamicformcontroldataGrid.forEach(itemTemp => {
+            this.dynamicformcontroldataGrid.filter(item => item.FieldValue = null);
+
+        });
+    }
+
+    isEdit = false;
+    AttendedStatusId;
+
+    IsVisibleCourseStatus=false;
+    DynamicOnValChange(InsValChange: ValChangeDTO) {
+
+        if (this.isPPDP && InsValChange.currnet.FieldCnfg.FieldName == "ExpiryDate") {
+            let ExpiryDate = InsValChange.all.filter(x => x.FieldCnfg.FieldName == "ExpiryDate");
+            if(ExpiryDate.length>0)
+            {        
+                ExpiryDate[0].IsMandatory = false;
+                ExpiryDate[0].IsVisible = false;
+                ExpiryDate[0].FieldValue=null; 
+            }
+        }
+        else if (this.isPPDP && InsValChange.currnet.FieldCnfg.FieldName == "CourseStatusComment") {
+            let CourseStatusComment = InsValChange.all.filter(x => x.FieldCnfg.FieldName == "CourseStatusComment");
+            if(CourseStatusComment.length>0)
+            {
+                CourseStatusComment[0].IsMandatory = false;
+                CourseStatusComment[0].IsVisible = false;
+                CourseStatusComment[0].FieldValue=null; 
+            }
+        }
+        else if (this.isPPDP && InsValChange.currnet.FieldCnfg.FieldName == "IdentifiedTrainingNeeds") {
+            let IdentifiedTrainingNeeds = InsValChange.all.filter(x => x.FieldCnfg.FieldName == "IdentifiedTrainingNeeds");
+            if(IdentifiedTrainingNeeds.length>0)
+            {
+                IdentifiedTrainingNeeds[0].IsMandatory = false;
+                IdentifiedTrainingNeeds[0].IsVisible = false;
+                IdentifiedTrainingNeeds[0].FieldValue=null; 
+            }
+        }
+        else if (this.isPPDP && InsValChange.currnet.FieldCnfg.FieldName == "OtherIndependentTraining") {
+            let OtherIndependentTraining = InsValChange.all.filter(x => x.FieldCnfg.FieldName == "OtherIndependentTraining");
+            if(OtherIndependentTraining.length>0)
+            {
+                OtherIndependentTraining[0].IsMandatory = false;
+                OtherIndependentTraining[0].IsVisible = false;
+                OtherIndependentTraining[0].FieldValue=null; 
+            }
+        }
+        else if (this.isPPDP && InsValChange.currnet.FieldCnfg.FieldName == "AdditionalInformation") {
+            let AdditionalInformation = InsValChange.all.filter(x => x.FieldCnfg.FieldName == "AdditionalInformation");
+            if(AdditionalInformation.length>0)
+            {
+                AdditionalInformation[0].IsMandatory = false;
+                AdditionalInformation[0].IsVisible = false;
+                AdditionalInformation[0].FieldValue=null; 
+            }
+        }
+        else if (this.isPPDP && InsValChange.currnet.FieldCnfg.FieldName == "HasCarerReceivedCertificate") {
+            let HasCarerReceivedCertificate = InsValChange.all.filter(x => x.FieldCnfg.FieldName == "HasCarerReceivedCertificate");
+            if(HasCarerReceivedCertificate.length>0)
+            {
+                HasCarerReceivedCertificate[0].IsMandatory = false;
+                HasCarerReceivedCertificate[0].IsVisible = false;
+                HasCarerReceivedCertificate[0].FieldValue=null; 
+            }
+        }
+        else if (this.isPPDP && InsValChange.currnet.FieldCnfg.FieldName == "PPDPcompletedDate") {
+            let PPDPcompletedDate = InsValChange.all.filter(x => x.FieldCnfg.FieldName == "PPDPcompletedDate");
+            if(PPDPcompletedDate.length>0)
+            {
+                PPDPcompletedDate[0].IsMandatory = false;
+                PPDPcompletedDate[0].IsVisible = false;
+                PPDPcompletedDate[0].FieldValue=null; 
+            }
+        }
+
+        if (InsValChange.currnet.FieldCnfg.FieldName == "PPDPCompleted") {
+            if(this.isPPDP)
+            {       
+                let PPDPCompleted = InsValChange.all.filter(x => x.FieldCnfg.FieldName == "PPDPCompleted");
+                if(PPDPCompleted.length>0)
+                {
+                    PPDPCompleted[0].IsMandatory = false;
+                    PPDPCompleted[0].IsVisible = false;
+                    PPDPCompleted[0].FieldValue="1"; 
+                }
+
+                let CourseAttendedId = InsValChange.all.filter(x => x.FieldCnfg.FieldName == "CourseAttendedId");
+                if(CourseAttendedId.length>0)
+                {
+                    CourseAttendedId[0].IsMandatory = false;
+                    CourseAttendedId[0].IsVisible = false;
+                    CourseAttendedId[0].FieldValue=null; 
+                }
+                this.IsVisibleCourseStatus=true;
+                
+            }
+            else
+            {
+                let PPDPCompleted = InsValChange.all.filter(x => x.FieldCnfg.FieldName == "PPDPCompleted");
+                if(PPDPCompleted.length>0)
+                {
+                    PPDPCompleted[0].IsMandatory = false;
+                    PPDPCompleted[0].IsVisible = false;
+                    PPDPCompleted[0].FieldValue="0";  
+                } 
+
+                let FromDate = InsValChange.all.filter(x => x.FieldCnfg.FieldName == "FromDate");
+                if(FromDate.length>0)
+                {
+                    FromDate[0].IsVisible = false;
+                }
+                let ToDate = InsValChange.all.filter(x => x.FieldCnfg.FieldName == "ToDate");
+                if(ToDate.length>0)
+                {
+                    ToDate[0].IsVisible = false;
+                }
+
+            }
+        }
+        
+
+            // if(InsValChange.currnet.FieldValue=="1"||InsValChange.currnet.FieldValue=="true")
+            // {
+            //     if (CourseAttendedId.length > 0) {
+            //          CourseAttendedId[0].IsMandatory = false;
+            //          CourseAttendedId[0].IsVisible = false;
+            //          CourseAttendedId[0].FieldValue=null; 
+            //     }
+            //     this.IsVisibleCourseStatus=true;
+            // }
+            // else  if( InsValChange.newValue==null|| InsValChange.currnet.FieldValue=="0"||InsValChange.currnet.FieldValue=="false")
+            // {
+            //     if (CourseAttendedId.length > 0) {
+            //         CourseAttendedId[0].IsMandatory = true;
+            //         CourseAttendedId[0].IsVisible = true;
+            //     }
+            //      this.IsVisibleCourseStatus=false; 
+            // }
+           //console.log("val "+InsValChange.currnet.FieldValue)
+           
+        
+    }
+    //---End
+
+    fnDonloadPDF() {
+        window.location.href = this.apiURL + "GenerateCarerTrainingProfilePDF/" + this.CarerCode + "," + this.CarerParentId + "," + this.SequenceNo + "," + this.AgencyProfileId;
+    }
+    fnDonloadWord() {
+        window.location.href = this.apiURL + "GenerateCarerTrainingProfileWord/" + this.CarerCode + "," + this.CarerParentId + "," + this.SequenceNo + "," + this.AgencyProfileId;
+    }
+    fnPrint() {
+        this.apiService.get("GeneratePDF", "GenerateCarerTrainingProfilePrint", this.CarerCode + "," + this.CarerParentId + "," + this.SequenceNo + "," + this.AgencyProfileId).then(data => {
+            var popupWin;
+            var style = ""; var link = "";
+            var i;
+            for (i = 0; i < $("style").length; i++) {
+                style = style + $("style")[i].outerHTML;
+            }
+            var j;
+            for (j = 0; j < $("link").length; j++) {
+                link = link + $("link")[j].outerHTML;
+            }
+            popupWin = window.open('', '_blank', 'top=0,left=0,height=100%,width=auto');
+            popupWin.document.open();
+            popupWin.document.write(`
+      <html>
+        <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+          <title>Print tab</title>     
+            ${style} 
+            ${link}
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        </head>
+    <body onload="window.print();window.close()">${data}</body>
+      </html>`);
+            popupWin.document.close();
+        });
+    }
+    fnShowEmail() {
+        this.subject = "";
+        this.eAddress = "";
+        this.submittedprint = false;
+        let event = new MouseEvent('click', { bubbles: true });
+        this.renderer.invokeElementMethod(
+            this.infoPrint.nativeElement, 'dispatchEvent', [event]);
+    }
+    fnEmail(form) {
+        this.submittedprint = true;
+        if (form.valid) {
+            this.isLoading = true;
+            this.objNotificationDTO.UserIds = this.eAddress;
+            this.objNotificationDTO.Subject = this.subject;
+            this.objNotificationDTO.Body = this.CarerCode + "," + this.CarerParentId + "," + this.SequenceNo + "," + this.AgencyProfileId;
+            this.apiService.post("GeneratePDF", "EmailCarerTrainingProfile", this.objNotificationDTO).then(data => {
+                if (data == true)
+                    this.module.alertSuccess("Email Send Successfully..");
+                else
+                    this.module.alertDanger("Email not Send Successfully..");
+                this.fnCancelClick();
+                this.isLoading = false;
+            });
+
+        }
+    }
+    fnCancelClick() {
+        let event = new MouseEvent('click', { bubbles: true });
+        this.infoCancel.nativeElement.dispatchEvent(event);
+    }
+}
+
+
+
+
+//export class TrainingAttendedStatus {
+//    FieldCnfgId: number;
+//    FieldName: string;
+//    FieldValue: string;
+//    SequenceNo: number;
+//    FieldDataTypeName: string;
+//    FieldValueText: string;
+//    StatusId: number;
+//    UniqueID: number;
+//}

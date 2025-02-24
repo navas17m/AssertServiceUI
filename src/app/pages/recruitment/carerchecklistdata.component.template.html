@@ -1,0 +1,83 @@
+﻿
+<div class="col-xl-12 col-lg-12 col-12 bottom-30">
+    <ApprovedCarerHeader *ngIf="objQeryVal.mid == 3"></ApprovedCarerHeader>
+    <CarerHeader *ngIf="objQeryVal.mid == 13"></CarerHeader>
+    <!--<div style="text-align:right;padding:10px 10px 10px 10px">
+        <a (click)="fnBack()" class="btn btn-warning">Back</a>
+    </div>-->
+    <div widget class="card">
+        <div class="card-header">
+            <span>Carer Check List</span>
+            <div class="widget-controls">
+                <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+                <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+                <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a>
+            </div>
+        </div>
+
+        <div class="card-body widget-body">
+
+            <div class="row mbm-20">
+                <div class="col-lg-12 col-12 bottom-30">
+
+                    <div class="clearfix">
+                        <ul class="nav nav-tabs top pull-left w-100p">
+                            <li class="nav-item" (click)="fnInterTab()">
+                                <a class="nav-link {{InterTabActive}}" data-toggle="tab" href="#Intial">
+                                    Interested Check List
+                                </a>
+                            </li>
+                            <li class="nav-item" (click)="fnStatge1Tab()" [hidden]="Stage1TabHidden">
+                                <a class="nav-link {{Stage1TabActive}}" data-toggle="tab" href="#step1">Stage 1</a>
+                            </li>
+                            <li class="nav-item" (click)="fnStatge2tab()" [hidden]="Stage2TabHiddden">
+                                <a class="nav-link {{Stage2TabActive}}" data-toggle="tab" href="#step2">Stage 2</a>
+                            </li>
+                            <!--<li class="nav-item" (click)="fnUploadDocTab()">
+                                <a class="nav-link {{DocumentActive}}" data-toggle="tab" href="#UploadDocuments">Upload Documents</a>
+                            </li>-->
+                        </ul>
+                    </div>
+                    <div class="tab-content top">
+                        <div class="tab-pane {{InterTabActive}}" id="Intial">
+                            <Dynamic-Form  #dynamicInterst [dynamicformcontrols]="InterestedCheckList" [formbuilder]="_Form" [submitted]="submitted"></Dynamic-Form>
+                        </div>
+
+                        <div class="tab-pane {{Stage1TabActive}}" id="step1">
+
+                            <Dynamic-Form #dynamicS1 [dynamicformcontrols]="Stage1CheckList" [formbuilder]="_Form" [submitted]="submitted"></Dynamic-Form>
+
+                        </div>
+                        <div class="tab-pane {{Stage2TabActive}}" id="step2">
+                            <Dynamic-Form #dynamicS2 [dynamicformcontrols]="Stage2CheckList" [formbuilder]="_Form" [submitted]="submitted"></Dynamic-Form>
+                        </div>
+                        <div class="tab-pane" id="UploadDocuments">
+                            <div class="tab-pane" id="tb">
+                                <Upload-Documents #uploads [formCnfgId]="formId" [primaryKeyId]="tblPrimaryKey"
+                                                   [submittedUpload]="submittedUpload"
+                                                  [userTypeCnfgId]="4" [typeId]="TypeId"></Upload-Documents>
+                            </div>
+
+                        </div>
+                        <div class="form-group col-lg-5">
+                            <SubmitButton (Click)="clicksubmitdata(dynamicInterst.dynamicformcontrols,dynamicInterst.formbuilder,
+                                          dynamicS1.dynamicformcontrols,dynamicS1.formbuilder,
+                                    dynamicS2.dynamicformcontrols,dynamicS2.formbuilder,
+                                     uploads.UploadDocIds, uploads.IsUpload, uploads.formbuilder)" [IsLoading]="isLoading"></SubmitButton>
+                            <BackButton></BackButton>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .class1 {
+        font-weight: bold;
+        font-size: 15px;
+        width: 30%;
+    }
+</style>

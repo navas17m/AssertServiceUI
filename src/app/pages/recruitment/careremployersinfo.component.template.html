@@ -1,0 +1,183 @@
+﻿<form [formGroup]="_Form" style="border:0px">
+    <br />
+    <div class="row">
+        <div class="form-group col-md-6">
+            <label class="">Type</label>
+            <input formControlName="ReferenceTypeId" type="radio" [value]="1" [(ngModel)]="objCarerEmployerInfoDTO.ReferenceTypeId" checked="checked">Current
+            <input formControlName="ReferenceTypeId" type="radio" [value]="2" [(ngModel)]="objCarerEmployerInfoDTO.ReferenceTypeId">Previous
+        </div>
+        <!--<div class="form-group">
+            <label class="">Name</label>
+            <input formControlName="FirstName" type="text" required class="form-control" [(ngModel)]="objCarerEmployerInfoDTO.PersonalInfo.FirstName" />
+            <div *ngIf="(!_Form.controls.FirstName.valid && submitted && _Form.controls.FirstName.errors )" class="alert alert-danger">
+                Please Enter the Name
+            </div>
+        </div>-->
+        <div class="form-group col-md-6">
+            <label class="" *ngIf="formName!='ApplicationFormNew'">Company Name </label>
+            <label class="" *ngIf="formName=='ApplicationFormNew'">Employer </label>
+            <input formControlName="CompanyName" type="text" required class="form-control" [(ngModel)]="objCarerEmployerInfoDTO.CompanyName" />
+            <div *ngIf="(!_Form.controls.CompanyName.valid && submitted && _Form.controls.CompanyName.errors )" class="alert alert-danger">
+                Please Enter the Company Name
+            </div>
+        </div>
+
+        <div class="form-group col-md-6">
+            <label class="">Phone</label>
+            <input formControlName="Phone" type="text" class="form-control" [(ngModel)]="objCarerEmployerInfoDTO.ContactInfo.OfficePhone"
+                   pattern="[0-9\s]*" />
+            <div *ngIf="(!_Form.controls.Phone.valid && submitted && _Form.controls.Phone.errors)">
+                <div class="alert alert-danger" *ngIf="_Form.controls.Phone.errors.required">Please enter Phone number</div>
+                <div class="alert alert-danger" *ngIf="_Form.controls.Phone.errors.pattern">Phone number should be only numbers</div>
+                <div class="alert alert-danger" *ngIf="_Form.controls.Phone.errors.minlength ||_Form.controls.Phone.errors.maxlength">Phone number will be allowed in 10 to 20 max digit</div>
+            </div>
+        </div>
+        <div class="form-group col-md-6">
+            <label>Email</label>
+            <input formControlName="EmailId" type="text" class="form-control" [(ngModel)]="objCarerEmployerInfoDTO.ContactInfo.EmailId" />
+            <div *ngIf="(!_Form.controls.EmailId.valid && submitted && _Form.controls.EmailId.errors)">
+                <div class="alert alert-danger" *ngIf="_Form.controls.EmailId.errors.email">Please enter valid email Id</div>
+            </div>
+        </div>
+        <div class="form-group col-md-6">
+            <label class="">Contact  Name </label>
+            <input formControlName="ContactName" type="text" class="form-control" [(ngModel)]="objCarerEmployerInfoDTO.ContactName" />
+        </div>
+        <div class="form-group col-md-6" *ngIf="formName!='ApplicationFormNew'">
+            <label class="">Notice Period</label>
+            <input formControlName="NoticePeriod" type="text" class="form-control" [(ngModel)]="objCarerEmployerInfoDTO.NoticePeriod"
+                   pattern="[0-9\s]*" />
+            <div *ngIf="(!_Form.controls.NoticePeriod.valid && submitted && _Form.controls.NoticePeriod.errors)">
+                <div class="alert alert-danger" *ngIf="_Form.controls.NoticePeriod.errors.pattern">Notice Period should be only numbers</div>
+            </div>
+        </div>
+        <div class="form-group col-md-6" *ngIf="formName!='ApplicationFormNew'">
+            <label class="">Disciplinary in Career</label>
+            <input formControlName="DisciplinaryInCareer" type="text" class="form-control" [(ngModel)]="objCarerEmployerInfoDTO.DisciplinaryInCareer" />
+        </div>
+        <div class="form-group col-md-6" *ngIf="formName!='ApplicationFormNew'">
+            <label class="">Suitable date for your reference to be sent  </label>
+            <input type="text" placeholder="DD/MM/YYYY" readonly class="form-control form-control-date" formControlName="SuitableDateForYourReference" [(ngModel)]="objCarerEmployerInfoDTO.SuitableDateForYourReference" [value]="objCarerEmployerInfoDTO.SuitableDateForYourReference" datepicker />
+        </div>
+        <div class="form-group col-md-12">
+            <label class="">Address</label>
+            <textarea formControlName="AddressLine1" type="text" class="form-control" [(ngModel)]="objCarerEmployerInfoDTO.ContactInfo.AddressLine1"></textarea>
+            <div *ngIf="(!_Form.controls.AddressLine1.valid && submitted && _Form.controls.AddressLine1.errors )" class="alert alert-danger">
+                Please Enter the AddressLine
+            </div>
+        </div>
+        <div class="form-group col-md-12">
+            <label class="" *ngIf="formName!='ApplicationFormNew'">Duration of employment and post</label>
+            <label class="" *ngIf="formName=='ApplicationFormNew'">Duration of employment</label>
+            <textarea formControlName="EmployementDurationAndPost" type="text" class="form-control" [(ngModel)]="objCarerEmployerInfoDTO.EmployementDurationAndPost"></textarea>
+            <div *ngIf="(!_Form.controls.EmployementDurationAndPost.valid && submitted && _Form.controls.EmployementDurationAndPost.errors )" class="alert alert-danger">
+                Please Enter Duration of employment and post
+            </div>
+        </div>
+        <div>
+          <div class="form-group  col-md-12" *ngIf="formName=='ApplicationFormNew'">
+            <label class="">Is this employer aware that you are considering fostering and happy to provide a reference?</label>
+            <input formControlName="ProvidingReference" type="radio" [value]="true" [(ngModel)]="objCarerEmployerInfoDTO.ProvidingReference">Yes
+            <input formControlName="ProvidingReference" type="radio" [value]="false"[(ngModel)]="objCarerEmployerInfoDTO.ProvidingReference">No
+          </div>
+        </div>
+        <div class="col-md-12">
+            <button *ngIf="!isEdit" type="button"
+                    class="btn btn-primary" (click)="Submitfamilyinfo(_Form)">
+                Add
+            </button>
+            <button *ngIf="isEdit" type="button" class="btn btn-primary"
+                    (click)="UpdateExPartnerinfo(_Form)">
+                Update
+            </button>
+            <button type="button" class="btn btn-primary" (click)="SubmitCancel()">
+                Cancel
+            </button>
+        </div>
+
+        <div class="changeColor col-md-12" style="padding-top:20px">
+            <div widget class="card">
+                <div class="card-header">
+                    <span class="text-uppercase">  Existing Employer(s) Details</span>
+                </div>
+                <div class="card-body widget-body">
+                    <div class="table-responsive datatable">
+                        <table class="table table-striped table-hover table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Employer</th>
+                                    <th>Address</th>
+                                    <th>Duration</th>
+                                    <th>Current/Previous</th>
+                                    <th>Edit</th>
+                                    <th>Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of objCarerEmployerInfoList;let i=index;">
+                                    <td *ngIf="item.IsActive">{{item.CompanyName}}</td>
+                                    <td *ngIf="item.IsActive">{{item.ContactInfo.AddressLine1}}</td>
+                                    <td *ngIf="item.IsActive">{{item.EmployementDurationAndPost}}</td>
+                                    <td *ngIf="item.IsActive">{{item.ReferenceTypeId==1 ? 'Current' : 'Previous'}}</td>
+                                    <td *ngIf="item.IsActive"><button class="btn  btn-warning" (click)="EditData(item,i)"><i style="font-size:20px" class="fa  fa fa-edit"></i></button></td>
+                                    <td *ngIf="item.IsActive"><button *ngIf="deletbtnAccess" class="btn  btn-danger" (click)="DeleteData(item)"><i style="font-size:20px" class="fa fa-trash-o"></i></button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- <table class="table table-striped table-hover table-sm">
+                        <tbody *ngIf="objCarerEmployerInfoList.length==0">
+                            <tr>
+                            <td colspan="9" class="text-center">
+                                <span style="font-weight:bold">No records found.</span>
+                            </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="table-responsive datatable" *ngIf="objCarerEmployerInfoList.length!=0">
+                        <ngx-datatable [rows]="objCarerEmployerInfoList"
+                                class="bootstrap"
+                                rowHeight="auto"
+                                [columnMode]="'force'"
+                                [limit]="10"
+                                [scrollbarH]="true"
+                                [footerHeight]="50">
+                                <ngx-datatable-column name="Name" prop="CompanyName" width="100" [sortable]="true">
+                                    <ng-template let-value="value" let-row="row"  ngx-datatable-cell-template>
+                                       <span *ngIf="row.IsActive">{{value}}</span>
+                                    </ng-template>
+                                </ngx-datatable-column>
+                                <ngx-datatable-column name="Address" prop="ContactInfo.AddressLine1" [sortable]="true" width="150">
+                                    <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                                        <span *ngIf="row.IsActive">{{value}}</span>
+                                    </ng-template>
+                                </ngx-datatable-column>
+                                <ngx-datatable-column name="Details" prop="EmployementDurationAndPost" [sortable]="true" width="200">
+                                    <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                                        <span *ngIf="row.IsActive">{{value}}</span>
+                                    </ng-template>
+                                </ngx-datatable-column>
+                                <ngx-datatable-column name="Edit"  [sortable]="false" width="60">
+                                    <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                                        <span *ngIf="row.IsActive"><button class="btn  btn-warning" (click)="EditData(row,rowIndex)"><i style="font-size:20px" class="fa  fa fa-edit"></i></button></span>
+                                    </ng-template>
+                                </ngx-datatable-column>
+                                <ngx-datatable-column name="Delete"  [sortable]="false" width="60">
+                                    <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                                        <span *ngIf="row.IsActive"><button *ngIf="deletbtnAccess" class="btn  btn-danger" (click)="DeleteData(row)"><i style="font-size:20px" class="fa fa-trash-o"></i></button></span>
+                                    </ng-template>
+                                </ngx-datatable-column>
+                        </ngx-datatable>
+                        <table>
+                            <tfoot>
+                                <td><button style="cursor:pointer;" *ngIf="userProfileId==1" class="btn btn-success" (click)="fnCloseStatus()">Close Ticket</button> </td>
+                            </tfoot>
+                        </table>
+                    </div> -->
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</form>

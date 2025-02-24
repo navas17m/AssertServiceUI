@@ -1,0 +1,40 @@
+﻿<div>
+    <Child-Header></Child-Header>
+    <div style="padding-top:10px">
+        <AddButton FormCnfgId="375" (Click)="fnAddData()"></AddButton>
+    </div>
+    <div class="row" style="padding-top:10px">
+        <div class="col">
+            <div widget class="card">
+                <div class="card-header">
+                    <span ><DisplayFormName [FormCnfgId]="375"></DisplayFormName> List</span>
+                    <div class="widget-controls">
+                        <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                        <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                        <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+                        <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+                        <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a>
+                    </div>
+                </div>
+                <div class="card-body widget-body">
+                  <table class="table table-striped table-hover table-sm">
+                    <tbody *ngIf="gridList.length==0">
+                        <tr>
+                            <th *ngIf="!loading" colspan="9" class="text-center">
+                                No Records found.
+                            </th>
+                            <th *ngIf="loading" colspan="9" class="text-center">
+                                <i class="fa fa-spinner fa-spin"></i> Loading please wait...
+                            </th>
+                        </tr>
+                    </tbody>
+                    </table>
+                    <div class="table-responsive datatable" *ngIf="gridList.length>0">
+                        <ngxdatatable [rows]="gridList" [columns]="columns" formCnfgId="375" searchFilter="true" searchFields="Date"
+                        (onEdit)="onEdit($event)" (onDelete)="onDelete($event)"></ngxdatatable>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

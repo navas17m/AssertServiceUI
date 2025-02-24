@@ -1,0 +1,145 @@
+﻿<div class="row">
+
+    <div class="col-xl-12 col-lg-12 col-12 bottom-30">
+        <div widget class="card">
+            <div class="card-header">
+                <span> CARER INTEREST INFO</span>
+                <div class="widget-controls">
+                    <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                    <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                    <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+                    <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+                    <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a>
+                </div>
+            </div>
+            <div class="card-body widget-body">
+                <form [formGroup]="_carerinterestForm">
+                    <div>
+
+                        <div class="form-group">
+                            <label class="">First Name</label>
+                            <input formControlName="FirstName" type="text" class="form-control" [(ngModel)]="objCarerInfo.FirstName"
+                                   required />
+                            <div class="alert alert-danger" *ngIf="(!_carerinterestForm.controls.FirstName.valid && submitted && _carerinterestForm.controls.FirstName.errors.required)">
+                                Please enter first name
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="">Last Name</label>
+                            <input formControlName="LastName" type="text" class="form-control" [(ngModel)]="objCarerInfo.LastName"
+                                   required />
+                            <div class="alert alert-danger" *ngIf="(!_carerinterestForm.controls.LastName.valid && submitted && _carerinterestForm.controls.LastName.errors.required)">
+                                Please enter last name
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="">Phone Number</label>
+                            <input formControlName="PhoneNumber" type="text" class="form-control" [(ngModel)]="objCarerInfo.PhoneNumber"
+                                   required />
+                            <div *ngIf="(!_carerinterestForm.controls.PhoneNumber.valid && submitted && _carerinterestForm.controls.PhoneNumber.errors)">
+                                <div class="alert alert-danger" *ngIf="_carerinterestForm.controls.PhoneNumber.errors.required">Please enter  Phone Number</div>
+                                <div class="alert alert-danger" *ngIf="_carerinterestForm.controls.PhoneNumber.errors.NotValidPhoneNumber && !_carerinterestForm.controls.PhoneNumber.errors.required">Please enter valid  Phone Number</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="">Email</label>
+                            <input formControlName="Email" type="text" class="form-control" [(ngModel)]="objCarerInfo.Email"
+                                   required />
+                            <div *ngIf="(!_carerinterestForm.controls.Email.valid && submitted && _carerinterestForm.controls.Email.errors)">
+                                <div class="alert alert-danger" *ngIf="_carerinterestForm.controls.Email.errors.required">Please enter email</div>
+                                <div class="alert alert-danger" *ngIf="_carerinterestForm.controls.Email.errors.NotValidEmailFormat && !_carerinterestForm.controls.Email.errors.required">Please enter valid email Id</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="">Address Line</label>
+
+                            <textarea formControlName="AddressLine1" class="form-control" [(ngModel)]="objCarerInfo.AddressLine1"></textarea>
+                            <div class="alert alert-danger" *ngIf="(!_carerinterestForm.controls.AddressLine1.valid && submitted && _carerinterestForm.controls.AddressLine1.errors.required)">
+                                Please enter address
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="">Address Line2</label>
+
+
+                            <textarea formControlName="AddressLine2" class="form-control" [(ngModel)]="objCarerInfo.AddressLine2"></textarea>
+                            <div class="alert alert-danger" *ngIf="(!_carerinterestForm.controls.AddressLine2.valid && submitted && _carerinterestForm.controls.AddressLine2.errors.required)">
+                                Please enter address 2
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="">City</label>
+                            <input formControlName="City" type="text" class="form-control" [(ngModel)]="objCarerInfo.City"
+                                   required />
+                            <div class="alert alert-danger" *ngIf="(!_carerinterestForm.controls.City.valid && submitted && _carerinterestForm.controls.City.errors.required)">
+                                Please enter city
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="">Postal Code</label>
+                            <input formControlName="PostalCode" type="text" class="form-control" [(ngModel)]="objCarerInfo.PostalCode"
+                                   required />
+                            <div *ngIf="(!_carerinterestForm.controls.PostalCode.valid && submitted && _carerinterestForm.controls.PostalCode.errors)">
+                                <div class="alert alert-danger" *ngIf="_carerinterestForm.controls.PostalCode.errors.required">Please enter Postal Code</div>
+                                <div class="alert alert-danger" *ngIf="_carerinterestForm.controls.PostalCode.errors.NotValidPhoneNumber &&!_carerinterestForm.controls.PostalCode.errors.required">Please enter valid Postal Code </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class=""> Do you drive and do you have access to a car?</label>
+                            <input formControlName="options" type="radio" [value]="1" [(ngModel)]="objCarerInfo.DoesCarerHaveAccessToCar">Yes
+                            <input formControlName="options" type="radio" [value]="2" [(ngModel)]="objCarerInfo.DoesCarerHaveAccessToCar">No
+                        </div>
+                        <div class="form-group">
+                            <label class="">Can you give up work to become foster carer?</label>
+                            <input formControlName="options1" type="radio" [value]="1" [(ngModel)]="objCarerInfo.CanCarerGiveUpWork">Yes
+                            <input formControlName="options1" type="radio" [value]="2" [(ngModel)]="objCarerInfo.CanCarerGiveUpWork">No
+                        </div>
+                        <div class="form-group">
+                            <label class="">How many spare bedrooms do you have?</label>
+                            <select formControlName="SpareBedRoomCount" class="form-control" required [(ngModel)]="objCarerInfo.SpareBedRoomCount">
+                                <option value="" [attr.selected]="objCarerInfo.SpareBedRoomCount == null ? true : null">Select a bedroom count</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
+                            </select>
+                            <div class="alert alert-danger" *ngIf="(!_carerinterestForm.controls.SpareBedRoomCount.valid && submitted && _carerinterestForm.controls.SpareBedRoomCount.errors.required)">
+                                Please select a bedrooms count
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="">Relevant Experience</label>
+                            <input formControlName="RelevantExperience" type="text" class="form-control" [(ngModel)]="objCarerInfo.RelevantExperience" />
+                            <div class="alert alert-danger" *ngIf="(!_carerinterestForm.controls.RelevantExperience.valid && submitted && _carerinterestForm.controls.RelevantExperience.errors.required)">
+                                Please enter relevant count
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="">How did you hear about us?</label>
+                            <select formControlName="SourceOfMeadiumId" class="form-control" [(ngModel)]="objCarerInfo.SourceOfMeadiumId">
+                                <option value="0">Select</option>
+                                <option value="1">Agency Website</option>
+                                <option value="2">Email Marketing </option>
+                                <option value="3">HERALD (LOCAL PAPER)</option>
+                                <option value="4">INFORMATION STAND</option>
+                                <option value="5">Local Echo Newspaper </option>
+                                <option value="6">Poster in Community Centre </option>
+                                <option value="7">Recommendation </option>
+                                <option value="8">Shorham Metro</option>
+                            </select>
+                        </div>
+
+                        <button type="button" id="btnModuleConfig" class="btn btn-primary" (click)="carerinfoSubmit(_carerinterestForm)">Submit</button>
+                        <button (click)="goBack()" class="btn btn-warning">Back</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,332 @@
+<form [formGroup]="_Form">
+    <div class="col-xl-12 col-lg-12 col-12 bottom-30">
+        <ApprovedCarerHeader *ngIf="objQeryVal.mid == 3"></ApprovedCarerHeader>
+        <CarerHeader *ngIf="objQeryVal.mid == 13"></CarerHeader>
+        <div widget class="card">
+            <div class="card-header">
+                <span>Prospective Checks</span>
+                <div class="widget-controls">
+                    <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                    <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                    <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+                    <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+                    <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a>
+                </div>
+            </div>
+            <div class="card-body widget-body">
+                <div class="table-responsive">
+                    <div class="clearfix">
+                        <ul class="nav nav-tabs top pull-left w-100p">
+                            <li class="nav-item" (click)="fnChecksRecieved()">
+                                <a class="nav-link {{ChecksRecievedActive}}" data-toggle="tab" href="#Checks">Checks Recieved</a>
+                            </li>
+                            <li class="nav-item" (click)="fnAdditional()">
+                                <a class="nav-link {{AdditionalActive}}" data-toggle="tab" href="#Additional">Additional Supporting Documents/Information Required</a>
+                            </li>
+                            <li class="nav-item" (click)="fnApproval()">
+                                <a class="nav-link {{ApprovalActive}}" data-toggle="tab" href="#Approval">Approval Fields</a>
+                            </li>
+                            <li class="nav-item" (click)="fnDocumentActive()">
+                                <a class="nav-link {{insDocumentActive}}" data-toggle="tab" href="#UploadDocuments">Upload Documents</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="tab-content top">
+                        <!--Section A-->
+                        <div class="tab-pane {{ChecksRecievedActive}}" id="Checks">
+                            <table class="table table-striped table-hover table-sm">
+                                <tbody>
+                                    <tr>
+                                        <td width="25%"> Local Authority</td>
+                                        <td width="25%">
+                                            <input type="checkbox"
+                                                formControlName="LocalAuthority"
+                                                [(ngModel)]="objProspectiveChecksDTO.LocalAuthority"/>
+                                        </td>
+                                        <td width="25%">
+                                            First Applicant CRB
+                                        </td>
+                                        <td width="25%">
+                                            <input type="checkbox"
+                                            formControlName="FirstApplicantCRB"
+                                            [(ngModel)]="objProspectiveChecksDTO.FirstApplicantCRB"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Second Applicant CRB</td>
+                                        <td>
+                                            <input type="checkbox"
+                                                formControlName="SecondApplicantCRB"
+                                                    [(ngModel)]="objProspectiveChecksDTO.SecondApplicantCRB"/>
+                                        </td>
+                                        <td>
+                                            Children CRB
+                                        </td>
+                                        <td>
+                                            <input type="checkbox"
+                                                formControlName="ChildrenCRB"
+                                                    [(ngModel)]="objProspectiveChecksDTO.ChildrenCRB"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Backup Carer CRB 1</td>
+                                        <td >
+                                            <input type="checkbox"
+                                                formControlName="NominatedCarerCRB1"
+                                                [(ngModel)]="objProspectiveChecksDTO.NominatedCarerCRB1" />
+                                        </td>
+                                        <td> Backup Carer CRB 2</td>
+                                        <td >
+                                            <input type="checkbox"
+                                                formControlName="NominatedCarerCRB2"
+                                                [(ngModel)]="objProspectiveChecksDTO.NominatedCarerCRB2" />
+                                        </td>
+
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Frequent Visitors CRB
+                                        </td>
+                                        <td>
+                                            <input type="checkbox"
+                                                formControlName="FrequentVisitorsCRB"
+                                                [(ngModel)]="objProspectiveChecksDTO.FrequentVisitorsCRB" />
+                                        </td>
+                                        <td>
+                                            Reference 1
+                                        </td>
+                                        <td>
+                                            <input type="checkbox"
+                                            formControlName="Reference1"
+                                                [(ngModel)]="objProspectiveChecksDTO.Reference1"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Reference 2</td>
+                                        <td>
+                                            <input type="checkbox"
+                                            formControlName="Reference2"
+                                            [(ngModel)]="objProspectiveChecksDTO.Reference2" />
+                                        </td>
+                                        <td>
+                                            Reference 3
+                                        </td>
+                                        <td>
+                                            <input type="checkbox"
+                                            formControlName="Reference3"
+                                                [(ngModel)]="objProspectiveChecksDTO.Reference3"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>First Applicant Ex-partner Reference</td>
+                                        <td>
+                                            <input type="checkbox"
+                                            formControlName="ExpartnerReference1"
+                                            [(ngModel)]="objProspectiveChecksDTO.ExpartnerReference1" />
+                                        </td>
+                                        <td>
+                                            Second Applicant Ex-partner Reference
+                                        </td>
+                                        <td>
+                                            <input type="checkbox"
+                                            formControlName="ExpartnerReference2"
+                                                [(ngModel)]="objProspectiveChecksDTO.ExpartnerReference2"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>First Applicant Education Reference</td>
+                                        <td>
+                                            <input type="checkbox"
+                                                formControlName="EducationReference1"
+                                                    [(ngModel)]="objProspectiveChecksDTO.EducationReference1" />
+                                        </td>
+                                        <td>Second Applicant Education Reference</td>
+                                        <td>
+                                            <input type="checkbox"
+                                                formControlName="EducationReference2"
+                                                    [(ngModel)]="objProspectiveChecksDTO.EducationReference2" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>First Applicant Professional Reference</td>
+                                        <td>
+                                            <input type="checkbox"
+                                                formControlName="EmploymentReference1"
+                                                    [(ngModel)]="objProspectiveChecksDTO.EmploymentReference1" />
+                                        </td>
+                                        <td>Second Applicant Professional Reference</td>
+                                        <td>
+                                            <input type="checkbox"
+                                                formControlName="EmploymentReference2"
+                                                    [(ngModel)]="objProspectiveChecksDTO.EmploymentReference2" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Other IFA/Local Authority Reference</td>
+                                        <td>
+                                            <input type="checkbox"
+                                                formControlName="OtherIFA"
+                                                    [(ngModel)]="objProspectiveChecksDTO.OtherIFA" />
+                                        </td>
+                                        <td>Medical Advisor</td>
+                                        <td>
+                                            <input type="checkbox"
+                                                formControlName="MedicalAdvisor"
+                                                    [(ngModel)]="objProspectiveChecksDTO.MedicalAdvisor" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Agency Medical Advisor</td>
+                                        <td>
+                                            <input type="checkbox"
+                                                formControlName="AgencyMedicalAdvisor"
+                                                    [(ngModel)]="objProspectiveChecksDTO.AgencyMedicalAdvisor" />
+                                        </td>
+                                        <td>Training - STF</td>
+                                        <td>
+                                            <input type="checkbox"
+                                                formControlName="TrainingSTF"
+                                                    [(ngModel)]="objProspectiveChecksDTO.TrainingSTF" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Photo uploaded onto e-care</td>
+                                        <td>
+                                            <input type="checkbox"
+                                                formControlName="PhotoUploaded"
+                                                    [(ngModel)]="objProspectiveChecksDTO.PhotoUploaded" />
+                                        </td>
+                                        <td>Second Initial Interest Interview</td>
+                                        <td>
+                                            <input type="checkbox"
+                                                formControlName="Interview"
+                                                    [(ngModel)]="objProspectiveChecksDTO.Interview" />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="tab-pane {{AdditionalActive}}" id="Additional">
+                            <table class="table table-striped table-hover table-sm">
+                                <tbody>
+                                    <tr>
+                                        <td width="25%"> Drivers Licence</td>
+                                        <td width="25%">
+                                            <input type="checkbox"
+                                                formControlName="DriversLicence"
+                                                [(ngModel)]="objProspectiveChecksDTO.DriversLicence"/>
+                                        </td>
+                                        <td width="25%">
+                                            Passport/ Visa/ Residence Permit
+                                        </td>
+                                        <td width="25%">
+                                            <input type="checkbox"
+                                            formControlName="Passport"
+                                            [(ngModel)]="objProspectiveChecksDTO.Passport"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Mortgage Statement</td>
+                                        <td>
+                                            <input type="checkbox"
+                                                formControlName="MortgageStatement"
+                                                    [(ngModel)]="objProspectiveChecksDTO.MortgageStatement"
+                                                    />
+                                        </td>
+                                        <td>
+                                            Tenancy Agreement(if so, need letter from landlord giving permission to foster at residence)
+                                        </td>
+                                        <td>
+                                            <input type="checkbox"
+                                            formControlName="TenancyAgreement"
+                                                [(ngModel)]="objProspectiveChecksDTO.TenancyAgreement"
+                                                />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Utility Bills</td>
+                                        <td >
+                                            <input type="checkbox"
+                                                formControlName="UtilityBills"
+                                                [(ngModel)]="objProspectiveChecksDTO.UtilityBills" />
+                                        </td>
+                                        <td> National Insurance Number</td>
+                                        <td >
+                                            <input type="checkbox"
+                                                formControlName="NationalInsuranceNumber"
+                                                [(ngModel)]="objProspectiveChecksDTO.NationalInsuranceNumber" />
+                                        </td>
+
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Marriage/Divorce Certificate
+                                        </td>
+                                        <td colspan="3">
+                                            <input type="checkbox"
+                                                formControlName="Marriage"
+                                                [(ngModel)]="objProspectiveChecksDTO.Marriage" />
+                                        </td>
+
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="tab-pane {{ApprovalActive}}" id="Approval">
+                            <table class="table table-striped table-hover table-sm">
+                                <tbody>
+                                    <tr>
+                                        <td width="30%"> Comments from the manager regarding the case</td>
+                                        <td width="70%">
+                                            <textarea formControlName="ManagerCommnets" rows="4"
+                                            class="form-control" [(ngModel)]="objProspectiveChecksDTO.ManagerCommnets">
+                                           </textarea>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Comments from a social worker regarding the case</td>
+                                        <td>
+                                            <textarea formControlName="SocialWorkerComment" rows="4"
+                                            class="form-control" [(ngModel)]="objProspectiveChecksDTO.SocialWorkerComment">
+                                           </textarea>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Senior managers approval for the case to go to assessment</td>
+                                        <td>
+                                            <textarea formControlName="SeniorManagersApproval" rows="4"
+                                            class="form-control" [(ngModel)]="objProspectiveChecksDTO.SeniorManagersApproval">
+                                           </textarea>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">
+                                            Approved by a Senior Manager&nbsp;
+                                            <input type="checkbox"
+                                                formControlName="ApprovedByManager"
+                                                [(ngModel)]="objProspectiveChecksDTO.ApprovedByManager" />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="tab-pane {{insDocumentActive}}" id="UploadDocuments">
+                            <div class="tab-pane" id="tb">
+                                <Upload-Documents #uploads [formCnfgId]="formId" [primaryKeyId]="tblPrimaryKey"
+                                [submittedUpload]="submittedUpload"
+                                                  [userTypeCnfgId]="4" [typeId]="TypeId"></Upload-Documents>
+
+                            </div>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <SubmitButton (Click)="clicksubmit(uploads.UploadDocIds,uploads.IsUpload,uploads.formbuilder)" [IsLoading]="isLoading"></SubmitButton>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</form>

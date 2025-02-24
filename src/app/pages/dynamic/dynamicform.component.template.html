@@ -1,0 +1,284 @@
+﻿<form [formGroup]="formbuilders" class="row">
+    <div *ngFor="let item of dynamicformcontrol" class="form-group" [ngClass]="{
+
+
+
+        'col-12 col-md-12': item.FormCnfgId != 219 && (item.FieldCnfg.FieldDataTypeCnfg.Name=='label'||
+        item.FieldCnfg.FieldDataTypeCnfg.Name=='text'  ||
+        (item.FieldCnfg.FieldDataTypeCnfg.Name=='string' && item.FieldCnfg.FieldLength>100)),
+
+        'col-12 col-md-6':item.FormCnfgId != 219 && (item.FieldCnfg.FieldDataTypeCnfg.Name!='label'||
+        item.FieldCnfg.FieldDataTypeCnfg.Name!='text'  ||
+        (item.FieldCnfg.FieldDataTypeCnfg.Name=='string' && item.FieldCnfg.FieldLength<=100)),
+
+        'col-4 col-md-4':item.FormCnfgId==219
+
+        }">
+        <div [id]="'div'+item.FieldCnfg.FieldCnfgId" class="form-group" *ngIf="item.FieldCnfg.FieldName !='IsActive' && item.FieldCnfg.FieldName !='CreatedDate'
+                 && item.FieldCnfg.FieldName !='CreatedUserId'
+                 && item.FieldCnfg.FieldName !='UpdatedDate'
+                 && item.FieldCnfg.FieldName !='UpdatedUserId'
+                 && item.FieldCnfg.FieldName !='SiblingParentSno'
+                 && item.FieldCnfg.FieldName !='CarerChildSNo'
+                 && item.FieldCnfg.FieldName !='SaveAsDraftStatus'
+                 && item.FieldCnfg.FieldName !='SocialWorkerId'
+                 && item.FieldCnfg.FieldNmae !='LASocialWorkerId'
+                 && item.FieldCnfg.FieldName !='CarerParentId' "
+             [ngStyle]="{'display':item.IsVisible==false?'none':''} ">
+
+            <label *ngIf="item.FieldCnfg.FieldDataTypeCnfg.Name !='bit' &&  item.FieldCnfg.FieldDataTypeCnfg.Name !='Signature' && item.FieldCnfg.FieldDataTypeCnfg.Name !='radio'" [innerHTML]="''+item.DisplayName+':'"></label>
+            <div [ngSwitch]="item.FieldCnfg.FieldDataTypeCnfg.Name">
+
+                <!--<label>{{item.DisplayName}}</label>:-->
+                <!--grid-->
+                <div *ngSwitchCase="'grid'" class="col-md-12">
+
+
+                    <div class="changeColor" style="padding-top:20px">
+                        <div widget class="card">
+                            <div class="card-header">
+                                <span class="text-uppercase">  {{item.DisplayName}}</span>
+                            </div>
+                            <div class="card-body widget-body">
+                                <div class="table-responsive datatable">
+                                    <table class="table table-striped table-hover table-sm">
+                                        <thead>
+                                            <tr *ngFor="let itemgrd of item.GridDisplayValue;">
+                                                <th *ngFor="let item of itemgrd">
+
+                                                    <b>  {{item.DisplayName}}</b>
+
+                                                </th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+                                            <tr *ngFor="let itemgrd of item.GridDisplayValue">
+                                                <td *ngFor="let subitem of itemgrd">
+                                                    <span *ngIf="subitem.FieldDataTypeName=='date' || subitem.FieldDataTypeName=='datetime'">
+                                                        {{subitem.FieldValue | date:'dd/MM/yyyy'}}
+                                                    </span>
+                                                    <span *ngIf="subitem.FieldDataTypeName !='date' &&subitem.FieldDataTypeName !='datetime'">
+                                                        {{subitem.FieldValue}}
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--label-->
+                <div *ngSwitchCase="'label'">
+                    <div *ngIf="item.FieldValue">
+                        <p [innerHTML]="''+item.FieldValue+''"></p>
+                    </div>
+                </div>
+
+                <!--Textbox and Textarea-->
+                <div *ngSwitchCase="'string'">
+                    <!--Textbox-->
+                    <div *ngIf="item.FieldCnfg.FieldLength<=100">
+                        <input [attr.disabled]="item.IsDisabled" [formControlName]="item.FieldCnfg.FieldCnfgId" (change)="changeEve(item,item.FieldValue)"
+                               [(ngModel)]="item.FieldValue"
+                               [id]="item.FieldCnfg.FieldName" type="text" class="form-control"
+                               [required]="item.IsMandatory">
+                    </div>
+
+                    <!--Textarea-->
+                    <div *ngIf="item.FieldCnfg.FieldLength>100">
+                        <textarea autosize style="min-height: 70px;" [maxRows]="10" [attr.disabled]="item.IsDisabled" [formControlName]="item.FieldCnfg.FieldCnfgId"
+                                  [id]="item.FieldCnfg.FieldName" class="form-control" (change)="changeEve(item,item.FieldValue)"
+                                  [(ngModel)]="item.FieldValue"
+                                  [required]="item.IsMandatory">
+                            {{item.FieldCnfg.FieldName}}
+                        </textarea>
+                    </div>
+                </div>
+
+                <!--Dropdown-->
+                <div *ngSwitchCase="'Dropdown'">
+
+                    <select [attr.disabled]="item.IsDisabled" #select [formControlName]="item.FieldCnfg.FieldCnfgId" [(ngModel)]="item.FieldValue"
+                            (change)="changeEve(item,select.value)"
+                            [required]="item.IsMandatory" class="form-control">
+                            <option [ngValue]="null" >Select {{item.DisplayName|ddlBr}}</option>
+                        <!-- <option value="" [attr.selected]="item.FieldValue == null ? true : null">Select {{item.DisplayName|ddlBr}}</option> -->
+                        <option *ngFor="let op of item.ConfigTableValues" [value]="op.CofigTableValuesId">{{op.Value}}</option>
+                    </select>
+                </div>
+
+                <!--Dropdownlist-->
+                <div *ngSwitchCase="'Dropdownlist'">
+                    <Multiselect-Dropdown-List #ddl [listoptions]="item"
+                                               (OptionsValueClick)="getMultiselectDDLSelectVal(item,$event)"></Multiselect-Dropdown-List>
+                </div>
+
+                <!--ColorDropdown-->
+                <div *ngSwitchCase="'ColorDropdown'">
+                    <select [ngStyle]="{'background-color':item.FieldValue==2?'#F4B084':item.FieldValue==3?'#ff0000':item.FieldValue==4?'aqua':item.FieldValue==1?'#70AD47':'#ffffff'}" [attr.disabled]="item.IsDisabled" #select [formControlName]="item.FieldCnfg.FieldCnfgId" [(ngModel)]="item.FieldValue"
+                            (change)="changeEve(item,select.value)"
+                            [required]="item.IsMandatory" class="form-control ColorDropdown">
+                        <option value="" [attr.selected]="item.FieldValue == null ? true : null" style="background-color:#ffffff">  Select  </option>
+                        <option value="1" style="background-color:#70AD47">Low</option>
+                        <option value="2" style="background-color:#F4B084">Med</option>
+                        <option value="3" style="background-color:#ff0000">High</option>
+                        <option value="4" style="background-color:aqua">Unknown</option>
+                    </select>
+                </div>
+                <!--ListBox-->
+                <div *ngSwitchCase="'ListBox'">
+                    <ListBox #lstBox [listoptions]="item" (change)="getListBoxSelectVal(item,lstBox.listoptions)"></ListBox>
+                </div>
+
+                <!--Checkbox list-->
+                <div *ngSwitchCase="'Checkboxlist'">
+
+                    <Checkboxlist #checkboxlist [checkboxlist]="item" (change)="getCheckboxlistSelectVal(item,checkboxlist.checkboxlist)"></Checkboxlist>
+                </div>
+
+                <!--checkbox-->
+                <div *ngSwitchCase="'bit'" class="abc-checkbox">
+                    <!--<p [innerHTML]="''++':'"></p>-->
+                    <input [attr.disabled]="item.IsDisabled" type="checkbox" [formControlName]="item.FieldCnfg.FieldCnfgId"
+                           (change)="changeEve(item,item.FieldValue)"
+                           [(ngModel)]="item.FieldValue" [required]="item.IsMandatory"
+                           [id]="item.FieldCnfg.FieldCnfgId" />
+                    <label [for]="item.FieldCnfg.FieldCnfgId" [innerHTML]="''+item.DisplayName+''"></label>
+                </div>
+
+                <!--Date-->
+                <div *ngSwitchCase="'date'">
+                    <input type="text" #date class="form-control form-control-date" [(ngModel)]="item.FieldValue" [required]="item.IsMandatory"
+                           [formControlName]="item.FieldCnfg.FieldCnfgId" [value]="item.FieldValue"
+                           datepicker placeholder="dd/mm/yyyy"
+                           (ngModelChange)="changeEve(item,date.value)" />
+                </div>
+                <!--Primeng Calendar
+                <div *ngSwitchCase="'date'">
+                  <p-calendar #date [(ngModel)]="item.FieldValue" [required]="item.IsMandatory"
+                  [formControlName]="item.FieldCnfg.FieldCnfgId" [value]="item.FieldValue" dateFormat="dd/mm/yyyy"
+                  placeholder="dd/mm/yyyy" (ngModelChange)="changeEve(item,date.value)"></p-calendar>
+               </div>-->
+                <!--datetime-->
+                <div *ngSwitchCase="'datetime'">
+                    <input type="text" #date class="form-control form-control-datetime" [(ngModel)]="item.FieldValue" [required]="item.IsMandatory"
+                           [formControlName]="item.FieldCnfg.FieldCnfgId" [value]="item.FieldValue"
+                           datetimepicker placeholder="dd/mm/yyyy hh:mm"
+                           (ngModelChange)="changeEve(item,date.value)" />
+                </div>
+                <!--Primeng Calendar datetime
+                <div *ngSwitchCase="'datetime'">
+                 <p-calendar #date [(ngModel)]="item.FieldValue" [required]="item.IsMandatory"
+                 [formControlName]="item.FieldCnfg.FieldCnfgId" [value]="item.FieldValue" dateFormat="dd/mm/yyyy"
+                 placeholder="dd/mm/yyyy hh:mm" (ngModelChange)="changeEve(item,date.value)"></p-calendar>
+              </div>-->
+                <!--Time-->
+                <div *ngSwitchCase="'Time'">
+                    <input [attr.disabled]="item.IsDisabled" type="time" [formControlName]="item.FieldCnfg.FieldCnfgId"
+                           [(ngModel)]="item.FieldValue"
+                           (change)="changeEve(item,item.FieldValue)" [required]="item.IsMandatory"
+                           class="form-control" />
+                </div>
+
+                <!--Radio-->
+                <div class="form-group " *ngSwitchCase="'radio'">
+                    <label style="padding-left:6px" [innerHTML]="''+item.DisplayName+':'"></label>
+                    <div class="abc-radio" style="padding-left:6px">
+                        <input [attr.disabled]="item.IsDisabled" [formControlName]="item.FieldCnfg.FieldCnfgId" (change)="changeEve(item,1)"
+                               [required]="item.IsMandatory" type="radio"
+                               [value]="true" [(ngModel)]="item.FieldValue" [id]="'radio1'+item.FieldCnfg.FieldCnfgId"><label [for]="'radio1'+item.FieldCnfg.FieldCnfgId">Yes</label>
+                        <input [attr.disabled]="item.IsDisabled" [formControlName]="item.FieldCnfg.FieldCnfgId" (change)="changeEve(item,2)"
+                               [required]="item.IsMandatory" type="radio" [value]="false"
+                               [(ngModel)]="item.FieldValue" [id]="'radio2'+item.FieldCnfg.FieldCnfgId"><label [for]="'radio2'+item.FieldCnfg.FieldCnfgId">No</label>
+                    </div>
+                </div>
+
+                <!--Radio List-->
+                <div *ngSwitchCase="'radiolist'">
+                    <radiolist #radiolist  [List]="item" (change)="getradiolistSelectVal(item,radiolist.List)"></radiolist>
+                     <!-- <div *ngFor="let itemsub of item.ConfigTableValues" class="abc-radio">
+                        <input [attr.disabled]="item.IsDisabled" [formControlName]="item.FieldCnfg.FieldCnfgId" (change)="changeEve(item,itemsub.CofigTableValuesId)"
+                               [required]="item.IsMandatory" type="radio"
+                               [value]="itemsub.CofigTableValuesId" [(ngModel)]="item.FieldValue"
+                               [checked]="existsRadiolist(itemsub.CofigTableValuesId,item.FieldValue)"
+                               [id]="itemsub.CofigTableValuesId">
+                        <label [for]="itemsub.CofigTableValuesId">  {{itemsub.Value}}</label>
+                    </div> -->
+                </div>
+
+                <!--smallint-->
+                <div *ngSwitchCase="'smallint'">
+                    <input [attr.disabled]="item.IsDisabled" type="number" min="-1" max="2" [formControlName]="item.FieldCnfg.FieldCnfgId"
+                           (change)="changeEve(item,item.FieldValue)" [(ngModel)]="item.FieldValue"
+                           [required]="item.IsMandatory"
+                           class="form-control" />
+                </div>
+
+                <!--int-->
+                <div *ngSwitchCase="'int'">
+                    <input [attr.disabled]="item.IsDisabled" type="number" min="0" max="90" [formControlName]="item.FieldCnfg.FieldCnfgId"
+                           (change)="changeEve(item,item.FieldValue)" [(ngModel)]="item.FieldValue"
+                           [required]="item.IsMandatory"
+                           class="form-control" />
+                </div>
+
+                <!--text-->
+                <div *ngSwitchCase="'text'">
+
+                    <Editor #editor [Value]="item.FieldValue"
+                            (Change)="fnTextChange(editor.Value,item)"></Editor>
+                </div>
+
+                <!--rating-->
+                <div *ngSwitchCase="'rating'">
+                    <bar-rating name="rating" [(rate)]="item.FieldValue" [max]="5" [theme]="'movie'" [showText]="true"
+                                [titles]="['0', '1' , '2', '3','4']" disabled>
+
+                    </bar-rating>
+                </div>
+
+                <!--Signature-->
+                <div *ngSwitchCase="'Signature'">
+                    <label style="padding-left:6px" [innerHTML]="''+item.DisplayName+':'"></label>  <a (click)="expandMessage(item)" style="cursor:pointer" title="Click here to view"><span style="color:blue;font-size:15px" class="fa fa-picture-o" *ngIf="item.ImageString"></span></a>
+                    <div class="feed-messages-container">
+                        <div class="feed-message">
+                            <div class="text-block text-message" *ngIf="item.ImageVisible">
+                                <div class="preview">
+                                    <img class="img-thumbnail rounded" [attr.src]="'data:image/jpeg;base64,'+item.ImageString">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="padding-left:90px">
+                    <SignaturePad (changesign)="signChange(item,$event)"></SignaturePad>
+                    </div>
+                </div>
+            </div>
+            <!---------End--Dropdownlist----->
+            <div *ngIf="item.FieldCnfg.FieldDataTypeCnfg.Name!='label' && item.FieldCnfg.FieldDataTypeCnfg.Name!='Checkboxlist' && item.FieldCnfg.FieldDataTypeCnfg.Name != 'ListBox' &&
+                      item.FieldCnfg.FieldDataTypeCnfg.Name != 'Dropdownlist' && item.FieldCnfg.FieldDataTypeCnfg.Name != 'Dropdown'">
+                <div style="margin-top:1px" class="alert alert-danger" *ngIf="(!formbuilders.controls[item.FieldCnfg.FieldCnfgId].valid && submitted && formbuilders.controls[item.FieldCnfg.FieldCnfgId].errors.required)">
+                    {{item.DisplayName}} is required
+                </div>
+            </div>
+
+            <div *ngIf="item.FieldCnfg.FieldDataTypeCnfg.Name!='label' && item.FieldCnfg.FieldDataTypeCnfg.Name =='Checkboxlist' || item.FieldCnfg.FieldDataTypeCnfg.Name == 'ListBox' ||
+                     item.FieldCnfg.FieldDataTypeCnfg.Name == 'Dropdownlist' && item.FieldCnfg.FieldDataTypeCnfg.Name != 'Dropdown'">
+                <div style="margin-top:1px" class="alert alert-danger" *ngIf="submitted  && item.IsMandatory && (item.FieldValue =='' ||item.FieldValue == null)">
+                    Please select {{item.DisplayName}}
+                </div>
+            </div>
+
+            <div *ngIf="item.FieldCnfg.FieldDataTypeCnfg.Name == 'Dropdown'">
+                <div style="margin-top:1px" class="alert alert-danger" *ngIf="submitted  && item.IsMandatory && (item.FieldValue =='' ||item.FieldValue == null)">
+                    Please select {{item.DisplayName|ddlBr}}
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

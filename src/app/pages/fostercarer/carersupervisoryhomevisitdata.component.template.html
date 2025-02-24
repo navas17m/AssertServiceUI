@@ -1,0 +1,328 @@
+﻿<form [formGroup]="_Form">
+    <div class="col-xl-12 col-lg-12 col-12 bottom-30">
+        <!-- <div style="text-align:right" *ngIf="showAutoSave">
+            <b>{{saveDraftText}}  {{draftSavedTime | date: 'HH:mm'}}</b>
+        </div> -->
+        <AutoSavedMessage [Text]="saveDraftText" [Time]="draftSavedTime" [Visible]="showAutoSave"></AutoSavedMessage>
+        <ApprovedCarerHeader></ApprovedCarerHeader>
+        <ViewDisable></ViewDisable>
+        <div widget class="card">
+            <div class="card-header">
+                <span><DisplayFormName [FormCnfgId]="formId"></DisplayFormName></span>
+                <div class="widget-controls">
+                    <i class="fa fa-file-pdf-o" (click)="fnDonloadPDF()" style="font-size:18px;color:white;cursor:pointer;" title="Download PDF"></i>
+                    <i class="fa fa-file-word-o" (click)="fnDonloadWord()" style="font-size:18px;color:white;cursor:pointer;padding-left:5px;" title="Download Word"></i>
+                    <i class="fa fa-print" (click)="fnPrint()" style="font-size:18px;color:white;cursor:pointer;padding-left:5px;padding-right:5px" title="Print"></i>
+                    <i class="fa fa-envelope-open" (click)="fnShowEmail()" style="font-size:18px;color:white;cursor:pointer;" title="Email"></i>
+                </div>
+            </div>
+            <div class="card-body widget-body">
+                <div class="row mbm-20">
+                    <div class="col-lg-12 col-12 bottom-30">
+                        <div class="clearfix">
+                            <ul class="nav nav-tabs top pull-left w-100p">
+                                <li class="nav-item" (click)="fnCarerSectionA()">
+                                    <a class="nav-link {{CarerSectionAActive}}" data-toggle="tab" href="#t1">Carer Section A</a>
+                                </li>
+                                <li class="nav-item" (click)="fnCarerSectionB()" [hidden]="CarerSectionBVisible">
+                                    <a class="nav-link {{CarerSectionBActive}}" data-toggle="tab" href="#t2">Carer Section B</a>
+                                </li>
+                                <li class="nav-item" (click)="fnCarerSectionC()" [hidden]="CarerSectionCVisible">
+                                    <a class="nav-link {{CarerSectionCActive}}" data-toggle="tab" href="#t3">Carer Section C</a>
+                                </li>
+                                <li class="nav-item" (click)="fnCarerSectionD()" [hidden]="CarerSectionDVisible">
+                                    <a class="nav-link {{CarerSectionDActive}}" data-toggle="tab" href="#t4">Carer Section D</a>
+                                </li>
+                                <li class="nav-item" (click)="fnDocumentDetail()">
+                                    <a class="nav-link {{DocumentActive}}" data-toggle="tab" href="#upload">Upload Documents</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="tab-content top">
+                            <div class="tab-pane {{CarerSectionAActive}}" id="t1">
+                                <div class="form-group">
+                                    Supervising Social Worker : {{CarerSSWName}}
+                                </div>
+                                <Dynamic-Form #SectionAdynamic [dynamicformcontrols]="dynamicformcontrol|filter:'ControlLoadFormat':'Carer Section A'" [formbuilder]="_Form" [submitted]="submitted" (OnValChange)="DynamicOnValChange($event)"></Dynamic-Form>
+
+                                <div class="changeColor" style="padding-top:10px" *ngIf="lstCarerTrainingProfile.length>0">
+                                    <div widget class="card">
+                                        <div class="card-header">
+                                            <span class="text-uppercase">Training Details</span>
+                                        </div>
+                                        <div class="card-body widget-body">
+                                            <div class="table-responsive datatable">
+                                                <div class="table-responsive datatable">
+                                                    <table class="table table-striped table-hover table-sm">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Course Attended Carer</th>
+                                                                <th>Courses Attended</th>
+                                                                <th>Date of Attendance</th>
+                                                                <th>Course Status</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody *ngIf="lstCarerTrainingProfile">
+                                                            <tr *ngFor="let item of lstCarerTrainingProfile | groupBy:'SequenceNo'">
+                                                                <td>
+                                                                    {{ item.value[0].CarerName}}
+                                                                    <br *ngIf="item.value[0].SCarerName" />
+                                                                    {{item.value[0].SCarerName}}
+                                                                </td>
+                                                                <td *ngFor="let subitem of item.value | filter : 'FieldName':'CourseAttendedId'">{{ subitem.FieldValue }}</td>
+                                                                <td>
+                                                                    <span *ngFor="let subitem of item.value[0].TrainingCourseDate| filter : 'FieldName':'CourseAttendedDate'">
+                                                                        {{subitem.FieldValue |dateFormat:'dd/MM/yyyy'}}<br />
+                                                                    </span>
+                                                                </td>
+                                                                <td>
+                                                                    <span *ngFor="let subitem of item.value[0].TrainingCourseDate | filter : 'FieldName':'CourseStatusId'">
+                                                                        <!-- {{subitem.FieldValue==877?'Attended':subitem.FieldValue==878?'Not Attended':subitem.FieldValue==879?'Online':''}}<br /> -->
+                                                                        {{subitem.FieldValue}}<br>
+                                                                    </span>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="changeColor" style="padding-top:10px" *ngIf="StatutoryChecksGridVisible">
+                                    <!--PrimaryCarer A-->
+                                    <div  id="PrimaryCarer" *ngIf="globalPrimaryCheckList.length>0" >
+                                        <!--Primary Carer Statutory Checks-->
+                                        <div class="changeColor" style="padding-top:10px" *ngIf="globalPrimaryCheckList.length>0 && globalPrimaryCheckList !=null">
+                                            <div >
+                                                <label class="">Primary Carer Statutory Checks:</label>&nbsp;
+                                                <div *ngFor="let insPCCheckItem of insPCCheckIds">
+                                                    <div widget class="card">
+                                                        <div class="card-header">
+                                                            <span class="text-uppercase"> {{insPCCheckItem.Name}}</span>
+                                                        </div>
+                                                        <div class="card-body widget-body">
+                                                            <div class="table-responsive datatable">
+                                                                <table class="table table-striped table-hover table-sm">
+                                                                    <thead>
+                                                                        <tr *ngFor="let item of headerPrimaryCheckList;let i=index">
+                                                                            <th *ngFor="let subitem of item |slice:0:3 | FilterTwoValue : 'ComplianceCheckId':insPCCheckItem.ComplianceCheckId:'FieldName':'IsActive';let i=index">
+                                                                                {{subitem.DisplayName}}
+                                                                            </th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr *ngFor="let item of globalPrimaryCheckList;let i=index">
+                                                                            <td *ngFor="let subitem of item |slice:0:3 | FilterTwoValue : 'ComplianceCheckId':insPCCheckItem.ComplianceCheckId:'FieldName':'IsActive'">
+                                                                                <span *ngIf="subitem.FieldDataTypeName=='date'">
+                                                                                    {{subitem.FieldValue |dateFormat:'dd/MM/yyyy'}}
+                                                                                </span>
+                                                                                <span *ngIf="subitem.FieldDataTypeName =='Dropdown'">
+                                                                                    {{subitem.FieldValueText}}
+                                                                                </span>
+                                                                                <span *ngIf="subitem.FieldDataTypeName !='date' &&subitem.FieldDataTypeName !='Dropdown' && subitem.FieldDataTypeName !='bit' &&
+                                                              subitem.FieldDataTypeName !='radio'">
+                                                                                    {{subitem.FieldValue}}
+                                                                                </span>
+                                                                                <span *ngIf="subitem.FieldDataTypeName =='bit'
+                                                              || subitem.FieldDataTypeName =='radio'">
+                                                                                    {{subitem.FieldValue==1?'Yes':'No'}}
+                                                                                </span>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="text-center" *ngIf="globalPrimaryCheckList.length == 0 && !loading">
+                                            <b>No Records found.</b>
+                                        </div>
+                                        <div *ngIf="globalPrimaryCheckList.length == 0 &&  loading" class="text-center">
+                                            <i class="fa fa-spinner fa-spin"></i> Loading please wait...
+                                        </div>
+                                    </div>
+                                    <!--SecondCarer-->
+                                    <div  id="SecondCarer" *ngIf="globalSecondCheckList.length>0">
+                                        <!--Second Carer Statutory Checks-->
+                                        <label class="">Second Carer Statutory Checks:</label>&nbsp;
+                                        <div class="changeColor" style="padding-top:10px" *ngIf="globalSecondCheckList.length>0 && globalSecondCheckList !=null">
+                                            <div>
+                                                <div *ngFor="let insSCCheckItem of insSCCheckIds">
+                                                    <div widget class="card">
+                                                        <div class="card-header">
+                                                            <span class="text-uppercase"> {{insSCCheckItem.Name}}</span>
+                                                        </div>
+                                                        <div class="card-body widget-body">
+                                                            <div class="table-responsive datatable">
+                                                                <table class="table table-striped table-hover table-sm">
+                                                                    <thead>
+                                                                        <tr *ngFor="let item of headerSecondCheckList;let i=index">
+                                                                            <th *ngFor="let subitem of item |slice:0:3 | FilterTwoValue : 'ComplianceCheckId':insSCCheckItem.ComplianceCheckId:'FieldName':'IsActive';let i=index">
+                                                                                {{subitem.DisplayName}}
+                                                                            </th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr *ngFor="let item of globalSecondCheckList;let i=index">
+                                                                            <td *ngFor="let subitem of item |slice:0:3 | FilterTwoValue : 'ComplianceCheckId':insSCCheckItem.ComplianceCheckId:'FieldName':'IsActive'">
+                                                                                <span *ngIf="subitem.FieldDataTypeName=='date'">
+                                                                                    {{subitem.FieldValue |dateFormat:'dd/MM/yyyy'}}
+                                                                                </span>
+                                                                                <span *ngIf="subitem.FieldDataTypeName =='Dropdown'">
+                                                                                    {{subitem.FieldValueText}}
+                                                                                </span>
+                                                                                <span *ngIf="subitem.FieldDataTypeName !='date' &&subitem.FieldDataTypeName !='Dropdown' && subitem.FieldDataTypeName !='bit' &&
+                                                              subitem.FieldDataTypeName !='radio'">
+                                                                                    {{subitem.FieldValue}}
+                                                                                </span>
+                                                                                <span *ngIf="subitem.FieldDataTypeName =='bit'
+                                                              || subitem.FieldDataTypeName =='radio'">
+                                                                                    {{subitem.FieldValue==1?'Yes':'No'}}
+                                                                                </span>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="text-center" *ngIf="globalSecondCheckList.length == 0 && !loading">
+                                            <b>No Records found.</b>
+                                        </div>
+                                        <div *ngIf="globalSecondCheckList.length == 0 && loading" class="text-center">
+                                            <i class="fa fa-spinner fa-spin"></i> Loading please wait...
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="changeColor" style="padding-top:20px;padding-bottom:20px" *ngIf="visibleBirthChildrenGrid">
+                                    <label class="">Household Compositions/Household Members:</label>&nbsp;
+                                    <Familyinfo #Familyinfo [CarerId]="insCarerId" [IsAllowInsert]="false"></Familyinfo>
+                                </div>
+                                <EmailNotification #Notification [FormCnfgId]="59"  ></EmailNotification>
+                            </div>
+                            <div class="tab-pane {{CarerSectionBActive}}" id="t2" [hidden]="CarerSectionBVisible">
+                                <Dynamic-Form #SectionBdynamic [dynamicformcontrols]="dynamicformcontrol|filter:'ControlLoadFormat':'Carer Section B'" [formbuilder]="_Form" [submitted]="submitted"></Dynamic-Form>
+                            </div>
+                            <div class="tab-pane {{CarerSectionCActive}}" id="t3" [hidden]="CarerSectionCVisible">
+                                <Dynamic-Form #SectionCdynamic [dynamicformcontrols]="dynamicformcontrol|filter:'ControlLoadFormat':'Carer Section C'" [formbuilder]="_Form" [submitted]="submitted"
+                                              (OnValChange)="DynamicOnValChange($event)"></Dynamic-Form>
+                            </div>
+                            <div class="tab-pane {{CarerSectionDActive}}" id="t4" [hidden]="CarerSectionDVisible">
+                                <Dynamic-Form #SectionDdynamic
+                                              [dynamicformcontrols]="dynamicformcontrol|filter:'ControlLoadFormat':'Carer Section D'"
+                                              [formbuilder]="_Form" [submitted]="submitted"></Dynamic-Form>
+                            </div>
+                            <div class="tab-pane {{DocumentActive}}" id="upload">
+                                <Upload-Documents #uploads [formCnfgId]="formId" [primaryKeyId]="tblPrimaryKey"
+                                                   [submittedUpload]="submittedUpload"
+                                                  [userTypeCnfgId]="4" [typeId]="TypeId"></Upload-Documents>
+                            </div>
+                            <div class="form-group col-lg-12">
+                                <button *ngIf="showbtnSaveDraft" [ladda]="isLoadingSAD" #btnSaveDraft (click)="fnSaveDraft(SectionAdynamic.dynamicformcontrols,
+                                        SectionBdynamic.dynamicformcontrols,
+                                        SectionCdynamic.dynamicformcontrols,
+                                        SectionDdynamic.dynamicformcontrols,
+                                            uploads.IsUpload,
+                                            uploads.formbuilder
+                                        )" class="btn btn-primary expand-right">{{saveAsDraftText}}
+                                </button>
+                                <SubmitButton #btnSubmitAdd *ngIf="SequenceNo==0 || showbtnSaveDraft" (Click)="clicksubmit(_Form,SectionAdynamic.dynamicformcontrols,SectionAdynamic.formbuilder,SectionBdynamic.dynamicformcontrols,SectionBdynamic.formbuilder,SectionCdynamic.dynamicformcontrols,SectionCdynamic.formbuilder,SectionDdynamic.dynamicformcontrols,SectionDdynamic.formbuilder,uploads.UploadDocIds,
+                                 uploads.IsUpload,
+                                  uploads.formbuilder,0,Notification.AddtionalEmailIds,Notification.EmailIds)" [IsLoading]="isLoading" [IsDiasable]="isLoadingSAD" [Text]="submitText">
+                                </SubmitButton>
+                                <SubmitButton #btnSubmitAdd *ngIf="SequenceNo==0 || showbtnSaveDraft" (Click)="fnLockConfirmClick()" [IsLoading]="isLoading" [IsDiasable]="isLoadingSAD" [Text]="'Submit & Lock'">
+                                </SubmitButton>
+                                <SubmitButton #btnSubmitEdit *ngIf="SequenceNo>0 && !showbtnSaveDraft" (Click)="clicksubmit(_Form,SectionAdynamic.dynamicformcontrols,SectionAdynamic.formbuilder,SectionBdynamic.dynamicformcontrols,SectionBdynamic.formbuilder,SectionCdynamic.dynamicformcontrols,SectionCdynamic.formbuilder,SectionDdynamic.dynamicformcontrols,SectionDdynamic.formbuilder,uploads.UploadDocIds,
+                                 uploads.IsUpload,
+                                  uploads.formbuilder,0,Notification.AddtionalEmailIds,Notification.EmailIds)" [IsLoading]="isLoading" [IsDiasable]="isLoadingSAD" [Text]="submitText">
+                                </SubmitButton>
+                                <!-- <BackButton></BackButton> -->
+
+<button style="cursor:pointer;" id="BackBtn"  class="btn btn-warning BackBtn" (click)="fnBack()">Back</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <button id="btnLockModel" #btnLockModel [hidden]="true" type="button" class="btn btn-info" data-toggle="modal" data-target="#info-modal">Info</button>
+        <div class="modal fade" id="info-modal" tabindex="-1" role="dialog" aria-labelledby="modal-info-label">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header state modal-danger">
+                        <h4 class="modal-title" id="modal-error-label"><i class="fa fa-warning"> Alert</i></h4>
+                        <button type="button" class="close closebtn" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure you want to submit and lock this record? Once locked, record cannot be unlocked.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger closebtn" data-dismiss="modal" (click)="clicksubmit(_Form,SectionAdynamic.dynamicformcontrols,SectionAdynamic.formbuilder,SectionBdynamic.dynamicformcontrols,SectionBdynamic.formbuilder,SectionCdynamic.dynamicformcontrols,SectionCdynamic.formbuilder,SectionDdynamic.dynamicformcontrols,SectionDdynamic.formbuilder,uploads.UploadDocIds,
+                                 uploads.IsUpload,
+                                  uploads.formbuilder,1,Notification.AddtionalEmailIds,Notification.EmailIds)">
+                            Ok
+                        </button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>
+<div>
+    <button #btnPrint type="button" [hidden]="true" class="btn btn-primary" data-toggle="modal" data-target="#lg-modal1">Large</button>
+    <div class="modal fade" id="lg-modal1" tabindex="-1" role="dialog" aria-labelledby="modal-large-label" style="display: none;">
+        <div class="modal-dialog modal-lg" role="document">
+            <form [formGroup]="_FormPrint">
+                <div class="modal-content">
+                    <div class="modal-header state modal-primary">
+                        <h4 class="modal-title" id="modal-large-label">
+                            <i class="fa fa-print"></i>Email
+                        </h4>
+                        <div *ngIf="isLoading"><i class="fa fa-spinner fa-spin"></i> Sending email please wait...</div>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="form-group">
+                            Enter Email Subject:
+                            <input type="text" [(ngModel)]="subject" class="form-control" formControlName="subject" required />
+                            <div *ngIf="(!_FormPrint.controls.subject.valid && submittedprint && _FormPrint.controls.subject.errors.required )" class="alert alert-danger">
+                                Please enter Email Subject
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            Enter Email Address(es):
+                            <textarea [(ngModel)]="eAddress" class="form-control" formControlName="eAddress" required></textarea>
+                            <div *ngIf="(!_FormPrint.controls.eAddress.valid && submittedprint && _FormPrint.controls.eAddress.errors.required )" class="alert alert-danger">
+                                Please enter Email Address(es)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <!--<button type="button" class="btn btn-success" (click)="fnPrint()">Print</button>-->
+                        <button type="button" class="btn btn-success" (click)="fnEmail(_FormPrint)" [disabled]="isLoading">Email</button>
+                        <button #btnCancel type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+<!--Lock Confim Msg-->

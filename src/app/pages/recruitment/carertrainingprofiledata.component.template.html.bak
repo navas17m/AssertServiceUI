@@ -1,0 +1,185 @@
+﻿<form [formGroup]="_Form">
+    <ViewDisable></ViewDisable>
+    <div class="col-xl-12 col-lg-12 col-12 bottom-30">
+        <ApprovedCarerHeader *ngIf="objQeryVal.mid == 3"></ApprovedCarerHeader>
+        <CarerHeader *ngIf="objQeryVal.mid == 13"></CarerHeader>
+        <div widget class="card">
+            <div class="card-header">
+                <span>Training Profile</span>
+                <div class="widget-controls">
+                    <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                    <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                    <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+                    <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+                    <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a>
+                </div>
+            </div>
+            <div class="card-body widget-body">
+                <div class="row mbm-20">
+                    <div class="col-lg-12 col-12 bottom-30">
+                        <div class="clearfix">
+                            <ul class="nav nav-tabs top pull-left w-100p">
+                                <li class="nav-item" (click)="fnTrainingProfileTab()">
+                                    <a class="nav-link {{TrainingProfileActive}}" data-toggle="tab" href="#TrainingProfile">
+                                        Training Profile
+                                    </a>
+                                </li>
+                                <li class="nav-item" (click)="fnDocumentDetailTab()">
+                                    <a class="nav-link {{DocumentActive}}" data-toggle="tab" href="#UploadDocuments">Upload Documents</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="tab-content top">
+                            <div class="tab-pane {{TrainingProfileActive}}" id="TrainingProfile">
+                                <div class="form-group" *ngIf="SequenceNo==0">
+                                    <label class="">Select the Carer </label>
+                                    <!--<select formControlName="CarerId" required [(ngModel)]="objCarerTrainingProfileComboDTO.CarerId" class="form-control">
+                                        <option value="" [attr.selected]="objCarerTrainingProfileComboDTO.CarerId == null ? true : null">Select a Carer</option>
+                                        <option *ngFor="let op of CarerList" value="{{op.CarerId}}">
+                                            {{op.PersonalInfo.FullName}}
+                                        </option>
+                                    </select>
+                                    <div *ngIf="(!_Form.controls.CarerId.valid && submitted && _Form.controls.CarerId.errors )" class="alert alert-danger">
+                                        Please select a Carer
+                                    </div>-->
+                                    <select #selectList name="listbox" multiple class="form-control" (change)="CarerChange($event.target.options)"
+                                            [ngStyle]="{'border-left':lstcarerIdsSelectValues.length>0?
+                            '5px solid #42A948':'5px solid #a94442'}">
+                                        <option *ngFor="let op of CarerList" value="{{op.CarerId}}~{{op.CarerTypeid}}">
+                                            {{op.PersonalInfo.FullName}}
+                                        </option>
+                                    </select>
+                                    <div *ngIf="(lstcarerIdsSelectValues.length == 0 && submitted)" class="alert alert-danger">
+                                        Please select the Carer
+                                    </div>
+                                </div>
+                                <div class="form-group" *ngIf="SequenceNo>0">
+                                    <label class="">Select the Carer </label>
+                                    <select formControlName="CarerId" required [(ngModel)]="objCarerTrainingProfileComboDTO.strCarerId" class="form-control">
+                                        <option value="" [attr.selected]="objCarerTrainingProfileComboDTO.strCarerId == null ? true : null">Select a Carer</option>
+                                        <option *ngFor="let op of CarerList" value="{{op.CarerId}}~{{op.CarerTypeid}}">
+                                            {{op.PersonalInfo.FullName}}
+                                        </option>
+                                    </select>
+                                    <div *ngIf="(!_Form.controls.CarerId.valid && submitted && _Form.controls.CarerId.errors )" class="alert alert-danger">
+                                        Please select a Carer
+                                    </div>
+                                </div>
+                                <Dynamic-Form #dynamicA [dynamicformcontrols]="dynamicformcontroldata | filter : 'ControlLoadFormat':'Default1'"
+                                        [formbuilder]="_Form" [submitted]="submitted"
+                                        (OnValChange)="DynamicOnValChange($event)">
+                                </Dynamic-Form>
+                                <div [hidden]="IsVisibleCourseStatus" style="border: 2px solid #979aa0;padding:10px;background-color:#edf1f7">
+                                    <Dynamic-Form #dynamicB [dynamicformcontrols]="dynamicformcontroldataGrid"
+                                                  [formbuilder]="_Form" [submitted]="submittedStatus">
+                                    </Dynamic-Form>
+
+                                    <div *ngIf="(submitted && AttendedDateValid)" class="alert alert-danger">
+                                        Please Add Attended and Course Status
+                                    </div>
+                                    <button *ngIf="!isEdit" (click)="AddAttendedDetails(dynamicB.dynamicformcontrols,dynamicB.formbuilder)" class="btn btn-success">Add</button>
+                                    <div *ngIf="isEdit">
+                                        <button (click)="UpdateAttendedDetails(dynamicB.dynamicformcontrols,dynamicB.formbuilder)" class="btn btn-success">Update</button>
+                                        <button (click)="CancelEdit()" class="btn btn-danger">Cancel</button>
+                                    </div>
+                                    <div class="changeColor" style="padding-top:20px" *ngIf="globalObjAtteStatusList.length>0 && globalObjAtteStatusList !=null">
+                                        <div widget class="card">
+                                            <div class="card-header">
+                                                <span class="text-uppercase">  Existing Details</span>
+                                            </div>
+
+                                            <div class="card-body widget-body">
+                                              <div class="table table-responsive">
+                                                  <ngx-datatable [rows]="ngxList"
+                                                      class="bootstrap"
+                                                      rowHeight="auto"
+                                                      [columnMode]="'force'"
+                                                      [limit]="limit"
+                                                      rowHeight="auto"
+                                                      [scrollbarH]="true"
+                                                      [footerHeight]="50">
+                                                      <ngx-datatable-column *ngFor="let col of subColumns; let i = index" [name]="col.name" [prop]="col.prop">
+                                                          <ng-template ngx-datatable-header-template ><strong>{{ col.name }}</strong></ng-template>
+                                                          <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                                                          <div>{{value}}</div>
+                                                          </ng-template>
+                                                      </ngx-datatable-column>
+                                                      <ngx-datatable-column name="Edit" [sortable]=false>
+                                                          <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+                                                              <div *ngIf="row.StatusId==3">
+                                                                  <button disabled class="btn  btn-warning"><i style="font-size:20px" class="fa fa-trash-o"></i></button>
+                                                              </div>
+
+                                                              <div *ngIf="row.StatusId != 3">
+                                                                  <button *ngIf="AttendedStatusId !=rowIndex" class="btn  btn-warning"
+                                                                          (click)="EditAttendedStatusList(rowIndex)">
+                                                                      <i style="font-size:20px" class="fa  fa fa-edit"></i>
+                                                                  </button>
+
+                                                                  <button disabled *ngIf="AttendedStatusId ==rowIndex"
+                                                                          class="btn  btn-warning">
+                                                                      <i style="font-size:20px" class="fa  fa fa-edit"></i>
+                                                                  </button>
+                                                              </div>
+
+                                                          </ng-template>
+                                                      </ngx-datatable-column>
+                                                      <ngx-datatable-column name="Delete" [sortable]=false>
+                                                          <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+                                                      <div *ngIf="row.StatusId==3">
+
+                                                          <button disabled class="btn  btn-warning"><i style="font-size:20px" class="fa fa-trash-o"></i></button>
+                                                      </div>
+                                                      <div *ngIf="row.StatusId != 3">
+                                                          <button  [disabled]="AttendedStatusId != null"
+                                                                  class="btn  btn-danger"
+                                                                  (click)="DeleteAttendedStatusList (rowIndex)">
+                                                              <i style="font-size:20px" class="fa fa-trash-o"></i>
+                                                          </button>
+                                                      </div>
+                                                  </ng-template>
+
+                                                      </ngx-datatable-column>
+                                                      </ngx-datatable>
+
+                                              </div>
+                                          </div>
+
+                                        </div>
+                                    </div>
+
+
+
+
+                                </div>
+                                <br>
+                                <Dynamic-Form #dynamicC [dynamicformcontrols]="dynamicformcontroldata | filter : 'ControlLoadFormat':'Default'"
+                                              [formbuilder]="_Form" [submitted]="submitted"></Dynamic-Form>
+                            </div>
+                            <div class="tab-pane {{DocumentActive}}" id="UploadDocuments">
+                                <Upload-Documents #uploads [formCnfgId]="formId" [primaryKeyId]="tblPrimaryKey"
+                                [BtnAccessFormCnfgId]="FormCnfgId"
+                                                   [submittedUpload]="submittedUpload"
+                                                  [userTypeCnfgId]="4" [typeId]="TypeId"></Upload-Documents>
+                            </div>
+                            <div class="form-group col-lg-5">
+                                <!--<button (click)="clicksubmitdata(_Form,dynamicA.dynamicformcontrols,dynamicA.formbuilder,dynamicB.dynamicformcontrols,dynamicB.formbuilder,
+                                    dynamicC.dynamicformcontrols,dynamicC.formbuilder,
+                                     uploads.UploadDocIds,
+                                 uploads.IsUpload,
+                                  uploads.formbuilder)" class="btn btn-primary">
+                                    Submit
+                                </button>-->
+                                <SubmitButton (Click)="clicksubmitdata(_Form,dynamicA.dynamicformcontrols,dynamicA.formbuilder,dynamicB.dynamicformcontrols,dynamicB.formbuilder,
+                                    dynamicC.dynamicformcontrols,dynamicC.formbuilder,
+                                     uploads.UploadDocIds, uploads.IsUpload, uploads.formbuilder)" [IsLoading]="isLoading"></SubmitButton>
+                                <!-- <BackButton></BackButton> -->
+                                <button style="cursor:pointer;" id="BackBtn"  class="btn btn-warning BackBtn" (click)="fnBack()">Back</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

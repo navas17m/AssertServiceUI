@@ -1,0 +1,104 @@
+﻿
+<div class="row bottom-30">
+    <div class="col">
+        <div widget class="card">
+            <div class="card-header">
+                <span> AGENCY SETUP</span>
+                <div class="widget-controls">
+                    <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                    <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                    <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+                    <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+                    <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a>
+                </div>
+            </div>
+            <div class="card-body widget-body">
+                <form [formGroup]="_agencyForm"><ViewDisable></ViewDisable>
+                    <div>
+                        <div class="form-group">
+                            <label class="">Agency Name</label>
+                            <input formControlName="AgencyName" type="text" class="form-control" [(ngModel)]="objAgencyProfile.AgencyName"
+                                   required />
+                            <div class="alert alert-danger" *ngIf="(!_agencyForm.controls.AgencyName.valid && submitted && _agencyForm.controls.AgencyName.errors.required)">
+                                Please enter Agency name
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="">Domain Name</label>
+                            <input formControlName="DomainName" type="text" class="form-control" [(ngModel)]="objAgencyProfile.DomainName"
+                                   required />
+                            <div class="alert alert-danger" *ngIf="(!_agencyForm.controls.DomainName.valid && submitted && _agencyForm.controls.DomainName.errors.required)">
+                                Please enter Domain name
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="">URN Number</label>
+                            <input formControlName="URNNumber" type="text" class="form-control" [(ngModel)]="objAgencyProfile.URNNumber"
+                                   required />
+                            <div class="alert alert-danger" *ngIf="(!_agencyForm.controls.URNNumber.valid && submitted && _agencyForm.controls.URNNumber.errors.required)">
+                                Please enter URN Number
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="">Invoice Prefix</label>
+                            <input formControlName="InvoicePrefix" type="text" class="form-control" [(ngModel)]="objAgencyProfile.InvoicePrefix"
+                                   required />
+                            <div class="alert alert-danger" *ngIf="(!_agencyForm.controls.InvoicePrefix.valid && submitted && _agencyForm.controls.InvoicePrefix.errors.required)">
+                                Please enter Invoice Prefix
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="">Carer Payment Type</label>
+                            <select *ngIf="lstCarerPaymentType !=null" formControlName="CarerPaymentType" class="form-control" required [(ngModel)]="objAgencyProfile.FinCarerPaymentTypeCnfgId">
+                                <option value="0">Select Carer Payment Type</option>
+                                <option *ngFor="let item of lstCarerPaymentType" value="{{item.FinCarerPaymentTypeCnfgId}}">
+                                    {{item.CarerPaymentName}}
+                                </option>
+                            </select>
+                            <div class="alert alert-danger" *ngIf="(!_agencyForm.controls.InvoicePrefix.valid && submitted && _agencyForm.controls.InvoicePrefix.errors.required)">
+                                Please select Carer Payment Type
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="">Invoice Address</label>
+                            <textarea formControlName="InvoiceAddress"  class="form-control" [(ngModel)]="objAgencyProfile.InvoiceAddress"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="">FC Invoice Note</label>
+                            <textarea formControlName="FCInvoiceNote" class="form-control" [(ngModel)]="objAgencyProfile.FCInvoiceNote"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="">LA Invoice Note</label>
+                            <textarea formControlName="LAInvoiceNote" class="form-control" [(ngModel)]="objAgencyProfile.LAInvoiceNote"></textarea>
+                        </div>
+                        <div class="form-group" >
+                            <label class="">Logo</label>
+                            <div class="card-body widget-body">
+                                <div class="row">
+                                    <div style="width:200px">
+                                        <input type="file" (change)="fileChange(input)" #input class="img-upload-btn" />
+                                        <button class="btn btn-main btn-block" type="button">
+                                            <span *ngIf="!image"><i class="fa fa-upload"></i> Select Image... </span>
+                                            <span *ngIf="image"><i class="fa fa-refresh"></i> Change Image... </span>
+                                        </button>
+                                        <div class="image-wrapper">
+                                            <i *ngIf="image" class="fa fa-times delete-img" (click)="removeImage()"></i>
+                                            <img [attr.src]="image" *ngIf="image" width="200px" height="150px">
+                                            <img [attr.src]="srcPath" *ngIf="!image" width="200px">
+                                        </div>
+                                        <div *ngIf="showFileTooLarge" class="alert-danger">
+                                            Selected file is too large.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <contact #ConatactAgency [contactval1]="contactVal1" [Visible]="objContactVisible" [formbuilder]="submitted"></contact>
+                        <SubmitButton  (Click)="agencysetupSubmit(_agencyForm,ConatactAgency.contactval1,ConatactAgency.formbuilder)" [IsLoading]="isLoading">Submit</SubmitButton>
+                        <BackButton></BackButton>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

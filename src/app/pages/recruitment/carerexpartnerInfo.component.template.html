@@ -1,0 +1,119 @@
+﻿
+<form [formGroup]="_Form" style="border:0px">
+    <div class="row">
+        <div class="form-group col-md-6" *ngIf="formName!='ApplicationFormNew'">
+            <label class="">Relationship Type  </label>
+            <select *ngIf="relationList != null" #select (change)="relationChange(select.value,objCarerExPartnerInfoDTO)"
+                    formControlName="RelationshipId" class="form-control" [(ngModel)]="objCarerExPartnerInfoDTO.RelationshipTypeId">
+                <option value="" [attr.selected]="objCarerExPartnerInfoDTO.RelationshipTypeId == null ? true : null">Select Relation</option>
+                <option *ngFor="let op of relationList" value="{{op.CofigTableValuesId}}">
+                    {{op.Value}}
+                </option>
+            </select>
+            <!--<div *ngIf="(!_Form.controls.RelationshipId.valid && submitted && _Form.controls.RelationshipId.errors )" class="alert alert-danger">
+                Please Select the Relationship Type
+            </div>-->
+        </div>
+        <div class="form-group col-md-6">
+            <label class="">First Name</label>
+            <input formControlName="FirstName" required type="text" class="form-control" [(ngModel)]="objCarerExPartnerInfoDTO.PersonalInfo.FirstName" />
+            <div *ngIf="(!_Form.controls.FirstName.valid && submitted && _Form.controls.FirstName.errors )" class="alert alert-danger">
+                Please Enter the First Name
+            </div>
+        </div>
+        <div class="form-group col-md-6">
+            <label class="">Middle  Name</label>
+            <input formControlName="MiddleName" type="text" class="form-control" [(ngModel)]="objCarerExPartnerInfoDTO.PersonalInfo.MiddleName" />
+
+        </div>
+        <div class="form-group col-md-6">
+            <label class="">Last Name</label>
+            <input formControlName="lastName" type="text" class="form-control"
+            [(ngModel)]="objCarerExPartnerInfoDTO.PersonalInfo.lastName" />
+            <div *ngIf="(!_Form.controls.lastName.valid && submitted && _Form.controls.lastName.errors )" class="alert alert-danger">
+                Please Enter the First Name
+            </div>
+        </div>
+        <div class="form-group col-md-6">
+            <label class="">Phone Number</label>
+            <input formControlName="HomePhone" type="text" class="form-control"
+                   [(ngModel)]="objCarerExPartnerInfoDTO.ContactInfo.HomePhone" pattern="[0-9\s]*" />
+
+            <div *ngIf="(!_Form.controls.HomePhone.valid && submitted && _Form.controls.HomePhone.errors)">
+                <div class="alert alert-danger" *ngIf="_Form.controls.HomePhone.errors.required">Please enter Phone number</div>
+                <div class="alert alert-danger" *ngIf="_Form.controls.HomePhone.errors.pattern">Phone number should be only numbers</div>
+                <div class="alert alert-danger" *ngIf="_Form.controls.HomePhone.errors.minlength ||_Form.controls.HomePhone.errors.maxlength">Phone number will be allowed in 10 to 20 max digit</div>
+
+            </div>
+        </div>
+        <div class="form-group col-md-6" *ngIf="formName!='ApplicationFormNew'">
+            <label class="">Email</label>
+            <input formControlName="EmailId" type="text" class="form-control" [(ngModel)]="objCarerExPartnerInfoDTO.ContactInfo.EmailId" />
+        </div>
+        <div class="form-group col-md-12">
+            <label class="">Address</label>
+            <textarea formControlName="AddressLine1" type="text" class="form-control" [(ngModel)]="objCarerExPartnerInfoDTO.ContactInfo.AddressLine1"></textarea>
+            <div *ngIf="(!_Form.controls.AddressLine1.valid && submitted && _Form.controls.AddressLine1.errors )" class="alert alert-danger">
+                Please Enter the AddressLine
+            </div>
+        </div>
+
+        <div class="form-group col-md-12">
+            <label class="">Duration of relationship including whether you had any children together</label>
+            <textarea formControlName="RelationshipDurationAndDetail" type="text" class="form-control" [(ngModel)]="objCarerExPartnerInfoDTO.RelationshipDurationAndDetail"></textarea>
+            <div *ngIf="(!_Form.controls.RelationshipDurationAndDetail.valid && submitted && _Form.controls.RelationshipDurationAndDetail.errors )" class="alert alert-danger">
+                Please Enter the AddressLine
+            </div>
+        </div>
+        <div class="col-md-12">
+            <button *ngIf="!isEdit" type="button"
+                    class="btn btn-primary" (click)="Submitfamilyinfo(_Form)">
+                Add
+            </button>
+            <button *ngIf="isEdit" type="button" class="btn btn-primary"
+                    (click)="UpdateExPartnerinfo(_Form)">
+                Update
+            </button>
+            <button type="button" class="btn btn-primary" (click)="SubmitCancel()">
+                Cancel
+            </button>
+        </div>
+
+        <div class="changeColor col-md-12" style="padding-top:20px">
+            <div widget class="card">
+                <div class="card-header">
+                    <span class="text-uppercase">  Existing Ex-partner(s) Details</span>
+                </div>
+                <div class="card-body widget-body">
+                    <div class="table-responsive datatable">
+                        <table class="table table-striped table-hover table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Address</th>
+                                    <th>Phone</th>
+                                    <!-- <th>Email</th> -->
+                                    <th>Duration of Relationship & No.of Children</th>
+                                    <th>Edit</th>
+                                    <th>Delete</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr *ngFor="let item of objCarerExPartnerInfoList;let i=index">
+                                    <td *ngIf="item.IsActive">{{item.PersonalInfo.FirstName}} {{item.PersonalInfo.MiddleName}}  {{item.PersonalInfo.lastName}} </td>
+                                    <td *ngIf="item.IsActive">{{item.ContactInfo.AddressLine1}}</td>
+                                    <td *ngIf="item.IsActive">{{item.ContactInfo.HomePhone}}</td>
+                                    <!-- <td *ngIf="item.IsActive">{{item.ContactInfo.EmailId}}</td> -->
+                                    <td *ngIf="item.IsActive">{{item.RelationshipDurationAndDetail}}</td>
+                                    <td *ngIf="item.IsActive"><button class="btn  btn-warning" (click)="EditData(item,i)"><i style="font-size:20px" class="fa  fa fa-edit"></i></button></td>
+                                    <td *ngIf="item.IsActive"><button *ngIf="deletbtnAccess" class="btn  btn-danger" (click)="DeleteData(item)"><i style="font-size:20px" class="fa fa-trash-o"></i></button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

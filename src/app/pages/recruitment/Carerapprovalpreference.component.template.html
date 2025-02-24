@@ -1,0 +1,255 @@
+﻿<form [formGroup]="_Form">
+    <style>
+        .class1 {
+            font-weight: bold;
+        }
+    </style>
+    <div class="col-xl-12 col-lg-12 col-12 bottom-30">
+        <CarerHeader [ApplicantProfile]="objApplicantProfileVal"></CarerHeader>
+        <div widget class="card">
+            <div class="card-header">
+                <span>Approve Carer</span>
+                <div class="widget-controls">
+                    <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                    <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                    <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+                    <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+                    <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a>
+                </div>
+            </div>
+            <div class="card-body widget-body">
+                <div class="row mbm-20">
+                    <div class="col-lg-12 col-12 bottom-30">
+                        <div class="clearfix">
+                            <ul class="nav nav-tabs top pull-left w-100p">
+                                <li class="nav-item"  (click)="fnCarerApprovalActive()">
+                                    <a class="nav-link {{CarerApprovalActive}}" data-toggle="tab" href="#CarerApprovalDetails">
+                                        Carer Approval Details
+                                    </a>
+                                </li>
+                                <li class="nav-item" (click)="fnCarerApprovalDocumentActive()">
+                                    <a class="nav-link {{CarerApprovalDocumentActive}}" data-toggle="tab" href="#UploadDocuments">Upload Documents</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="tab-content top">
+                            <div class="tab-pane {{CarerApprovalActive}}" id="CarerApprovalDetails">
+                                <div class="row">
+                                    <div class="form-group col-md-12" [hidden]="IsAccessble" style="color:red;text-align:center;font-weight:bold">
+                                        <b *ngIf="insShowApplicationFormFillMandatory">  You should complete the application form first</b>
+
+                                        <b *ngIf="!insShowApplicationFormFillMandatory">  Approve Carer form content will be visible for Stage 2 applicant.</b>
+                                    </div>
+
+                                    <div class="form-group col-md-12">
+                                        <label class="class1">Carer Code :</label>
+                                        <label class="">  {{objCarerInfo.CarerCode}}</label>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label class="class1">Primary Carer Name :</label>
+                                        <label class="">  {{objCarerInfo.PersonalInfo.FirstName}} {{objCarerInfo.PersonalInfo.lastName}}</label>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label class="class1">Date of Birth :</label>
+                                        <label class="">  {{objCarerInfo.PersonalInfo.DateOfBirth |date:'dd/MM/yyyy'}}</label>
+                                    </div>
+                                    <div class="form-group col-md-6" *ngIf="IsVisibleSC">
+                                        <label class="class1">Second Carer Name :</label>
+                                        <label class="">  {{objCarerInfoSA.PersonalInfo.FirstName}} {{objCarerInfoSA.PersonalInfo.lastName}}</label>
+
+                                    </div>
+                                    <div class="form-group col-md-6" *ngIf="IsVisibleSC">
+                                        <label class="class1">Date of Birth :</label>
+                                        <label class="">  {{objCarerInfoSA.PersonalInfo.DateOfBirth |date:'dd/MM/yyyy'}}</label>
+                                    </div>
+                                </div>
+                                <div [hidden]="!IsAccessble" class="row">
+                                    <div class="form-group col-md-6">
+                                        <label class="">Stage2 End Date:</label>
+                                        <input formControlName="StatusEndDate" type="text" placeholder="DD/MM/YYYY"  class="form-control form-control-date1" [(ngModel)]="objCarerApproveDTO.StatusEndDate" [value]="objCarerApproveDTO.StatusEndDate" datepicker
+                                               required />
+                                        <div *ngIf="(!_Form.controls.StatusEndDate.valid && submitted && _Form.controls.StatusEndDate.errors )" class="alert alert-danger">
+                                            Please Select Stage2 End Date
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label class="">Category of Approval :</label>
+                                        <select *ngIf="CategoryOfApprovalList.length > 0" formControlName="CategoryofApprovalId" class="form-control" required [(ngModel)]="objCarerApproveDTO.CategoryofApprovalId">
+                                            <option value="" [attr.selected]="objCarerApproveDTO.CategoryofApprovalId == null ? true : null">Select a Category</option>
+                                            <option *ngFor="let op of CategoryOfApprovalList" value="{{op.CofigTableValuesId}}">
+                                                {{op.Value}}
+                                            </option>
+                                        </select>
+
+                                        <div *ngIf="(!_Form.controls.CategoryofApprovalId.valid && submitted && _Form.controls.CategoryofApprovalId.errors )" class="alert alert-danger">
+                                            Please select a Category of Approval
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label class="">Approval Date  :</label>
+                                        <input formControlName="ApprovalDate" type="text" placeholder="DD/MM/YYYY"  class="form-control form-control-date1" required [(ngModel)]="objCarerApproveDTO.ApprovalDate" [value]="objCarerApproveDTO.ApprovalDate" datepicker />
+                                        <div *ngIf="(!_Form.controls.ApprovalDate.valid && submitted && _Form.controls.ApprovalDate.errors.required )" class="alert alert-danger">
+                                            Please Enter Approval Date
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label class="">Age Range  :</label>
+                                        <div class="row col-md-12">
+                                            <div class="clo col-md-3">
+                                                <select formControlName="AgeRangeFrom" class="form-control" [(ngModel)]="objCarerApproveDTO.AgeRangeMin">
+                                                    <option value="0" [attr.selected]="objCarerApproveDTO.AgeRangeMin == null ? true : null">0</option>
+                                                    <option *ngFor="let op of ageCount" value="{{op}}">
+                                                        {{op}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <div class="clo col-md-1">
+                                                -
+                                            </div>
+                                            <div class="clo col-md-3">
+
+                                                <select formControlName="AgeRangeTo" class="form-control " [(ngModel)]="objCarerApproveDTO.AgeRangeMax">
+                                                    <option value="0" [attr.selected]="objCarerApproveDTO.AgeRangeMax == null ? true : null">0</option>
+                                                    <option *ngFor="let op of ageCount" value="{{op}}">
+                                                        {{op}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <div class="clo col-md-7">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label class="">Number of Vacancy</label>
+                                        <select formControlName="NoOfVacancy" required class="form-control" [(ngModel)]="objCarerApproveDTO.NoOfVacancy">
+                                            <option value="" [attr.selected]="objCarerApproveDTO.NoOfVacancy == null ? true : null">Select a Number of Vacancy</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="6">6</option>
+                                            <option value="7">7</option>
+                                            <option value="8">8</option>
+                                            <option value="9">9</option>
+                                            <option value="10">10</option>
+                                        </select>
+                                        <div *ngIf="(!_Form.controls.NoOfVacancy.valid && submitted && _Form.controls.NoOfVacancy.errors )" class="alert alert-danger">
+                                            Please Select the Number of children
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label class="">Gender</label>
+                                        <select formControlName="Gender" class="form-control" required [(ngModel)]="objCarerApproveDTO.Gender">
+                                            <option value="" [attr.selected]="objCarerApproveDTO.Gender == null ? true : null">Select a Gender</option>
+                                            <option value="1">Male</option>
+                                            <option value="2">Female</option>
+                                            <option value="3">Any</option>
+                                        </select>
+                                        <div *ngIf="(!_Form.controls.Gender.valid && submitted && _Form.controls.Gender.errors )" class="alert alert-danger">
+                                            Please Select the Gender
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label class="">Sibling group acceptable?</label>
+                                        <select formControlName="HasBlingGroupAcceptable" class="form-control" [(ngModel)]="objCarerApproveDTO.IsSiblingGroupAcceptible">
+                                            <option value="0" [attr.selected]="objCarerApproveDTO.IsSiblingGroupAcceptible == null ? true : null">Select</option>
+                                            <option value="1">Yes</option>
+                                            <option value="2">No</option>
+                                        </select>
+
+                                    </div>
+                                    <div class="col-md-12">
+                                        <Dynamic-Form #SectionBDynamicA
+                                                      [dynamicformcontrols]="dynamicformcontrol"
+                                                      [formbuilder]="_Form" [submitted]="submitted">
+                                        </Dynamic-Form>
+                                    </div>
+                                    <!--Carer CheckList-->
+                                    <div class="col-md-12">
+                                        <div widget class="card " [hidden]="checkListHidden">
+                                            <div class="card-header">
+                                                <span class="text-uppercase">Checklist</span>
+                                            </div>
+                                            <div class="card-body widget-body">
+                                                <div class="row mbm-20">
+                                                    <div class="col-lg-12 col-12 bottom-30">
+                                                        <div class="clearfix">
+                                                            <ul class="nav nav-tabs top pull-left w-100p">
+                                                                <li class="nav-item" (click)="fnInterested()">
+                                                                    <a class="nav-link {{InterestedActive}}" data-toggle="tab" href="#Interested">Interested</a>
+                                                                </li>
+                                                                <li class="nav-item" (click)="fnStage1()" [hidden]="Stage1CheckList.length==0">
+                                                                    <a class="nav-link {{Stage1Active}}" data-toggle="tab" href="#s1">Stage 1</a>
+                                                                </li>
+                                                                <li class="nav-item" (click)="fnStage2()" [hidden]="Stage2CheckList.length==0">
+                                                                    <a class="nav-link {{Stage2Active}}" data-toggle="tab" href="#s2">Stage 2</a>
+                                                                </li>
+                                                                <li class="nav-item" (click)="fnDocumentDetail()">
+                                                                    <a class="nav-link {{DocumentActive}}" data-toggle="tab" href="#UploadDocuments">Upload Documents</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                        <div class="tab-content top">
+                                                            <div class="tab-pane {{InterestedActive}}" id="Interested">
+                                                                <Dynamic-Form #dynamicInterst [dynamicformcontrols]="InterestedCheckList" [formbuilder]="_Form" [submitted]="submitted"></Dynamic-Form>
+
+                                                            </div>
+                                                            <div class="tab-pane {{Stage1Active}}" id="s1">
+                                                                <Dynamic-Form #dynamicS1 [dynamicformcontrols]="Stage1CheckList" [formbuilder]="_Form" [submitted]="submitted"></Dynamic-Form>
+
+                                                            </div>
+                                                            <div class="tab-pane {{Stage2Active}}" id="s2">
+                                                                <Dynamic-Form #dynamicS2 [dynamicformcontrols]="Stage2CheckList" [formbuilder]="_Form" [submitted]="submitted"></Dynamic-Form>
+
+                                                            </div>
+                                                            <div class="tab-pane {{DocumentActive}}" id="UploadDocuments">
+                                                                <Upload-Documents #uploadsCCl [formCnfgId]="formIdCCl" [primaryKeyId]="tblPrimaryKeyCCl"
+                                                                                   [submittedUpload]="submittedUploadCCl"
+                                                                                  [userTypeCnfgId]="5" [typeId]="TypeIdCCl"></Upload-Documents>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <EmailNotification #Notification [FormCnfgId]="formId" ></EmailNotification>
+                                    </div>
+                                    <div class="col-lg-5 form-group ">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane {{CarerApprovalDocumentActive}}" id="UploadDocuments">
+                                <div class="tab-pane" id="tb">
+                                    <Upload-Documents #uploads [formCnfgId]="formId" [primaryKeyId]="tblPrimaryKey"  [submittedUpload]="submittedUpload"
+                                                      [userTypeCnfgId]="5" [typeId]="TypeId"></Upload-Documents>
+
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-5" [hidden]="!IsAccessble">
+                                <!--<button class="btn btn-success" (click)="clicksubmit(_Form,SectionBDynamicA.dynamicformcontrols,SectionBDynamicA.formbuilder,
+                                 uploads.UploadDocIds,
+                                 uploads.IsUpload,
+                                  uploads.formbuilder,                            dynamicS2.dynamicformcontrols,dynamicS2.formbuilder,
+                                 uploadsCCl.UploadDocIds,
+                                 uploadsCCl.IsUpload,
+                                  uploadsCCl.formbuilder)">
+                                    Submit
+                                </button>-->
+                                <!--<button (click)="this.location.back()" class="btn btn-warning">Back</button>-->
+                                <SubmitButton FormCnfgId="37" (Click)="clicksubmit(_Form,SectionBDynamicA.dynamicformcontrols,SectionBDynamicA.formbuilder,
+                                 uploads.UploadDocIds,uploads.IsUpload,uploads.formbuilder, dynamicS2.dynamicformcontrols,dynamicS2.formbuilder, uploadsCCl.UploadDocIds,
+                                 uploadsCCl.IsUpload, uploadsCCl.formbuilder,Notification.AddtionalEmailIds,Notification.EmailIds
+                                 ,dynamicInterst.dynamicformcontrols,dynamicInterst.formbuilder
+                                 ,dynamicS1.dynamicformcontrols,dynamicS1.formbuilder)" [IsLoading]="isLoading"></SubmitButton>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

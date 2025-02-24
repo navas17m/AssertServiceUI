@@ -1,0 +1,105 @@
+﻿
+<form [formGroup]="_Form" style="border:0px">
+    <div class="row">
+      <!-- <div class="form-group col-md-6">
+        <label class="">First Name</label>
+        <input formControlName="FirstName" required type="text" class="form-control" [(ngModel)]="objBackupCarerDTO.BackupCarerInfo.PersonalInfo.FirstName" />
+        <div *ngIf="(!_Form.controls.FirstName.valid && submitted && _Form.controls.FirstName.errors )" class="alert alert-danger">
+            Please Enter the First Name
+        </div>
+    </div>
+    <div class="form-group col-md-6">
+        <label class="">Last Name</label>
+        <input formControlName="lastName" type="text" required class="form-control"
+               [(ngModel)]="objBackupCarerDTO.BackupCarerInfo.PersonalInfo.lastName" />
+        <div *ngIf="(!_Form.controls.lastName.valid && submitted && _Form.controls.lastName.errors )" class="alert alert-danger">
+            Please Enter the Last Name
+        </div>
+    </div>
+    <div class="form-group col-md-6">
+        <label class="">Phone Number</label>
+        <input formControlName="HomePhone" type="text" class="form-control" [(ngModel)]="objBackupCarerDTO.BackupCarerInfo.ContactInfo.HomePhone"
+               pattern="[0-9\s]*" />
+        <div *ngIf="(!_Form.controls.HomePhone.valid && submitted && _Form.controls.HomePhone.errors)">
+            <div class="alert alert-danger" *ngIf="_Form.controls.HomePhone.errors.required">Please enter Phone number</div>
+            <div class="alert alert-danger" *ngIf="_Form.controls.HomePhone.errors.pattern">Phone number should be only numbers</div>
+            <div class="alert alert-danger" *ngIf="_Form.controls.HomePhone.errors.minlength ||_Form.controls.HomePhone.errors.maxlength">Phone number will be allowed in 10 to 20 max digit</div>
+        </div>
+    </div>
+    <div class="form-group col-md-6">
+        <label>Email</label>
+        <input formControlName="EmailId" type="text" class="form-control" [(ngModel)]="objBackupCarerDTO.BackupCarerInfo.ContactInfo.EmailId" />
+        <div *ngIf="(!_Form.controls.EmailId.valid && submitted && _Form.controls.EmailId.errors)">
+            <div class="alert alert-danger" *ngIf="_Form.controls.EmailId.errors.NotValidEmailFormat && !_Form.controls.EmailId.errors.required">Please enter valid email Id</div>
+        </div>
+    </div>
+    <div class="form-group col-md-12">
+        <label class="">Address</label>
+        <textarea formControlName="AddressLine1" type="text" class="form-control" [(ngModel)]="objBackupCarerDTO.BackupCarerInfo.ContactInfo.AddressLine1"></textarea>
+        <div *ngIf="(!_Form.controls.AddressLine1.valid && submitted && _Form.controls.AddressLine1.errors )" class="alert alert-danger">
+            Please Enter the AddressLine
+        </div>
+    </div>
+    <div class="form-group  col-md-6">
+      <label class="">I confirm that above named person has agreed to become a Nominated carer and is aware Rainbow Fostering will be in contact to request a CRB check through the agency.</label>
+      <input formControlName="AgreedToBeBackupCarer" type="radio" [value]="true" [(ngModel)]="objBackupCarerDTO.AgreedToBeBackupCarer">Yes
+      <input formControlName="AgreedToBeBackupCarer" type="radio" [value]="false" [(ngModel)]="objBackupCarerDTO.AgreedToBeBackupCarer">No
+  </div>
+    <div class="form-group col-md-12">
+      <button *ngIf="!isEdit" type="button" class="btn btn-primary" (click)="SubmitBackupCarerInfo(objBackupCarerDTO,_Form)">
+          Add
+      </button>
+      <button *ngIf="isEdit" type="button" class="btn btn-primary"
+              (click)="UpdateBackupCarerInfo(_Form)">
+          Update
+      </button>
+      <button type="button" class="btn btn-primary" (click)="SubmitCancel()">
+          Cancel
+      </button>
+  </div> -->
+
+
+
+        <div class="changeColor col-md-12" style="padding-top:20px">
+            <div widget class="card">
+                <div class="card-header">
+                    <span class="text-uppercase">Existing Backup Carer</span>
+                </div>
+                <div class="card-body widget-body">
+                    <div class="table-responsive datatable">
+                        <table class="table table-striped table-hover table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Address</th>
+                                    <th>Telephone</th>
+                                    <th>Email</th>
+                                    <!-- <th>Agreed</th>
+                                    <th>Edit</th>
+                                    <th>Delete</th> -->
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of objBackupCarerList;let i=index">
+
+                                    <td *ngIf="item.IsActive">{{item.BackupCarerInfo.PersonalInfo.FirstName}} {{item.BackupCarerInfo.PersonalInfo.lastName}}</td>
+                                    <td *ngIf="item.IsActive">{{item.BackupCarerInfo.ContactInfo.AddressLine1}}</td>
+                                    <td *ngIf="item.IsActive">{{item.BackupCarerInfo.ContactInfo.HomePhone}}</td>
+                                    <td *ngIf="item.IsActive">{{item.BackupCarerInfo.ContactInfo.EmailId}}</td>
+                                    <!-- <td *ngIf="item.IsActive">{{item.AgreedToBeBackupCarer == 1 ? 'Yes' :'No'}}</td>
+                                    <td *ngIf="item.IsActive">
+                                        <button class="btn  btn-warning" (click)="EditData(item,i)"><i style="font-size:20px" class="fa  fa fa-edit"></i></button>
+                                    </td>
+                                    <td *ngIf="item.IsActive"><button *ngIf="deletbtnAccess" class="btn  btn-danger" (click)="DeleteData(item)"><i style="font-size:20px" class="fa fa-trash-o"></i></button></td> -->
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+</form>

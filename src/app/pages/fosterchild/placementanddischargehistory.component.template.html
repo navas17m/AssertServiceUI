@@ -1,0 +1,189 @@
+﻿
+<style>
+    ::ng-deep .rowSelected{
+      background-color:lightyellow !important;
+   
+    }
+  </style>
+<div class="col-xl-12 col-lg-12 col-12 bottom-30">
+    <div widget class="card">
+        <div class="card-header">
+            <span class="text-uppercase">Placement/Discharge History</span>
+            <div class="widget-controls">
+                <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+                <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+                <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a>
+            </div>
+        </div>
+        <div class="card-body widget-body">
+            <div>
+                <Child-Header></Child-Header>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <b>Placement Type</b>
+                            <select (change)="fnChangePlacementStartType($event.target.value)" class="form-control">
+                                <option value="0">All</option>
+                                <option value="1">Placement</option>
+                                <option value="2">Respite</option>
+                                <option value="3">Transfer</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div widget class="card" *ngIf="lstChildPlacement">
+                    <div class="card-header">
+                        <span class="text-uppercase">Placement/Discharge</span>
+                        <div class="widget-controls">
+                            <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                            <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                        </div>
+                    </div>
+                    <div class="card-body widget-body">
+                        <div class="w-200 pull-right bottom-15" *ngIf="lstChildPlacement.length!=0">
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                                <input class="form-control" id="table-search-input" [(ngModel)]="searchText" type="text" placeholder="Search...">
+                            </div>
+                        </div>
+                        <table class="table table-striped table-hover table-sm">
+                            <tbody *ngIf="lstChildPlacement.length==0">
+                                <tr>
+                                    <th colspan="9" class="text-center">
+                                        <!-- No Records found. -->
+                                    </th>
+                                </tr>
+                            </tbody>
+                        </table>
+                         <div class="table table-responsive" *ngIf="lstChildPlacement.length!=0">
+                            <ngx-datatable  [rows]="lstChildPlacement | SearchFilter : 'PlacementDate,PlacementType,PlacementEndDate,DischargeReason,Type': searchText"
+                            class="bootstrap"
+                            rowHeight="auto"
+                            [columnMode]="'force'"  [limit]="10" [footerHeight]="50" [messages]="footerMessage"
+                            [rowClass]="getRowClass">
+                                <ngx-datatable-column name="Placement Date/Time" prop="PlacementDate">
+                                    <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+                                      <div [ngClass]="{'my_class': row.PlacementStartTypeId == 2}">{{value|dateFormat:'dd/MM/yyyy hh:mm a'}}</div>
+                                    </ng-template>
+                                </ngx-datatable-column>
+                                <ngx-datatable-column name="Placement Type" prop="PlacementType">
+                                    <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+                                        <div [ngClass]="{'my_class': row.PlacementStartTypeId == 2}">{{value}}</div>
+                                      </ng-template>
+                                </ngx-datatable-column>
+                                <ngx-datatable-column name="Local Authority" prop="LocalAuthority.LocalAuthorityName" [sortable]="true">
+                                    <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                                        <div>{{value}}</div>
+                                    </ng-template>
+                                </ngx-datatable-column>
+                                <ngx-datatable-column name="Discharge Date/Time" prop="PlacementEndDate">
+                                    <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+                                        <div [ngClass]="{'my_class': row.PlacementStartTypeId == 2}">{{value|dateFormat:'dd/MM/yyyy hh:mm a'}}</div>
+                                      </ng-template>
+                                </ngx-datatable-column>
+                                <ngx-datatable-column name="Discharge Reason" prop="DischargeReason">
+                                    <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+                                        <div [ngClass]="{'my_class': row.PlacementStartTypeId == 2}">{{value}}</div>
+                                      </ng-template>
+                                </ngx-datatable-column>
+                                <ngx-datatable-column name="Placement" prop="Type">
+                                    <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+                                        <div [ngClass]="{'my_class': row.PlacementStartTypeId == 2}">{{value}}</div>
+                                      </ng-template>
+                                </ngx-datatable-column>
+                                <ngx-datatable-column name="Foster Carer" prop="PCCarerName">
+                                  <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+                                      <div [ngClass]="{'my_class': row.PlacementStartTypeId == 2}">{{value}}</div>
+                                    </ng-template>
+                              </ngx-datatable-column>
+                                <ngx-datatable-column name="Edit" [sortable]=false>
+                                    <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value"
+                                    let-row="row">
+                                    <button class="btn btn-warning btn-xs"
+                                                    (click)="fnEdit(row.ChildPlacementId)">
+                                                Edit
+                                            </button>
+                                    </ng-template>
+                                </ngx-datatable-column>
+
+                            </ngx-datatable>
+
+                        </div>
+                    </div>
+                </div>
+                <div widget class="card" *ngIf="lstChildTransfer">
+                  <div class="card-header">
+                      <span class="text-uppercase">Placement/Transfer</span>
+                      <div class="widget-controls">
+                          <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                          <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                      </div>
+                  </div>
+                  <div class="card-body widget-body">
+                      <div class="w-200 pull-right bottom-15" *ngIf="lstChildTransfer!=0">
+                          <div class="input-group input-group-sm">
+                              <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                              <input class="form-control" id="table-search-input" [(ngModel)]="searchTextPlacement" type="text" placeholder="Search...">
+                          </div>
+                      </div>
+                      <table class="table table-striped table-hover table-sm">
+                          <tbody *ngIf="lstChildTransfer==null || lstChildTransfer==''">
+                              <tr>
+                                  <th colspan="6" class="text-center">
+                                      <!-- No Records found. -->
+                                  </th>
+                              </tr>
+                          </tbody>
+                      </table>
+                       <div class="table table-responsive" *ngIf="lstChildTransfer.length!=0">
+                          <ngx-datatable  [rows]="lstChildTransfer | SearchFilter : 'PlacementDate,PlacementType,PlacementEndDate,TransferFromCarer,TransferToCarer': searchTextPlacement"
+                          class="bootstrap"
+                          rowHeight="auto"
+                          [columnMode]="'force'"  [limit]="10" [footerHeight]="50" [messages]="footerMessage">
+                              <ngx-datatable-column name="Placement Date/Time" prop="PlacementDate">
+                                  <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+                                    <div>{{value|dateFormat:'dd/MM/yyyy hh:mm a'}}</div>
+                                  </ng-template>
+                              </ngx-datatable-column>
+                              <ngx-datatable-column name="Placement Type" prop="PlacementType">
+                                  <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+                                      <div>{{value}}</div>
+                                    </ng-template>
+                              </ngx-datatable-column>
+                              <ngx-datatable-column name="Local Authority" prop="LocalAuthority.LocalAuthorityName" [sortable]="true">
+                                <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                                    <div>{{value}}</div>
+                                </ng-template>
+                            </ngx-datatable-column>
+                              <ngx-datatable-column name="Discharge Date/Time" prop="PlacementEndDate">
+                                  <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+                                      <div>{{value|dateFormat:'dd/MM/yyyy hh:mm a'}}</div>
+                                    </ng-template>
+                              </ngx-datatable-column>
+                              <ngx-datatable-column name="Transfer From Carer" prop="TransferFromCarer">
+                                  <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+                                      <div>{{value}}</div>
+                                    </ng-template>
+                              </ngx-datatable-column>
+                              <ngx-datatable-column name="Transfer To Carer" prop="TransferToCarer">
+                                  <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+                                      <div>{{value}}</div>
+                                    </ng-template>
+                              </ngx-datatable-column>
+                              <ngx-datatable-column name="Edit">
+                                  <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+                                      <button class="btn btn-warning btn-xs" (click)="fnEdit(row.ChildPlacementId)">Edit</button>
+                                  </ng-template>
+                              </ngx-datatable-column>
+
+                          </ngx-datatable>
+
+                      </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

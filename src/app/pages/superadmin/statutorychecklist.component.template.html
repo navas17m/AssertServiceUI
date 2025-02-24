@@ -1,0 +1,237 @@
+﻿
+<div class="col-xl-12 col-lg-12 col-12 bottom-30">
+    <div class="row col-md-12" style="padding-bottom:5px">
+        <div class="form-group col-md-9">&nbsp;</div>
+        <div class="form-group col-md-3">
+            <button style="cursor:pointer" (click)="fnViewAllCheck()" class="btn btn-success"> Click here to view all checks</button>
+        </div>
+    </div>
+    <div class="col">
+        <ApprovedCarerHeader *ngIf="objQeryVal.mid == 3"></ApprovedCarerHeader>
+        <CarerHeader *ngIf="objQeryVal.mid == 13"></CarerHeader>
+        <Child-Header *ngIf="objQeryVal.mid == 19"></Child-Header>
+        <EmployeeHeader *ngIf="objQeryVal.mid == 25"></EmployeeHeader>
+
+        <div widget class="card">
+            <div class="card-header">
+                <span *ngIf="FormCnfgId !=120">Statutory Checks List</span>
+                <span *ngIf="FormCnfgId==120"><DisplayFormName [FormCnfgId]="FormCnfgId"></DisplayFormName> List</span>
+
+                <div class="widget-controls">
+                    <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                    <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                    <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+                    <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+                    <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a>
+                </div>
+            </div>
+            <div class="card-body widget-body">
+                <form [formGroup]="_Form">
+                    <div>
+                        <div class="form-group" *ngIf="objQeryVal.mid == 3 ||objQeryVal.mid == 13">
+                            <label class="">Member Type</label>
+                            <select *ngIf="MemberTypeList.length>0" #MemberType formControlName="MemberTypeId"
+                                    (change)="BindMemberName(MemberType.value)" class="form-control"
+                                    required [(ngModel)]="objStatutoryCheckDTO.MemberTypeId">
+                                    <option [ngValue]="null" >Select a Member Type</option>
+                                <!-- <option value="" [attr.selected]="objStatutoryCheckDTO.MemberTypeId == null ? true : null">Select a Member Type</option> -->
+                                <option *ngFor="let item of MemberTypeList" value="{{item.MemberTypeId}}">
+                                    {{item.MemberTypeName}}
+                                </option>
+                            </select>
+                            <div class="alert alert-danger" *ngIf="(!_Form.controls.MemberTypeId.valid && submitted && _Form.controls.MemberTypeId.errors.required)">
+                                Please Select a Member Type
+                            </div>
+                        </div>
+                        <div class="form-group" *ngIf="objQeryVal.mid == 3 ||objQeryVal.mid == 13">
+                            <label class="">Member</label>
+                            <select *ngIf="MemberList" formControlName="MemberId" class="form-control" required [(ngModel)]="objStatutoryCheckDTO.MemberId" (change)="BindDynamicControls()">
+                                <option [ngValue]="null" >Select a Member</option>
+                                <!-- <option value="" [attr.selected]="objStatutoryCheckDTO.MemberId == null ? true : null">Select a Member</option> -->
+                                <option *ngFor="let item of MemberList" value="{{item.MemberId}}"
+                                [ngStyle]="{'color': item.IsMemberActive==false?'red':''}" >
+                                    {{item.MemberName}} {{item.IsMemberActive==false?' (Inactive User)':''}}
+                             
+                                   
+                            </select>
+                            <div class="alert alert-danger" *ngIf="(!_Form.controls.MemberId.valid && submitted && _Form.controls.MemberId.errors.required)">
+                                Please Select a Member
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="">Check Type</label>
+                            <select #selectList formControlName="CheckTypeId" *ngIf="checkTypeList" required [(ngModel)]="objStatutoryCheckDTO.CheckTypeId"
+                                    class="form-control" (change)="CheckTypechange($event.target.options,selectList.value)">
+                                    <option [ngValue]="null" >Select a Check Type</option>
+                                <!-- <option value="" [attr.selected]="objStatutoryCheckDTO.CheckTypeId == null ? true : null">Select a Check Type</option> -->
+                                <option *ngFor="let item of checkTypeList" value="{{item.CheckTypeId}}">
+                                    {{item.CheckName}}
+                                </option>
+                            </select>
+                            <div class="alert alert-danger" *ngIf="(!_Form.controls.CheckTypeId.valid && submitted && _Form.controls.CheckTypeId.errors.required)">
+                                Please Select a Check Type
+                            </div>
+                        </div>
+
+                        <b *ngIf="checkName !='Select a Check Type'"> {{checkName}}</b>
+
+                        <div style="padding-top:10px" class="form-group" *ngIf="objStatutoryCheckDTO.CheckTypeId">
+                            <!--[hidden]="AddNewBtnVisible"-->
+                            <div *ngIf="!AddNewBtnVisible && IsMemberActive">
+                                <AddButton (click)="ClickAddNewRecord()" [FormCnfgId]="FormCnfgId" [Text]="'Add New'">
+                                </AddButton>
+                            </div>
+                        </div>
+                        <div class="form-group" [hidden]="AddNew">
+
+                            <div class="clearfix">
+                                <ul class="nav nav-tabs top pull-left w-100p">
+                                    <li class="nav-item" (click)="fnTab1Active()">
+                                        <a class="nav-link {{tab1Active}}" data-toggle="tab" href="#ta">{{checkName}}</a>
+                                    </li>
+                                    <li class="nav-item" (click)="fnTab2Active()">
+                                        <a class="nav-link {{tab2Active}}" data-toggle="tab" href="#tb">Upload Documents</a>
+                                    </li>
+
+                                </ul>
+                            </div>
+                            <div class="tab-content top">
+                                <div class="tab-pane {{tab1Active}}" id="ta">
+                                    <Dynamic-Form #dynamic [dynamicformcontrols]="dynamicformcontrol" [formbuilder]="_Form"
+                                                  [submitted]="submitted" [ControlLoadFormat]="'Default'" [GridValues]="dynamicgridValues"
+                                                  (OnValChange)="DynamicOnValChange($event)"></Dynamic-Form>
+                                    <div *ngIf="IsShowCopyContentDocument &&
+                                         !IsEditRecord">
+                                        <div class="form-group abc-checkbox" >
+                                            <input type="checkbox" formControlName="IsContentCopytoSC" [(ngModel)]="objComplianceDTO.IsContentCopytoSC" id="checkIsContentCopytoSC" />
+                                            <label class="" for="checkIsContentCopytoSC">Do you want to copy this content to  second carer?</label>
+                                        </div>
+                                        <div class="form-group abc-checkbox">
+                                            <input type="checkbox" formControlName="IsDocumentCopytoSC" [(ngModel)]="objComplianceDTO.IsDocumentCopytoSC"  id="checkIsDocumentCopytoSC"/>
+                                            <label class="" for="checkIsDocumentCopytoSC">Do you want to copy this document to  second carer? </label>
+                                        </div>
+                                    </div>
+                                    <div class="alert alert-danger" *ngIf="errorVisible">
+                                        Received date should be more than the sent date.
+                                    </div>
+                                    <EmailNotification #Notification [FormCnfgId]="insFormCnfgId" ></EmailNotification>
+                                    <!-- [AddtionalEmailIds] [EmailIds] -->
+                                </div>
+                                <div class="tab-pane {{tab2Active}}" id="tb">
+
+                                    <Upload-Documents #uploads [formCnfgId]="formId" [primaryKeyId]="tblPrimaryKey"  [submittedUpload]="submitted" [userTypeCnfgId]="userTypeCnfgId" [typeId]="TypeId"></Upload-Documents>
+                                    <!-- [IsUpload] [formbuilder] -->
+                                </div>
+                                <div class="form-group col-md-5">
+
+                                    <SubmitButton *ngIf="IsMemberActive" (click)="statutorycheckSubmit(_Form,dynamic.dynamicformcontrols,dynamic.formbuilder,
+               uploads.UploadDocIds,uploads.IsUpload,uploads.formbuilder,
+                                                  Notification.AddtionalEmailIds,Notification.EmailIds)" [IsLoading]="IsLoading"></SubmitButton>
+                                    <button type="button" id="btnReset" class="btn btn-danger" (click)="ClickAddNewRecord()">
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="changeColor" style="padding-top:10px" *ngIf="globalObjComplaintInfoList.length>0 && globalObjComplaintInfoList !=null" [hidden]="AddNewBtnVisible">
+                            <div widget class="card">
+                                <div class="card-header">
+                                    <span class="text-uppercase">  {{checkName}} List</span>
+                                </div>
+                                <div class="card-body widget-body">
+                                    <div class="table-responsive datatable">
+                                        <table class="table table-striped table-hover table-sm" >
+                                            <thead>
+                                                <tr>
+                                                    <th width="10px"></th>
+                                                    <th *ngFor="let item of globalObjComplaintInfoList[globalObjComplaintInfoList.length-1]|slice:0:3|NotEqual:'FieldName':'IsActive';let i=index">
+                                                        {{item.DisplayName}}
+                                                    </th>
+
+                                                    <th *ngIf="IsMemberActive" >Edit</th>
+                                                    <th>View</th>
+                                                    <th *ngIf="IsMemberActive" >Delete</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let item of globalObjComplaintInfoList;let i=index">
+                                                    <td width="10px">
+                                                        <!--{{item[0].IsDocumentExist|json}}-->
+                                                        <span style="font-size:20px" *ngIf="item[0].IsDocumentExist" class="fa fa-paperclip"></span>
+                                                    </td>
+                                                    <td *ngFor="let subitem of item |slice:0:3 |NotEqual:'FieldName':'IsActive'">
+                                                        <span *ngIf="subitem.FieldDataTypeName=='date'">
+                                                            {{subitem.FieldValue |dateFormat:'dd/MM/yyyy'}}
+                                                        </span>
+                                                        <span *ngIf="subitem.FieldDataTypeName =='Dropdown'">
+                                                            {{subitem.FieldValueText}}
+                                                        </span>
+                                                        <span *ngIf="subitem.FieldDataTypeName !='date' &&subitem.FieldDataTypeName !='Dropdown' && subitem.FieldDataTypeName !='bit' &&
+                                                              subitem.FieldDataTypeName !='radio'">
+                                                            {{subitem.FieldValue}}
+                                                        </span>
+                                                        <span *ngIf="subitem.FieldDataTypeName =='bit'
+                                                              || subitem.FieldDataTypeName =='radio'">
+                                                            {{subitem.FieldValue==1?'Yes':'No'}}
+                                                        </span>
+
+
+                                                    </td>
+
+                                                    <td *ngIf="IsMemberActive" >
+                                                        <EditButton *ngIf="ComplianceStatusId !=i" [FormCnfgId]="FormCnfgId"
+                                                                    (click)="EditComplaintInfoList(i)">
+                                                        </EditButton>
+                                                    </td>
+                                                    <td>
+                                                        <ViewButton [FormCnfgId]="FormCnfgId" (click)="ViewComplaintInfoList(i)"></ViewButton>
+                                                    </td>
+                                                    <td *ngIf="IsMemberActive" >
+                                                        <DeleteButton [FormCnfgId]="FormCnfgId" (Click)="DeleteComplaintInfoList(i)"
+                                                                      [SequenceNo]="i"></DeleteButton>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+
+
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="changeColor" style="padding-top:10px" *ngIf="checkName !='Select a Check Type' && checkName !='' && checkName!=null && globalObjComplaintInfoList.length==0" [hidden]="AddNewBtnVisible">
+                            <div widget class="card">
+                                <div class="card-header">
+                                    <span class="text-uppercase">  {{checkName}} List</span>
+                                </div>
+                                <div class="card-body widget-body">
+                                    <div class="table-responsive datatable">
+                                        <table class="table table-striped table-hover table-sm"  style="border:none">
+                                            <thead>
+                                                <tr>
+                                                    <th *ngIf="!loading" colspan="8" class="text-center">
+                                                        No Records found.
+                                                    </th>
+                                                    <th *ngIf="loading" colspan="8" class="text-center">
+                                                        <i class="fa fa-spinner fa-spin"></i> Loading please wait...
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+
+
+            </div>
+        </div>
+    </div>
+
+
+
+</div>

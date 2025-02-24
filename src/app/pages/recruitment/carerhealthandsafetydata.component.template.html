@@ -1,0 +1,174 @@
+﻿<form [formGroup]="_Form">
+    <div class="col-xl-12 col-lg-12 col-12 bottom-30">
+        <!-- <div style="text-align:right" *ngIf="showAutoSave">
+            <b>{{saveDraftText}}  {{draftSavedTime | date: 'HH:mm'}}</b>
+        </div> -->
+        <AutoSavedMessage [Text]="saveDraftText" [Time]="draftSavedTime" [Visible]="showAutoSave"></AutoSavedMessage>
+        <ApprovedCarerHeader *ngIf="objQeryVal.mid == 3"></ApprovedCarerHeader>
+        <CarerHeader *ngIf="objQeryVal.mid == 13"></CarerHeader>
+        <ViewDisable></ViewDisable>
+        <div widget class="card">
+            <div class="card-header">
+                <span>Health and Safety</span>
+                <div class="widget-controls">
+                    <i class="fa fa-file-pdf-o" (click)="fnDonloadPDF()" style="font-size:18px;color:white;cursor:pointer;" title="Download PDF"></i>
+                    <i class="fa fa-file-word-o" (click)="fnDonloadWord()" style="font-size:18px;color:white;cursor:pointer;padding-left:5px;" title="Download Word"></i>
+                    <i class="fa fa-print" (click)="fnPrint()" style="font-size:18px;color:white;cursor:pointer;padding-left:5px;padding-right:5px" title="Print"></i>
+                    <i class="fa fa-envelope-open" (click)="fnShowEmail()" style="font-size:18px;color:white;cursor:pointer;" title="Email"></i>
+                </div>
+            </div>
+            <div class="card-body widget-body">
+                <div class="row mbm-20">
+                    <div class="col-lg-12 col-12 bottom-30">
+                        <div class="clearfix">
+                            <ul class="nav nav-tabs top pull-left w-100p">
+                                <li class="nav-item" (click)="fnPageHCA()">
+                                    <a class="nav-link {{PageHCAActive}}" data-toggle="tab" href="#t1">Household Conditions - A</a>
+                                </li>
+                                <li class="nav-item" (click)="fnPageHCB()" [hidden]="PageHCBVisibleTab">
+                                    <a class="nav-link {{PageHCBActive}}" data-toggle="tab" href="#t2">B</a>
+                                </li>
+                                <li class="nav-item" (click)="fnPageIndoorA()" [hidden]="PageIndoorAVisibleTab">
+                                    <a class="nav-link {{PageIndoorAActive}}" data-toggle="tab" href="#t3">Safety Factors - Indoors A</a>
+                                </li>
+                                <li class="nav-item" (click)="fnPageIndoorB()" [hidden]="PageIndoorBVisibleTab">
+                                    <a class="nav-link {{PageIndoorBActive}}" data-toggle="tab" href="#t4">B</a>
+                                </li>
+                                <li class="nav-item" (click)="fnPageIndoorC()" [hidden]="PageIndoorCVisibleTab">
+                                    <a class="nav-link {{PageIndoorCActive}}" data-toggle="tab" href="#t5">C</a>
+                                </li>
+                                <li class="nav-item" (click)="fnPageIndoorD()" [hidden]="PageIndoorDVisibleTab">
+                                    <a class="nav-link {{PageIndoorDActive}}" data-toggle="tab" href="#t6">D</a>
+                                </li>
+                                <li class="nav-item" (click)="fnPageIndoorE()" [hidden]="PageIndoorEVisibleTab">
+                                    <a class="nav-link {{PageIndoorEActive}}" data-toggle="tab" href="#t7">E</a>
+                                </li>
+                                <li class="nav-item" (click)="fnPageOutdoor()" [hidden]="PageOutdoorVisibleTab">
+                                    <a class="nav-link {{PageOutdoorActive}}" data-toggle="tab" href="#t8">Safety Factors - Outdoors</a>
+                                </li>
+                                <li class="nav-item" (click)="fnPageBrief()" [hidden]="PageBriefVisibleTab">
+                                    <a class="nav-link {{PageBriefActive}}" data-toggle="tab" href="#t9">Brief IHV</a>
+                                </li>
+                                <li class="nav-item" (click)="fnDocumentDetail()">
+                                    <a class="nav-link {{DocumentActive}}" data-toggle="tab" href="#UploadDocuments">Upload Documents</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="tab-content top">
+                            <div class="tab-pane {{PageHCAActive}}" id="t1">
+                                <Dynamic-Form #SectionAdynamic [dynamicformcontrols]="dynamicformcontrol|filter:'ControlLoadFormat':'Conditions A'" [formbuilder]="_Form" [submitted]="submitted"></Dynamic-Form>
+                            </div>
+                            <div class="tab-pane {{PageHCBActive}}" id="t2">
+                                <Dynamic-Form #SectionBdynamic [dynamicformcontrols]="dynamicformcontrol|filter:'ControlLoadFormat':'Conditions B'" [formbuilder]="_Form" [submitted]="submitted"></Dynamic-Form>
+                            </div>
+                            <div class="tab-pane {{PageIndoorAActive}}" id="t3">
+                                <Dynamic-Form #SectionCdynamic [dynamicformcontrols]="dynamicformcontrol|filter:'ControlLoadFormat':'Indoors A'" [formbuilder]="_Form" [submitted]="submitted"></Dynamic-Form>
+                            </div>
+                            <div class="tab-pane {{PageIndoorBActive}}" id="t4">
+                                <Dynamic-Form #SectionDdynamic [dynamicformcontrols]="dynamicformcontrol|filter:'ControlLoadFormat':'Indoors B'" [formbuilder]="_Form" [submitted]="submitted"></Dynamic-Form>
+                            </div>
+                            <div class="tab-pane {{PageIndoorCActive}}" id="t5">
+                                <Dynamic-Form #SectionEdynamic [dynamicformcontrols]="dynamicformcontrol|filter:'ControlLoadFormat':'Indoors C'" [formbuilder]="_Form" [submitted]="submitted"></Dynamic-Form>
+                            </div>
+                            <div class="tab-pane {{PageIndoorDActive}}" id="t6">
+                                <Dynamic-Form #SectionFdynamic [dynamicformcontrols]="dynamicformcontrol|filter:'ControlLoadFormat':'Indoors D'"
+                                              (OnValChange)="DynamicOnValChange($event)" [formbuilder]="_Form" [submitted]="submitted"></Dynamic-Form>
+                            </div>
+                            <div class="tab-pane {{PageIndoorEActive}}" id="t7">
+                                <Dynamic-Form #SectionGdynamic [dynamicformcontrols]="dynamicformcontrol|filter:'ControlLoadFormat':'Indoors E'" [formbuilder]="_Form" [submitted]="submitted"></Dynamic-Form>
+                            </div>
+                            <div class="tab-pane {{PageOutdoorActive}}" id="t8">
+                                <Dynamic-Form #SectionHdynamic [dynamicformcontrols]="dynamicformcontrol|filter:'ControlLoadFormat':'Outdoors'" [formbuilder]="_Form" [submitted]="submitted"
+                                              (OnValChange)="DynamicOnValChange($event)"></Dynamic-Form>
+                            </div>
+                            <div class="tab-pane {{PageBriefActive}}" id="t9">
+                                <Dynamic-Form #Briefdynamic [dynamicformcontrols]="dynamicformcontrol|filter:'ControlLoadFormat':'Brief'" [formbuilder]="_Form" [submitted]="submitted"
+                                              ></Dynamic-Form>
+                            </div>
+                            <div class="tab-pane {{DocumentActive}}" id="UploadDocuments">
+                                <Upload-Documents #uploads [formCnfgId]="formId" [primaryKeyId]="tblPrimaryKey"
+                                                   [submittedUpload]="submittedUpload"
+                                                  [userTypeCnfgId]="4" [typeId]="TypeId"></Upload-Documents>
+
+                            </div>
+                            <div class="form-group col-lg-12">
+                                <EmailNotification #Notification [FormCnfgId]="formId"  ></EmailNotification>
+                            </div>
+                            <div class="col-lg-9 form-group">
+                                <button *ngIf="showbtnSaveDraft" [ladda]="isLoadingSAD" #btnSaveDraft (click)="fnSaveDraft(SectionAdynamic.dynamicformcontrols,
+                                            SectionBdynamic.dynamicformcontrols,
+                                            SectionCdynamic.dynamicformcontrols,
+                                            SectionDdynamic.dynamicformcontrols,
+                                            SectionEdynamic.dynamicformcontrols,
+                                            SectionFdynamic.dynamicformcontrols,
+                                            SectionGdynamic.dynamicformcontrols,
+                                            SectionHdynamic.dynamicformcontrols,
+                                            Briefdynamic.dynamicformcontrols,
+                                            uploads.IsUpload,
+                                            uploads.formbuilder)" class="btn btn-primary expand-right">{{saveAsDraftText}}
+                                </button>
+                                <SubmitButton #btnSubmit (Click)="clicksubmit(_Form,SectionAdynamic.dynamicformcontrols,SectionAdynamic.formbuilder,
+                                              SectionBdynamic.dynamicformcontrols,SectionBdynamic.formbuilder,
+                                              SectionCdynamic.dynamicformcontrols,SectionCdynamic.formbuilder,
+                                              SectionDdynamic.dynamicformcontrols,SectionDdynamic.formbuilder,
+                                              SectionEdynamic.dynamicformcontrols,SectionEdynamic.formbuilder,
+                                              SectionFdynamic.dynamicformcontrols,SectionFdynamic.formbuilder,
+                                              SectionGdynamic.dynamicformcontrols,SectionGdynamic.formbuilder,
+                                              SectionHdynamic.dynamicformcontrols,SectionHdynamic.formbuilder,
+                                         Briefdynamic.dynamicformcontrols,Briefdynamic.formbuilder,
+                                              uploads.UploadDocIds,uploads.IsUpload,uploads.formbuilder,
+                                              Notification.AddtionalEmailIds,Notification.EmailIds)" [IsDiasable]="isLoadingSAD" [Text]="submitText" [IsLoading]="isLoading" ></SubmitButton>
+                               <BackButton></BackButton>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+<div>
+    <button #btnPrint type="button" [hidden]="true" class="btn btn-primary" data-toggle="modal" data-target="#lg-modal1">Large</button>
+    <div class="modal fade" id="lg-modal1" tabindex="-1" role="dialog" aria-labelledby="modal-large-label" style="display: none;">
+        <div class="modal-dialog modal-lg" role="document">
+            <form [formGroup]="_FormPrint">
+                <div class="modal-content">
+                    <div class="modal-header state modal-primary">
+                        <h4 class="modal-title" id="modal-large-label">
+                            <i class="fa fa-print"></i>Email
+                        </h4>
+                        <div *ngIf="isLoading"><i class="fa fa-spinner fa-spin"></i> Sending email please wait...</div>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="form-group">
+                            Enter Email Subject:
+                            <input type="text" [(ngModel)]="subject" class="form-control" formControlName="subject" required />
+                            <div *ngIf="(!_FormPrint.controls.subject.valid && submittedprint && _FormPrint.controls.subject.errors.required )" class="alert alert-danger">
+                                Please enter Email Subject
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            Enter Email Address(es):
+                            <textarea [(ngModel)]="eAddress" class="form-control" formControlName="eAddress" required></textarea>
+                            <div *ngIf="(!_FormPrint.controls.eAddress.valid && submittedprint && _FormPrint.controls.eAddress.errors.required )" class="alert alert-danger">
+                                Please enter Email Address(es)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <!--<button type="button" class="btn btn-success" (click)="fnPrint()">Print</button>-->
+                        <button type="button" class="btn btn-success" (click)="fnEmail(_FormPrint)" [disabled]="isLoading">Email</button>
+                        <button #btnCancel type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>

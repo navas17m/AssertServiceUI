@@ -1,0 +1,72 @@
+﻿<form [formGroup]="_Form">
+    <style>
+        .class1 {
+            font-weight: bold;
+        }
+    </style>
+    <div class="col-xl-12 col-lg-12 col-12 bottom-30">
+        <ViewDisable></ViewDisable>
+        <Child-Header></Child-Header>
+        <div widget class="card">
+            <div class="card-header">
+                <span>D3 Personal Information</span>
+                <div class="widget-controls">
+                    <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                    <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                    <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+                    <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+                    <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a>
+                </div>
+            </div>
+            <div class="card-body widget-body">
+                <div class="row mbm-20">
+                    <div class="col-lg-12 col-12 bottom-30">
+                        <div class="clearfix">
+                            <ul class="nav nav-tabs top pull-left w-100p">
+                                <li class="nav-item" (click)="fnD3InfoActive()">
+                                    <a class="nav-link {{insd3InfoActive}}" data-toggle="tab" href="#CarerApprovalDetails">
+                                        D3 Personal Information
+                                    </a>
+                                </li>
+                                <li class="nav-item" (click)="fnDocumentActive()">
+                                    <a class="nav-link {{insDocumentActive}}" data-toggle="tab" href="#UploadDocuments">Upload Documents</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="tab-content top">
+                            <div class="tab-pane {{insd3InfoActive}}" id="CarerApprovalDetails">
+
+                                <div class="form-group">
+                                    <label class="">Date:</label>
+                                    <input formControlName="InformationDate" type="text" placeholder="DD/MM/YYYY" class="form-control form-control-date" [(ngModel)]="objChildD3PersonalInformation.InformationDate" [value]="objChildD3PersonalInformation.InformationDate" datepicker
+                                           required />
+                                    <div *ngIf="(!_Form.controls.InformationDate.valid && submitted && _Form.controls.InformationDate.errors )" class="alert alert-danger">
+                                        Please Select Date
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Comments</label>
+                                    <textarea formControlName="Comments" class="form-control" [(ngModel)]="objChildD3PersonalInformation.Comments"></textarea>
+                                </div>
+
+                            </div>
+                            <div class="tab-pane {{insDocumentActive}}" id="UploadDocuments">
+                                <div class="tab-pane" id="tb">
+                                    <Upload-Documents #uploads [formCnfgId]="formId" [primaryKeyId]="tblPrimaryKey"  [submittedUpload]="submittedUpload"
+                                                      [userTypeCnfgId]="5" [typeId]="TypeId"></Upload-Documents>
+                                                      <!-- [IsUpload] [formbuilder] -->
+
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-5">
+                                <SubmitButton FormCnfgId="256" (Click)="clicksubmit(_Form,
+                                 uploads.UploadDocIds,uploads.IsUpload,uploads.formbuilder)" [IsLoading]="isLoading"></SubmitButton>
+                                <BackButton></BackButton>
+                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

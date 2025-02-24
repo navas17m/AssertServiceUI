@@ -1,0 +1,125 @@
+﻿
+<div [formGroup]="_personalinfoForm" style="border:0px">
+    <style>
+        .datepickerwidth {
+            width: 36%;
+        }
+    </style>
+    <div class="row">
+
+        <div class="row col-md-12">
+            <div class="col-md-12">
+                <label><b>Personal details</b></label>
+            </div>
+            <div class="form-group col-md-12" *ngIf="objVisible.ImageIdVisible">
+                <!--<label class="">Image</label>-->
+                <div class="card-body widget-body">
+                    <div class="row">
+                        <div style="width:180px">
+                            <input type="file" (change)="fileChange(input)" #input class="img-upload-btn" />
+                            <button class="btn btn-main btn-block" type="button">
+                                <span *ngIf="!image"><i class="fa fa-upload"></i>  Upload Photo</span>
+                                <span *ngIf="image"><i class="fa fa-refresh"></i>  Change Photo </span>
+                            </button>
+                            <div class="image-wrapper">
+                                <i *ngIf="image" class="fa fa-times delete-img" (click)="removeImage()"></i>
+                                <img [attr.src]="image" *ngIf="image" style="height:140px;width:180px">
+                                <img [attr.src]="srcPath" *ngIf="!image" style="height:140px;width:180px">
+                            </div>
+                            <div *ngIf="showFileTooLarge" class="alert-danger">
+                                Selected file is too large.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-md-6" *ngIf="objVisible.TitleVisible">
+                <label>Title</label>
+                <select *ngIf="listTitle.length > 0" formControlName="TitleId" class="form-control" [required]="objVisible.TitleMandatory" [(ngModel)]="personalinfoval.TitleId">
+                    <option value="" [attr.selected]="personalinfoval.TitleId == null ? true : null">Select a Title</option>
+                    <option *ngFor="let op of listTitle" value="{{op.CofigTableValuesId}}">
+                        {{op.Value}}
+                    </option>
+                </select>
+                <div *ngIf="(!_personalinfoForm.controls.TitleId.valid && submitted && _personalinfoForm.controls.TitleId.errors )" class="alert alert-danger">
+                    Please select a Title
+                </div>
+            </div>
+            <div class="form-group col-md-6" *ngIf="objVisible.FirstNameVisible">
+                <label>First Name</label>
+                <input formControlName="FirstName" type="text" class="form-control" [required]="objVisible.FirstNameMandatory" [(ngModel)]="personalinfoval.FirstName" />
+                <div *ngIf="(!_personalinfoForm.controls.FirstName.valid && submitted && _personalinfoForm.controls.FirstName.errors.required )" class="alert alert-danger">
+                    Please enter First Name
+                </div>
+            </div>
+            <div class="form-group col-md-6" *ngIf="objVisible.MiddleNameVisible">
+                <label class="">Middle Name</label>
+                <input [required]="objVisible.MiddleNameMandatory" formControlName="MiddleName" type="text" class="form-control" [(ngModel)]="personalinfoval.MiddleName" />
+
+            </div>
+            <div class="form-group col-md-6" *ngIf="objVisible.lastNameVisible">
+                <label class="">Last Name</label>
+                <input formControlName="lastName" type="text" class="form-control" [required]="objVisible.lastNameMandatory" [(ngModel)]="personalinfoval.lastName" />
+                <div *ngIf="(!_personalinfoForm.controls.lastName.valid && submitted && _personalinfoForm.controls.lastName.errors.required )" class="alert alert-danger">
+                    Please enter Last Name
+                </div>
+            </div>
+            <div class="form-group col-md-6" *ngIf="objVisible.PreviousNameVisible">
+                <label class="">Previous Name</label>
+                <input [required]="objVisible.PreviousNameMandatory" formControlName="PreviousName" type="text" class="form-control" [(ngModel)]="personalinfoval.PreviousName" />
+
+            </div>
+
+            <div class="form-group col-md-6" *ngIf="objVisible.DateOfBirthVisible">
+                <label class="">Date Of Birth </label>
+                <input #DOB formControlName="DateOfBirth" type="text" placeholder="DD/MM/YYYY" class="form-control form-control-date" [required]="objVisible.DateOfBirthMandatory"
+                       [(ngModel)]="personalinfoval.DateOfBirth"
+                       (ngModelChange)="fnDateChange(DOB.value)" [value]="personalinfoval.DateOfBirth"
+                       datepicker />
+                <div *ngIf="(!_personalinfoForm.controls.DateOfBirth.valid && submitted && _personalinfoForm.controls.DateOfBirth.errors.required )" class="alert alert-danger">
+                    Please Enter Date Of Birth
+                </div>
+                <!--<div *ngIf="(!_personalinfoForm.controls.DateOfBirth.valid && submitted && _personalinfoForm.controls.DateOfBirth.errors.minDate)" class="alert alert-danger">
+                    Please Enter Valid Date Of Birth
+                </div>-->
+            </div>
+            <div class="form-group col-md-6" *ngIf="objVisible.AgeVisible">
+                <label class="">Age</label>
+                <input formControlName="Age" type="number" class="form-control" [required]="objVisible.AgeMandatory" [(ngModel)]="personalinfoval.Age" />
+                <div *ngIf="(!_personalinfoForm.controls.Age.valid && submitted && _personalinfoForm.controls.Age.errors.required )" class="alert alert-danger">
+                    Please Enter Age
+                </div>
+            </div>
+            <div class="form-group col-md-6" *ngIf="objVisible.genderIdVisible">
+                <label class="">Gender</label>
+                <div *ngIf="gendertype != 2">
+                    <select formControlName="options" class="form-control" [required]="objVisible.genderIdMandatory" [(ngModel)]="personalinfoval.GenderId">
+                        <option value="" [attr.selected]="personalinfoval.GenderId == null ? true : null">Select a Gender</option>
+                        <option value="1">Male</option>
+                        <option value="2">Female</option>
+                        <option value="5">Transgender Male</option>
+                        <option value="6">Transgender Female</option>
+                        <option value="7">Gender Variant/Non-Conforming</option>
+                    </select>
+                    <div *ngIf="(!_personalinfoForm.controls.options.valid && submitted && _personalinfoForm.controls.options.errors.required )" class="alert alert-danger">
+                        Please Select a Gender
+                    </div>
+                </div>
+                <div *ngIf="gendertype == 2">
+                    <select formControlName="options" class="form-control" [required]="objVisible.genderIdMandatory" [(ngModel)]="personalinfoval.GenderId">
+                        <option value="" [attr.selected]="personalinfoval.GenderId == null ? true : null">
+                            Select a Gender
+                        </option>
+                        <option value="1">Male</option>
+                        <option value="2">Female</option>
+                        <option value="3">Unknown</option>
+                        <option value="4">Unborn</option>
+                    </select>
+                    <div *ngIf="(!_personalinfoForm.controls.options.valid && submitted && _personalinfoForm.controls.options.errors.required )" class="alert alert-danger">
+                        Please Select a Gender
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,225 @@
+﻿<div class="col-xl-12 col-lg-12 col-12 bottom-30">
+    <ViewDisable></ViewDisable>
+    <Child-Header></Child-Header>
+    <div>
+        <div widget class="card">
+            <div class="card-header">
+                <span>Child Medication Info </span>
+                <div class="widget-controls">
+                    <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                    <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                    <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+                    <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+                    <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a>
+                </div>
+            </div>
+            <div class="card-body widget-body">
+                <form [formGroup]="_Form">
+                    <div class="clearfix">
+                        <ul class="nav nav-tabs top pull-left w-100p">
+                            <li class="nav-item" (click)="fnMedicationTab()">
+                                <a class="nav-link {{MedicationTabActive}}" data-toggle="tab" href="#ta">Medication Info</a>
+                            </li>
+                            <li class="nav-item" (click)="fnDocumentDetailTab()">
+                                <a class="nav-link {{DocumentActive}}" data-toggle="tab" href="#tb">Upload Documents</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="tab-content top">
+                        <div class="tab-pane {{MedicationTabActive}}" id="ta">
+                            <Dynamic-Form #dynamic [dynamicformcontrols]="dynamicformcontrol | filter : 'ControlLoadFormat':'Default'" [formbuilder]="_Form" [submitted]="submitted"></Dynamic-Form>
+
+                            <div style="border: 2px solid #979aa0;padding:10px;background-color:#edf1f7">
+                                <Dynamic-Form #dynamicB [dynamicformcontrols]="dynamicformcontrolDetail"
+                                              [formbuilder]="_Form" [submitted]="submittedHealthDetails"
+                                              (OnValChange)="DynamicOnValChange($event,dynamicB.dynamicformcontrols)">
+                                </Dynamic-Form>
+                                <button *ngIf="!isEdit" (click)="AddAttendedDetails(dynamicB.dynamicformcontrols,dynamicB.formbuilder)" class="btn btn-success">Add</button>
+                                <div *ngIf="isEdit">
+                                    <button (click)="UpdateAttendedDetails(dynamicB.dynamicformcontrols,dynamicB.formbuilder)" class="btn btn-success">Update</button>
+                                    <button (click)="CancelEdit()" class="btn btn-danger">Cancel</button>
+                                </div>
+                                <div class="changeColor" style="padding-top:20px" *ngIf="globalobjHealthDetailsList.length>0 && globalobjHealthDetailsList !=null">
+                                    <div widget class="card">
+                                        <div class="card-header">
+                                            <span class="text-uppercase">  Existing Details</span>
+                                        </div>
+                                        <div class="card-body widget-body">
+                                            <div class="table-responsive datatable">
+                                                <table class="table table-striped table-hover table-sm" >
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Medication Given Period</th>
+                                                            <th>Name of Medication</th>
+                                                            <th>Dosage/Frequency</th>
+                                                             <th>Medication Date</th>
+                                                            <th>Edit</th>
+                                                            <th>Delete</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr *ngFor="let item of globalobjHealthDetailsList;let i=index">
+                                                            <td *ngIf="item[0].StatusId != 3">
+                                                                <span *ngFor="let subitem of item | filter : 'FieldName':'MedicationGivenPeriod'">
+                                                                   {{subitem.FieldValueText}}
+                                                                </span>
+                                                            </td>
+                                                            <td *ngIf="item[0].StatusId != 3">
+                                                                <span *ngFor="let subitem of item | filter : 'FieldName':'MedicationName'">
+                                                                   {{subitem.FieldValue}}
+                                                                </span>
+                                                            </td>
+                                                            <td *ngIf="item[0].StatusId != 3">
+                                                                <span *ngFor="let subitem of item | filter : 'FieldName':'MedicationDosage'">
+                                                                   {{subitem.FieldValue}}
+                                                                </span>
+                                                            </td>
+                                                            <td *ngIf="item[0].StatusId != 3">
+
+
+                                                                <span *ngFor="let subitem of item | filter : 'FieldName':'MedicationGivenPeriod'">
+
+                                                                    <span *ngIf="subitem.FieldValueText=='Day'">
+                                                                        <span *ngFor="let subitem of item | filter : 'FieldName':'DateMedicationGiven'">
+                                                                            {{subitem.FieldValue|dateFormat:'dd/MM/yyyy'}}
+                                                                        </span>
+                                                                    </span>
+
+                                                                     <span *ngIf="subitem.FieldValueText=='Month'||subitem.FieldValueText=='Week'">
+                                                                        <span *ngFor="let subitem of item | filter : 'FieldName':'FromDateMedicationGiven'">
+                                                                            {{subitem.FieldValue|dateFormat:'dd/MM/yyyy'}}
+                                                                            {{subitem.FieldValue!=null?'to':''}}
+                                                                            <span *ngFor="let subitem of item | filter : 'FieldName':'ToDateMedicationGiven'">
+                                                                                {{subitem.FieldValue|dateFormat:'dd/MM/yyyy'}}
+                                                                            </span>
+
+                                                                        </span>
+                                                                    </span>
+
+                                                                 </span>
+
+                                                            </td>
+
+                                                            <td *ngIf="item[0].StatusId != 3">
+                                                                <div *ngIf="item[0].StatusId==3">
+                                                                    <button disabled class="btn  btn-warning"><i style="font-size:20px" class="fa fa-trash-o"></i></button>
+                                                                </div>
+
+                                                                <div *ngIf="item[0].StatusId != 3">
+                                                                    <button *ngIf="healthDetailId !=i" class="btn  btn-warning"
+                                                                            (click)="EditAttendedStatusList(i)">
+                                                                        <i style="font-size:20px" class="fa  fa fa-edit"></i>
+                                                                    </button>
+
+                                                                    <button disabled *ngIf="healthDetailId ==i" class="btn  btn-warning">
+                                                                        <i style="font-size:20px" class="fa  fa fa-edit"></i>
+                                                                    </button>
+                                                                </div>
+
+                                                            </td>
+                                                            <td *ngIf="item[0].StatusId != 3">
+                                                                <div *ngIf="item[0].StatusId==3">
+                                                                    <button *ngIf="deletbtnAccess" disabled class="btn  btn-danger"><i style="font-size:20px" class="fa fa-trash-o"></i></button>
+                                                                </div>
+                                                                <div *ngIf="item[0].StatusId != 3">
+                                                                    <button *ngIf="deletbtnAccess"
+                                                                            [disabled]="healthDetailId != null"
+                                                                            class="btn  btn-danger"
+                                                                            (click)="DeleteAttendedStatusList (i)">
+                                                                        <i style="font-size:20px" class="fa fa-trash-o"></i>
+                                                                    </button>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+
+
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <!-- <div class="card-body widget-body">
+                                            <div class="table table-responsive">
+                                                <ngx-datatable [rows]="ngxList"
+                                                    class="bootstrap"
+                                                    rowHeight="auto"
+                                                    [columnMode]="'force'"
+                                                    [limit]="limit"
+                                                    rowHeight="auto"
+                                                    [scrollbarH]="true"
+                                                    [footerHeight]="50">
+                                                    <ngx-datatable-column *ngFor="let col of subColumns; let i = index" [name]="col.name" [prop]="col.prop">
+                                                        <ng-template ngx-datatable-header-template >{{ col.name }}</ng-template>
+                                                        <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                                                        <div *ngIf="row.StatusId != 3">{{value}}</div>
+                                                        </ng-template>
+                                                    </ngx-datatable-column>
+                                                    <ngx-datatable-column name="Edit" [sortable]=false>
+                                                        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+
+
+                                                            <div *ngIf="row.StatusId != 3">
+                                                                <button *ngIf="healthDetailId !=rowIndex" class="btn  btn-warning"
+                                                                        (click)="EditAttendedStatusList(rowIndex)">
+                                                                    <i style="font-size:20px" class="fa  fa fa-edit"></i>
+                                                                </button>
+
+                                                                <button disabled *ngIf="healthDetailId ==rowIndex"
+                                                                        class="btn  btn-warning">
+                                                                    <i style="font-size:20px" class="fa  fa fa-edit"></i>
+                                                                </button>
+                                                            </div>
+
+                                                        </ng-template>
+                                                    </ngx-datatable-column>
+                                                    <ngx-datatable-column name="Delete" [sortable]=false>
+                                                        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+
+                                                    <div *ngIf="row.StatusId != 3">
+                                                        <button  *ngIf="deletbtnAccess"  [disabled]="healthDetailId != null"
+                                                                class="btn  btn-danger"
+                                                                (click)="DeleteAttendedStatusList (rowIndex)">
+                                                            <i style="font-size:20px" class="fa fa-trash-o"></i>
+                                                        </button>
+                                                    </div>
+                                                </ng-template>
+                                                    </ngx-datatable-column>
+                                                    </ngx-datatable>
+
+                                            </div>
+                                        </div>  -->
+
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <Dynamic-Form #dynamicC [dynamicformcontrols]="dynamicformcontrol | filter : 'ControlLoadFormat':'Default2'"
+                            [formbuilder]="_Form" [submitted]="submitted"></Dynamic-Form>
+                             <br>
+                            <EmailNotification #Notification [FormCnfgId]="formId" ></EmailNotification>
+                            <!-- [AddtionalEmailIds] [EmailIds] -->
+
+                            <div class="form-group alert alert-danger" *ngIf="isShowPrescriptionError">
+                                Please select any one of Prescription Issue Date or Non-prescribed Medication Issue Date
+                            </div>
+                        </div>
+                        <div class="tab-pane {{DocumentActive}}" id="tb">
+                            <Upload-Documents #uploads [formCnfgId]="formId" [primaryKeyId]="tblPrimaryKey"
+                                               [submittedUpload]="submittedUpload"
+                                              [userTypeCnfgId]="5" [typeId]="TypeId"></Upload-Documents>
+                                              <!-- [IsUpload] [formbuilder] -->
+
+                        </div>
+                        <div class="form-group col-md-5">
+                            <SubmitButton (Click)="clicksubmit(_Form,dynamic.dynamicformcontrols,dynamic.formbuilder,
+                            dynamicC.dynamicformcontrols,dynamicC.formbuilder,
+                            uploads.UploadDocIds,uploads.IsUpload,uploads.formbuilder,
+                                          Notification.AddtionalEmailIds,Notification.EmailIds)" [IsLoading]="isLoading"></SubmitButton>
+                            <BackButton></BackButton>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

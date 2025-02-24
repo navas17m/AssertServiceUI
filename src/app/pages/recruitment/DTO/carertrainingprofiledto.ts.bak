@@ -1,0 +1,11 @@
+﻿import { BaseDTO } from '../../basedto';
+
+export class CarerTrainingProfileDTO extends BaseDTO {
+    CarerTrainingProfileId: number;
+    UniqueID: number;
+    SequenceNo: number;
+    CarerId: number = null;
+    CarerParentId: number;
+    FieldId: number;
+    FieldValue: string;       
+}

@@ -1,0 +1,204 @@
+﻿<form [formGroup]="_Form">
+    <div class="col-xl-12 col-lg-12 col-12 bottom-30">
+
+        <ApprovedCarerHeader></ApprovedCarerHeader>
+        <!--<div style="text-align:right;padding-right:30px">
+            <a routerLink="/pages/fostercarer/carersupervisoryhomevisitlist/3" class="btn btn-warning">Back</a>
+        </div>
+        <br />-->
+        <div widget class="card">
+            <div class="card-header">
+                <span>Supervisory Home Visit Signature</span>
+                <div class="widget-controls">
+                    <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                    <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                    <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+                    <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+                    <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a>
+                </div>
+            </div>
+            <div class="card-body widget-body">
+                <div class="row mbm-20">
+                    <div class="col-lg-12 col-12 bottom-30">
+                        <div class="clearfix">
+                            <ul class="nav nav-tabs top pull-left w-100p">
+                                <li class="nav-item">
+                                    <a class="nav-link active" data-toggle="tab" href="#Intial">
+                                        Supervisory Home Visit
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#ChildOutCome">Child OutCome</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#step1">Signature</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="tab-content top">
+                            <div class="tab-pane active" id="Intial">
+                                <div class="table-responsive datatable">
+                                    <table class="table table-striped table-hover table-sm">
+                                        <tbody *ngIf="lstCarerSecA.length==0">
+                                            <tr>
+                                                <th colspan="11" class="text-center">
+                                                    <i class="fa fa-spinner fa-spin"></i> Loading please wait...
+                                                </th>
+                                            </tr>
+                                        </tbody>
+                                        <tbody *ngIf="lstCarerSecA.length>0">
+                                            <tr *ngFor="let item of lstCarerSecA">
+                                                <td width="50%">{{item.DisplayName}}</td>
+                                                <td width="50%"> : {{item.FieldValue}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="changeColor" style="padding-top:20px" *ngIf="lstCarerTrainingProfile.length>0">
+                                        <div widget class="card">
+                                            <div class="card-header">
+                                                <span class="text-uppercase">Training Details</span>
+                                            </div>
+                                            <div class="card-body widget-body">
+                                                <div class="table-responsive datatable">
+                                                    <div class="table-responsive datatable">
+                                                        <table class="table table-striped table-hover table-sm">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Course Attended Carer</th>
+                                                                    <th>Courses Attended</th>
+                                                                    <th>Date of Attendance</th>
+                                                                    <th>Course Status</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody *ngIf="lstCarerTrainingProfile">
+                                                                <tr *ngFor="let item of lstCarerTrainingProfile | groupBy:'SequenceNo'">
+                                                                    <td>
+                                                                        {{ item.value[0].CarerName}}
+                                                                        <br *ngIf="item.value[0].SCarerName" />
+                                                                        {{item.value[0].SCarerName}}
+                                                                    </td>
+                                                                    <td *ngFor="let subitem of item.value | filter : 'FieldName':'CourseAttendedId'">{{ subitem.FieldValue }}</td>
+                                                                    <td>
+                                                                        <span *ngFor="let subitem of item.value[0].TrainingCourseDate| filter : 'FieldName':'CourseAttendedDate'">
+                                                                            {{subitem.FieldValue |dateFormat:'dd/MM/yyyy'}}<br />
+                                                                        </span>
+                                                                    </td>
+                                                                    <td>
+                                                                        <span *ngFor="let subitem of item.value[0].TrainingCourseDate | filter : 'FieldName':'CourseStatusId'">
+                                                                            {{subitem.FieldValue==877?'Attended':subitem.FieldValue==878?'Not Attended':subitem.FieldValue==879?'Online':''}}<br />
+                                                                        </span>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <table class="table table-striped table-hover table-sm">
+                                        <tbody *ngIf="lstCarerSecB.length>0">
+                                            <tr *ngFor="let item of lstCarerSecB">
+                                                <td width="50%">{{item.DisplayName}}</td>
+                                                <td width="50%"> : {{item.FieldValue}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <table class="table table-striped table-hover table-sm">
+                                        <tbody *ngIf="lstCarerSecC.length>0">
+                                            <tr *ngFor="let item of lstCarerSecC">
+                                                <td width="50%">{{item.DisplayName}}</td>
+                                                <td width="50%"> : {{item.FieldValue}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <table class="table table-striped table-hover table-sm">
+                                        <tbody *ngIf="lstCarerSecD.length>0">
+                                            <tr *ngFor="let item of lstCarerSecD">
+                                                <td width="50%">{{item.DisplayName}}</td>
+                                                <td width="50%"> : {{item.FieldValue}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="tab-pane" id="ChildOutCome">
+                                <div class="table-responsive datatable">
+                                    <table class="table table-striped table-hover table-sm" *ngFor="let itemMain of lstChildSHV | groupBy:'SequenceNo'">
+
+                                        <tbody>
+                                            <tr style="color:white;background-color:#344154;line-height: 10px;padding: 0.75rem 1.25rem;">
+                                                <td width="50%">Child Name (Code)</td>
+                                                <td width="50%"> : {{ itemMain.value[0].ChildName }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td width="50%">Date Of Visit</td>
+                                                <td width="50%">
+                                                    :
+                                                    {{ itemMain.value[0].DateOfVisit|dateFormat:'dd/MM/yyyy' }}
+                                                </td>
+                                            </tr>
+                                            <tr *ngFor="let item of itemMain.value">
+                                                <td width="50%">{{item.DisplayName}}</td>
+                                                <td width="50%"> : {{item.FieldValue}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <table class="table table-striped table-hover table-sm" >
+                                        <tbody *ngIf="isLoading">
+                                            <tr>
+                                                <th colspan="11" class="text-center">
+                                                    <i class="fa fa-spinner fa-spin"></i> Loading please wait...
+                                                </th>
+                                            </tr>
+                                        </tbody>
+                                        <tbody *ngIf="lstChildSHV.length==0">
+                                            <tr>
+                                                <th colspan="11" class="text-center">
+                                                    No Records found.
+                                                </th>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                            </div>
+                            <div class="tab-pane" id="step1">
+                                <!--<img [attr.src]="srcPath">-->
+                                <!--<SignaturePad   (changesign)="signChange($event)"></SignaturePad>-->
+                                <div class="form-group" [hidden]="AgencySignatureHidden">
+                                    <label class="">Signature Type  </label>
+
+                                    <select required  *ngIf="lstAgencySignatureCnfg.length>0" #selectSignature (change)="AgencySignatureCnfgChange(selectSignature.value)"
+                                            formControlName="AgencySignatureCnfgId" class="form-control" [(ngModel)]="objCarerSupervisoryHomeVisitDTO.AgencySignatureCnfgId">
+                                        <option value="" [attr.selected]="objCarerSupervisoryHomeVisitDTO.AgencySignatureCnfgId == null ? true : null">Select Signature Type</option>
+                                        <option *ngFor="let op of lstAgencySignatureCnfg" value="{{op.AgencySignatureCnfgId}}">
+                                            {{op.Signature}}
+                                        </option>
+                                    </select>
+                                    <div *ngIf="(!_Form.controls.AgencySignatureCnfgId.valid && submitted && _Form.controls.AgencySignatureCnfgId.errors )" class="alert alert-danger">
+                                        Please select Signature Type
+                                    </div>
+                                </div>
+                                <Dynamic-Form #SectionAdynamic [dynamicformcontrols]="dynamicformcontrol"
+                                              [formbuilder]="_Form"
+                                              [submitted]="submitted"></Dynamic-Form>
+                                <EmailNotification #Notification [FormCnfgId]="59"  ></EmailNotification>
+
+
+                            </div>
+
+                            <!--*ngIf="UserTypeId==4"-->
+                            <div class="form-group col-lg-12">
+                                <SubmitButton #btnSubmitAdd (Click)="clicksubmit(SectionAdynamic.dynamicformcontrols,SectionAdynamic.formbuilder,
+                                Notification.AddtionalEmailIds,Notification.EmailIds)" [IsLoading]="isLoading" [Text]="'Submit'">
+                                </SubmitButton>
+                                <BackButton></BackButton>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,595 @@
+﻿<div class="col-xl-12 col-lg-12 col-12 bottom-30" *ngIf="objChildProfilespiner">
+   
+    <!-- <div style="text-align:right" *ngIf="showAutoSave">
+        <b>{{saveDraftText}}  {{draftSavedTime | date: 'HH:mm'}}</b>
+    </div> -->
+    <!-- Message to show when user submit form without fill data -->
+    <AutoSavedMessage [Text]="saveDraftText" [Time]="draftSavedTime" [Visible]="showAutoSave"></AutoSavedMessage>
+    <Child-Header *ngIf="!insPassHeaderInfo" #header></Child-Header>
+    <Child-Header *ngIf="insPassHeaderInfo" #header [ChildProfile]="insChildProfileDTO"></Child-Header>
+    <div widget class="card overflow-container">
+        <div class="card-header">
+            <span>Child Referral</span>
+            <div class="widget-controls">
+                <i class="fa fa-file-pdf-o" (click)="fnDonloadPDF()" style="font-size:18px;color:white;cursor:pointer;" title="Download PDF"></i>
+                <i class="fa fa-file-word-o" (click)="fnDonloadWord()" style="font-size:18px;color:white;cursor:pointer;padding-left:5px;" title="Download Word"></i>
+                <i class="fa fa-print" (click)="fnPrint()" style="font-size:18px;color:white;cursor:pointer;padding-left:5px;padding-right:5px" title="Print"></i>
+                <i class="fa fa-envelope-open" (click)="fnShowEmail()" style="font-size:18px;color:white;cursor:pointer;" title="Email"></i>
+            </div>
+        </div>
+        <div class="card-body widget-body">
+            <div class="row mbm-20">
+                <div class="col-lg-12 col-12 bottom-30">
+                    <div class="clearfix">
+                        <ul class="nav nav-tabs top pull-left w-100p">
+                            <li class="nav-item" (click)="fnReferral1()">
+                                <a class="nav-link {{Referral1Active}}" data-toggle="tab" href="#ta">Referral-1</a>
+                            </li>
+                            <li class="nav-item" (click)="fnReferral2()">
+                                <a class="nav-link {{Referral2Active}}" data-toggle="tab" href="#tb">Referral-2</a>
+                            </li>
+                            <li class="nav-item" (click)="fnDocumentDetailTab()">
+                                <a class="nav-link {{DocumentActive}}" data-toggle="tab" href="#tc">Referral-2 Upload Documents</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="tab-content top" id="print-section">
+                        <div class="tab-pane {{Referral1Active}}" id="ta">
+                            <form [formGroup]="_Form">
+                                <div class="row">
+                                    <div class="form-group col-md-12">Child Code :<b> {{objChildProfile.ChildCode}}</b></div>
+                                    <div class="form-group col-md-6">
+                                        <label class="">Child Identifier</label>
+                                        <input type="text" class="form-control" formControlName="ChildIdentifier" [(ngModel)]="objChildProfile.ChildIdentifier" />
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label class="">Child Or Parent&Child</label>
+                                        <select formControlName="ChildOrParent" required (change)="fnChangeChildNParent($event.target.value)" [(ngModel)]="objChildProfile.ChildOrParentId" class="form-control">
+                                            <option value="1">Child</option>
+                                            <option value="2">Parent and Child</option>
+                                            <option value="3">Parent</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-6" [hidden]="!isParentNChild">
+                                        <label class="">Parent Name</label>
+                                        <input type="text" class="form-control" formControlName="ParentName" [ngStyle]="{'border-left':(objChildProfile.ParentName==null || objChildProfile.ParentName=='')?
+                            '5px solid #a94442':'5px solid #42A948'}" [(ngModel)]="objChildProfile.ParentName" />
+                                        <div class="alert alert-danger" *ngIf="(submitted && isParentNChild && (objChildProfile.ParentName==null || objChildProfile.ParentName==''))">
+                                            Please enter Parent Name
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-md-6" [hidden]="!isParentNChild">
+                                        <label class="">Parent Date of Birth</label>
+                                        <input type="text" placeholder="DD/MM/YYYY" readonly class="form-control form-control-date" formControlName="ParentDOB"
+                                               [(ngModel)]="objChildProfile.ParentDateOfBirth" [value]="objChildProfile.ParentDateOfBirth" datepicker />
+                                    </div>
+                                    <div class="form-group col-md-6" [hidden]="!isParentNChild">
+                                        <label class="">Parent 2 Name</label>
+                                        <input type="text" class="form-control" formControlName="ParentName2"  [(ngModel)]="objChildProfile.ParentName2" />
+                                    </div>
+
+                                    <div class="form-group col-md-6" [hidden]="!isParentNChild">
+                                        <label class="">Parent 2 Date of Birth</label>
+                                        <input type="text" placeholder="DD/MM/YYYY" readonly class="form-control form-control-date" formControlName="ParentDOB2"
+                                               [(ngModel)]="objChildProfile.ParentDateOfBirth2" [value]="objChildProfile.ParentDateOfBirth2" datepicker />
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label class="">Area Office</label>
+                                        <select *ngIf="areaOfficeList != null" formControlName="AreaOfficeProfileId" required [(ngModel)]="objChildProfile.AreaOfficeProfile.AreaOfficeProfileId" class="form-control">
+                                            <option value="" [attr.selected]="objChildProfile.AreaOfficeProfile.AreaOfficeProfileId == null ? true : null">Select Area Office</option>
+                                            <option *ngFor="let item of areaOfficeList" value="{{item.AreaOfficeProfileId}}">
+                                                {{item.AreaOfficeName}}
+                                            </option>
+                                        </select>
+                                        <div class="alert alert-danger" *ngIf="(!_Form.controls.AreaOfficeProfileId.valid && submitted && _Form.controls.AreaOfficeProfileId.errors.required)">
+                                            Please select area office name
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <personalinfo [formbuilder]="submitted" [GenderType]="2" [Visible]="objPersonalInfoVisible" #childPersonalinfo [personalinfoval1]="objChildProfile.PersonalInfo"></personalinfo>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label class="">Ethnicity</label>
+                                        <ng-select *ngIf="ethinicityList != null" formControlName="Ethinicity" [(ngModel)]="objChildProfile.EthinicityId" class="form-control"
+                                            [items]="ethinicityList" bindValue="CofigTableValuesId" bindLabel="Value" placeholder="Select Ethnicity">
+                                        </ng-select>
+                                    </div>
+                                    <!-- Flourish requested new field Ethnicity Details -->
+                                    <div class="form-group col-md-6">
+                                        <label class="">Ofsted Ethnicity</label>
+                                        <ng-select *ngIf="OfstedEthnicityList != null" formControlName="OfstedEtnicity" [(ngModel)]="objChildProfile.OfstedEtnicityId" class="form-control"
+                                            [items]="OfstedEthnicityList" bindValue="CofigTableValuesId" bindLabel="Value" placeholder="Select Ofsted Etnicity">
+                                        </ng-select>
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <label class="">Ethnicity Details</label>
+                                        <textarea class="form-control" formControlName="EthnicityDetails" [(ngModel)]="objChildProfile.EthnicityDetails"> </textarea>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label class="">Language</label>
+                                        <p-multiSelect class="p-0" [style]="{'width':'100%'}" placeholder="Select" filterPlaceHolder="Search" [maxSelectedLabels]="3" selectedItemsLabel="{0} items selected" [options]="arrayLanguageList" optionLabel="name" optionValue="id"  [(ngModel)]="selectedLanguages" [ngModelOptions]="{standalone:true}"></p-multiSelect>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label class="">Legal Status</label>
+                                        <ng-select *ngIf="LegalStatusList != null" formControlName="LegalStatus" [(ngModel)]="objChildProfile.LegalStatusId" class="form-control"
+                                            [items]="LegalStatusList" bindValue="CofigTableValuesId" bindLabel="Value" placeholder="Select Legal Status">
+                                        </ng-select>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label class="">Nationality</label>
+                                        <ng-select *ngIf="NationalityList != null" formControlName="Nationality" [(ngModel)]="objChildProfile.NationalityId" class="form-control"
+                                            [items]="NationalityList" bindValue="CofigTableValuesId" bindLabel="Value" placeholder="Select Nationality">
+                                        </ng-select>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label class="">Religion</label>
+                                        <ng-select *ngIf="ReligionList != null" formControlName="Religion" [(ngModel)]="objChildProfile.ReligionId" class="form-control"
+                                            [items]="ReligionList" bindValue="CofigTableValuesId" bindLabel="Value" placeholder="Select Religion">
+                                        </ng-select>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label class="">Immigration Status</label>
+                                        <ng-select *ngIf="ImmigrationStatusList != null" formControlName="ImmigrationStatus" [(ngModel)]="objChildProfile.ImmigrationStatusId" class="form-control"
+                                            [items]="ImmigrationStatusList" bindValue="CofigTableValuesId" bindLabel="Value" placeholder="Select Immigration Status">
+                                        </ng-select>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label class="">Disability</label>
+                                        <select class="form-control" formControlName="DisabilityShow" [(ngModel)]="DisabilityValue" (change)="fnChangeDisability($event.target.value)">
+                                            <option value="1">
+                                                No
+                                            </option>
+                                            <option value="2">
+                                                Yes
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-6" [hidden]="!IsShowDisability">
+                                        <label class="">Disability</label><br>
+                                        <!-- <Multiselect-Dropdown #ddDisability [BindValue]="arrayDisability" [DefaultSelection]="objChildProfile.DisabilityIds"></Multiselect-Dropdown> -->
+                                        <p-multiSelect class="p-0" [style]="{'width':'100%'}" placeholder="Select" filterPlaceHolder="Search"  [maxSelectedLabels]="3" selectedItemsLabel="{0} items selected" [options]="arrayDisability" optionLabel="name" optionValue="id" [(ngModel)]="selectedDisabilities" [ngModelOptions]="{standalone:true}"></p-multiSelect>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label class="">Behaviour</label>
+                                        <p-multiSelect class="p-0" [style]="{'width':'100%'}" placeholder="Select" filterPlaceHolder="Search" [maxSelectedLabels]="3" selectedItemsLabel="{0} items selected"  [options]="arrayBehavior" optionLabel="name" optionValue="id" [(ngModel)]="selectedBehaviors" [ngModelOptions]="{standalone:true}"></p-multiSelect>
+                                    </div>
+                                    <div class="form-group col-md-6" >
+                                        <label class="">Mobile No</label>
+                                        <input formControlName="ChildMobileNo" type="text" class="form-control" [(ngModel)]="objChildProfile.ChildMobileNo"  pattern="[0-9\s]*" />
+                                        <div *ngIf="(!_Form.controls.ChildMobileNo.valid && submitted && _Form.controls.ChildMobileNo.errors)">
+                                            <div class="alert alert-danger" *ngIf="_Form.controls.ChildMobileNo.errors.required">Please enter TelePhone</div>
+                                            <div class="alert alert-danger" *ngIf="_Form.controls.ChildMobileNo.errors.pattern">Mobile No should be only numbers</div>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-md-12">
+                                        <label class="">Synopsis</label>
+                                        <textarea class="form-control" formControlName="Synopsis" [(ngModel)]="objChildProfile.Synopsis"> </textarea>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label class="">Is the Child Currently in Education?</label>
+                                        <select *ngIf="yesNoNotKnown" formControlName="ChildInEducation" required [(ngModel)]="objChildProfile.ChildInEducationId" class="form-control">
+                                            <option value="">Select</option>
+                                            <option *ngFor="let item of yesNoNotKnown" value="{{item.CofigTableValuesId}}">
+                                                {{item.Value}}
+                                            </option>
+                                        </select>
+                                        <div class="alert alert-danger" *ngIf="(!_Form.controls.ChildInEducation.valid && submitted && _Form.controls.ChildInEducation.errors.required)">
+                                            Please select Child Currently in Education
+                                        </div>
+                                    </div>
+                                    <div [hidden]="this.objSaveDraftInfoDTO.SequenceNo==0">
+                                        <div class="form-group col-md-12" [hidden]="objChildProfile.ChildOrParentId==3">
+                                            Are there any other Siblings?
+                                            <input type="checkbox" formControlName="HasChildSiblings" [(ngModel)]="objChildProfile.HasChildSiblings" />
+
+                                            <div [hidden]="!objChildProfile.HasChildSiblings">
+                                                <!-- <Multiselect-Dropdown #ddHasSibling [BindValue]="arrayChildList" [DefaultSelection]="objChildProfile.SiblingIds"></Multiselect-Dropdown> -->
+                                                <p-multiSelect class="p-0" [style]="{'width':'100%'}" placeholder="Select" filterPlaceHolder="Search" [maxSelectedLabels]="3" selectedItemsLabel="{0} siblings selected" [options]="arrayChildList" optionLabel="name" optionValue="id" [(ngModel)]="selectedSiblings" [ngModelOptions]="{standalone:true}"></p-multiSelect>
+                                            </div>
+                                        </div>
+                                        <!--<div class="form-group" [hidden]="objChildProfile.ChildOrParentId==2">
+                <label class="">Do you want to link Parent/Child?</label>
+                <input type="checkbox" formControlName="HasChildParents" [(ngModel)]="objChildProfile.HasChildParents" />
+                <div [hidden]="!objChildProfile.HasChildParents">
+                    <Multiselect-Dropdown #ddHasParent [BindValue]="arrayParentList" [DefaultSelection]="objChildProfile.ParentIds"></Multiselect-Dropdown>
+                </div>
+            </div>-->
+                                    <div *ngIf="hasParent && objChildProfile.ChildOrParentId!=2" class="form-group col-md-12">
+                                        Do you want to link <span *ngIf="objChildProfile.ChildOrParentId==1">parent</span>  <span *ngIf="objChildProfile.ChildOrParentId==3">child</span>?
+                                            <input type="checkbox" formControlName="HasChildParent" [(ngModel)]="objChildProfile.HasChildParents" />
+                                            <div [hidden]="!objChildProfile.HasChildParents">
+                                                <select formControlName="ddHasChildParent" [(ngModel)]="objChildProfile.ParentId" class="form-control">
+                                                    <option value="0">Select</option>
+                                                    <option *ngFor="let item of arrayParentList" value="{{item.id}}">
+                                                        {{item.name}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                    </div>
+                                    
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label class="">Health Needs</label>
+                                        <p-multiSelect class="p-0" [style]="{'width':'100%'}" placeholder="Select" filterPlaceHolder="Search" [maxSelectedLabels]="3" selectedItemsLabel="{0} items selected"  [options]="arrayHealthNeeds" optionLabel="name" optionValue="id" [(ngModel)]="selectedHealthNeeds" [ngModelOptions]="{standalone:true}"></p-multiSelect>
+                                    </div>
+                                    <div class="form-group col-md-12" *ngIf="refVisible">
+                                        <!--<button type="button" id="btnSubmit" class="btn btn-primary" (click)="btnSave(ddHasSibling.BindValue,ddHasParent.BindValue,ddDisability.BindValue,ddBehavior.BindValue,'save',childPersonalinfo.formbuilder)">Save Changes</button>-->
+                                        <!-- <SubmitButton [FormCnfgId]="FormCnfgId" (Click)="btnSave(ddHasSibling.BindValue,ddDisability.BindValue,ddBehavior.BindValue,'save',childPersonalinfo.formbuilder,
+                                                      ddLanguageList.BindValue)" [IsLoading]="isLoading"></SubmitButton> -->
+                                        <SubmitButton [FormCnfgId]="FormCnfgId" (Click)="btnSave(selectedSiblings,selectedDisabilities,selectedBehaviors,'save',childPersonalinfo.formbuilder,
+                                         selectedLanguages,selectedHealthNeeds)" [IsLoading]="isLoading"></SubmitButton>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="tab-pane {{Referral2Active}}" id="tb">
+                            <form [formGroup]="_FormRef">
+                                <div class="row">
+                                    <div class="form-group col-md-12">Child Code : {{objChildProfile.ChildCode}}</div>
+                                    <div class="form-group col-md-6">
+                                        <label class="">Referrer Name</label>
+                                        <input type="text" class="form-control" formControlName="ReferrerName" required [(ngModel)]="objChildReferral.ReferralName" />
+                                        <div class="alert alert-danger" *ngIf="(!_FormRef.controls.ReferrerName.valid && submittedref && _FormRef.controls.ReferrerName.errors.required)">
+                                            Please enter Referrer Name
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label class="">Referral Date</label>
+                                        <input type="text" placeholder="DD/MM/YYYY" readonly class="form-control form-control-date" formControlName="ReferrerDate" required [(ngModel)]="objChildReferral.ReferralDate" [value]="objChildReferral.ReferralDate" datepicker />
+                                        <div class="alert alert-danger" *ngIf="(!_FormRef.controls.ReferrerDate.valid && submittedref && _FormRef.controls.ReferrerDate.errors.required)">
+                                            Please select Referral Date
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label class="">
+                                            LA Social Worker Name
+                                        </label>
+
+                                        <table style="width:100%;">
+                                            <tr>
+                                                <td style="width:90%">
+                                                    <ng-select *ngIf="lstLASocialWorker != null" formControlName="LASocialWorker" [(ngModel)]="objChildReferral.LASocialWorkerId" class="form-control"
+                                                        [items]="lstLASocialWorker" bindValue="LocalAuthoritySWInfoId" bindLabel="LocalAuthoritySWInfoName" placeholder="Select LA Social Worker Name">
+                                                    </ng-select>
+                                                </td>
+                                                <td style="width:10%">&nbsp;<i class="fa fa-plus-circle" (click)="fnShowLASWInfo()" style="font-size:15px;cursor:pointer;text-decoration:none;text-align:left" title="Add LA Social Worker Name"> Add New</i></td>
+                                            </tr>
+                                        </table>
+
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label class="">Child Geography</label>
+                                        <select #childGe (change)="fnChangeChildGeography(childGe.value)" *ngIf="childGeography != null" formControlName="childGeography" required [(ngModel)]="objChildProfileRef2.GeographicalId" class="form-control">
+                                            <option value="" [attr.selected]="objChildProfileRef2.GeographicalId == null ? true : null">Select Child Geography</option>
+                                            <option *ngFor="let item of childGeography" value="{{item.CofigTableValuesId}}">
+                                                {{item.Value}}
+                                            </option>
+                                        </select>
+                                        <div class="alert alert-danger" *ngIf="(!_FormRef.controls.childGeography.valid && submittedref && _FormRef.controls.childGeography.errors.required)">
+                                            Please select Child Geography
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-6" *ngIf="ChildPlacingAuthorityVisi">
+                                        <label class="">Child Placing Authority</label>
+                                        <ng-select *ngIf="localAuthorityList != null" formControlName="ChildPlacingAuthorityId" [(ngModel)]="objChildProfileRef2.ChildPlacingAuthorityId" class="form-control"
+                                            [items]="localAuthorityList" bindValue="LocalAuthorityId" bindLabel="LocalAuthorityName" placeholder="Select Local Authority">
+                                        </ng-select>
+                                    </div>
+                                    <div class="form-group col-md-6" *ngIf="ChildPlacingAuthorityVisi">
+                                        <label class="">Date LA Notified  </label>
+                                        <input type="text" placeholder="DD/MM/YYYY" readonly class="form-control form-control-date" formControlName="LANotifiedDate" [(ngModel)]="objChildProfileRef2.LANotifiedDate" [value]="objChildProfileRef2.LANotifiedDate" datepicker />
+                                    </div>
+                                    <div class="form-group col-md-12"  *ngIf="ChildPlacingAuthorityVisi">
+                                        <br>
+                                        <label class="">It is Out of Hours placement.?</label>
+                                        <input formControlName="IsOutofHoursPlacement" type="radio" [value]="true" [(ngModel)]="objChildProfileRef2.IsOutofHoursPlacement">Yes
+                                        <input formControlName="IsOutofHoursPlacement" type="radio" [value]="false" [(ngModel)]="objChildProfileRef2.IsOutofHoursPlacement">No
+
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label class="">Local Authority</label>
+                                        <ng-select #LAElement *ngIf="localAuthorityList != null" formControlName="LocalAuthorityref2" required (change)="fnLAAddress($event.target.value)"
+                                                [(ngModel)]="objChildProfileRef2.LocalAuthority.LocalAuthorityId" class="form-control"
+                                                [items]="localAuthorityList" bindValue="LocalAuthorityId" bindLabel="LocalAuthorityName" placeholder="Select Local Authority">
+                                        </ng-select>
+                                        <div class="alert alert-danger" *ngIf="(!_FormRef.controls.LocalAuthorityref2.valid && submitted && _FormRef.controls.LocalAuthorityref2.errors.required)">
+                                            Please select Local Authority
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-6" *ngIf="objLAAddress">
+                                        LA Address <br />
+                                       <span *ngIf="objLAAddress.AddressLine1"> {{objLAAddress.AddressLine1}}<br /></span>
+                                        <span *ngIf="objLAAddress.AddressLine2"> {{objLAAddress.AddressLine2}}<br /></span>
+                                        <span *ngIf="objLAAddress.City"> {{objLAAddress.City}}<br /></span>
+                                        <span *ngIf="objLAAddress.HomePhone"> {{objLAAddress.HomePhone}}<br /></span>
+                                        <span *ngIf="objLAAddress.EmailId"> {{objLAAddress.EmailId}}<br /></span>
+                                    </div>
+
+
+                                    <div class="form-group col-md-6" >
+                                        <label class="">Child Contact (<a (click)="fnShowChildContact()" style="cursor:pointer;color:blue">Add New</a>)</label>
+
+                                        <table style="width:100%;">
+                                            <tr>
+                                                <td style="width:90%">
+                                                    <!-- (change)="fnChangeChildContactId(ContactTypeId.value)"  -->
+                                                    <select *ngIf="lstContactType.length>0" #ContactTypeId  formControlName="ContactTypeId"  [(ngModel)]="objChildReferral.ContactTypeId" class="form-control">
+                                                        <option [value]="0" [attr.selected]="objChildReferral.ContactTypeId == null ? true : null">Select Contact Type</option>
+                                                        <option *ngFor="let item of lstContactType" value="{{item.CofigTableValuesId}}">
+                                                            {{item.Value}}
+                                                        </option>
+                                                    </select>
+                                                </td>
+                                                <!-- <td style="width:10%">&nbsp;<i class="fa fa-plus-circle"
+                                                    (click)="fnShowChildContact()" style="font-size:15px;cursor:pointer;text-decoration:none;text-align:left" title="Add Child Contact">
+                                                    Add New</i></td> -->
+                                                <td>
+                                                    <button type="button" class="btn btn-success" (click)="fnAddContactType(objChildReferral.ContactTypeId)">Add</button>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div class="form-group col-md-12" >
+                                    <div class="changeColor" style="padding-top:20px;border: 2px solid #979aa0;padding:10px;background-color:#edf1f7" *ngIf="lstChildContactType.length>0 && lstChildContactType !=null">
+                                        <div widget class="card">
+                                            <div class="card-header">
+                                                <span class="text-uppercase">Existing Child Contact Details</span>
+                                            </div>
+                                            <div class="card-body widget-body">
+                                                <div class="table-responsive datatable">
+                                                    <div class="form-group col-md-12">
+                                                        <table class="table table-striped table-hover table-sm">
+                                                            <tr>
+                                                                <th>Contact Type</th>
+                                                                <th>Name</th>
+                                                                <th>Email</th>
+                                                                <th>TelePhone</th>
+                                                                <th>Delete</th>
+                                                            </tr>
+                                                            <tr *ngFor="let item of lstChildContactType">
+                                                                <td>{{item.ChildContactTypeName}} </td>
+                                                                <td>{{item.Name}} </td>
+                                                                <td>{{item.EmailId}} </td>
+                                                                <td>{{item.PhoneNumber}} </td>
+                                                                <td >
+                                                                    <button (click)="fnDeleteContactType(item.ChildContactTypeId)" class="btn  btn-danger"><i style="font-size:20px" class="fa fa-trash-o"></i></button>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                    <div class="col-md-12">
+                                        <Dynamic-Form #dynamicReferral2PC [dynamicformcontrols]="lstChildRefDV | filter : 'ControlLoadFormat' : 'PlacementContactInfo'" [formbuilder]="_FormRef" [submitted]="submittedref" (OnValChange)="DnamicOnValChangePC($event)"></Dynamic-Form>
+                                        <!--(OnValChange)="DnamicOnValChange($event)"-->
+                                    </div>
+                                    <div class="form-group col-md-6" *ngIf="insPCAddress">
+                                        Placement Contact Address : <br />
+                                        <p [innerHTML]="''+insPCAddress+''"></p>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <Dynamic-Form #dynamicReferral2 [dynamicformcontrols]="lstChildRefDV | filter : 'ControlLoadFormat' : 'default'" [formbuilder]="_FormRef" [submitted]="submittedref"
+                                                      (OnValChange)="DnamicOnValChange2($event)"></Dynamic-Form>
+
+                                    </div>
+                                </div>
+                            </form>
+                            <form [formGroup]="formNFA">
+                                <div class="row">
+
+                                <div class="form-group col-md-6" *ngIf="IsShowNFA">
+                                    No Further Action (Move to Closed Referral)
+                                    <input type="checkbox" formControlName="chkNoFurtherAction" [(ngModel)]="objChildProfileRef2.NoFurtherAction" />
+                                </div>
+                                <div class="row" [hidden]="!objChildProfileRef2.NoFurtherAction">
+                                    <div class="form-group col-md-6">
+                                        Date of NFA
+                                        <input required  type="text" placeholder="DD/MM/YYYY" readonly class="form-control form-control-date" formControlName="NFADate" [(ngModel)]="objChildReferral.NFADate" [value]="objChildReferral.NFADate" datepicker />
+                                        <div class="alert alert-danger" *ngIf="(!formNFA.controls.NFADate.valid && submittedNFA && formNFA.controls.NFADate.errors.required)">
+                                            Please enter Date of NFA
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        Reason for NFA
+                                        <select required *ngIf="nFAReason" formControlName="NFAReason" [(ngModel)]="objChildReferral.NFAReasonId" class="form-control">
+                                            <option value="0">Select Reason for NFA</option>
+                                            <option *ngFor="let item of nFAReason" value="{{item.CofigTableValuesId}}">
+                                                {{item.Value}}
+                                            </option>
+                                        </select>
+                                        <div class="alert alert-danger" *ngIf="(!formNFA.controls.NFAReason.valid && submittedNFA && formNFA.controls.NFAReason.errors.required)">
+                                            Please select Reason for NFA
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>
+                            </form>
+                            <div class="form-group">
+                                <div widget class="card">
+                                    <div class="card-header">
+                                        <span class="text-uppercase">Referral History</span>
+                                        <div class="widget-controls">
+                                            <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                                            <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="card-body widget-body">
+                                        <div class="table-responsive datatable">
+                                            <table class="table table-striped table-hover table-sm">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Referrer Name</th>
+                                                        <th>Referral Date</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody *ngIf="this.lstChildReferral.length==0">
+                                                    <tr>
+                                                        <td colspan="4" class="text-center">No records found.</td>
+                                                    </tr>
+                                                </tbody>
+                                                <tbody>
+                                                    <tr *ngFor="let item of lstChildReferral">
+                                                        <td>{{item.ReferralName}}</td>
+                                                        <td>{{item.ReferralDate | dateFormat:'dd/MM/yyyy'}}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                               <br>
+                               <!-- [AddtionalEmailIds] [EmailIds] -->
+                                <EmailNotification #Notification [FormCnfgId]="formId" ></EmailNotification>
+                            </div>
+
+                            <div class="form-group" *ngIf="refVisible">
+                                <!--<button type="button" id="btnSubmit" class="btn btn-primary" (click)="btnSaveReferral(dynamicReferral2.dynamicformcontrols,dynamicReferral2.formbuilder)">Save Changes</button>
+                         <button *ngIf="IsShowNFA" type="button" id="btnSubmit" class="btn btn-primary" (click)="fnPlaceChild()">Place Child</button>-->
+                                <button *ngIf="showSaveAsDraftButton && accessAutoSave" #btnSaveDraftRef2 (click)="fnSaveDraftRef2(dynamicReferral2.dynamicformcontrols,dynamicReferral2PC.dynamicformcontrols,uploads.IsUpload,
+                                        uploads.formbuilder)" class="btn btn-primary">Save as Draft</button>
+                                <SubmitButton [FormCnfgId]="FormCnfgId" (Click)="btnSaveReferral(dynamicReferral2.dynamicformcontrols,dynamicReferral2.formbuilder,
+                                dynamicReferral2PC.dynamicformcontrols,dynamicReferral2PC.formbuilder,
+                                 uploads.UploadDocIds,uploads.IsUpload,uploads.formbuilder,
+                                 Notification.AddtionalEmailIds,Notification.EmailIds)" [IsLoading]="isLoading2"></SubmitButton>
+                                <!--<SubmitButton *ngIf="IsShowNFA" (Click)="fnPlaceChild()" [Text]="'Place Child'"></SubmitButton>-->
+                            </div>
+                            <!--<a [href]="['/pages/referral/childplacement',0]" class="btn btn-primary">Place Child</a>-->
+
+                        </div>
+                        <div class="tab-pane {{DocumentActive}}" id="tc">
+                            <!-- [IsUpload] [formbuilder] -->
+                            <Upload-Documents #uploads [formCnfgId]="formId" [primaryKeyId]="tblPrimaryKey"
+                                               [submittedUpload]="submittedUpload"
+                                              [userTypeCnfgId]="5" [typeId]="TypeId"></Upload-Documents>
+                            <br />
+                            <div class="form-group" *ngIf="refVisible">
+                                <button *ngIf="showSaveAsDraftButton && accessAutoSave" #btnSaveDraftRef2 (click)="fnSaveDraftRef2(dynamicReferral2.dynamicformcontrols,dynamicReferral2PC.dynamicformcontrols,uploads.IsUpload,
+                                        uploads.formbuilder)" class="btn btn-primary">Save as Draft</button>
+                                <SubmitButton [FormCnfgId]="FormCnfgId" (Click)="btnSaveReferral(dynamicReferral2.dynamicformcontrols,dynamicReferral2.formbuilder,
+                                dynamicReferral2PC.dynamicformcontrols,dynamicReferral2PC.formbuilder,
+                                 uploads.UploadDocIds,uploads.IsUpload,uploads.formbuilder)" [IsLoading]="isLoading2"></SubmitButton>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div>
+    <button #btnPrint type="button" [hidden]="true" class="btn btn-primary" data-toggle="modal" data-target="#lg-modal1">Large</button>
+    <div class="modal fade" id="lg-modal1" tabindex="-1" role="dialog" aria-labelledby="modal-large-label" style="display: none;">
+        <div class="modal-dialog modal-lg" role="document">
+            <form [formGroup]="_FormPrint">
+                <div class="modal-content">
+                    <div class="modal-header state modal-primary">
+                        <h4 class="modal-title" id="modal-large-label">
+                            <i class="fa fa-print"></i>Email
+                        </h4>
+                        <div *ngIf="isLoading"><i class="fa fa-spinner fa-spin"></i> Sending email please wait...</div>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            Enter Email Subject:
+                            <input type="text" [(ngModel)]="subject" class="form-control" formControlName="subject" required />
+                            <div *ngIf="(!_FormPrint.controls.subject.valid && submittedprint && _FormPrint.controls.subject.errors.required )" class="alert alert-danger">
+                                Please enter Email Subject
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            Enter Email Address(es):
+                            <textarea [(ngModel)]="eAddress" class="form-control" formControlName="eAddress" required></textarea>
+                            <div *ngIf="(!_FormPrint.controls.eAddress.valid && submittedprint && _FormPrint.controls.eAddress.errors.required )" class="alert alert-danger">
+                                Please enter Email Address(es)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success" (click)="fnEmail(_FormPrint)" [disabled]="isLoading">Email</button>
+                        <button #btnCancel type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+<div>
+    <button #btnSocialWorker type="button" [hidden]="true" class="btn btn-primary" data-toggle="modal" data-target="#LASW-modal">Large</button>
+    <div class="modal fade" id="LASW-modal" tabindex="-1" role="dialog" aria-labelledby="modal-large-label" style="display: none;">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header state modal-primary">
+                    <h4 class="modal-title" id="modal-large-label">
+                        <i class="fa fa-file-o"></i>Local Authority Social Worker Details
+                    </h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                </div>
+                <div class="modal-body">
+
+                    <form [formGroup]="_localauthorityswForm">
+                        <div class="form-group">
+                            <label class="">Local Authority Social worker Name</label>
+                            <input formControlName="LocalAuthoritySWName" type="text" class="form-control" [(ngModel)]="objLocalAuthoritySWInfoIdDTO.LocalAuthoritySWInfoName"
+                                   required />
+                            <div class="alert alert-danger" *ngIf="(!_localauthorityswForm.controls.LocalAuthoritySWName.valid && submittedLASW && _localauthorityswForm.controls.LocalAuthoritySWName.errors.required)">
+                                Please Enter Local Authority Social worker Name
+                            </div>
+                        </div>
+                        <contact #ConatactLocalAuthority [Visible]="insContactVisible" [formbuilder]="submittedLASW" [contactval1]="contactVal1"></contact>
+                        <div class="form-group">
+                            <SubmitButton (Click)="LocalAuthoritySWSubmit(_localauthorityswForm,ConatactLocalAuthority.contactval1,ConatactLocalAuthority.formbuilder)"
+                                          [IsLoading]="isLoadingLASW"></SubmitButton>
+                            <button #btnCancel type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div>
+    <button #btnContactType type="button" [hidden]="true" class="btn btn-primary" data-toggle="modal" data-target="#ContactType-modal">Large</button>
+    <div class="modal fade" id="ContactType-modal" tabindex="-1" role="dialog" aria-labelledby="modal-large-label" style="display: none;">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header state modal-primary">
+                    <h4 class="modal-title" id="modal-large-label">
+                        <i class="fa fa-file-o"></i>Child Family/Persons&Org.Involved
+                    </h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                </div>
+                <div class="modal-body">
+
+                    <form [formGroup]="_localauthorityswForm">
+                        <div class="form-group">
+                            <Dynamic-Form #dynamicContact [dynamicformcontrols]="dynamicformcontrolContact"
+                            (OnValChange)="DynamicOnValChangeChildContact($event)" [formbuilder]="_Form" [submitted]="submittedContactType"></Dynamic-Form>
+
+                            <SubmitButton (Click)="fnSubmitContacType(dynamicContact.dynamicformcontrols,dynamicContact.formbuilder)"
+                                          [IsLoading]="isLoadingLASW"></SubmitButton>
+                            <button #btnCancel type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div style="margin-top: 100px;" *ngIf="!objChildProfilespiner">
+    <ngx-spinner type="ball-scale-multiple"><p style="color: white" > Loading... </p></ngx-spinner>
+  </div>
+  
+  

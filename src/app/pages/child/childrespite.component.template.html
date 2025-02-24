@@ -1,0 +1,974 @@
+﻿<style>
+    .datepickerwidth {
+        width: 36%;
+    }
+</style>
+
+<div class="col-xl-12 col-lg-12 col-12 bottom-30">
+    <div widget class="card">
+        <div class="card-header">
+            <span>Respite</span>
+
+            <div class="widget-controls">
+                <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+                <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+                <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a>
+            </div>
+        </div>
+        <div class="card-body widget-body">
+            <div class="row mbm-20">
+                <div class="col-lg-12 col-12 bottom-30">
+                    <div class="clearfix">
+                        <ul class="nav nav-tabs top pull-left w-100p">
+                            <li class="nav-item">
+                                <a class="nav-link active" data-toggle="tab" href="#ta">Respite Start</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#tb">Respite End</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="tab-content top">
+                        <div class="tab-pane active" id="ta">
+                            <div class="row">
+                                <div *ngFor="let step of steps; let last = last" class="col-md-4 step" [class.active]="step.active" [class.valid]="step.valid" [ngClass]="{'last' : last }">
+                                    <div class="step-icon">
+                                        <i class="fa {{ step.icon }}" aria-hidden="true"></i>
+                                    </div>
+                                    <span class="step-name" [class.active]="step.active" [class.valid]="step.valid">{{step.name}}</span>
+                                </div>
+                            </div>
+                            <div *ngFor="let step of steps" [hidden]="!step.active" class="col form-wizard">
+                                <div class="row form-title">
+                                    <h4><i class="fa {{ step.icon }}"></i> {{step.name}}</h4>
+                                </div>
+                                <form *ngIf="step.name=='Child & Carer Information'" [formGroup]="childNCarerForm" class="row">
+                                    <div class="form-group col-md-12">
+                                        <label class="">Select a Child</label>
+                                        <select *ngIf="lstChildProfileDropDown.length == 0" formControlName="ChildProfile" [(ngModel)]="test"
+                                                required class="form-control" >
+                                            <option value="" [attr.selected]="test == null ? true : null">Select Child</option>
+                                            <option *ngFor="let item of lstChildProfileDropDown" value="{{item.ChildId}}">
+                                                {{item.PersonalInfo.FullName }}({{item.ChildCode}})
+                                            </option>
+                                        </select>
+                                        <ng-select *ngIf="lstChildProfileDropDown.length > 0"   formControlName="ChildProfile" required class="form-control"
+                                          (change)="fnLoadChildDetails($event)" [(ngModel)]="test">
+                                          <ng-option *ngFor="let item of lstChildProfileDropDown" [value]="item.ChildId">{{item.PersonalInfo.FullName }}({{item.ChildCode}})</ng-option>
+                                        </ng-select>
+                                        <div *ngIf="(!childNCarerForm.controls.ChildProfile.valid && submittedCNC && childNCarerForm.controls.ChildProfile.errors )" class="alert alert-danger">
+                                            Please Select Child
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <div *ngIf="objChildProfile">
+                                            <div widget class="card">
+                                                <div class="card-header">
+                                                    <span class="text-uppercase"> Selected Child</span>
+                                                </div>
+                                                <div class="card-body widget-body">
+                                                    <div class="container">
+                                                        <div class="row" style="border:1px double;border-radius: 5px;">
+                                                            <div class="col-lg-2">
+                                                                <div class="row">
+                                                                    <img height="87px" width="100px" [attr.src]="srcChildPath">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-10" style="border-left:1px double;">
+                                                                <div class="row" style="border-bottom:1px double;">
+                                                                    <div class="col-lg-3">
+                                                                        Child Name (Code) :
+                                                                    </div>
+                                                                    <div class="col-lg-3">
+                                                                        <b>   {{objChildProfile.PersonalInfo.FullName }}({{objChildProfile.ChildCode}})</b>
+                                                                    </div>
+                                                                    <div class="col-lg-3">
+                                                                        Child Identifier :
+                                                                    </div>
+                                                                    <div class="col-lg-3">
+                                                                        <b> {{objChildProfile.ChildIdentifier }}</b>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row" style="border-bottom:1px double;">
+                                                                    <div class="col-lg-3">
+                                                                        Age :
+                                                                    </div>
+                                                                    <div class="col-lg-3">
+                                                                        {{objChildProfile.PersonalInfo.Age}}
+                                                                    </div>
+                                                                    <div class="col-lg-3">
+                                                                        Gender :
+                                                                    </div>
+                                                                    <div class="col-lg-3">
+                                                                        {{objChildProfile.PersonalInfo.GenderId==1?'Male':'Female'}}
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row" style="border-bottom:1px double;">
+                                                                    <div class="col-lg-3">
+                                                                        Ethnicity :
+                                                                    </div>
+                                                                    <div class="col-lg-3">
+                                                                        {{objChildProfile.Ethinicity}}
+                                                                    </div>
+                                                                    <div class="col-lg-3">
+                                                                        Religion :
+                                                                    </div>
+                                                                    <div class="col-lg-3">
+                                                                        {{objChildProfile.Religion}}
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <div class="col-lg-3">
+                                                                        Disability :
+                                                                    </div>
+                                                                    <div class="col-lg-3">
+                                                                        {{objChildProfile.DisabilityStr}}
+                                                                    </div>
+                                                                    <div class="col-lg-3">
+                                                                        Immigration Status :
+                                                                    </div>
+                                                                    <div class="col-lg-3">
+                                                                        {{objChildProfile.ImmigrationStatus}}
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row" *ngIf="objChildProfile.ChildOrParentId==2" style="border-top:1px double;">
+                                                                    <div class="col-lg-3">
+                                                                        Parent Name :
+                                                                    </div>
+                                                                    <div class="col-lg-3">
+                                                                        {{objChildProfile.ParentName}}
+                                                                    </div>
+                                                                    <div class="col-lg-3">
+                                                                        Parent DOB :
+                                                                    </div>
+                                                                    <div class="col-lg-3">
+                                                                        {{objChildProfile.ParentDateOfBirth | dateFormat:'dd/MM/yyyy'}}
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row" *ngIf="objChildProfile.ChildOrParentId==2" style="border-top:1px double;">
+
+                                                                    <div class="col-lg-3">
+                                                                        Parent 2 Name :
+                                                                    </div>
+                                                                    <div class="col-lg-3">
+                                                                        {{objChildProfile.ParentName2}}
+                                                                    </div>
+                                                                    <div class="col-lg-3">
+                                                                        Parent 2 DOB :
+                                                                    </div>
+                                                                    <div class="col-lg-3">
+                                                                        {{objChildProfile.ParentDateOfBirth2 | dateFormat:'dd/MM/yyyy'}}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <!-- <label class="custom-control custom-checkbox" [hidden]="lstSiblingRespiteStart.length==0">
+                                                            <input type="checkbox" class="custom-control-input checkbox-primary checkbox-circle" [checked]="siblingCheck" (change)="fnShowSibling($event.target.checked)">
+                                                            <span class="custom-control-indicator"></span>
+                                                            <span class="custom-control-description">Place Siblings</span>
+                                                        </label>
+                                                        <label class="custom-control custom-checkbox" [hidden]="lstParentsRespiteStart.length==0">
+                                                            <input type="checkbox" class="custom-control-input checkbox-primary checkbox-circle" [checked]="parentCheck" (change)="fnShowParents($event.target.checked)">
+                                                            <span class="custom-control-indicator"></span>
+                                                            <span class="custom-control-description">Place Parent</span>
+                                                        </label> -->
+                                                        <br/>
+                                                        <span [hidden]="lstSiblingRespiteStart.length==0">
+                                                            <input type="checkbox" [checked]="siblingCheck"  (change)="fnShowSibling($event.target.checked)">Place Siblings
+                                                          </span>
+                                                          <span [hidden]="lstParentsRespiteStart.length==0">
+                                                            <input type="checkbox" [checked]="parentCheck" (change)="fnShowParents($event.target.checked)">Place Parent
+                                                          </span>
+                                                    </div>
+                                                    <div *ngIf="showSiblingeTable">
+                                                        <div *ngIf="lstSiblingRespiteStart.length>0">
+                                                            <div>Siblings</div>
+                                                            <table class="table table-sm table-bordered" style="background-color:white">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Select</th>
+                                                                        <th>Child Name</th>
+                                                                        <th>Local Authority</th>
+
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody *ngIf="lstSiblingRespiteStart.length==0">
+                                                                    <tr>
+                                                                        <th colspan="3" class="text-center"> No Siblings found.</th>
+                                                                    </tr>
+                                                                </tbody>
+                                                                <tbody>
+                                                                    <tr *ngFor="let item of lstSiblingRespiteStart | filter : 'HasChildSiblings' : true">
+                                                                        <td>
+                                                                            <input type="checkbox" [ngModelOptions]="{standalone: true}" [(ngModel)]="item.IsActive" />
+                                                                        </td>
+                                                                        <td>{{item.PersonalInfo.FullName }}({{item.ChildCode}})</td>
+                                                                        <td>{{item.LocalAuthority.LocalAuthorityName }}</td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                    <div *ngIf="showParentTable">
+                                                        <div *ngIf="lstParentsRespiteStart.length>0">
+                                                            <div>Parents</div>
+                                                            <table class="table table-sm table-bordered" style="background-color:white">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Select</th>
+                                                                        <th>Child Name</th>
+                                                                        <th>Local Authority</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody *ngIf="lstParentsRespiteStart.length==0">
+                                                                    <tr>
+                                                                        <th colspan="3" class="text-center"> No Parents found.</th>
+                                                                    </tr>
+
+                                                                </tbody>
+                                                                <tbody>
+
+                                                                    <tr *ngFor="let item of lstParentsRespiteStart | filter : 'HasChildParents' : true">
+                                                                        <td>
+                                                                            <input type="checkbox" [ngModelOptions]="{standalone: true}" [(ngModel)]="item.IsActive" />
+                                                                        </td>
+                                                                        <td>{{item.PersonalInfo.FullName }}({{item.ChildCode}})</td>
+                                                                        <td>{{item.LocalAuthority.LocalAuthorityName }}</td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <form *ngIf="step.name=='Child & Carer Information'" [formGroup]="CarerForm" class="row">
+                                    <div class="form-group col-md-12" *ngIf="lstCarerInfoTransfer.length>0">
+                                      <span>
+                                      <input type="checkbox" [checked]="selectBackupCarer"  (change)="fnSelectCarer($event.target.checked)">Backup Carer
+                                      </span>
+                                      <span *ngIf="showAllBackupCarer">
+                                      <input type="checkbox" [checked]="selectAllBackupCarer" (change)="fnSelectAllBackupCarer($event.target.checked)">All Backup Carer
+                                      </span>
+                                        <!-- <label class="custom-control custom-checkbox">
+                                            <input type="checkbox" [checked]="selectBackupCarer" class="custom-control-input checkbox-primary checkbox-circle" (change)="fnSelectCarer($event.target.checked)">
+                                            <span class="custom-control-indicator"></span>
+                                            <span class="custom-control-description">Backup Carer</span>
+                                        </label>
+                                        <label class="custom-control custom-checkbox" *ngIf="showAllBackupCarer">
+                                            <input type="checkbox" [checked]="selectAllBackupCarer" class="custom-control-input checkbox-primary checkbox-circle" (change)="fnSelectAllBackupCarer($event.target.checked)">
+                                            <span class="custom-control-indicator"></span>
+                                            <span class="custom-control-description">All Backup Carer</span>
+                                        </label> -->
+                                    </div>
+                                    <div *ngIf="!showBackupCarer" class="form-group col-md-12">
+                                        <div class="form-group" *ngIf="lstCarerInfoTransfer.length>0">
+                                            <label class="">Select a {{carerLabel}}</label>
+                                            <!-- <select *ngIf="lstCarerInfoTransfer.length == 0" formControlName="CarerInfo" required
+                                                    [(ngModel)]="test1" class="form-control" (change)="fnLoadCarerDetails($event.target.value)">
+                                                <option value="" [attr.selected]="test1 == null ? true : null">Select a Carer</option>
+                                                <option *ngFor="let item of lstCarerInfoTransfer | filter : 'CarerTypeId' : '1'" value="{{item.CarerParentId}}">
+                                                    {{item.PCFullName}} {{item.SCFullName}} ({{item.CarerCode}})
+                                                </option>
+                                            </select> -->
+                                            <ng-select *ngIf="lstCarerInfoTransfer != null"   formControlName="CarerInfo" required class="form-control"
+                                              [(ngModel)]="test1" (change)="fnLoadCarerDetails($event)">
+                                              <ng-option *ngFor="let item of lstCarerInfoTransfer | filter : 'CarerTypeId' : '1'" [value]="item.CarerParentId">{{item.PCFullName}} {{item.SCFullName}} ({{item.CarerCode}})</ng-option>
+                                            </ng-select>
+                                            <div *ngIf="(!CarerForm.controls.CarerInfo.valid && submittedCNC && CarerForm.controls.CarerInfo.errors )" class="alert alert-danger">
+                                                Please select a Carer
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div *ngIf="objCarerInfo">
+                                                <div widget class="card">
+                                                    <div class="card-header">
+                                                        <span class="text-uppercase"> Carer Info</span>
+                                                    </div>
+                                                    <div class="card-body widget-body">
+                                                        <div class="row" style="border:1px double;border-radius: 5px;">
+                                                            <div class="col-lg-2">
+                                                                <div class="row card-header">
+                                                                    First Carer
+                                                                </div>
+                                                                <div class="row">
+                                                                    <img height="87px" width="100px" [attr.src]="srcFirstCarerPath">
+                                                                </div>
+                                                                <div class="row card-header" *ngIf="objSecondCarerInfo">
+                                                                    Second Carer
+                                                                </div>
+                                                                <div class="row" *ngIf="objSecondCarerInfo">
+                                                                    <img height="87px" width="100px" [attr.src]="srcSecondCarerPath">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-10" style="border-left:1px double;">
+                                                                <div class="row" style="border-bottom:1px double;">
+                                                                    <div class="col-lg-3">
+                                                                        Carer Name (Code) :
+                                                                    </div>
+                                                                    <div class="col-lg-9">
+                                                                        <b>   {{objCarerInfo.PCFullName }}({{objCarerInfo.CarerCode}})</b>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row" style="border-bottom:1px double;">
+                                                                    <div class="col-lg-3">
+                                                                        Date of Approval :
+                                                                    </div>
+                                                                    <div class="col-lg-3">
+                                                                        {{objCarerInfo.ApprovalDate | dateFormat:'dd/MM/yyyy'}}
+                                                                    </div>
+                                                                    <div class="col-lg-3">
+                                                                        Category of Approval :
+                                                                    </div>
+                                                                    <div class="col-lg-3">
+                                                                        {{objCarerInfo.CategoryofApproval}}
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row" style="border-bottom:1px double;">
+                                                                    <div class="col-lg-3">
+                                                                        Available Vacancies:
+                                                                    </div>
+                                                                    <div class="col-lg-3">
+                                                                        {{objCarerInfo.AvailableVacancies}}
+                                                                    </div>
+                                                                    <div class="col-lg-3">
+                                                                        Total No of Vacancies :
+                                                                    </div>
+                                                                    <div class="col-lg-3">
+                                                                        {{objCarerInfo.TotalNoofVaccancies}}
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <div class="col-lg-3">
+                                                                        Address :
+                                                                    </div>
+                                                                    <div class="col-lg-3">
+                                                                        {{objCarerInfo.CarerInfo.ContactInfo.AddressLine1}},
+                                                                        {{objCarerInfo.CarerInfo.ContactInfo.AddressLine2}},
+                                                                        {{objCarerInfo.CarerInfo.ContactInfo.City}},
+                                                                        {{objCarerInfo.CarerInfo.ContactInfo.MobilePhone}},
+                                                                        {{objCarerInfo.CarerInfo.ContactInfo.EmailId}}
+                                                                    </div>
+                                                                    <div class="col-lg-3">
+                                                                        Fostering Interests :
+                                                                    </div>
+                                                                    <div class="col-lg-3">
+                                                                        <div *ngIf="objCarerInfo.CarerInfo.CarerOtherInformation">
+                                                                            {{objCarerInfo.CarerInfo.CarerOtherInformation.StateFosteringInterest}}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row" *ngIf="objSecondCarerInfo" style="border-bottom:1px double;">
+
+                                                                </div>
+                                                                <div class="row" *ngIf="objSecondCarerInfo">
+                                                                    <div class="col-lg-3">
+                                                                        Carer Name (Code) :
+                                                                    </div>
+                                                                    <div class="col-lg-9">
+                                                                        <b>   {{objSecondCarerInfo.PCFullName }}({{objSecondCarerInfo.CarerCode}})</b>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-lg-12" *ngIf="objCarerInfo.CarerInfo.ChildPlacement.length>0">
+                                                        <div widget class="card">
+                                                            <div class="card-header">
+                                                                <span class="text-uppercase"> Current Placements</span>
+                                                            </div>
+                                                            <div class="card-body widget-body">
+                                                                <table class="table table-sm table-bordered">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>Child Name (Code)</th>
+                                                                            <th>Local Authority</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr *ngFor="let item of objCarerInfo.CarerInfo.ChildPlacement">
+                                                                            <td>{{item.ChildName}}</td>
+                                                                            <td>{{item.LocalAuthority.LocalAuthorityName}}</td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-12" *ngIf="objCarerInfo.CarerInfo.CarerFamilyInfo.length>0">
+                                                        <div widget class="card">
+                                                            <div class="card-header">
+                                                                <span class="text-uppercase"> Carer Birth Children</span>
+                                                            </div>
+                                                            <div class="card-body widget-body">
+
+                                                                <table class="table table-sm table-bordered">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>Name</th>
+                                                                            <th>Date of Birth</th>
+                                                                            <th>Relationship</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr *ngFor="let item of objCarerInfo.CarerInfo.CarerFamilyInfo">
+                                                                            <td>{{item.PersonalInfo.FirstName}}</td>
+                                                                            <td>{{item.PersonalInfo.DateOfBirth | dateFormat:'dd/MM/yyyy'}}</td>
+                                                                            <td>{{item.RelationshipName }}</td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <form *ngIf="step.name=='Child & Carer Information'" [formGroup]="BackupCarerForm" class="row">
+                                    <div *ngIf="showBackupCarer" class="form-group col-md-12">
+                                        <div class="form-group" *ngIf="lstBackupCarer">
+                                            <label class="">Select a {{carerLabel}}</label>
+                                            <!-- <select *ngIf="lstBackupCarer != null" formControlName="BackupCarerInfo" required
+                                                    [(ngModel)]="testBC" class="form-control" (change)="fnLoadBackupCarerDetails($event.target.value)">
+                                                <option value="" [attr.selected]="testBC == null ? true : null">Select a backup Carer</option>
+                                                <option *ngFor="let item of lstBackupCarer" value="{{item.CarerInfo.CarerId}}">
+                                                    {{item.PCFullName}}({{item.CarerCode}})
+                                                </option>
+                                            </select> -->
+                                            <ng-select *ngIf="lstBackupCarer != null" formControlName="BackupCarerInfo" required
+                                            [(ngModel)]="testBC" class="form-control" (change)="fnLoadBackupCarerDetails($event)">
+                                            <ng-option *ngFor="let item of lstBackupCarer" [value]="item.CarerInfo.CarerId">{{item.PCFullName}}({{item.CarerCode}})</ng-option>
+                                            </ng-select>
+                                            <div *ngIf="(!BackupCarerForm.controls.BackupCarerInfo.valid && submittedCNC && BackupCarerForm.controls.BackupCarerInfo.errors )" class="alert alert-danger">
+                                                Please select a backup Carer
+                                            </div>
+                                        </div>
+                                        <div *ngIf="objBackupCarerInfo">
+                                            <div widget class="card">
+                                                <div class="card-header">
+                                                    <span class="text-uppercase"> Backup Carer</span>
+                                                </div>
+                                                <div class="card-body widget-body">
+                                                    <div class="row" style="border:1px double;border-radius: 5px;">
+                                                        <div class="col-lg-2">
+                                                            <div class="row">
+                                                                <img height="87px" width="100px" [attr.src]="srcBackupCarerPath">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-10" style="border-left:1px double;">
+                                                            <div class="row" style="border-bottom:1px double;">
+                                                                <div class="col-lg-3">
+                                                                    Backup Carer Name:
+                                                                </div>
+                                                                <div class="col-lg-3">
+                                                                    <b>  {{objBackupCarerInfo.PCFullName }}</b>
+                                                                </div>
+                                                                <div class="col-lg-3">
+                                                                    Carer Name (Code) :
+                                                                </div>
+                                                                <div class="col-lg-3">
+                                                                    <b>  {{objCarerInfo.PCFullName }}({{objCarerInfo.CarerCode}})</b>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row" style="border-bottom:1px double;">
+                                                                <div class="col-lg-3">
+                                                                    Date of Approval :
+                                                                </div>
+                                                                <div class="col-lg-3">
+                                                                    {{objCarerInfo.ApprovalDate | dateFormat:'dd/MM/yyyy'}}
+                                                                </div>
+                                                                <div class="col-lg-3">
+                                                                    Category of Approval :
+                                                                </div>
+                                                                <div class="col-lg-3">
+                                                                    {{objCarerInfo.CategoryofApproval}}
+                                                                </div>
+                                                            </div>
+                                                            <div class="row" style="border-bottom:1px double;">
+                                                                <div class="col-lg-3">
+                                                                    Available Vacancies:
+                                                                </div>
+                                                                <div class="col-lg-3">
+                                                                    {{objCarerInfo.AvailableVacancies}}
+                                                                </div>
+                                                                <div class="col-lg-3">
+                                                                    Total No of Vacancies :
+                                                                </div>
+                                                                <div class="col-lg-3">
+                                                                    {{objCarerInfo.TotalNoofVaccancies}}
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-lg-3">
+                                                                    Address :
+                                                                </div>
+                                                                <div class="col-lg-3">
+                                                                    {{objCarerInfo.CarerInfo.ContactInfo.AddressLine1}}
+                                                                    {{objCarerInfo.CarerInfo.ContactInfo.AddressLine2}}
+                                                                    {{objCarerInfo.CarerInfo.ContactInfo.City}}
+                                                                    {{objCarerInfo.CarerInfo.ContactInfo.MobilePhone}}
+                                                                    {{objCarerInfo.CarerInfo.ContactInfo.EmailId}}
+                                                                </div>
+                                                                <div class="col-lg-3">
+                                                                    Fostering Interests :
+                                                                </div>
+                                                                <div class="col-lg-3">
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+
+
+                                <form *ngIf="step.name=='Respite Information'" [formGroup]="childPlacementForm" class="row">
+
+                                    <div class="form-group col-md-6">
+                                        <label class="">Start Date</label>
+                                        <input type="datetime" readonly placeholder="dd/mm/yyyy --:--" class="form-control datepickerwidth" formControlName="PlacementDate" required [(ngModel)]="objChildPlacementDTO.PlacementDate" datetimepicker />
+                                        <div *ngIf="(!childPlacementForm.controls.PlacementDate.valid && submittedCPM && childPlacementForm.controls.PlacementDate.errors )" class="alert alert-danger">
+                                            Please Select Placement Date
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label class="">Probable End Date</label>
+                                        <input type="text" placeholder="DD/MM/YYYY" readonly class="form-control form-control-date" formControlName="RespiteEndDate" [(ngModel)]="objChildPlacementDTO.PlacementEndDate" datepicker />
+                                    </div>
+                                    <div class="form-group col-md-12" *ngIf="!showBackupCarer">
+                                        <div class="row">
+                                            <div class="form-group col-md-6">
+                                                <label class="custom-control custom-checkbox">
+                                                    <input type="checkbox" class="custom-control-input checkbox-primary"
+                                                           (change)="fnChangePaidRespite($event.target.checked)">
+                                                    <span class="custom-control-indicator"></span>
+                                                    <span class="custom-control-description">Paid Respite (for Main Carers)</span>
+                                                </label>
+                                            </div>
+                                            <!--<div class="form-group col-md-6" *ngIf="showRate">
+                                                Enter Rate
+                                                <input type="text" class="form-control" formControlName="Rate" [(ngModel)]="objChildPlacementDTO.Rate" />
+                                            </div>-->
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <label class="">
+                                            Child Placement Category
+                                            (before selecting the category, please confirm the same with finance person. If the wrong category is selected, then it will affect the billing)
+                                        </label>
+                                        <select *ngIf="lstPlacementCategory != null" formControlName="PlacementCategory"
+                                                required class="form-control" [(ngModel)]="objChildPlacementDTO.PlacementCategoryId">
+                                            <option value="" [attr.selected]="objChildPlacementDTO.PlacementCategoryId == null ? true : null">Select Placement Category</option>
+                                            <option *ngFor="let item of lstPlacementCategory" value="{{item.CofigTableValuesId}}">
+                                                {{item.Value}}
+                                            </option>
+                                        </select>
+                                        <div *ngIf="(!childPlacementForm.controls.PlacementCategory.valid && submittedCPM && childPlacementForm.controls.PlacementCategory.errors )" class="alert alert-danger">
+                                            Please Select Placement Category
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+
+                                        <div *ngIf="lstSiblingCategory.length>0">
+                                            <div>Sibling(s) Placement Category</div>
+                                            <table class="table table-sm table-bordered" style="background-color:white">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Child Name</th>
+                                                        <th>Placement Category</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr *ngFor="let item of lstSiblingCategory">
+
+                                                        <td>{{item.PersonalInfo.FullName }}({{item.ChildCode}})</td>
+                                                        <td>
+                                                            <select *ngIf="lstPlacementCategory" name="ddl-{{item.ChildCode}}" required class="form-control"
+                                                                    [ngModelOptions]="{standalone: true}" [(ngModel)]="item.PlacementCategoryId">
+                                                                <option *ngFor="let item of lstPlacementCategory" value="{{item.CofigTableValuesId}}">
+                                                                    {{item.Value}}
+                                                                </option>
+                                                            </select>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                        <div *ngIf="showParentTable">
+                                            <div *ngIf="lstParents.length>0">
+                                                <div>Parent(s) Placement Category</div>
+                                                <table class="table table-sm table-bordered" style="background-color:white">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Child Name</th>
+                                                            <th>Placement Category</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+
+                                                        <tr *ngFor="let item of lstParentCategory">
+                                                            <td>{{item.PersonalInfo.FullName }}({{item.ChildCode}})</td>
+                                                            <td>
+                                                                <select *ngIf="lstPlacementCategory" name="ddl-{{item.ChildCode}}"
+                                                                        [ngModelOptions]="{standalone: true}" [(ngModel)]="item.PlacementCategoryId" required class="form-control">
+                                                                    <option value="">Select Placement Category</option>
+                                                                    <option *ngFor="let item of lstPlacementCategory" value="{{item.CofigTableValuesId}}">
+                                                                        {{item.Value}}
+                                                                    </option>
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label class="">Local Authority</label>
+                                        <select *ngIf="lstLocalAuthority != null" formControlName="LocalAuthority"
+                                                required class="form-control" [(ngModel)]="objChildPlacementDTO.LocalAuthorityId">
+                                            <option value="" [attr.selected]="objChildPlacementDTO.LocalAuthorityId == null ? true : null">Select Local Authority</option>
+                                            <option *ngFor="let item of lstLocalAuthority" value="{{item.LocalAuthorityId}}">
+                                                {{item.LocalAuthorityName}}
+                                            </option>
+                                        </select>
+                                        <div *ngIf="(!childPlacementForm.controls.LocalAuthority.valid && submittedCPM && childPlacementForm.controls.LocalAuthority.errors )" class="alert alert-danger">
+                                            Please Select Local Authority
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label class="">Agency Social Worker</label>
+                                        <select *ngIf="lstAgencySocialWorker != null" formControlName="AgencySocialWorker"
+                                                required class="form-control" [(ngModel)]="objChildPlacementDTO.AgencySocialWorkerId">
+                                            <option value="" [attr.selected]="objChildPlacementDTO.AgencySocialWorkerId == null ? true : null">Select Agency Social Worker</option>
+                                            <option *ngFor="let item of lstAgencySocialWorker" value="{{item.UserProfileId}}">
+                                                {{item.PersonalInfo.FullName}}
+                                            </option>
+                                        </select>
+                                        <div *ngIf="(!childPlacementForm.controls.AgencySocialWorker.valid && submittedCPM && childPlacementForm.controls.AgencySocialWorker.errors )" class="alert alert-danger">
+                                            Please Select Agency Social Worker
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <Dynamic-Form #dynamic [dynamicformcontrols]="dynamicformcontrol" (OnValChange)="DynamicOnValChange($event)"
+                                                      [formbuilder]="childPlacementForm" [submitted]="submitted"></Dynamic-Form>
+                                    </div>
+
+                                </form>
+                                <form *ngIf="step.name=='Notification & Place Child'" [formGroup]="notificationForm" class="row">
+                                    <div class="form-group col-md-12">
+                                        <EmailNotification #NotificationRespiteStart [FormCnfgId]="79" [AddtionalEmailIds] [EmailIds]></EmailNotification>
+                                        <br />
+                                        <!--<button type="button" id="btnSubmit" class="btn btn-primary" (click)="btnSave()">Place Child</button>-->
+                                        <SubmitButton (click)="btnSave(NotificationRespiteStart.AddtionalEmailIds,NotificationRespiteStart.EmailIds)" [IsLoading]="isLoading" [Text]="'Place Child'"></SubmitButton>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <button class="btn btn-primary pull-left" (click)="prev()"><i class="fa fa-chevron-left arrow"></i>&nbsp; Prev Step</button>
+                                    <button *ngIf="!steps[steps.length-1].active" class="btn btn-primary pull-right" (click)="next()">Next Step &nbsp;<i class="fa fa-chevron-right arrow"></i></button>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="tb">
+                            <div widget class="card">
+                                <div class="card-header">
+                                    <span class="text-uppercase">Respite End</span>
+                                </div>
+                                <div class="card-body widget-body">
+                                    <form [formGroup]="childTransferForm" class="row">
+                                        <div class="form-group col-md-12">
+                                            <label class="">Select a Child</label>
+                                            <!-- <select *ngIf="lstChildProfileTransferDropDown != null" formControlName="ChildProfileTransfer"
+                                                    [(ngModel)]="test3" required class="form-control" (change)="fnLoadRespiteEndChildDetails($event.target.value)">
+                                                <option value="" [attr.selected]="test3 == null ? true : null">Select Child</option>
+                                                <option *ngFor="let item of lstChildProfileTransferDropDown" value="{{item.ChildId}}">
+                                                    {{item.PersonalInfo.FullName }}({{item.ChildCode}})
+                                                </option>
+                                            </select> -->
+                                            <ng-select *ngIf="lstChildProfileTransferDropDown != null" formControlName="ChildProfileTransfer"
+                                            [(ngModel)]="test3" required class="form-control" (change)="fnLoadRespiteEndChildDetails($event)">
+                                            <ng-option *ngFor="let item of lstChildProfileTransferDropDown" [value]="item.ChildId" >{{item.PersonalInfo.FullName }}({{item.ChildCode}})</ng-option>
+                                            </ng-select>
+                                            <div *ngIf="(!childTransferForm.controls.ChildProfileTransfer.valid && submittedTrnsCNC && childTransferForm.controls.ChildProfileTransfer.errors )" class="alert alert-danger">
+                                                Please Select Child
+                                            </div>
+                                        </div>
+                                        <div *ngIf="objChildProfileTransfer" class="form-group col-md-12">
+                                            <div widget class="card">
+                                                <div class="card-header">
+                                                    <span class="text-uppercase">Selected Child</span>
+                                                </div>
+                                                <div class="card-body widget-body">
+                                                    <div class="row" style="border:1px double;border-radius: 5px;">
+                                                        <div class="col-lg-2">
+                                                            <div class="row">
+                                                                <img height="87px" width="100px" [attr.src]="srcTrnChildPath">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-10" style="border-left:1px double;">
+                                                            <div class="row" style="border-bottom:1px double;">
+                                                                <div class="col-lg-3">
+                                                                    Child Name (Code) :
+                                                                </div>
+                                                                <div class="col-lg-3">
+                                                                    <b> {{objChildProfileTransfer.PersonalInfo.FullName }}({{objChildProfileTransfer.ChildCode}})</b>
+                                                                </div>
+                                                                <div class="col-lg-3">
+                                                                    Child Identifier :
+                                                                </div>
+                                                                <div class="col-lg-3">
+                                                                    <b> {{objChildProfileTransfer.ChildIdentifier }}</b>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row" style="border-bottom:1px double;">
+                                                                <div class="col-lg-3">
+                                                                    Age :
+                                                                </div>
+                                                                <div class="col-lg-3">
+                                                                    {{objChildProfileTransfer.PersonalInfo.Age}}
+                                                                </div>
+                                                                <div class="col-lg-3">
+                                                                    Gender :
+                                                                </div>
+                                                                <div class="col-lg-3">
+                                                                    {{objChildProfileTransfer.PersonalInfo.GenderId==1?'Male':'Female'}}
+                                                                </div>
+                                                            </div>
+                                                            <div class="row" style="border-bottom:1px double;">
+                                                                <div class="col-lg-3">
+                                                                    Ethnicity :
+                                                                </div>
+                                                                <div class="col-lg-3">
+                                                                    {{objChildProfileTransfer.Ethinicity}}
+                                                                </div>
+                                                                <div class="col-lg-3">
+                                                                    Religion :
+                                                                </div>
+                                                                <div class="col-lg-3">
+                                                                    {{objChildProfileTransfer.Religion}}
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-lg-3">
+                                                                    Disability :
+                                                                </div>
+                                                                <div class="col-lg-3">
+                                                                    {{objChildProfileTransfer.DisabilityStr}}
+                                                                </div>
+                                                                <div class="col-lg-3">
+                                                                    Immigration Status :
+                                                                </div>
+                                                                <div class="col-lg-3">
+                                                                    {{objChildProfileTransfer.ImmigrationStatus}}
+                                                                </div>
+                                                            </div>
+                                                            <div class="row" *ngIf="objChildProfileTransfer.ChildOrParentId==2" style="border-top:1px double;">
+                                                                <div class="col-lg-3">
+                                                                    Parent Name :
+                                                                </div>
+                                                                <div class="col-lg-3">
+                                                                    {{objChildProfileTransfer.ParentName}}
+                                                                </div>
+                                                                <div class="col-lg-3">
+                                                                    Parent DOB :
+                                                                </div>
+                                                                <div class="col-lg-3">
+                                                                    {{objChildProfileTransfer.ParentDateOfBirth | dateFormat:'dd/MM/yyyy'}}
+                                                                </div>
+
+                                                            </div>
+                                                            <div class="row" *ngIf="objChildProfileTransfer.ChildOrParentId==2" style="border-top:1px double;">
+                                                                <div class="col-lg-3">
+                                                                    Parent 2 Name :
+                                                                </div>
+                                                                <div class="col-lg-3">
+                                                                    {{objChildProfileTransfer.ParentName2}}
+                                                                </div>
+                                                                <div class="col-lg-3">
+                                                                    Parent 2 DOB :
+                                                                </div>
+                                                                <div class="col-lg-3">
+                                                                    {{objChildProfileTransfer.ParentDateOfBirth2 | dateFormat:'dd/MM/yyyy'}}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="custom-control custom-checkbox" [hidden]="lstSiblingRespiteEnd.length==0">
+                                                        <input type="checkbox" class="custom-control-input checkbox-primary checkbox-circle" [checked]="siblingCheck" (change)="fnShowSiblingRespiteEnd($event.target.checked)">
+                                                        <span class="custom-control-indicator"></span>
+                                                        <span class="custom-control-description">Discharge Siblings</span>
+                                                    </label>
+                                                    <label class="custom-control custom-checkbox" [hidden]="lstParentsRespiteEnd.length==0">
+                                                        <input type="checkbox" class="custom-control-input checkbox-primary checkbox-circle" [checked]="parentCheck" (change)="fnShowParentsRespiteEnd($event.target.checked)">
+                                                        <span class="custom-control-indicator"></span>
+                                                        <span class="custom-control-description">Discharge Parent</span>
+                                                    </label>
+                                                </div>
+                                                <div *ngIf="showSiblingeTableRespiteEnd">
+                                                    <div *ngIf="lstSiblingRespiteEnd">
+                                                        <div>Siblings</div>
+                                                        <table class="table table-sm table-bordered" style="background-color:white">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Select</th>
+                                                                    <th>Child Name</th>
+                                                                    <th>Local Authority</th>
+
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody *ngIf="lstSiblingRespiteEnd.length==0">
+                                                                <tr>
+                                                                    <th colspan="3" class="text-center"> No Siblings found.</th>
+                                                                </tr>
+                                                            </tbody>
+                                                            <tbody>
+                                                                <tr *ngFor="let item of lstSiblingRespiteEnd | filter : 'HasChildSiblings' : true">
+                                                                    <td>
+                                                                        <input type="checkbox" [ngModelOptions]="{standalone: true}" [(ngModel)]="item.IsActive" />
+                                                                    </td>
+                                                                    <td>{{item.PersonalInfo.FullName }}({{item.ChildCode}})</td>
+                                                                    <td>{{item.LocalAuthority.LocalAuthorityName }}</td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                                <div *ngIf="showParentTableRespiteEnd">
+                                                    <div *ngIf="lstParentsRespiteEnd">
+                                                        <div>Parent</div>
+                                                        <table class="table table-sm table-bordered" style="background-color:white">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Select</th>
+                                                                    <th>Child Name</th>
+                                                                    <th>Local Authority</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody *ngIf="lstParentsRespiteEnd.length==0">
+                                                                <tr>
+                                                                    <th colspan="3" class="text-center"> No Parents found.</th>
+                                                                </tr>
+
+                                                            </tbody>
+                                                            <tbody>
+
+                                                                <tr *ngFor="let item of lstParentsRespiteEnd | filter : 'HasChildParents' : true">
+                                                                    <td>
+                                                                        <input type="checkbox" [ngModelOptions]="{standalone: true}" [(ngModel)]="item.IsActive" />
+                                                                    </td>
+                                                                    <td>{{item.PersonalInfo.FullName }}({{item.ChildCode}})</td>
+                                                                    <td>{{item.LocalAuthority.LocalAuthorityName }}</td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div widget class="card">
+                                                <div class="card-header">
+                                                    <span class="text-uppercase">{{carerHeader}} & Placement Details</span>
+                                                </div>
+                                                <div class="card-body widget-body">
+                                                    <div *ngIf="objCarerInfoChildTransfer" class="row" style="border:1px double;border-radius: 5px;">
+                                                        <div class="col-lg-2">
+                                                            <div class="row">
+                                                                <img height="87px" width="100px" [attr.src]="srcPlacedCarerPath">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-10" style="border-left:1px double;">
+                                                            <div class="row" style="border-bottom:1px double;">
+                                                                <div class="col-lg-3">
+                                                                    Carer Name (Code) :
+                                                                </div>
+                                                                <div class="col-lg-9">
+                                                                    <b>  {{objCarerInfoChildTransfer.PCFullName }}({{objCarerInfoChildTransfer.CarerCode}})</b>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row" style="border-bottom:1px double;">
+                                                                <div class="col-lg-3">
+                                                                    Placement Date :
+                                                                </div>
+                                                                <div class="col-lg-3">
+                                                                    {{objPlacementInfo.PlacementDate | dateFormat:'dd/MM/yyyy'}}
+                                                                </div>
+                                                                <div class="col-lg-3">
+                                                                    Placement Time :
+                                                                </div>
+                                                                <div class="col-lg-3">
+                                                                    {{objPlacementInfo.PlacementDate | date:'HH:mm'}}
+                                                                </div>
+                                                            </div>
+                                                            <div class="row" style="border-bottom:1px double;">
+                                                                <div class="col-lg-3">
+                                                                    Placement Type :
+                                                                </div>
+                                                                <div class="col-lg-3">
+                                                                    {{objPlacementInfo.PlacementType}}
+                                                                </div>
+                                                                <div class="col-lg-3">
+                                                                    Placement Reason :
+                                                                </div>
+                                                                <div class="col-lg-3">
+                                                                    {{objPlacementInfo.PlacementReason}}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div [hidden]="!objChildProfileTransfer" class="form-group col-md-12">
+                                            <div>
+                                                <label class="">Discharge Date & Time</label>
+                                                <input type="datetime" placeholder="dd/mm/yyyy --:--" class="form-control" formControlName="TransferDate" required [(ngModel)]="objChildPlacementDTO.DischargeDate" datetimepicker />
+                                            </div>
+                                            <div>
+                                                <Dynamic-Form #respite [dynamicformcontrols]="dynamicformcontrolRespiteEnd"
+                                                              (OnValChange)="DynamicOnValChangeRespiteEnd($event)"
+                                                              [formbuilder]="childTransferForm" [submitted]="submittedTrnsCNC"></Dynamic-Form>
+                                            </div>
+                                            <div>
+                                                <!--<button type="button" id="btnSubmit" class="btn btn-primary" (click)="fnDischarge(respite.dynamicformcontrols)">Discharge</button>-->
+                                                <!-- [AddtionalEmailIds] [EmailIds] -->
+                                                <EmailNotification #NotificationRespiteEnd [FormCnfgId]="79" ></EmailNotification>
+                                                <br />
+                                                <SubmitButton (click)="fnDischarge(respite.dynamicformcontrols,NotificationRespiteEnd.AddtionalEmailIds,NotificationRespiteEnd.EmailIds)" [IsLoading]="isLoadingDischarge" [Text]="'Discharge'"></SubmitButton>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

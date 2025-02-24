@@ -1,0 +1,788 @@
+<form [formGroup]="_Form">
+    <style>
+        .tdWidth {
+            width: 25%;
+        }
+    </style>
+    <ViewDisable></ViewDisable>
+    <div class="col-xl-12 col-lg-12 col-12 bottom-30">
+        <AutoSavedMessage [Text]="saveDraftText" [Time]="draftSavedTime" [Visible]="showAutoSave"></AutoSavedMessage>
+        <ApprovedCarerHeader></ApprovedCarerHeader>
+        <div widget class="card">
+            <div class="card-header">
+                <span>Annual Review</span>
+                <div class="widget-controls">
+                    <i class="fa fa-file-pdf-o" (click)="fnDonloadPDF()" style="font-size:18px;color:white;cursor:pointer;" title="Download PDF"></i>
+                    <i class="fa fa-file-word-o" (click)="fnDonloadWord()" style="font-size:18px;color:white;cursor:pointer;padding-left:5px;" title="Download Word"></i>
+                    <i class="fa fa-print" (click)="fnPrint()" style="font-size:18px;color:white;cursor:pointer;padding-left:5px;padding-right:5px" title="Print"></i>
+                    <i class="fa fa-envelope-open" (click)="fnShowEmail()" style="font-size:18px;color:white;cursor:pointer;" title="Email"></i>
+                </div>
+            </div>
+            <div class="card-body widget-body">
+                <div class="row mbm-20">
+                    <div class="col-lg-12 col-12 bottom-30">
+                        <div class="clearfix">
+                            <ul class="nav nav-tabs top pull-left w-100p">
+                                <li class="nav-item" (click)="fnPage1()" >
+                                    <a class="nav-link {{Page1Active}}" data-toggle="tab" href="#Page1">
+                                        Page 1
+                                    </a>
+                                </li>
+                                <li class="nav-item" (click)="fnPage2()" >
+                                    <a class="nav-link {{Page2Active}}" data-toggle="tab" href="#Page2">
+                                        Page 2
+                                    </a>
+                                </li>
+                                <!-- <li class="nav-item" (click)="fnPage3()" [hidden]="Page3Visible">
+                                    <a class="nav-link {{Page3Active}}" data-toggle="tab" href="#Page3"> Page 3</a>
+                                </li>
+                                <li class="nav-item" (click)="fnPage4()" [hidden]="Page4Visible">
+                                    <a class="nav-link {{Page4Active}}" data-toggle="tab" href="#Page4">Page 4</a>
+                                </li> -->
+                                <li class="nav-item" (click)="fnPage5()" >
+                                    <a class="nav-link {{Page5Active}}" data-toggle="tab" href="#Page5">Page 3</a>
+                                </li>
+                                <!-- <li class="nav-item" (click)="fnPlacementPage()" [hidden]="PlacementInfoVisible">
+                                    <a class="nav-link {{PlacementPageActive}}" data-toggle="tab" href="#PlacementInfo">Placement Review</a>
+                                </li> -->
+                                <li class="nav-item" (click)="fnDocumentDetail()">
+                                    <a class="nav-link {{DocumentActive}}" data-toggle="tab" href="#upload">Upload Document</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="tab-content top">
+                            <!--Page 1-->
+                            <div class="tab-pane {{Page1Active}}" id="Page1" >
+                                <div *ngIf="CarerInfos" class="row" style="padding-bottom:10px">
+                                    <div class="col-md-6">
+                                        <label class="">Carer Name (Code):</label>&nbsp;
+                                        <label class="" style="font-weight:bold">
+                                            {{CarerInfos.PCCarerName}}{{CarerInfos.SCCarerName}}
+                                            ({{CarerInfos.CarerCode}})
+                                        </label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="" style="vertical-align:top">
+                                            Address:
+                                        </label>
+                                        <label class="" style="font-weight:bold">
+                                            {{CarerInfos.Address}}<br />
+                                            <span style="font-weight:bold" *ngIf="CarerInfos.Address2"> {{CarerInfos.Address2}} <br /></span>
+                                            {{CarerInfos.City}}, {{CarerInfos.County}}<br />
+                                            {{CarerInfos.PostalCode}}<br />
+                                            <b *ngIf="CarerInfos.Phone">Phone:{{CarerInfos.Phone}}<br /></b>
+                                            <b *ngIf="CarerInfos.Mobile">Mobile:{{CarerInfos.Mobile}}<br /></b>
+                                            <b *ngIf="CarerInfos.Email">Email:{{CarerInfos.Email}}</b>
+                                        </label>
+                                    </div>
+                                    <div class="col-md-4">
+                                      Primary Carer Ethnicity :<b> {{CarerInfos.EthnicityPC}}</b>
+                                    </div>
+                                    <div class="col-md-4">
+                                        Primary Carer Religion  :<b> {{CarerInfos.ReligionPC}}</b>
+                                    </div>
+                                    <div class="col-md-4">
+                                        Primary Carer Language(s) spoken  :<b> {{CarerInfos.LanguageSpokenPC}}</b>
+                                    </div>
+                                    <div class="col-md-4" *ngIf="CarerInfos.SCCarerName">
+                                        Second Carer Ethnicity :<b> {{CarerInfos.EthnicitySC}}</b>
+                                      </div>
+                                      <div class="col-md-4"  *ngIf="CarerInfos.SCCarerName">
+                                        Second Carer Religion  :<b> {{CarerInfos.ReligionSC}}</b>
+                                      </div>
+                                      <div class="col-md-4"  *ngIf="CarerInfos.SCCarerName">
+                                        Second Carer Language(s) spoken  :<b> {{CarerInfos.LanguageSpokenSC}}</b>
+                                      </div>
+                                    <div class="col-md-6">
+                                        Supervising Social Worker :<b> {{SocialWorkerName}}</b>
+                                    </div>
+                                </div>
+                                <Dynamic-Form #P1dynamic [dynamicformcontrols]="dynamicformcontrol| FilterLike:'ControlLoadFormat':'Page1'" [formbuilder]="_Form"
+                                              [submitted]="submitted" (OnValChange)="DynamicOnValChange($event)">
+                                </Dynamic-Form>
+
+                                <label class="">Household Compositions/Household Members:</label>&nbsp;
+                                <Familyinfo #Familyinfo [CarerId]="insCarerId" [IsAllowInsert]="false"></Familyinfo>
+
+                            </div>
+                            <!--Page 2-->
+                            <div class="tab-pane {{Page2Active}}" id="Page2" >
+                                <!-- <Dynamic-Form #P2dynamic [dynamicformcontrols]="dynamicformcontrol | FilterLike:'ControlLoadFormat':'Page2'" [formbuilder]="_Form"
+                                              [submitted]="submitted"
+                                              (OnValChange)="DynamicOnValChange($event)"></Dynamic-Form> -->
+
+                                <div class="row">
+                                    <div class="col-12 text-right">
+                                        <button style="cursor:pointer" (click)="clickBindStatutoryCheck()" class="btn btn-success">Get the latest Checks</button>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+
+                                    <!--Primary Carer Statutory Checks-->
+                                    <div class="changeColor" style="padding-top:20px" *ngIf="PrimaryCheckVisi">
+                                        <div widget class="card">
+                                            <div class="card-header">
+                                                <span class="text-uppercase"> Primary Carer Statutory Checks</span>
+                                            </div>
+                                            <div class="card-body widget-body">
+                                                <div class="table-responsive datatable"
+                                                     *ngIf="globalObjStatutoryCheckList">
+                                                    <div *ngFor="let item of globalPrimaryCheckList;let i=index">
+                                                        <table class="table table-striped table-hover table-sm" >
+                                                            <thead>
+                                                                <tr>
+                                                                    <th *ngFor="let item of globalPrimaryCheckList[i]|slice:0:1" class="tdWidth">Check Name</th>
+                                                                    <th *ngFor="let item of globalPrimaryCheckList[i]|slice:0:3" class="tdWidth">
+                                                                        {{item.DisplayName}}
+                                                                    </th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody *ngIf="PrimaryCheckVisi">
+                                                                <tr>
+                                                                    <td *ngFor="let item of globalPrimaryCheckList[i]|slice:0:1">
+                                                                        {{item.CheckName}}
+                                                                    </td>
+
+                                                                    <td *ngFor="let subitem of globalPrimaryCheckList[i]|slice:0:3">
+                                                                        <span *ngIf="subitem.FieldDataTypeName=='date'">
+                                                                            {{subitem.FieldValue | dateFormat:'dd/MM/yyyy'}}
+                                                                        </span>
+                                                                        <span *ngIf="subitem.FieldDataTypeName =='Dropdown'">
+                                                                            {{subitem.FieldValueText}}
+                                                                        </span>
+                                                                        <span *ngIf="subitem.FieldDataTypeName =='bit'
+                                                              || subitem.FieldDataTypeName =='radio'">
+                                                                            {{subitem.FieldValue==1?'Yes':'No'}}
+                                                                        </span>
+                                                                        <span *ngIf="subitem.FieldDataTypeName !='date' &&subitem.FieldDataTypeName !='Dropdown' && subitem.FieldDataTypeName !='bit' &&
+                                                              subitem.FieldDataTypeName !='radio'">
+                                                                            {{subitem.FieldValue}}
+                                                                        </span>
+
+
+                                                                    </td>
+
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!--Second Carer Statutory Checks-->
+                                    <div class="changeColor" style="padding-top:20px" *ngIf="SecondCheckVisi">
+                                        <div widget class="card">
+                                            <div class="card-header">
+                                                <span class="text-uppercase"> Second Carer Statutory Checks</span>
+                                            </div>
+                                            <div class="card-body widget-body">
+                                                <div class="table-responsive datatable">
+                                                    <div *ngFor="let item of globalSecondCheckList;let i=index">
+                                                        <table class="table table-striped table-hover table-sm" >
+                                                            <thead>
+                                                                <tr>
+                                                                    <th *ngFor="let item of globalSecondCheckList[i]|slice:0:1" class="tdWidth">Check Name</th>
+                                                                    <th *ngFor="let item of globalSecondCheckList[i]|slice:0:3" class="tdWidth">
+                                                                        {{item.DisplayName}}
+                                                                    </th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td *ngFor="let item of globalSecondCheckList[i]|slice:0:1">
+                                                                        {{item.CheckName}}
+                                                                    </td>
+
+                                                                    <td *ngFor="let subitem of globalSecondCheckList[i]|slice:0:3">
+                                                                        <span *ngIf="subitem.FieldDataTypeName=='date'">
+                                                                            {{subitem.FieldValue | dateFormat:'dd/MM/yyyy'}}
+                                                                        </span>
+                                                                        <span *ngIf="subitem.FieldDataTypeName =='Dropdown'">
+                                                                            {{subitem.FieldValueText}}
+                                                                        </span>
+                                                                        <span *ngIf="subitem.FieldDataTypeName !='date' &&subitem.FieldDataTypeName !='Dropdown'">
+                                                                            {{subitem.FieldValue}}
+                                                                        </span>
+                                                                    </td>
+
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!--Carer Family Check-->
+                                    <div class="changeColor" style="padding-top:20px" *ngIf="CarerFamilyCheckVisi">
+                                        <div widget class="card">
+                                            <div class="card-header">
+                                                <span class="text-uppercase">Carer Family Checks</span>
+                                            </div>
+                                            <div class="card-body widget-body">
+                                                <div class="table-responsive datatable">
+                                                    <div *ngFor="let item of globalCarerFamilyCheckList;let i=index">
+                                                        <table class="table table-striped table-hover table-sm" >
+                                                            <thead>
+                                                                <tr>
+                                                                    <th *ngFor="let subitem of globalCarerFamilyCheckList[i]|slice:0:1" class="tdWidth">
+                                                                    Family Member Name</th>
+                                                                    <th *ngFor="let item of globalCarerFamilyCheckList[i]|slice:0:1" class="tdWidth">Check Name</th>
+                                                                    <th *ngFor="let item of globalCarerFamilyCheckList[i]|slice:0:3" class="tdWidth">
+                                                                        {{item.DisplayName}}
+                                                                    </th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td *ngFor="let item of globalCarerFamilyCheckList[i]|slice:0:1">
+                                                                        {{item.MemberName}}
+                                                                    </td>
+                                                                    <td *ngFor="let item of globalCarerFamilyCheckList[i]|slice:0:1">
+                                                                        {{item.CheckName}}
+                                                                    </td>
+
+                                                                    <td *ngFor="let subitem of globalCarerFamilyCheckList[i]|slice:0:3">
+                                                                        <span *ngIf="subitem.FieldDataTypeName=='date'">
+                                                                            {{subitem.FieldValue | dateFormat:'dd/MM/yyyy'}}
+                                                                        </span>
+                                                                        <span *ngIf="subitem.FieldDataTypeName =='Dropdown'">
+                                                                            {{subitem.FieldValueText}}
+                                                                        </span>
+                                                                        <span *ngIf="subitem.FieldDataTypeName !='date' &&subitem.FieldDataTypeName !='Dropdown'">
+                                                                            {{subitem.FieldValue}}
+                                                                        </span>
+                                                                    </td>
+
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!--Backup Carer Checks-->
+                                    <div class="changeColor" style="padding-top:20px" *ngIf="BackupCarerCheckVisi">
+                                        <div widget class="card">
+                                            <div class="card-header">
+                                                <span class="text-uppercase">Backup Carer Checks</span>
+                                            </div>
+                                            <div class="card-body widget-body">
+                                                <div class="table-responsive datatable">
+                                                    <div *ngFor="let item of globalBackupCarerCheckList;let i=index">
+                                                        <table class="table table-striped table-hover table-sm" >
+                                                            <thead>
+                                                                <tr>
+                                                                    <th *ngFor="let item of globalBackupCarerCheckList[i]|slice:0:1" class="tdWidth">Backup Carer Name</th>
+                                                                    <th *ngFor="let item of globalBackupCarerCheckList[i]|slice:0:1" class="tdWidth">Check Name</th>
+                                                                    <th *ngFor="let item of globalBackupCarerCheckList[i]|slice:0:3" class="tdWidth">
+                                                                        {{item.DisplayName}}
+                                                                    </th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td *ngFor="let item of globalBackupCarerCheckList[i]|slice:0:1">
+                                                                        {{item.MemberName}}
+                                                                    </td>
+                                                                    <td *ngFor="let item of globalBackupCarerCheckList[i]|slice:0:1">
+                                                                        {{item.CheckName}}
+                                                                    </td>
+
+                                                                    <td *ngFor="let subitem of globalBackupCarerCheckList[i]|slice:0:3">
+                                                                        <span *ngIf="subitem.FieldDataTypeName=='date'">
+                                                                            {{subitem.FieldValue | dateFormat:'dd/MM/yyyy'}}
+                                                                        </span>
+                                                                        <span *ngIf="subitem.FieldDataTypeName =='Dropdown'">
+                                                                            {{subitem.FieldValueText}}
+                                                                        </span>
+                                                                        <span *ngIf="subitem.FieldDataTypeName !='date' &&subitem.FieldDataTypeName !='Dropdown'">
+                                                                            {{subitem.FieldValue}}
+                                                                        </span>
+                                                                    </td>
+
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!--Backup Carer Family Checks-->
+                                    <div class="changeColor" style="padding-top:20px" *ngIf="BackupCarerFamilyCheckVisi">
+                                        <div widget class="card">
+                                            <div class="card-header">
+                                                <span class="text-uppercase">Backup Carer Family Checks</span>
+                                            </div>
+                                            <div class="card-body widget-body">
+                                                <div class="table-responsive datatable">
+                                                    <div *ngFor="let item of globalBackupCarerFamilyCheckList;let i=index">
+                                                        <table class="table table-striped table-hover table-sm">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th *ngFor="let item of globalBackupCarerFamilyCheckList[i]|slice:0:1" class="tdWidth">Backup Carer Name</th>
+                                                                    <th *ngFor="let item of globalBackupCarerFamilyCheckList[i]|slice:0:1" class="tdWidth">Family Member Name</th>
+                                                                    <th *ngFor="let item of globalBackupCarerFamilyCheckList[i]|slice:0:1" class="tdWidth">Check Name</th>
+                                                                    <th *ngFor="let item of globalBackupCarerFamilyCheckList[i]|slice:0:3" class="tdWidth">
+                                                                        {{item.DisplayName}}
+                                                                    </th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr>
+                                                                   <td *ngFor="let item of globalBackupCarerFamilyCheckList[i]|slice:0:1">
+                                                                        {{item.BackupCarerName}}
+                                                                    </td>
+                                                                    <td *ngFor="let item of globalBackupCarerFamilyCheckList[i]|slice:0:1">
+                                                                        {{item.MemberName}}
+                                                                    </td>
+                                                                    <td *ngFor="let item of globalBackupCarerFamilyCheckList[i]|slice:0:1">
+                                                                        {{item.CheckName}}
+                                                                    </td>
+
+                                                                    <td *ngFor="let subitem of globalBackupCarerFamilyCheckList[i]|slice:0:3">
+                                                                        <span *ngIf="subitem.FieldDataTypeName=='date'">
+                                                                            {{subitem.FieldValue | dateFormat:'dd/MM/yyyy'}}
+                                                                        </span>
+                                                                        <span *ngIf="subitem.FieldDataTypeName =='Dropdown'">
+                                                                            {{subitem.FieldValueText}}
+                                                                        </span>
+                                                                        <span *ngIf="subitem.FieldDataTypeName !='date' &&subitem.FieldDataTypeName !='Dropdown'">
+                                                                            {{subitem.FieldValue}}
+                                                                        </span>
+                                                                    </td>
+
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+                            <!--Page3-->
+                            <div class="tab-pane {{Page5Active}}" id="Page5" >
+                                <div>
+
+                                    <!--Placement-->
+                                    <div class="changeColor" style="padding-top:20px" >
+                                        <div widget class="card">
+                                            <div class="card-header">
+                                                <span class="text-uppercase">Placements</span>
+                                            </div>
+                                            <div class="card-body widget-body">
+                                                <div class="table-responsive datatable">
+                                                    <table class="table table-striped table-hover table-sm" >
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Child Name (Code)</th>
+                                                                <th>Age</th>
+                                                                <th>Ethnicity</th>
+                                                                <th>Legal Status</th>
+                                                                <th>Placement Type</th>
+                                                                <th>Placement Date</th>
+                                                                <th>Discharge Date</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody *ngIf="Placementonly">
+                                                            <tr *ngFor="let item of Placementonly | filter:'PlacementStartTypeId':'1'">
+                                                                <td>
+                                                                    {{item.ChildFirstName}} ({{item.ChildCode}})
+                                                                </td>
+                                                                <td>
+                                                                    {{item.ChildAge}}
+                                                                </td>
+                                                                <td>
+                                                                    {{item.Ethnicity}}
+                                                                </td>
+                                                                <td>
+                                                                    {{item.LegalStatus}}
+                                                                </td>
+                                                                <td>
+                                                                    {{item.PlacementType}}
+                                                                </td>
+                                                                <td>
+                                                                    {{item.PlacementDate | dateFormat:'dd/MM/yyyy'}}
+                                                                </td>
+                                                                <td>
+                                                                    {{item.DischargeDate|dateFormat:'dd/MM/yyyy'}}
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                        <!-- <tfoot>
+                                                            <tr>
+                                                                <td colspan="12">
+                                                                    <mfBootstrapPaginator [rowsOnPageSet]="[10, 25, 50, 100]">
+                                                                    </mfBootstrapPaginator>
+                                                                </td>
+                                                            </tr>
+                                                        </tfoot> -->
+                                                    </table>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+
+                                    <!--Respite Placement-->
+                                    <div class="changeColor" style="padding-top:20px">
+                                        <div widget class="card">
+                                            <div class="card-header">
+                                                <span class="text-uppercase">Respite Placements</span>
+                                            </div>
+                                            <div class="card-body widget-body">
+                                                <div class="table-responsive datatable">
+                                                    <table class="table table-striped table-hover table-sm" >
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Child Name (Code)</th>
+                                                                <th>Age</th>
+                                                                <th>Ethnicity</th>
+                                                                <th>Legal Status</th>
+                                                                <th>Placement Type</th>
+                                                                <th>Placement Date</th>
+                                                                <th>Discharge Date</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody  *ngIf="Placements">
+                                                            <tr *ngFor="let item of Placements | filter:'PlacementStartTypeId':'2'">
+                                                                <td>
+                                                                    {{item.ChildFirstName}} ({{item.ChildCode}})
+                                                                </td>
+                                                                <td>
+                                                                    {{item.ChildAge}}
+                                                                </td>
+                                                                <td>
+                                                                    {{item.Ethnicity}}
+                                                                </td>
+                                                                <td>
+                                                                    {{item.LegalStatus}}
+                                                                </td>
+                                                                <td>
+                                                                    {{item.PlacementType}}
+                                                                </td>
+                                                                <td>
+                                                                    {{item.PlacementDate | dateFormat:'dd/MM/yyyy'}}
+                                                                </td>
+                                                                <td>
+                                                                    {{item.DischargeDate|dateFormat:'dd/MM/yyyy'}}
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+
+                                                        <!-- <tfoot>
+                                                            <tr>
+                                                                <td colspan="12">
+                                                                    <mfBootstrapPaginator [rowsOnPageSet]="[10, 25, 50, 100]"></mfBootstrapPaginator>
+                                                                </td>
+                                                            </tr>
+                                                        </tfoot> -->
+                                                    </table>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+
+                                    <!--Transfer Placements-->
+
+                                    <div class="changeColor" style="padding-top:20px" >
+                                        <div widget class="card">
+                                            <div class="card-header">
+                                                <span class="text-uppercase">Transfer Placements</span>
+                                            </div>
+                                            <div class="card-body widget-body">
+                                                <div class="table-responsive datatable">
+                                                    <table class="table table-striped table-hover table-sm" >
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Child Name (Code)</th>
+                                                                <th>Age</th>
+                                                                <th>Ethnicity</th>
+                                                                <th>Legal Status</th>
+                                                                <th>Placement Type</th>
+                                                                <th>Placement Date</th>
+                                                                <th>Discharge Date</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody *ngIf="Placements">
+                                                            <tr *ngFor="let item of Placements | filter:'PlacementStartTypeId':'3'">
+                                                                <td>
+                                                                    {{item.ChildFirstName}} ({{item.ChildCode}})
+                                                                </td>
+                                                                <td>
+                                                                    {{item.ChildAge}}
+                                                                </td>
+                                                                <td>
+                                                                    {{item.Ethnicity}}
+                                                                </td>
+                                                                <td>
+                                                                    {{item.LegalStatus}}
+                                                                </td>
+                                                                <td>
+                                                                    {{item.PlacementType}}
+                                                                </td>
+                                                                <td>
+                                                                    {{item.PlacementDate | dateFormat:'dd/MM/yyyy'}}
+                                                                </td>
+                                                                <td>
+                                                                    {{item.DischargeDate|dateFormat:'dd/MM/yyyy'}}
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+
+                                                        <!-- <tfoot>
+                                                            <tr>
+                                                                <td colspan="12">
+                                                                    <mfBootstrapPaginator [rowsOnPageSet]="[10, 25, 50, 100]"></mfBootstrapPaginator>
+                                                                </td>
+                                                            </tr>
+                                                        </tfoot> -->
+                                                    </table>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+
+                                     <!--Transfer Placements-->
+
+                                     <div class="changeColor" style="padding-top:20px" >
+                                        <div widget class="card">
+                                            <div class="card-header">
+                                                <span class="text-uppercase">Placements that ended since last review</span>
+                                            </div>
+                                            <div class="card-body widget-body">
+                                                <div class="table-responsive datatable">
+                                                    <table class="table table-striped table-hover table-sm" >
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Child Name (Code)</th>
+                                                                <th>Age</th>
+                                                                <th>Ethnicity</th>
+                                                                <th>Legal Status</th>
+                                                                <th>Placement Type</th>
+                                                                <th>Placement Date</th>
+                                                                <th>Discharge Date</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody *ngIf="PlacementsEnded">
+                                                            <tr *ngFor="let item of PlacementsEnded">
+                                                                <td>
+                                                                    {{item.ChildFirstName}} ({{item.ChildCode}})
+                                                                </td>
+                                                                <td>
+                                                                    {{item.ChildAge}}
+                                                                </td>
+                                                                <td>
+                                                                    {{item.Ethnicity}}
+                                                                </td>
+                                                                <td>
+                                                                    {{item.LegalStatus}}
+                                                                </td>
+                                                                <td>
+                                                                    {{item.PlacementType}}
+                                                                </td>
+                                                                <td>
+                                                                    {{item.PlacementDate | dateFormat:'dd/MM/yyyy'}}
+                                                                </td>
+                                                                <td>
+                                                                    {{item.DischargeDate|dateFormat:'dd/MM/yyyy'}}
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+
+                                                        <!-- <tfoot>
+                                                            <tr>
+                                                                <td colspan="12">
+                                                                    <mfBootstrapPaginator [rowsOnPageSet]="[10, 25, 50, 100]"></mfBootstrapPaginator>
+                                                                </td>
+                                                            </tr>
+                                                        </tfoot> -->
+                                                    </table>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+
+                                     <!--Staying Put-->
+
+                                     <div class="changeColor" style="padding-top:20px" *ngIf="Placements">
+                                        <div widget class="card">
+                                            <div class="card-header">
+                                                <span class="text-uppercase">Staying Put</span>
+                                            </div>
+                                            <div class="card-body widget-body">
+                                                <div class="table-responsive datatable">
+                                                    <table class="table table-striped table-hover table-sm" >
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Child Code</th>
+                                                                <th>Age</th>
+                                                                <th>Ethnicity</th>
+                                                                <th>Legal Status</th>
+                                                                <th>Placement Type</th>
+                                                                <th>Placement Date</th>
+                                                                <th>Discharge Date</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr *ngFor="let item of Placements | filter:'PlacementStartTypeId':'4'">
+                                                                <td>
+                                                                    {{item.ChildCode}}
+                                                                </td>
+                                                                <td>
+                                                                    {{item.ChildAge}}
+                                                                </td>
+                                                                <td>
+                                                                    {{item.Ethnicity}}
+                                                                </td>
+                                                                <td>
+                                                                    {{item.LegalStatus}}
+                                                                </td>
+                                                                <td>
+                                                                    {{item.PlacementType}}
+                                                                </td>
+                                                                <td>
+                                                                    {{item.PlacementDate | dateFormat:'dd/MM/yyyy'}}
+                                                                </td>
+                                                                <td>
+                                                                    {{item.DischargeDate|dateFormat:'dd/MM/yyyy'}}
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+
+                                                        <!-- <tfoot>
+                                                            <tr>
+                                                                <td colspan="12">
+                                                                    <mfBootstrapPaginator [rowsOnPageSet]="[10, 25, 50, 100]"></mfBootstrapPaginator>
+                                                                </td>
+                                                            </tr>
+                                                        </tfoot> -->
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <!--Upload Document-->
+                            <div class="tab-pane {{DocumentActive}}" id="upload">
+                                <Upload-Documents #uploads [formCnfgId]="formId" [primaryKeyId]="tblPrimaryKey"
+                                                   [submittedUpload]="submittedUpload"
+                                                  [userTypeCnfgId]="4" [typeId]="TypeId"></Upload-Documents>
+                            </div>
+                            <div class="form-group col-lg-12">
+                                <EmailNotification #Notification [FormCnfgId]="formId"  ></EmailNotification>
+                            </div>
+                            <div class="form-group col-md-12">
+                                <button *ngIf="showbtnSaveDraft" [ladda]="isLoadingSAD" #btnSaveDraft (click)="fnSaveDraft(
+                                    _Form,P1dynamic.dynamicformcontrols,P1dynamic.formbuilder,
+                                       uploads.IsUpload,uploads.formbuilder)" class="btn btn-primary expand-right">{{saveAsDraftText}}
+                                </button>
+                                <SubmitButton #btnSubmit (Click)="SubmitAnnualReview(_Form,
+                                   P1dynamic.dynamicformcontrols,P1dynamic.formbuilder,
+                                       uploads.UploadDocIds,
+                                       uploads.IsUpload,
+                                       uploads.formbuilder,
+                                     Notification.AddtionalEmailIds,Notification.EmailIds,0)" [IsDiasable]="isLoadingSAD" [Text]="submitText" [IsLoading]="isLoading"></SubmitButton>
+                                <SubmitButton #btnSubmitAdd *ngIf="SequenceNo==0 || showbtnSaveDraft" [IsDiasable]="isLoadingSAD" (Click)="fnLockConfirmClick()" [IsLoading]="isLoading" [Text]="'Submit & Lock'">
+                                </SubmitButton>
+                                <!-- <BackButton></BackButton> -->
+                                <button style="cursor:pointer;" id="BackBtn"  class="btn btn-warning BackBtn" (click)="fnBack()">Back</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <button id="btnLockModel" #btnLockModel [hidden]="true" type="button" class="btn btn-info" data-toggle="modal" data-target="#info-modal">Info</button>
+        <div class="modal fade" id="info-modal" tabindex="-1" role="dialog" aria-labelledby="modal-info-label">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header state modal-danger">
+                        <h4 class="modal-title" id="modal-error-label"><i class="fa fa-warning"> Alert</i></h4>
+                        <button type="button" class="close closebtn" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure you want to submit and lock this record? Once locked, record cannot be unlocked.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger closebtn" data-dismiss="modal" (click)="SubmitAnnualReview(
+                                   _Form,P1dynamic.dynamicformcontrols,P1dynamic.formbuilder,
+                                    uploads.UploadDocIds,
+                                    uploads.IsUpload,
+                                    uploads.formbuilder,
+                                    Notification.AddtionalEmailIds,Notification.EmailIds,1)">
+                            Ok
+                        </button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<div>
+    <button #btnPrint type="button" [hidden]="true" class="btn btn-primary" data-toggle="modal" data-target="#lg-modal1">Large</button>
+    <div class="modal fade" id="lg-modal1" tabindex="-1" role="dialog" aria-labelledby="modal-large-label" style="display: none;">
+        <div class="modal-dialog modal-lg" role="document">
+            <form [formGroup]="_FormPrint">
+                <div class="modal-content">
+                    <div class="modal-header state modal-primary">
+                        <h4 class="modal-title" id="modal-large-label">
+                            <i class="fa fa-print"></i>Email
+                        </h4>
+                        <div *ngIf="isLoading"><i class="fa fa-spinner fa-spin"></i> Sending email please wait...</div>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="form-group">
+                            Enter Email Subject:
+                            <input type="text" [(ngModel)]="subject" class="form-control" formControlName="subject" required />
+                            <div *ngIf="(!_FormPrint.controls.subject.valid && submittedprint && _FormPrint.controls.subject.errors.required )" class="alert alert-danger">
+                                Please enter Email Subject
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            Enter Email Address(es):
+                            <textarea [(ngModel)]="eAddress" class="form-control" formControlName="eAddress" required></textarea>
+                            <div *ngIf="(!_FormPrint.controls.eAddress.valid && submittedprint && _FormPrint.controls.eAddress.errors.required )" class="alert alert-danger">
+                                Please enter Email Address(es)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <!--<button type="button" class="btn btn-success" (click)="fnPrint()">Print</button>-->
+                        <button type="button" class="btn btn-success" (click)="fnEmail(_FormPrint)" [disabled]="isLoading">Email</button>
+                        <button #btnCancel type="button" class="btn btn-default"  data-dismiss="modal">Cancel</button>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,157 @@
+<form [formGroup]="_Form">
+    <div class="col-xl-12 col-lg-12 col-12 bottom-30">
+        <ApprovedCarerHeader *ngIf="objQeryVal.mid == 3"></ApprovedCarerHeader>
+        <CarerHeader *ngIf="objQeryVal.mid == 13"></CarerHeader>
+        <div widget class="card">
+            <div class="card-header">
+                <span>Initial Checks</span>
+                <div class="widget-controls">
+                    <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                    <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                    <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+                    <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+                    <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a>
+                </div>
+            </div>
+            <div class="card-body widget-body">
+                <div class="row mbm-20">
+                    <div class="col-lg-12 col-12 bottom-30">
+                        <div class="clearfix">
+                            <ul class="nav nav-tabs top pull-left w-100p">
+                                <li class="nav-item" (click)="fnD3InfoActive()">
+                                    <a class="nav-link {{insd3InfoActive}}" data-toggle="tab" href="#CarerApprovalDetails">
+                                        Assessor Tracker
+                                    </a>
+                                </li>
+                                <li class="nav-item" (click)="fnDocumentActive()">
+                                    <a class="nav-link {{insDocumentActive}}" data-toggle="tab" href="#UploadDocuments">Upload Documents</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="tab-content top">
+                            <div class="tab-pane {{insd3InfoActive}}" id="CarerApprovalDetails">
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-hover table-sm">
+                                        <tbody>
+                                            <tr>
+                                                <td> Initial home visit form is completed?</td>
+                                                <td>
+                                                    <input type="checkbox"
+                                                        formControlName="InitialHomeVisitCompleted"
+                                                        [(ngModel)]="objCarerInitialCheckDTO.InitialHomeVisitCompleted"/>
+                                                </td>
+                                                <td>
+                                                    Initial home visit form authorised by a manager?
+                                                </td>
+                                                <td>
+                                                    <input type="checkbox"
+                                                    formControlName="InitialHomeVisitAuthorised"
+                                                    [(ngModel)]="objCarerInitialCheckDTO.InitialHomeVisitAuthorised"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td> Health and Safety Check has been uploaded onto the system?</td>
+                                                <td>
+                                                    <input type="checkbox"
+                                                        formControlName="HealthSafetyCheckUploaded"
+                                                            [(ngModel)]="objCarerInitialCheckDTO.HealthSafetyCheckUploaded"
+                                                            />
+                                                </td>
+                                                <td>
+                                                    Date of Health and Safety Check filled
+                                                </td>
+                                                <td>
+                                                    <input type="text" placeholder="DD/MM/YYYY" readonly class="form-control form-control-date"
+                                                        formControlName="HealthSafetyCheckDate" [(ngModel)]="objCarerInitialCheckDTO.HealthSafetyCheckDate"
+                                                        [value]="objCarerInitialCheckDTO.HealthSafetyCheckDate" datepicker />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Has the Health and Safety Check been authorised by a manager?</td>
+                                                <td colspan="3">
+                                                    <input type="checkbox"
+                                                        formControlName="HealthSafetyCheckAuthorised"
+                                                        [(ngModel)]="objCarerInitialCheckDTO.HealthSafetyCheckAuthorised" />
+                                                </td>
+
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    Pet Questionnaire completed?
+                                                </td>
+                                                <td>
+                                                    <input type="checkbox"
+                                                        formControlName="PetQuestionaireCompleted"
+                                                        [(ngModel)]="objCarerInitialCheckDTO.PetQuestionaireCompleted" />
+                                                </td>
+                                                <td>
+                                                    Date completed
+                                                </td>
+                                                <td>
+                                                    <input type="text" placeholder="DD/MM/YYYY"  class="form-control form-control-date"
+                                                    formControlName="PetQuestionaireDate" [(ngModel)]="objCarerInitialCheckDTO.PetQuestionaireDate"
+                                                    [value]="objCarerInitialCheckDTO.PetQuestionaireDate" datepicker />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Consent form signed?</td>
+                                                <td>
+                                                    <input type="checkbox"
+                                                    formControlName="ConsentFormSigned"
+                                                    [(ngModel)]="objCarerInitialCheckDTO.ConsentFormSigned" />
+                                                </td>
+                                                <td>
+                                                    Date received
+                                                </td>
+                                                <td>
+                                                    <input type="text" placeholder="DD/MM/YYYY"  class="form-control form-control-date"
+                                                        formControlName="ConsentDate" [(ngModel)]="objCarerInitialCheckDTO.ConsentDate"
+                                                        [value]="objCarerInitialCheckDTO.ConsentDate" datepicker />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Applicant agreement signed?</td>
+                                                <td>
+                                                    <input type="checkbox"
+                                                    formControlName="AgreementSigned"
+                                                    [(ngModel)]="objCarerInitialCheckDTO.AgreementSigned" />
+                                                </td>
+                                                <td>
+                                                    Date received
+                                                </td>
+                                                <td>
+                                                    <input type="text" placeholder="DD/MM/YYYY"  class="form-control form-control-date"
+                                                    formControlName="AgreementReceivedDate" [(ngModel)]="objCarerInitialCheckDTO.AgreementReceivedDate"
+                                                    [value]="objCarerInitialCheckDTO.AgreementReceivedDate" datepicker />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Approved by a Senior Manager</td>
+                                                <td colspan="3">
+                                                    <input type="checkbox"
+                                                        formControlName="ApprovedByManager"
+                                                            [(ngModel)]="objCarerInitialCheckDTO.ApprovedByManager" />
+                                                </td>
+
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                          </div>
+                          <div class="tab-pane {{insDocumentActive}}" id="UploadDocuments">
+                            <div class="tab-pane" id="tb">
+                                <Upload-Documents #uploads [formCnfgId]="formId" [primaryKeyId]="tblPrimaryKey"  [submittedUpload]="submittedUpload"
+                                                  [userTypeCnfgId]="4" [typeId]="TypeId"></Upload-Documents>
+
+                            </div>
+                           </div>
+                           <div class="form-group col-md-12">
+                            <SubmitButton FormCnfgId="301" (Click)="clicksubmit(uploads.UploadDocIds,uploads.IsUpload,uploads.formbuilder)" [IsLoading]="isLoading"></SubmitButton>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

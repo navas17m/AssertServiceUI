@@ -1,0 +1,334 @@
+﻿<form [formGroup]="_Form">
+    <div class="col-xl-12 col-lg-12 col-12 bottom-30">
+        <CarerHeader [ApplicantProfile]="objApplicantProfileVal"></CarerHeader>
+        <div widget class="card">
+            <div class="card-header">
+                <span>Carer  Status Change</span>
+                <div class="widget-controls">
+                    <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                    <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                    <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+                    <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+                    <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a>
+                </div>
+            </div>
+            <div class="card-body widget-body">
+                <style>
+                    .class1 {
+                        font-weight: bold;
+                        font-size: 15px;
+                    }
+                </style>
+                <div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label class="class1">Carer Code :</label>
+                            <label class="">  {{objCarerInfo.CarerCode}}</label>
+                        </div>
+                        <div class="col-md-8">
+                            <label class="class1">Current Status :</label>
+                            <label class="">  {{objCarerInfo.CarerStatusName}}</label>
+
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-md-4">
+                            <label class="class1">Primary Applicant Name :</label>
+                            <label class="">  {{objCarerInfo.PersonalInfo.FirstName}} {{objCarerInfo.PersonalInfo.lastName}}</label>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="class1">Date of Birth :</label>
+                            <label class="">  {{objCarerInfo.PersonalInfo.DateOfBirth | dateFormat:'dd/MM/yyyy'}}</label>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="class1">Gender :</label>
+                            <label class="">  {{fnGetGender(objCarerInfo.PersonalInfo.GenderId)}}</label>
+                        </div>
+                    </div>
+                    <div class="row" *ngIf="IsVisibleSC">
+                        <div class="col-md-4">
+                            <label class="class1">Second Applicant Name :</label>
+                            <label class="">  {{objCarerInfoSA.PersonalInfo.FirstName}} {{objCarerInfoSA.PersonalInfo.lastName}}</label>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="class1">Date of Birth  :</label>
+                            <label class="">  {{objCarerInfoSA.PersonalInfo.DateOfBirth | dateFormat:'dd/MM/yyyy'}}</label>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="class1">Gender  :</label>
+                            <label class=""> {{fnGetGender(objCarerInfoSA.PersonalInfo.GenderId)}}</label>
+                        </div>
+                    </div>
+                    <div class="row" *ngIf="objEditCarerStatusChange.ReasonName">
+                        <div class="col-md-8">
+                            <label class="class1">Reason:</label>
+                            <label class="">  {{objEditCarerStatusChange.ReasonName}}</label>
+                        </div>
+
+                    </div>
+                    <div class="row" *ngIf="objEditCarerStatusChange.OnHoldReminderDate">
+                        <div class="col-md-4">
+                            <label class="class1">On-Hold Reminder Date:</label>
+                            <label class="">  {{objEditCarerStatusChange.OnHoldReminderDate| dateFormat:'dd/MM/yyyy'}}</label>
+                        </div>
+                        <div class="col-md-4">
+                            &nbsp;
+                        </div>
+                    </div>
+
+                    <div class="row">
+
+
+                        <div class="form-group col-md-6">
+                            <label class="">Status :</label>
+                            <select *ngIf="carerstatusList != null" #select (change)="statusChange(select.value)" formControlName="CarerStatusId" class="form-control" required [(ngModel)]="objCarerStatusChange.StatusId">
+                                <!--<option value=""[attr.selected]="objCarerStatusChange.StatusId == null ? true : null">Select a Status</option>-->
+                                <option value="" [attr.selected]="objCarerStatusChange.StatusId == null ? true : null">Select a Status</option>
+                                <option *ngFor="let op of carerstatusList" value="{{op.ModuleStatusCnfgId}}">
+                                    {{op.StatusName}}
+                                </option>
+                            </select>
+                            <div *ngIf="(!_Form.controls.CarerStatusId.valid && submitted && _Form.controls.CarerStatusId.errors )" class="alert alert-danger">
+                                Please select a Status
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6" [hidden]="IsVisibleReasonId">
+                            <label class="">Select Reason:</label>
+                            <select *ngIf="lstrejectReson.length>0" formControlName="ReasonId" class="form-control" #Reason [(ngModel)]="objCarerStatusChange.ReasonId"
+                                    [ngStyle]="{'border-left':objCarerStatusChange.ReasonId>0?
+                            '5px solid #42A948':'5px solid #a94442'}">
+                                <option value="" [attr.selected]="objCarerStatusChange.ReasonId == null ? true : null">
+                                    Select a Reason
+                                </option>
+                                <option *ngFor="let op of lstReason" value="{{op.CofigTableValuesId}}">
+                                    {{op.Value}}
+                                </option>
+                            </select>
+                            <div *ngIf="(!IsValidReasonId && submitted
+                             && (objCarerStatusChange.ReasonId == null || objCarerStatusChange.ReasonId == 0))" class="alert alert-danger">
+                                Please Select a Reason
+                            </div>
+                        </div>
+                        <!--<div class="form-group" [hidden]="ReasonOtherVisible">
+            <label class="">If 'OTHER' then specify :</label>
+            <input formControlName="ReasonOther" type="text" class="form-control" [(ngModel)]="objCarerStatusChange.ReasonOther" />
+        </div>-->
+                        <div class="form-group col-md-6" [hidden]="IsVisibleOnHoldReminderDate">
+                            <label class="">Select On-Hold Reminder Date :</label>
+                            <input formControlName="OnHoldReminderDate" type="text" placeholder="DD/MM/YYYY"  class="form-control form-control-date1" [(ngModel)]="objCarerStatusChange.OnHoldReminderDate" [value]="objCarerStatusChange.OnHoldReminderDate" datepicker
+                                   [ngStyle]="{'border-left':objCarerStatusChange.OnHoldReminderDate !=null?
+                            '5px solid #42A948':'5px solid #a94442'}" />
+                            <!--<div *ngIf="(!IsValidOnHoldReminderDate && submitted)" class="alert alert-danger">
+                Please Select On-Hold Reminder Date
+            </div>-->
+                            <div *ngIf="(!IsValidOnHoldReminderDate && submitted
+                             && (objCarerStatusChange.OnHoldReminderDate == null ))" class="alert alert-danger">
+                                Please Select On-Hold Reminder Date
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6" [hidden]="!StatusEndDateVisible">
+                            <label class="">{{statusEndDataLabelName}} :</label>
+                            <input formControlName="StatusEndDate" type="text" placeholder="DD/MM/YYYY"  class="form-control form-control-date1" [(ngModel)]="objCarerStatusChange.StatusEndDate" [value]="objCarerStatusChange.StatusEndDate" datepicker
+                                   [ngStyle]="{'border-left':objCarerStatusChange.StatusEndDate !=null?
+                            '5px solid #42A948':'5px solid #a94442'}" />
+                            <div *ngIf="(objCarerStatusChange.StatusEndDate == null && submitted)" class="alert alert-danger">
+                                Please Select {{statusEndDataLabelName}}
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="">Date of Status Change :</label>
+                            <input formControlName="DateOfStatusChange" type="text" placeholder="DD/MM/YYYY"  class="form-control form-control-date1" required [(ngModel)]="objCarerStatusChange.ChangeDate" [value]="objCarerStatusChange.ChangeDate" datepicker />
+                            <div *ngIf="(!_Form.controls.DateOfStatusChange.valid && submitted && _Form.controls.DateOfStatusChange.errors )" class="alert alert-danger">
+                                Please Enter Date Of Status Change
+                            </div>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label class="">Comments :</label>
+                            <textarea formControlName="Comments" type="text" class="form-control" [(ngModel)]="objCarerStatusChange.Comments"></textarea>
+                            <div *ngIf="(!_Form.controls.Comments.valid && submitted && _Form.controls.Comments.errors.required )" class="alert alert-danger">
+                                Please Enter Comments
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6" [hidden]="IsVisibleAssessor">
+                            <label class="">Assessor's Name:</label>
+                            <input formControlName="AssessorName" type="text" class="form-control" [(ngModel)]="objCarerStatusChange.AssessorName" [ngStyle]="{'border-left':objCarerStatusChange.AssessorName == null ?
+                            '5px solid #a94442':objCarerStatusChange.AssessorName == ''?'5px solid #a94442':'5px solid #42A948'}" />
+                            <div *ngIf="((objCarerStatusChange.AssessorName== null||objCarerStatusChange.AssessorName == '')  &&  submitted )" class="alert alert-danger">
+                                Please Enter Assessor's Name
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6" [hidden]="IsVisibleAssessor">
+                            <label class="">Assessor's Email Address:</label>
+                            <input formControlName="AssessorEmail" type="email" class="form-control" [(ngModel)]="objCarerStatusChange.AssessorEmail" [ngStyle]="{'border-left':objCarerStatusChange.AssessorEmail == null ?
+                            '5px solid #a94442':objCarerStatusChange.AssessorEmail == ''?'5px solid #a94442':'5px solid #42A948'}" />
+                            <div *ngIf="((objCarerStatusChange.AssessorEmail== null||objCarerStatusChange.AssessorEmail == '')  && submitted)" class="alert alert-danger">
+                                Please Enter Assessor's Email Address
+                            </div>
+                            <div class="alert alert-danger" *ngIf="_Form.controls.AssessorEmail.errors && submitted && (objCarerStatusChange.AssessorEmail != null||objCarerStatusChange.AssessorEmail != '')">Please enter valid email Id</div>
+                        </div>
+                        <div class="form-group col-md-6" [hidden]="IsVisibleAssessor">
+                            <label class="">Expected Date of Completion :</label>
+                            <input formControlName="DateofCompletion" type="text" placeholder="DD/MM/YYYY" readonly class="form-control form-control-date" [(ngModel)]="objCarerStatusChange.DateofCompletion" [value]="objCarerStatusChange.DateofCompletion" datepicker />
+                        </div>
+                        <div class="form-group col-md-6" [hidden]="IsVisibleAssessor">
+                            <label class="">Expected Mid-Point Review Date :</label>
+                            <input formControlName="MidPointReviewDate" type="text" placeholder="DD/MM/YYYY" readonly class="form-control form-control-date" [(ngModel)]="objCarerStatusChange.MidPointReviewDate" [value]="objCarerStatusChange.MidPointReviewDate" datepicker />
+                        </div>
+                        <div class="form-group col-md-6" [hidden]="IsVisibleAssessor">
+                            <label class="">Assessor’s Supervisor:</label>
+                            <input formControlName="AssessorSupervisor" type="text" class="form-control" [(ngModel)]="objCarerStatusChange.AssessorSupervisor" [ngStyle]="{'border-left':objCarerStatusChange.AssessorSupervisor == null ?
+                            '5px solid #a94442':objCarerStatusChange.AssessorSupervisor == ''?'5px solid #a94442':'5px solid #42A948'}" />
+                            <div *ngIf="((objCarerStatusChange.AssessorSupervisor== null||objCarerStatusChange.AssessorSupervisor == '')  && submitted  )" class="alert alert-danger">
+                                Please Enter Assessor's Supervisor
+                            </div>
+                        </div>
+                    </div>
+
+                    <div widget class="card" [hidden]="checkListHidden">
+                        <div class="card-header">
+                            <span class="text-uppercase">Checklist</span>
+                        </div>
+                        <div class="card-body widget-body">
+                            <div class="row mbm-20">
+                                <div class="col-lg-12 col-12 bottom-30">
+                                    <div class="clearfix">
+                                        <ul class="nav nav-tabs top pull-left w-100p">
+                                            <li class="nav-item" (click)="fnInterested()">
+                                                <a class="nav-link {{InterestedStageActive}}" data-toggle="tab" href="#Interested">Interested</a>
+                                            </li>
+                                            <li class="nav-item" (click)="fnStage1()" [hidden]="Stage1CheckList.length==0">
+                                                <a class="nav-link {{Stage1Active}}" data-toggle="tab" href="#s1">Stage 1</a>
+                                            </li>
+                                            <!--<li class="nav-item"  [hidden]="Stage2CheckList.length==0">
+                                                <a class="nav-link" data-toggle="tab" href="#s2">Stage 2</a>
+                                            </li>-->
+                                            <li class="nav-item" (click)="fnDocumentDetail()">
+                                                <a class="nav-link {{DocumentActive}}" data-toggle="tab" href="#UploadDocuments">Upload Documents</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="tab-content top">
+                                        <div class="tab-pane {{InterestedStageActive}}" id="Interested">
+                                            <Dynamic-Form #dynamicInterst [dynamicformcontrols]="InterestedCheckList" [formbuilder]="_Form" [submitted]="submitted"></Dynamic-Form>
+                                        </div>
+                                        <div class="tab-pane {{Stage1Active}}" id="s1">
+                                            <Dynamic-Form #dynamicS1 [dynamicformcontrols]="Stage1CheckList" [formbuilder]="_Form" [submitted]="submitted"></Dynamic-Form>
+                                        </div>
+                                        <div class="tab-pane {{DocumentActive}}" id="UploadDocuments">
+                                            <Upload-Documents #uploads [formCnfgId]="formId" [primaryKeyId]="tblPrimaryKey"
+                                                               [submittedUpload]="submittedUpload"
+                                                              [userTypeCnfgId]="5" [typeId]="TypeId"></Upload-Documents>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-5 form-group ">
+                    </div>
+                    <EmailNotification #Notification [FormCnfgId]="formId"  ></EmailNotification>
+                    <div class="col-lg-5 form-group ">
+                    </div>
+                    <div class="form-group ">
+                        <SubmitButton FormCnfgId="36" (click)="clicksubmit(_Form,dynamicInterst.dynamicformcontrols,
+                                      dynamicInterst.formbuilder
+                      ,dynamicS1.dynamicformcontrols,dynamicS1.formbuilder
+                                 ,uploads.UploadDocIds,
+                                 uploads.IsUpload,
+                                  uploads.formbuilder,Notification.AddtionalEmailIds,Notification.EmailIds
+                     )" [IsLoading]="isLoading">
+                        </SubmitButton>
+                    </div>
+                    <div class="changeColor" style="padding-top:20px">
+                        <div widget class="card">
+                            <div class="card-header">
+                                <span>Comments History</span>
+                            </div>
+                            <div class="card-body widget-body">
+                                <div class="table-responsive datatable">
+                                    <table class="table table-striped table-hover table-sm">
+                                        <thead>
+                                            <tr>
+                                                <th><b> Status</b></th>
+                                                <th><b>Comment</b></th>
+                                                <th><b>Date Of Status Changed</b></th>
+                                                <th>Edit</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let item of carerstatusHistory">
+                                                <td>{{item.StatusName}}</td>
+                                                <td>{{item.Comments}}</td>
+                                                <td>{{item.ChangeDate | dateFormat:'dd/MM/yyyy'}}</td>
+                                                <td><EditButton [FormCnfgId]="formId" (Click)="fnEditHistory(item.CarerStatusChangeId)"></EditButton></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</form>
+
+<form [formGroup]="_FormEdit">
+    <div>
+        <button #btnEditHistory type="button" [hidden]="true" class="btn btn-primary" data-toggle="modal" data-target="#lg-modal2">Large</button>
+        <div class="modal fade" id="lg-modal2" tabindex="-1" role="dialog" aria-labelledby="modal-large-label" style="display: none;">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header state modal-primary">
+                        <h4 class="modal-title" id="modal-large-label" *ngIf="objCarerStatusChangeEdit">
+                            <i class="fa fa-pencil-square-o"></i>
+                            {{objCarerStatusChangeEdit.StatusName}}
+                        </h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                    </div>
+                    <!--start-->
+                    <div class="row mbm-20">
+                        <div class="col-lg-12 col-12 bottom-30">
+                            <div class="card-body widget-body">
+                                <div>
+                                    <div *ngIf="objCarerStatusChangeEdit">
+                                        <div class="form-group" *ngIf="objCarerStatusChangeEdit.StatusEndDate">
+                                            <label class=""> {{statusEndDataLabelName2}} :</label>
+                                            <input required formControlName="StatusEndDate" type="text"
+                                                    placeholder="DD/MM/YYYY" class="form-control form-control-date" [(ngModel)]="objCarerStatusChangeEdit.StatusEndDate"  [value]="objCarerStatusChangeEdit.StatusEndDate" datepicker />
+                                            <!--<div *ngIf="(!_FormEdit.controls.StatusEndDate.valid && submitted && _FormEdit.controls.StatusEndDate.errors )" class="alert alert-danger">
+                                                Please Enter {{statusEndDataLabelName2}}
+                                            </div>-->
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="">Date of Status Change :</label>
+                                            <input formControlName="DateOfStatusChange" type="text" placeholder="DD/MM/YYYY"  class="form-control form-control-date" required [(ngModel)]="objCarerStatusChangeEdit.ChangeDate" [value]="objCarerStatusChangeEdit.ChangeDate" datepicker />
+                                            <div *ngIf="(!_FormEdit.controls.DateOfStatusChange.valid && submitted && _FormEdit.controls.DateOfStatusChange.errors )" class="alert alert-danger">
+                                                Please Enter Date Of Status Change
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="">Comments :</label>
+                                            <textarea formControlName="Comments" type="text" class="form-control" [(ngModel)]="objCarerStatusChangeEdit.Comments"></textarea>
+                                        </div>
+                                        <div class="form-group ">
+                                            <SubmitButton FormCnfgId="36" (click)="fnUpdateHistory()
+                     " [IsLoading]="isLoading">
+                                            </SubmitButton>
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--end-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

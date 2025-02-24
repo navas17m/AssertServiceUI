@@ -1,0 +1,144 @@
+﻿<div class="col-xl-12 col-lg-12 col-12 bottom-30">
+    <Child-Header></Child-Header>
+    <div>
+        <AddButton FormCnfgId="216" (click)="fnAdd()"></AddButton>
+    </div>
+    <br />
+    <div widget class="card">
+      
+        <div class="card-header">
+            <span class="text-uppercase"><DisplayFormName [FormCnfgId]="216"></DisplayFormName></span>
+            <div class="widget-controls">
+                <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+                <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+                <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a>
+            </div>
+        </div>
+        <div class="card-body widget-body">
+            <table class="table table-striped table-hover table-sm">
+                <tbody *ngIf="lstPersonalGoals.length==0">
+                    <tr>
+                        <th *ngIf="!loading" colspan="9" class="text-center">
+                            No Records found.
+                        </th>
+                        <th *ngIf="loading" colspan="9" class="text-center">
+                            <i class="fa fa-spinner fa-spin"></i> Loading please wait...
+                        </th>
+                    </tr>
+                </tbody>
+                </table>
+                <div class="table-responsive datatable" *ngIf="lstPersonalGoals.length>0">
+                    <!-- <ngxdatatable [rows]="lstPersonalGoals" [columns]="columns" formCnfgId="216" searchFilter="true" searchFields="Goal,WeekorMonthName"
+                    (onEdit)="onEdit($event)" (onDelete)="onDelete($event)"></ngxdatatable> -->
+
+                    <ngx-datatable *ngIf="AgencyProfileId!=9"
+                        [rows]="lstPersonalGoals | SearchFilter : 'Goal,WeekorMonthName': searchText"
+                        class="bootstrap" rowHeight="auto" [columnMode]="'force'" [limit]="limitPerPage" [scrollbarH]="true"
+                        [footerHeight]="50" [messages]="footerMessage">
+                        <ngx-datatable-column name="Goal Name" prop="Goal" [sortable]="true" width="120">
+                            <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                                {{value}}
+                            </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column name="Week or Month" prop="WeekorMonthName" [sortable]="true" width="200">
+                            <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                                {{value}}
+                            </ng-template>
+                        </ngx-datatable-column>
+       
+                        <ngx-datatable-column name="Date" [sortable]="true" width="150">
+                            <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                                <span *ngFor="let subitem1 of row.lstChildPersonalGoalSubInfo| groupBy:'SequenceNo';let i=index">
+                                    <span
+                                        *ngFor="let subitem of subitem1.value | filter :'FieldName': 'FromDate'">{{ subitem.FieldValue|dateFormat:'dd/MM/yyyy'  }}</span>
+                                    <span
+                                        *ngFor="let subitem of subitem1.value | filter :'FieldName': 'ToDate'">&nbsp;-&nbsp;{{ subitem.FieldValue|dateFormat:'dd/MM/yyyy' }}</span>
+                                    <br>
+                                </span>
+                            </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column name="Edit" [sortable]="false" width="50">
+                            <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                                <EditButton [FormCnfgId]="FormCnfgId" (Click)="onEdit(row.SequenceNo)">
+                                </EditButton>
+                            </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column name="View" [sortable]="false" width="50">
+                            <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                                <ViewButton [FormCnfgId]="FormCnfgId" (Click)="onEdit(row.SequenceNo)">
+                                </ViewButton>
+                            </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column name="Delete" [sortable]="false" width="50">
+                            <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                                <DeleteButton [FormCnfgId]="FormCnfgId" (Click)="onDelete(row.SequenceNo)"
+                                    [SequenceNo]="row.SequenceNo">
+                                </DeleteButton>
+                            </ng-template>
+                        </ngx-datatable-column>
+                    </ngx-datatable>
+
+                    <ngx-datatable *ngIf="AgencyProfileId==9"
+                        [rows]="lstPersonalGoals | SearchFilter : 'Goal,WeekorMonthName': searchText"
+                        class="bootstrap" rowHeight="auto" [columnMode]="'force'" [limit]="limitPerPage" [scrollbarH]="true"
+                        [footerHeight]="50" [messages]="footerMessage">
+                        <ngx-datatable-column name="Target Name" prop="Goal" [sortable]="true" width="120">
+                            <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                                {{value}}
+                            </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column name="Week/Month/Quarter" prop="WeekorMonthName" [sortable]="true" width="200">
+                            <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                                {{value}}
+                            </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column name="Other Target Name" prop="OtherGoalName" [sortable]="true" width="200">
+                            <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                                {{value}}
+                            </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column name="Target Achieved" prop="GoalAchieved" [sortable]="true" width="200">
+                            <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                                {{value}}
+                            </ng-template>
+                        </ngx-datatable-column>
+                       
+                        <ngx-datatable-column name="Date" [sortable]="true" width="150">
+                            <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                                <span *ngFor="let subitem1 of row.lstChildPersonalGoalSubInfo| groupBy:'SequenceNo';let i=index">
+                                    <span
+                                        *ngFor="let subitem of subitem1.value | filter :'FieldName': 'FromDate'">{{ subitem.FieldValue|dateFormat:'dd/MM/yyyy'  }}</span>
+                                    <span
+                                        *ngFor="let subitem of subitem1.value | filter :'FieldName': 'ToDate'">&nbsp;-&nbsp;{{ subitem.FieldValue|dateFormat:'dd/MM/yyyy' }}</span>
+                                    <br>
+                                </span>
+                            </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column name="Edit" [sortable]="false" width="50">
+                            <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                                <EditButton [FormCnfgId]="FormCnfgId" (Click)="onEdit(row.SequenceNo)">
+                                </EditButton>
+                            </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column name="View" [sortable]="false" width="50">
+                            <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                                <ViewButton [FormCnfgId]="FormCnfgId" (Click)="onEdit(row.SequenceNo)">
+                                </ViewButton>
+                            </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column name="Delete" [sortable]="false" width="50">
+                            <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                                <DeleteButton [FormCnfgId]="FormCnfgId" (Click)="onDelete(row.SequenceNo)"
+                                    [SequenceNo]="row.SequenceNo">
+                                </DeleteButton>
+                            </ng-template>
+                        </ngx-datatable-column>
+                    </ngx-datatable>
+                </div>                 
+        </div>
+        <div *ngIf="lstPersonalGoals.length>10"><PageSize (childPageSizeEvent)="setPageSize($event)"></PageSize></div>
+    </div>
+</div>
+

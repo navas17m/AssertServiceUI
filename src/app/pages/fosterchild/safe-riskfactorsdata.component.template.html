@@ -1,0 +1,658 @@
+﻿<div class="col-xl-12 col-lg-12 col-12 bottom-30"><ViewDisable></ViewDisable>
+    <Child-Header></Child-Header>
+    <div >
+        <div widget class="card">
+            <div class="card-header">
+                <span><DisplayFormName [FormCnfgId]="381"></DisplayFormName> </span>
+                <div class="widget-controls">
+                    <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                    <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                    <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+                    <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+                    <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a>
+                </div>
+            </div>
+            <div class="card-body widget-body">
+                <form [formGroup]="_Form">
+                    <div class="clearfix">
+                        <ul class="nav nav-tabs top pull-left w-100p">
+                            <li class="nav-item" (click)="fnMainTab()">
+                                <a class="nav-link {{mainTabActive}}" data-toggle="tab" href="#ta"> <DisplayFormName [FormCnfgId]="381"></DisplayFormName> </a>
+                            </li>
+                            <li class="nav-item" (click)="fnDocumentDetailTab()">
+                                <a class="nav-link {{DocumentActive}}" data-toggle="tab" href="#tb">Upload Documents</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="tab-content top">
+                        <div class="tab-pane {{mainTabActive}}" id="ta">
+                            <div *ngIf="insChildDetailsTemp" class="row" style="padding-bottom:10px">
+                                <div class="col-md-6">
+                                    Child Code :<b> {{ChildCode}}</b>
+                                </div>
+                            </div>
+                            <div class="row" style="padding-bottom:10px">
+                                <div class="col-md-6">
+                                    Date of Assessment
+                                    <input type="text" required placeholder="DD/MM/YYYY" readonly class="form-control form-control-date"
+                                    formControlName="DateofAssessment" [(ngModel)]="objRiskFactorDTO.DateofAssessment"
+                                      [value]="objRiskFactorDTO.DateofAssessment" datepicker />
+
+                                    <div *ngIf="(!_Form.controls.DateofAssessment.valid && submitted && _Form.controls.DateofAssessment.errors )" class="alert alert-danger">
+                                        Please select a Date of Assessment
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row" style="padding-bottom:10px">
+                                <div class="col-md-6">
+                                  <b> High Risk Factors for Sexual Reoffense</b>
+                                </div>
+                            </div>
+                            <div class="row" style="padding-bottom:10px">
+                                <div class="col-md-6">
+                                    <b>
+                                    Sexual Interests, Attitudes and Behaviours</b>
+                                </div>
+                            </div>
+                            <div class="row" style="padding-bottom:10px">
+                                <div class="col-md-4">
+                                    1.	Deviant sexual interests (younger children, violence or both)
+                                </div>
+                                <div class="col-md-1">
+                                    <input formControlName="DeviantSexualInterests" type="radio" [value]="1"
+                                     [(ngModel)]="objRiskFactorDTO.DeviantSexualInterests" /> Present
+                                </div>
+                                <div class="col-md-3">
+                                    <input formControlName="DeviantSexualInterests" type="radio"  [value]="2"
+                                    [(ngModel)]="objRiskFactorDTO.DeviantSexualInterests" /> Partially/Possibly Present
+                                </div>
+                                <div class="col-md-2">
+                                    <input formControlName="DeviantSexualInterests" type="radio"  [value]="3"
+                                    [(ngModel)]="objRiskFactorDTO.DeviantSexualInterests" /> Not Present
+                                </div>
+                                <div class="col-md-2">
+                                    <input formControlName="DeviantSexualInterests" type="radio"  [value]="4"
+                                     [(ngModel)]="objRiskFactorDTO.DeviantSexualInterests" /> Unknown
+                                </div>
+                            </div>
+                            <div class="row" style="padding-bottom:10px">
+                                <div class="col-md-4">
+                                    2.	Obsessive sexual interests/Preoccupation with sexual thoughts
+                                </div>
+                                <div class="col-md-1">
+                                    <input formControlName="SexualInterests" type="radio" [value]="1"
+                                     [(ngModel)]="objRiskFactorDTO.SexualInterests" /> Present
+                                </div>
+                                <div class="col-md-3">
+                                    <input formControlName="SexualInterests" type="radio"  [value]="2"
+                                    [(ngModel)]="objRiskFactorDTO.SexualInterests" /> Partially/Possibly Present
+                                </div>
+                                <div class="col-md-2">
+                                    <input formControlName="SexualInterests" type="radio"  [value]="3"
+                                    [(ngModel)]="objRiskFactorDTO.SexualInterests" /> Not Present
+                                </div>
+                                <div class="col-md-2">
+                                    <input formControlName="SexualInterests" type="radio"  [value]="4"
+                                     [(ngModel)]="objRiskFactorDTO.SexualInterests" /> Unknown
+                                </div>
+                            </div>
+
+                            <div class="row" style="padding-bottom:10px">
+                                <div class="col-md-4">
+                                    3.	Attitudes supportive of sexual offending
+                                </div>
+                                <div class="col-md-1">
+                                    <input formControlName="AttitudesSupportive" type="radio" [value]="1"
+                                     [(ngModel)]="objRiskFactorDTO.AttitudesSupportive" /> Present
+                                </div>
+                                <div class="col-md-3">
+                                    <input formControlName="AttitudesSupportive" type="radio"  [value]="2"
+                                    [(ngModel)]="objRiskFactorDTO.AttitudesSupportive" /> Partially/Possibly Present
+                                </div>
+                                <div class="col-md-2">
+                                    <input formControlName="AttitudesSupportive" type="radio"  [value]="3"
+                                    [(ngModel)]="objRiskFactorDTO.AttitudesSupportive" /> Not Present
+                                </div>
+                                <div class="col-md-2">
+                                    <input formControlName="AttitudesSupportive" type="radio"  [value]="4"
+                                     [(ngModel)]="objRiskFactorDTO.AttitudesSupportive" /> Unknown
+                                </div>
+                            </div>
+                            <div class="row" style="padding-bottom:10px">
+                                <div class="col-md-4">
+                                    4.	Unwillingness to alter deviant sexual interests/attitudes
+                                </div>
+                                <div class="col-md-1">
+                                    <input formControlName="Unwillingness" type="radio" [value]="1"
+                                     [(ngModel)]="objRiskFactorDTO.Unwillingness" /> Present
+                                </div>
+                                <div class="col-md-3">
+                                    <input formControlName="Unwillingness" type="radio"  [value]="2"
+                                    [(ngModel)]="objRiskFactorDTO.Unwillingness" /> Partially/Possibly Present
+                                </div>
+                                <div class="col-md-2">
+                                    <input formControlName="Unwillingness" type="radio"  [value]="3"
+                                    [(ngModel)]="objRiskFactorDTO.Unwillingness" /> Not Present
+                                </div>
+                                <div class="col-md-2">
+                                    <input formControlName="Unwillingness" type="radio"  [value]="4"
+                                     [(ngModel)]="objRiskFactorDTO.Unwillingness" /> Unknown
+                                </div>
+                            </div>
+                            <div class="row" style="padding-bottom:10px">
+                                <div class="col-md-4">
+                                    <b>Historical Sexual Assaults</b>
+                                </div>
+                            </div>
+                            <div class="row" style="padding-bottom:10px">
+                                <div class="col-md-4">
+                                    5.	Ever sexually assaulted 2 or more victims
+                                </div>
+                                <div class="col-md-1">
+                                    <input formControlName="EverSexuallyAssaulted2" type="radio" [value]="1"
+                                     [(ngModel)]="objRiskFactorDTO.EverSexuallyAssaulted2" /> Present
+                                </div>
+                                <div class="col-md-3">
+                                    <input formControlName="EverSexuallyAssaulted2" type="radio"  [value]="2"
+                                    [(ngModel)]="objRiskFactorDTO.EverSexuallyAssaulted2" /> Partially/Possibly Present
+                                </div>
+                                <div class="col-md-2">
+                                    <input formControlName="EverSexuallyAssaulted2" type="radio"  [value]="3"
+                                    [(ngModel)]="objRiskFactorDTO.EverSexuallyAssaulted2" /> Not Present
+                                </div>
+                                <div class="col-md-2">
+                                    <input formControlName="EverSexuallyAssaulted2" type="radio"  [value]="4"
+                                     [(ngModel)]="objRiskFactorDTO.EverSexuallyAssaulted2" /> Unknown
+                                </div>
+                            </div>
+                            <div class="row" style="padding-bottom:10px">
+                                <div class="col-md-4">
+                                    6.	Ever sexually assaulted same victim 2 or more times
+                                </div>
+                                <div class="col-md-1">
+                                    <input formControlName="EverSexuallyAssaultedSame" type="radio" [value]="1"
+                                     [(ngModel)]="objRiskFactorDTO.EverSexuallyAssaultedSame" /> Present
+                                </div>
+                                <div class="col-md-3">
+                                    <input formControlName="EverSexuallyAssaultedSame" type="radio"  [value]="2"
+                                    [(ngModel)]="objRiskFactorDTO.EverSexuallyAssaultedSame" /> Partially/Possibly Present
+                                </div>
+                                <div class="col-md-2">
+                                    <input formControlName="EverSexuallyAssaultedSame" type="radio"  [value]="3"
+                                    [(ngModel)]="objRiskFactorDTO.EverSexuallyAssaultedSame" /> Not Present
+                                </div>
+                                <div class="col-md-2">
+                                    <input formControlName="EverSexuallyAssaultedSame" type="radio"  [value]="4"
+                                     [(ngModel)]="objRiskFactorDTO.EverSexuallyAssaultedSame" /> Unknown
+                                </div>
+                            </div>
+                            <div class="row" style="padding-bottom:10px">
+                                <div class="col-md-4">
+                                    7.	Prior adult sanctions for sexual assault(s)
+                                </div>
+                                <div class="col-md-1">
+                                    <input formControlName="PriorAdultSanctions" type="radio" [value]="1"
+                                     [(ngModel)]="objRiskFactorDTO.PriorAdultSanctions" /> Present
+                                </div>
+                                <div class="col-md-3">
+                                    <input formControlName="PriorAdultSanctions" type="radio"  [value]="2"
+                                    [(ngModel)]="objRiskFactorDTO.PriorAdultSanctions" /> Partially/Possibly Present
+                                </div>
+                                <div class="col-md-2">
+                                    <input formControlName="PriorAdultSanctions" type="radio"  [value]="3"
+                                    [(ngModel)]="objRiskFactorDTO.PriorAdultSanctions" /> Not Present
+                                </div>
+                                <div class="col-md-2">
+                                    <input formControlName="PriorAdultSanctions" type="radio"  [value]="4"
+                                     [(ngModel)]="objRiskFactorDTO.PriorAdultSanctions" /> Unknown
+                                </div>
+                            </div>
+                            <div class="row" style="padding-bottom:10px">
+                                <div class="col-md-4">
+                                    8.	Threats of, or use of, violence/weapons during sexual offense
+                                </div>
+                                <div class="col-md-1">
+                                    <input formControlName="Threats" type="radio" [value]="1"
+                                     [(ngModel)]="objRiskFactorDTO.Threats" /> Present
+                                </div>
+                                <div class="col-md-3">
+                                    <input formControlName="Threats" type="radio"  [value]="2"
+                                    [(ngModel)]="objRiskFactorDTO.Threats" /> Partially/Possibly Present
+                                </div>
+                                <div class="col-md-2">
+                                    <input formControlName="Threats" type="radio"  [value]="3"
+                                    [(ngModel)]="objRiskFactorDTO.Threats" /> Not Present
+                                </div>
+                                <div class="col-md-2">
+                                    <input formControlName="Threats" type="radio"  [value]="4"
+                                     [(ngModel)]="objRiskFactorDTO.Threats" /> Unknown
+                                </div>
+                            </div>
+                            <div class="row" style="padding-bottom:10px">
+                                <div class="col-md-4">
+                                    9.	Ever sexually assaulted a child
+                                </div>
+                                <div class="col-md-1">
+                                    <input formControlName="SexuallyAssaultedChild" type="radio" [value]="1"
+                                     [(ngModel)]="objRiskFactorDTO.SexuallyAssaultedChild" /> Present
+                                </div>
+                                <div class="col-md-3">
+                                    <input formControlName="SexuallyAssaultedChild" type="radio"  [value]="2"
+                                    [(ngModel)]="objRiskFactorDTO.SexuallyAssaultedChild" /> Partially/Possibly Present
+                                </div>
+                                <div class="col-md-2">
+                                    <input formControlName="SexuallyAssaultedChild" type="radio"  [value]="3"
+                                    [(ngModel)]="objRiskFactorDTO.SexuallyAssaultedChild" /> Not Present
+                                </div>
+                                <div class="col-md-2">
+                                    <input formControlName="SexuallyAssaultedChild" type="radio"  [value]="4"
+                                     [(ngModel)]="objRiskFactorDTO.SexuallyAssaultedChild" /> Unknown
+                                </div>
+                            </div>
+                            <div class="row" style="padding-bottom:10px">
+                                <div class="col-md-4">
+                                    10.	Ever sexually assaulted a stranger
+                                </div>
+                                <div class="col-md-1">
+                                    <input formControlName="SexuallyAssaultedStranger" type="radio" [value]="1"
+                                     [(ngModel)]="objRiskFactorDTO.SexuallyAssaultedStranger" /> Present
+                                </div>
+                                <div class="col-md-3">
+                                    <input formControlName="SexuallyAssaultedStranger" type="radio"  [value]="2"
+                                    [(ngModel)]="objRiskFactorDTO.SexuallyAssaultedStranger" /> Partially/Possibly Present
+                                </div>
+                                <div class="col-md-2">
+                                    <input formControlName="SexuallyAssaultedStranger" type="radio"  [value]="3"
+                                    [(ngModel)]="objRiskFactorDTO.SexuallyAssaultedStranger" /> Not Present
+                                </div>
+                                <div class="col-md-2">
+                                    <input formControlName="SexuallyAssaultedStranger" type="radio"  [value]="4"
+                                     [(ngModel)]="objRiskFactorDTO.SexuallyAssaultedStranger" /> Unknown
+                                </div>
+                            </div>
+                            <div class="row" style="padding-bottom:10px">
+                                <div class="col-md-4">
+                                    11.	Indiscriminate choice of victims
+                                </div>
+                                <div class="col-md-1">
+                                    <input formControlName="Indiscriminate" type="radio" [value]="1"
+                                     [(ngModel)]="objRiskFactorDTO.Indiscriminate" /> Present
+                                </div>
+                                <div class="col-md-3">
+                                    <input formControlName="Indiscriminate" type="radio"  [value]="2"
+                                    [(ngModel)]="objRiskFactorDTO.Indiscriminate" /> Partially/Possibly Present
+                                </div>
+                                <div class="col-md-2">
+                                    <input formControlName="Indiscriminate" type="radio"  [value]="3"
+                                    [(ngModel)]="objRiskFactorDTO.Indiscriminate" /> Not Present
+                                </div>
+                                <div class="col-md-2">
+                                    <input formControlName="Indiscriminate" type="radio"  [value]="4"
+                                     [(ngModel)]="objRiskFactorDTO.Indiscriminate" /> Unknown
+                                </div>
+                            </div>
+                            <div class="row" style="padding-bottom:10px">
+                                <div class="col-md-4">
+                                    12.	Ever sexually assaulted a male victim (male offender only)
+                                </div>
+                                <div class="col-md-1">
+                                    <input formControlName="MaleOffenderOnly" type="radio" [value]="1"
+                                     [(ngModel)]="objRiskFactorDTO.MaleOffenderOnly" /> Present
+                                </div>
+                                <div class="col-md-3">
+                                    <input formControlName="MaleOffenderOnly" type="radio"  [value]="2"
+                                    [(ngModel)]="objRiskFactorDTO.MaleOffenderOnly" /> Partially/Possibly Present
+                                </div>
+                                <div class="col-md-2">
+                                    <input formControlName="MaleOffenderOnly" type="radio"  [value]="3"
+                                    [(ngModel)]="objRiskFactorDTO.MaleOffenderOnly" /> Not Present
+                                </div>
+                                <div class="col-md-2">
+                                    <input formControlName="MaleOffenderOnly" type="radio"  [value]="4"
+                                     [(ngModel)]="objRiskFactorDTO.MaleOffenderOnly" /> Unknown
+                                </div>
+                            </div>
+                            <div class="row" style="padding-bottom:10px">
+                                <div class="col-md-4">
+                                    13.	Diverse sexual assult behaviours
+                                </div>
+                                <div class="col-md-1">
+                                    <input formControlName="DiverseSexual" type="radio" [value]="1"
+                                     [(ngModel)]="objRiskFactorDTO.DiverseSexual" /> Present
+                                </div>
+                                <div class="col-md-3">
+                                    <input formControlName="DiverseSexual" type="radio"  [value]="2"
+                                    [(ngModel)]="objRiskFactorDTO.DiverseSexual" /> Partially/Possibly Present
+                                </div>
+                                <div class="col-md-2">
+                                    <input formControlName="DiverseSexual" type="radio"  [value]="3"
+                                    [(ngModel)]="objRiskFactorDTO.DiverseSexual" /> Not Present
+                                </div>
+                                <div class="col-md-2">
+                                    <input formControlName="DiverseSexual" type="radio"  [value]="4"
+                                     [(ngModel)]="objRiskFactorDTO.DiverseSexual" /> Unknown
+                                </div>
+                            </div>
+                            <div class="row" style="padding-bottom:10px">
+                                <div class="col-md-4">
+                                  <b>  Psychosocial Functioning</b>
+                                </div>
+                            </div>
+                            <div class="row" style="padding-bottom:10px">
+                                <div class="col-md-4">
+                                    14.	Antisocial interpersonal orientation
+                                </div>
+                                <div class="col-md-1">
+                                    <input formControlName="AntisocialInterpersonal" type="radio" [value]="1"
+                                     [(ngModel)]="objRiskFactorDTO.AntisocialInterpersonal" /> Present
+                                </div>
+                                <div class="col-md-3">
+                                    <input formControlName="AntisocialInterpersonal" type="radio"  [value]="2"
+                                    [(ngModel)]="objRiskFactorDTO.AntisocialInterpersonal" /> Partially/Possibly Present
+                                </div>
+                                <div class="col-md-2">
+                                    <input formControlName="AntisocialInterpersonal" type="radio"  [value]="3"
+                                    [(ngModel)]="objRiskFactorDTO.AntisocialInterpersonal" /> Not Present
+                                </div>
+                                <div class="col-md-2">
+                                    <input formControlName="AntisocialInterpersonal" type="radio"  [value]="4"
+                                     [(ngModel)]="objRiskFactorDTO.AntisocialInterpersonal" /> Unknown
+                                </div>
+                            </div>
+                            <div class="row" style="padding-bottom:10px">
+                                <div class="col-md-4">
+                                    15.	Lack of intimate peer relationships / Social isolaton
+                                </div>
+                                <div class="col-md-1">
+                                    <input formControlName="LackofIntimate" type="radio" [value]="1"
+                                     [(ngModel)]="objRiskFactorDTO.LackofIntimate" /> Present
+                                </div>
+                                <div class="col-md-3">
+                                    <input formControlName="LackofIntimate" type="radio"  [value]="2"
+                                    [(ngModel)]="objRiskFactorDTO.LackofIntimate" /> Partially/Possibly Present
+                                </div>
+                                <div class="col-md-2">
+                                    <input formControlName="LackofIntimate" type="radio"  [value]="3"
+                                    [(ngModel)]="objRiskFactorDTO.LackofIntimate" /> Not Present
+                                </div>
+                                <div class="col-md-2">
+                                    <input formControlName="LackofIntimate" type="radio"  [value]="4"
+                                     [(ngModel)]="objRiskFactorDTO.LackofIntimate" /> Unknown
+                                </div>
+                            </div>
+                            <div class="row" style="padding-bottom:10px">
+                                <div class="col-md-4">
+                                    16.	Negative peer associations and influences
+                                </div>
+                                <div class="col-md-1">
+                                    <input formControlName="NegativePeerAssociations" type="radio" [value]="1"
+                                     [(ngModel)]="objRiskFactorDTO.NegativePeerAssociations" /> Present
+                                </div>
+                                <div class="col-md-3">
+                                    <input formControlName="NegativePeerAssociations" type="radio"  [value]="2"
+                                    [(ngModel)]="objRiskFactorDTO.NegativePeerAssociations" /> Partially/Possibly Present
+                                </div>
+                                <div class="col-md-2">
+                                    <input formControlName="NegativePeerAssociations" type="radio"  [value]="3"
+                                    [(ngModel)]="objRiskFactorDTO.NegativePeerAssociations" /> Not Present
+                                </div>
+                                <div class="col-md-2">
+                                    <input formControlName="NegativePeerAssociations" type="radio"  [value]="4"
+                                     [(ngModel)]="objRiskFactorDTO.NegativePeerAssociations" /> Unknown
+                                </div>
+                            </div>
+                            <div class="row" style="padding-bottom:10px">
+                                <div class="col-md-4">
+                                    17.	Interpersonal aggression
+                                </div>
+                                <div class="col-md-1">
+                                    <input formControlName="InterpersonalAggression" type="radio" [value]="1"
+                                     [(ngModel)]="objRiskFactorDTO.InterpersonalAggression" /> Present
+                                </div>
+                                <div class="col-md-3">
+                                    <input formControlName="InterpersonalAggression" type="radio"  [value]="2"
+                                    [(ngModel)]="objRiskFactorDTO.InterpersonalAggression" /> Partially/Possibly Present
+                                </div>
+                                <div class="col-md-2">
+                                    <input formControlName="InterpersonalAggression" type="radio"  [value]="3"
+                                    [(ngModel)]="objRiskFactorDTO.InterpersonalAggression" /> Not Present
+                                </div>
+                                <div class="col-md-2">
+                                    <input formControlName="InterpersonalAggression" type="radio"  [value]="4"
+                                     [(ngModel)]="objRiskFactorDTO.InterpersonalAggression" /> Unknown
+                                </div>
+                            </div>
+                            <div class="row" style="padding-bottom:10px">
+                                <div class="col-md-4">
+                                    18.	Recent escalation in anger or negative affect
+                                </div>
+                                <div class="col-md-1">
+                                    <input formControlName="RecentEscalation" type="radio" [value]="1"
+                                     [(ngModel)]="objRiskFactorDTO.RecentEscalation" /> Present
+                                </div>
+                                <div class="col-md-3">
+                                    <input formControlName="RecentEscalation" type="radio"  [value]="2"
+                                    [(ngModel)]="objRiskFactorDTO.RecentEscalation" /> Partially/Possibly Present
+                                </div>
+                                <div class="col-md-2">
+                                    <input formControlName="RecentEscalation" type="radio"  [value]="3"
+                                    [(ngModel)]="objRiskFactorDTO.RecentEscalation" /> Not Present
+                                </div>
+                                <div class="col-md-2">
+                                    <input formControlName="RecentEscalation" type="radio"  [value]="4"
+                                     [(ngModel)]="objRiskFactorDTO.RecentEscalation" /> Unknown
+                                </div>
+                            </div>
+                            <div class="row" style="padding-bottom:10px">
+                                <div class="col-md-4">
+                                    19.	Poor self-regulation of affect and behaviour (Impulsivity)
+                                </div>
+                                <div class="col-md-1">
+                                    <input formControlName="PoorSelf" type="radio" [value]="1"
+                                     [(ngModel)]="objRiskFactorDTO.PoorSelf" /> Present
+                                </div>
+                                <div class="col-md-3">
+                                    <input formControlName="PoorSelf" type="radio"  [value]="2"
+                                    [(ngModel)]="objRiskFactorDTO.PoorSelf" /> Partially/Possibly Present
+                                </div>
+                                <div class="col-md-2">
+                                    <input formControlName="PoorSelf" type="radio"  [value]="3"
+                                    [(ngModel)]="objRiskFactorDTO.PoorSelf" /> Not Present
+                                </div>
+                                <div class="col-md-2">
+                                    <input formControlName="PoorSelf" type="radio"  [value]="4"
+                                     [(ngModel)]="objRiskFactorDTO.PoorSelf" /> Unknown
+                                </div>
+                            </div>
+                            <div class="row" style="padding-bottom:10px">
+                                <div class="col-md-4">
+                                    <b>Family / Environmental Functioning</b>
+                                </div>
+                            </div>
+                            <div class="row" style="padding-bottom:10px">
+                                <div class="col-md-4">
+                                    20.	High-stress family environment
+                                </div>
+                                <div class="col-md-1">
+                                    <input formControlName="HighStressFamily" type="radio" [value]="1"
+                                     [(ngModel)]="objRiskFactorDTO.HighStressFamily" /> Present
+                                </div>
+                                <div class="col-md-3">
+                                    <input formControlName="HighStressFamily" type="radio"  [value]="2"
+                                    [(ngModel)]="objRiskFactorDTO.HighStressFamily" /> Partially/Possibly Present
+                                </div>
+                                <div class="col-md-2">
+                                    <input formControlName="HighStressFamily" type="radio"  [value]="3"
+                                    [(ngModel)]="objRiskFactorDTO.HighStressFamily" /> Not Present
+                                </div>
+                                <div class="col-md-2">
+                                    <input formControlName="HighStressFamily" type="radio"  [value]="4"
+                                     [(ngModel)]="objRiskFactorDTO.HighStressFamily" /> Unknown
+                                </div>
+                            </div>
+                            <div class="row" style="padding-bottom:10px">
+                                <div class="col-md-4">
+                                    21.	Problematic parent-offender relationships/Parental rejection
+                                </div>
+                                <div class="col-md-1">
+                                    <input formControlName="ProblematicParentOffender" type="radio" [value]="1"
+                                     [(ngModel)]="objRiskFactorDTO.ProblematicParentOffender" /> Present
+                                </div>
+                                <div class="col-md-3">
+                                    <input formControlName="ProblematicParentOffender" type="radio"  [value]="2"
+                                    [(ngModel)]="objRiskFactorDTO.ProblematicParentOffender" /> Partially/Possibly Present
+                                </div>
+                                <div class="col-md-2">
+                                    <input formControlName="ProblematicParentOffender" type="radio"  [value]="3"
+                                    [(ngModel)]="objRiskFactorDTO.ProblematicParentOffender" /> Not Present
+                                </div>
+                                <div class="col-md-2">
+                                    <input formControlName="ProblematicParentOffender" type="radio"  [value]="4"
+                                     [(ngModel)]="objRiskFactorDTO.ProblematicParentOffender" /> Unknown
+                                </div>
+                            </div>
+                            <div class="row" style="padding-bottom:10px">
+                                <div class="col-md-4">
+                                    22.	Parent(s) not supporting sexual-offense-specific assessment/treatment
+                                </div>
+                                <div class="col-md-1">
+                                    <input formControlName="ParentNotSupporting" type="radio" [value]="1"
+                                     [(ngModel)]="objRiskFactorDTO.ParentNotSupporting" /> Present
+                                </div>
+                                <div class="col-md-3">
+                                    <input formControlName="ParentNotSupporting" type="radio"  [value]="2"
+                                    [(ngModel)]="objRiskFactorDTO.ParentNotSupporting" /> Partially/Possibly Present
+                                </div>
+                                <div class="col-md-2">
+                                    <input formControlName="ParentNotSupporting" type="radio"  [value]="3"
+                                    [(ngModel)]="objRiskFactorDTO.ParentNotSupporting" /> Not Present
+                                </div>
+                                <div class="col-md-2">
+                                    <input formControlName="ParentNotSupporting" type="radio"  [value]="4"
+                                     [(ngModel)]="objRiskFactorDTO.ParentNotSupporting" /> Unknown
+                                </div>
+                            </div>
+                            <div class="row" style="padding-bottom:10px">
+                                <div class="col-md-4">
+                                    23.	Environment supporting opportunities to reoffend sexually
+                                </div>
+                                <div class="col-md-1">
+                                    <input formControlName="EnvironmentSupporting" type="radio" [value]="1"
+                                     [(ngModel)]="objRiskFactorDTO.EnvironmentSupporting" /> Present
+                                </div>
+                                <div class="col-md-3">
+                                    <input formControlName="EnvironmentSupporting" type="radio"  [value]="2"
+                                    [(ngModel)]="objRiskFactorDTO.EnvironmentSupporting" /> Partially/Possibly Present
+                                </div>
+                                <div class="col-md-2">
+                                    <input formControlName="EnvironmentSupporting" type="radio"  [value]="3"
+                                    [(ngModel)]="objRiskFactorDTO.EnvironmentSupporting" /> Not Present
+                                </div>
+                                <div class="col-md-2">
+                                    <input formControlName="EnvironmentSupporting" type="radio"  [value]="4"
+                                     [(ngModel)]="objRiskFactorDTO.EnvironmentSupporting" /> Unknown
+                                </div>
+                            </div>
+                            <div class="row" style="padding-bottom:10px">
+                                <div class="col-md-4">
+                                    <b>Treatment</b>
+                                </div>
+                            </div>
+                            <div class="row" style="padding-bottom:10px">
+                                <div class="col-md-4">
+                                    24.	No development or practice of realistic prevention plans/strategies
+                                </div>
+                                <div class="col-md-1">
+                                    <input formControlName="NoDevelopment" type="radio" [value]="1"
+                                     [(ngModel)]="objRiskFactorDTO.NoDevelopment" /> Present
+                                </div>
+                                <div class="col-md-3">
+                                    <input formControlName="NoDevelopment" type="radio"  [value]="2"
+                                    [(ngModel)]="objRiskFactorDTO.NoDevelopment" /> Partially/Possibly Present
+                                </div>
+                                <div class="col-md-2">
+                                    <input formControlName="NoDevelopment" type="radio"  [value]="3"
+                                    [(ngModel)]="objRiskFactorDTO.NoDevelopment" /> Not Present
+                                </div>
+                                <div class="col-md-2">
+                                    <input formControlName="NoDevelopment" type="radio"  [value]="4"
+                                     [(ngModel)]="objRiskFactorDTO.NoDevelopment" /> Unknown
+                                </div>
+                            </div>
+                            <div class="row" style="padding-bottom:10px">
+                                <div class="col-md-4">
+                                    25.	Incomplete sexual-offense-specific treatment
+                                </div>
+                                <div class="col-md-1">
+                                    <input formControlName="IncompleteSexual" type="radio" [value]="1"
+                                     [(ngModel)]="objRiskFactorDTO.IncompleteSexual" /> Present
+                                </div>
+                                <div class="col-md-3">
+                                    <input formControlName="IncompleteSexual" type="radio"  [value]="2"
+                                    [(ngModel)]="objRiskFactorDTO.IncompleteSexual" /> Partially/Possibly Present
+                                </div>
+                                <div class="col-md-2">
+                                    <input formControlName="IncompleteSexual" type="radio"  [value]="3"
+                                    [(ngModel)]="objRiskFactorDTO.IncompleteSexual" /> Not Present
+                                </div>
+                                <div class="col-md-2">
+                                    <input formControlName="IncompleteSexual" type="radio"  [value]="4"
+                                     [(ngModel)]="objRiskFactorDTO.IncompleteSexual" /> Unknown
+                                </div>
+                            </div>
+                            <div class="row" style="padding-bottom:10px">
+                                <div class="col-md-4">
+                                    <b>Other Factor</b>
+                                </div>
+                                <div class="col-md-1">
+                                    <input formControlName="OtherFactor" type="radio" [value]="1"
+                                     [(ngModel)]="objRiskFactorDTO.OtherFactor" /> Present
+                                </div>
+                                <div class="col-md-3">
+                                    <input formControlName="OtherFactor" type="radio"  [value]="2"
+                                    [(ngModel)]="objRiskFactorDTO.OtherFactor" /> Partially/Possibly Present
+                                </div>
+                                <div class="col-md-2">
+                                    <input formControlName="OtherFactor" type="radio"  [value]="3"
+                                    [(ngModel)]="objRiskFactorDTO.OtherFactor" /> Not Present
+                                </div>
+                                <div class="col-md-2">
+                                    <input formControlName="OtherFactor" type="radio"  [value]="4"
+                                     [(ngModel)]="objRiskFactorDTO.OtherFactor" /> Unknown
+                                </div>
+                            </div>
+                            <div class="row" style="padding-bottom:10px">
+                                <div class="col-md-4">
+                                    Overall Risk Rating
+                                </div>
+                                <div class="col-md-1">
+                                    <input formControlName="OverallRiskRating" type="radio" [value]="1"
+                                     [(ngModel)]="objRiskFactorDTO.OverallRiskRating" /> Low
+                                </div>
+                                <div class="col-md-3">
+                                    <input formControlName="OverallRiskRating" type="radio"  [value]="2"
+                                    [(ngModel)]="objRiskFactorDTO.OverallRiskRating" /> Moderate
+                                </div>
+                                <div class="col-md-2">
+                                    <input formControlName="OverallRiskRating" type="radio"  [value]="3"
+                                    [(ngModel)]="objRiskFactorDTO.OverallRiskRating" /> High
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="tab-pane {{DocumentActive}}" id="tb">
+                            <Upload-Documents #uploads [formCnfgId]="formId" [primaryKeyId]="tblPrimaryKey"
+                                               [submittedUpload]="submittedUpload"
+                                              [userTypeCnfgId]="5" [typeId]="TypeId"></Upload-Documents>
+                        </div>
+                        <div class="form-group col-md-5">
+                            <SubmitButton (Click)="clicksubmit(uploads.UploadDocIds,uploads.IsUpload,uploads.formbuilder)" [IsLoading]="isLoading"></SubmitButton>
+                            <BackButton></BackButton>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

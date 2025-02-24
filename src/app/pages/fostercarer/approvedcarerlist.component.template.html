@@ -1,0 +1,216 @@
+﻿<style>
+  ::ng-deep .rowSelected{
+    background-color: #344154 !important;
+    color:white !important;
+  }
+</style>
+<div>
+    <ApprovedCarerHeader #header [CarerProfile]="objCarerProfileVal"></ApprovedCarerHeader>
+    <!--<div *ngIf="IsVisible" class="alert alert-info">
+        Selected Carer ({{CarerStatusName}}) : {{selectName}}({{SelectCode}})
+    </div>-->
+   
+
+    <div class="row">
+        <div class="row col-md-12">
+            <div *ngIf="insUserTypeId==3 && CanSeeAllCarer=='1'" class="form-group col-md-3">
+                <label class="">Type</label>
+
+
+                <select  #CarerLoadingTypeId name="CarerLoadingTypeId" (change)="ChangeCarerLoadingType(objApplicantListDTO.CarerLoadingTypeId)"
+                 class="form-control" [(ngModel)]="objApplicantListDTO.CarerLoadingTypeId">
+                 <option value="1">All Carer</option>
+                 <option value="0">Allocated Carer</option>
+
+                </select>
+
+            </div>
+            <div class="col-lg-3">
+                <label class="">Status </label>
+
+                <!-- <select *ngIf="carerStatusList != null" #Status name="CarerStatusId" (change)="ChangeStatus(Status.value)" class="form-control" [(ngModel)]="objApplicantListDTO.CarerStatusId">
+                    <option value="-2">All Applicable Status</option>
+                    <option *ngFor="let op of carerStatusList" value="{{op.ModuleStatusCnfgId}}">
+                        {{op.StatusName}}
+                    </option> 
+                </select> -->
+                <p-multiSelect class="p-0" [style]="{'width':'100%'}" placeholder="All Applicable Status" filterPlaceHolder="Search"
+                [maxSelectedLabels]="3" selectedItemsLabel="{0} status selected" [options]="arrayStatus"
+                 optionLabel="name" optionValue="id" [(ngModel)]="selectedStatus"
+                  [ngModelOptions]="{standalone:true}"  
+                  (onChange)="fnStatusChange($event)" ></p-multiSelect>
+            </div>
+            <div class="col-lg-3">
+                <label class="">Area Office </label>
+                <select *ngIf="areaOfficeList != null" #Areaoffice (change)="ChangeAreaOffice(Areaoffice.value)" name="AreaOfficeid" class="form-control" [(ngModel)]="objApplicantListDTO.AreaOfficeid">
+                    <option value="0" [attr.selected]="objApplicantListDTO.AreaOfficeid == 0 ? true : null">All Area Offices</option>
+                    <option *ngFor="let op of areaOfficeList" value="{{op.AreaOfficeProfileId}}">
+                        {{op.AreaOfficeName}}
+                    </option>
+                </select>
+            </div>
+            <div class="col-md-3">
+              <label>Supervising Social Worker</label>
+              <select *ngIf="lstSSW" #SSW name="SSWId"
+                      class="form-control" (change)="ChangeSSW(SSW.value)">
+                  <option value="0">All Supervising Social Worker</option>
+                  <option *ngFor="let item of lstSSW" value="{{item.UserProfileId}}">
+                      {{item.PersonalInfo.FullName}}
+                  </option>
+              </select>
+            </div>
+        </div>
+
+        <div class="col-md-12" style="padding-top:16px">
+            <div widget class="card">
+                <div class="card-header">
+                    <span>Carer List</span>
+                    <div class="widget-controls">
+                        <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                        <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                        <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+                        <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+                        <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a>
+                    </div>
+                </div>
+                <div class="card-body widget-body">
+                  <div class="w-203 pull-right bottom-15">
+                      <div class="input-group input-group-sm">
+                          <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                          <input class="form-control" id="table-search-input" [(ngModel)]="searchText" type="text" placeholder="Search...">
+                      </div>
+                  </div>
+                  <table class="table table-striped table-hover table-sm">
+                    <tbody *ngIf="applicantList.length==0">
+                        <tr>
+                            <th *ngIf="!loading" colspan="9" class="text-center">
+                                No Records found.
+                            </th>
+                            <th *ngIf="loading" colspan="9" class="text-center">
+                                <i class="fa fa-spinner fa-spin"></i> Loading please wait...
+                            </th>
+                        </tr>
+                    </tbody>
+                  </table>
+                  <div class="table-responsive datatable" *ngIf="applicantList.length!=0" >
+                      <ngx-datatable  #ngxdatatable  [rows]="applicantList | SearchFilter : 'CarerCode,PCFullName,SCFullName,ContactInfo.City,CarerStatusName,ApprovalDate,LoginId': searchText"
+                              class="bootstrap"
+                              rowHeight="auto"
+                              [columnMode]="ColumnMode.force"
+                              [limit]="limitPerPage"
+                              [scrollbarH]="true"
+                              [footerHeight]="50"
+                              [offset]="pageNumber"
+                              [rowClass]="getRowClass"
+                              [externalSorting]="false"
+                              [messages]="footerMessage"
+                              (sort)="onSort($event)">
+                              <ngx-datatable-column name="Select" width="40" [sortable]="false">
+                                  <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                                    <button (click)="selectApplicant(row)"  style="cursor:pointer" class="btn btn-warning btn-xs">
+                                      Select
+                                    </button>
+                                  </ng-template>
+                              </ngx-datatable-column>
+                              <ngx-datatable-column name="Code" prop="CarerId" [sortable]="true" (click)="onSort($event)" width="40">
+                                  <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                                  {{row.CarerCode}}
+                                  </ng-template>
+                              </ngx-datatable-column>
+                              <ngx-datatable-column name="Name" prop="PCFullName" [sortable]="true" (click)="onSort($event)" width="150">
+                                  <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                                    <a title="Carer"  style="cursor:pointer" (click)="fnSnapShot(row.CarerId)">{{row.PCFullName|uppercase}} {{row.SCFullName|uppercase}}  </a>
+                                  </ng-template>
+                              </ngx-datatable-column>
+                              <ngx-datatable-column name="Area/Locality" prop="ContactInfo.City" [sortable]="true" (click)="onSort($event)" width="100">
+                                  <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                                      {{value}}
+                                  </ng-template>
+                              </ngx-datatable-column>
+                              <ngx-datatable-column name="Status" prop="CarerStatusName" [sortable]="true" (click)="onSort($event)" width="60">
+                                  <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                                      {{value }}
+                                  </ng-template>
+                              </ngx-datatable-column>
+                              <ngx-datatable-column name="Approval Date" prop="ApprovalDate" [sortable]="true" (click)="onSort($event)" width="80">
+                                  <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                                    {{value | dateFormat:'dd/MM/yyyy'}}
+                                  </ng-template>
+                              </ngx-datatable-column>
+                              <ngx-datatable-column name="Terminated/De-Registered Date" prop="TerminatedDeRegisteredDate" *ngIf="showTerminatedDeRegisteredDate" [sortable]="true" (click)="onSort($event)" width="130">
+                                <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                                  {{value | dateFormat:'dd/MM/yyyy'}}
+                                </ng-template>
+                            </ngx-datatable-column>
+                              <ngx-datatable-column name="User Name" prop="LoginId" [sortable]="true"  (click)="onSort($event)" width="80">
+                                  <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                                    {{value}}
+                                  </ng-template>
+                              </ngx-datatable-column>
+                              <ngx-datatable-footer>
+                                <ng-template
+                                  ngx-datatable-footer-template
+                                  let-rowCount="rowCount"
+                                  let-pageSize="pageSize"
+                                  let-selectedCount="selectedCount"
+                                  let-curPage="curPage"
+                                  let-offset="offset"
+                                  let-isVisible="isVisible">
+                                    <div class="page-count">
+                                      <span *ngIf="selectedMessage">
+                                        {{selectedCount.toLocaleString()}} {{selectedMessage}} /
+                                      </span>
+                                      {{rowCount.toLocaleString()}} {{footerMessage.totalMessage}}
+                                    </div>
+                                    <datatable-pager
+                                        [pagerLeftArrowIcon]="'datatable-icon-left'"
+                                        [pagerRightArrowIcon]="'datatable-icon-right'"
+                                        [pagerPreviousIcon]="'datatable-icon-prev'"
+                                        [pagerNextIcon]="'datatable-icon-skip'"
+                                        [page]="curPage"
+                                        [size]="pageSize"
+                                        [count]="rowCount"
+                                        [hidden]="!((rowCount / pageSize) > 1)"
+                                        (change)="onFooterPageChange($event)"
+                                        >
+                                    </datatable-pager>
+                                </ng-template>
+                              </ngx-datatable-footer>
+                      </ngx-datatable>
+
+                  </div>
+
+                </div>
+                <div><PageSize (childPageSizeEvent) ="setPageSize($event)"></PageSize></div>
+                <table>
+                  <tr align="center">
+                    <td colspan="12" style="text-align:center;border-top:0px">Total no. of Carers : <b>{{applicantList.length}}</b></td>
+                  </tr>
+                </table>
+            </div>
+
+
+
+            <div style="padding-top:30px">&nbsp;</div>
+
+
+
+        </div>
+    </div>
+
+
+    <div *ngIf="insUserTypeId!=4">
+        <button #btnSnapshot type="button" [hidden]="true" class="btn btn-primary" data-toggle="modal" data-target="#lg-modal2">Large</button>
+        <div class="modal fade" id="lg-modal2" tabindex="-1" role="dialog" aria-labelledby="modal-large-label" style="display: none;">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content" style="padding: 10px 10px 10px;">
+                    <div class="modal-header state modal-primary">
+                        <h4 class="modal-title" id="modal-large-label"><i class="fa fa fa-user"></i>Carer Snapshot</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                    </div>
+                    <CarerSnapshot [CarerId]="insSnpCarerId"></CarerSnapshot>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

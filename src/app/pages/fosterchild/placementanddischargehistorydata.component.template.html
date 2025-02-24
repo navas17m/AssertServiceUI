@@ -1,0 +1,95 @@
+﻿
+<div class="col-xl-12 col-lg-12 col-12 bottom-30">
+    <Child-Header></Child-Header>
+    <div>
+        <div widget class="card">
+            <div class="card-header">
+                <span>Placement/Dicharge/Transfer Info</span>
+                <div class="widget-controls">
+                    <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                    <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                    <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+                    <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+                    <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a>
+                </div>
+            </div>
+            <div class="card-body widget-body">
+                <form [formGroup]="_ChildPlacementDischargeForm">                
+                          <div class="form-group">                            
+                            <label class=""><b>Child Name (Code) : </b></label>                         
+                                <span *ngIf="insChildProfileDTO && insChildProfileDTO.PersonalInfo">
+                                    {{insChildProfileDTO.PersonalInfo.FullName}} ({{insChildProfileDTO.ChildCode}})
+                                </span>                            
+                        </div>
+                    <div class="form-group">                       
+                            <label class=""><b>Carer Name :</b></label>                       
+                            <span *ngIf="objChildPlacementDTO && objChildPlacementDTO.CarerInfo && objChildPlacementDTO.CarerInfo.PersonalInfo">
+                                {{objChildPlacementDTO.CarerInfo.PersonalInfo.FullName}} {{objChildPlacementDTO.SecondCarerName}}({{objChildPlacementDTO.CarerInfo.CarerCode}})
+                            </span>                       
+                    </div>
+                    <div class="form-group">
+                        <label class=""><b>Placement Date :</b></label>
+                        {{objChildPlacementDTO.PlacementDate |dateFormat:'dd/MM/yyyy HH:mm' }}
+                    </div>
+                        <div [hidden]="isChildPlacement == 2">
+                           
+                            <div class="form-group">
+                                <label class="">Placement Type</label>
+                                <select *ngIf="lstPlacementType.length > 0" formControlName="PlacementType"
+                                        required class="form-control" [(ngModel)]="objChildPlacementDTO.PlacementTypeId">
+                                    <option value="" [attr.selected]="objChildPlacementDTO.PlacementTypeId == null ? true : null">Select Placement Type</option>
+                                    <option *ngFor="let item of lstPlacementType" value="{{item.CofigTableValuesId}}">
+                                        {{item.Value}}
+                                    </option>
+                                </select>
+                                <div *ngIf="(!_ChildPlacementDischargeForm.controls.PlacementType.valid && submitted && _ChildPlacementDischargeForm.controls.PlacementType.errors )" class="alert alert-danger">
+                                    Please Select Placement Type
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <Dynamic-Form #dynamicPlacement [dynamicformcontrols]="dynamicformcontrolPlacement"
+                                              [formbuilder]="_ChildPlacementDischargeForm" [submitted]="submitted"></Dynamic-Form>
+                            </div>
+                        </div>
+                        <div [hidden]="isChildPlacement == 1">
+                            <div class="form-group">
+                                <label class=""><b>Placement Reason : </b></label>
+                                {{insPlacementReason}}
+                            </div>
+                            <div class="form-group">
+                                <label class=""><b>Placement Agreement : </b></label>
+                                {{objPlacementAgreement}}
+                            </div>
+                            <div class="form-group">                               
+                                    <label class=""><b>Discharge Date : </b></label>                                
+                                    {{objChildPlacementDTO.PlacementEndDate |dateFormat:'dd/MM/yyyy hh:mm a'}}                              
+                            </div>
+                            <div class="form-group">
+                                <label class="">Placement Type</label>
+                                <select *ngIf="lstPlacementType.length > 0" formControlName="PlacementType"
+                                        required class="form-control" [(ngModel)]="objChildPlacementDTO.PlacementTypeId">
+                                    <option value="" [attr.selected]="objChildPlacementDTO.PlacementTypeId == null ? true : null">Select Placement Type</option>
+                                    <option *ngFor="let item of lstPlacementType" value="{{item.CofigTableValuesId}}">
+                                        {{item.Value}}
+                                    </option>
+                                </select>
+                                <div *ngIf="(!_ChildPlacementDischargeForm.controls.PlacementType.valid && submitted && _ChildPlacementDischargeForm.controls.PlacementType.errors )" class="alert alert-danger">
+                                    Please Select Placement Type
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <Dynamic-Form #dynamicDischarge [dynamicformcontrols]="dynamicformcontrolDischarge"
+                                              [formbuilder]="_ChildPlacementDischargeForm" [submitted]="submitted"></Dynamic-Form>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <SubmitButton (Click)="ChildPlacementDischargeSubmit(_ChildPlacementDischargeForm,dynamicPlacement.dynamicformcontrols,dynamicPlacement.formbuilder,
+                                        dynamicDischarge.dynamicformcontrols,dynamicDischarge.formbuilder)" [IsLoading]="isLoading"></SubmitButton>
+                            <BackButton></BackButton>
+                        </div>                        
+                   
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

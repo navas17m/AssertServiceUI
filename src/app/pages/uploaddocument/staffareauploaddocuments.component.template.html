@@ -1,0 +1,376 @@
+
+<style>
+    .my-drop-zone {
+        border: 3px dotted #3F4F66;
+        border-radius: 5px;
+        height: 300px;
+        background-color: #F3F3F3;
+    }
+
+    .nv-file-over {
+        border: dotted 3px red;
+    }
+    /* Default class applied to drop zones on over */
+    .another-file-over-class {
+        border: dotted 3px green;
+    }
+
+    .divNavigation
+    {
+        cursor: pointer;
+    }
+    .divNavigation:hover
+    {
+        cursor: pointer;
+        background-color: #3F4F66;
+    }
+
+</style>
+<div *ngIf="IsAdmin">
+    <div>
+        <form [formGroup]="_uploadForm">
+            <div>
+                <label class=""> User Name : {{userName}}</label>
+                <label class=""></label>
+            </div>
+            <div class="form-group">
+                <label class="">Title</label>
+                <input type="text" class="form-control" formControlName="Title" [(ngModel)]="objUploadDocumentsDTO.Title" />
+                <div *ngIf="(!_uploadForm.controls.Title.valid && submittedUpload && _uploadForm.controls.Title.errors )" class="alert alert-danger">
+                    Please enter Title
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="">Description</label>
+                <textarea class="form-control" formControlName="Description" [(ngModel)]="objUploadDocumentsDTO.Description"></textarea>
+                <div *ngIf="(!_uploadForm.controls.Description.valid && submittedUpload && _uploadForm.controls.Description.errors )" class="alert alert-danger">
+                    Please enter Description
+                </div>
+            </div>
+            <div class="form-group" *ngIf="intformCnfgId==132">
+                <label class="">Expiry Date</label>
+                <input type="text" placeholder="DD/MM/YYYY" readonly class="form-control form-control-date"
+                       formControlName="ExpiryDate" [(ngModel)]="objUploadDocumentsDTO.ExpiryDate"
+                       [value]="objUploadDocumentsDTO.ExpiryDate" datepicker />
+            </div>
+            <div class="form-group"  *ngIf="intformCnfgId==352||intformCnfgId==3521">
+                Document Date :
+                <input  type="text" placeholder="DD/MM/YYYY"  class="form-control form-control-date"
+                    formControlName="DocumentDate"
+                       [(ngModel)]="objUploadDocumentsDTO.DocumentDate"
+                        [value]="objUploadDocumentsDTO.DocumentDate" datepicker>
+            </div>
+
+
+            <div *ngIf="IsSaveMode">
+                <div>
+                    <label class=""><h6 style="color:lightcoral"> Select multiple files </h6></label>
+                    <input type="file" ng2FileSelect [uploader]="uploader" multiple />
+                </div>
+                <div><h6>Or </h6></div>
+                <div>
+                    <h6 style="color:lightcoral"> Drag and drop files</h6>
+                    <br />
+                    <div ng2FileDrop
+                         [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
+                         (fileOver)="fileOverBase($event)"
+                         [uploader]="uploader"
+                         class="well my-drop-zone">
+                        --- Drag And drop zone ---
+                    </div>
+                    <br />
+                </div>
+            </div>
+        </form>
+    </div>
+    <div widget class="card" *ngIf="IsSaveMode">
+        <div class="card-header">
+            <span>No of files selected for upload: {{ uploader?.queue?.length }}</span>
+
+        </div>
+        <div class="card-body widget-body">
+            <div class="table-responsive datatable" *ngIf="uploader?.queue?.length>0">
+                <table class="table table-striped table-hover table-sm">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Size (Bytes)</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of uploader.queue">
+                            <td><strong>{{ item?.file?.name }}</strong></td>
+                            <td><strong>{{ item?.file?.size }} </strong></td>
+                            <td nowrap>
+                                <button type="button" class="btn btn-danger btn-xs"
+                                        (click)="item.remove()">
+                                    <span class="glyphicon glyphicon-trash"></span> Remove
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div>
+                <button type="button" class="btn btn-danger btn-s"
+                        (click)="uploader.clearQueue()" [disabled]="!uploader.queue.length">
+                    <span class="glyphicon glyphicon-trash"></span> Remove all
+                </button>
+            </div>
+        </div>
+    </div>
+    <div style="padding:6px 0px 6px 0px">
+        <!--<button type="button" id="btnSubmit" class="btn btn-primary" (click)="fnSave(_uploadForm)">{{saveText}}</button>-->
+        <SubmitButton [FormCnfgId]="insAccessFormcnfgId" (click)="fnSave(_uploadForm)"
+                      [Text]="saveText"></SubmitButton>
+
+        <button class="btn btn-warning"
+                (click)="fnClear()">
+            Clear
+        </button>
+    </div>
+</div>
+<div >
+    <form [formGroup]="_uploadFormSearch">
+    <table width="70%"  >
+        <tr>
+            <td>From Date :</td>
+            <td>
+
+                <input  type="text" placeholder="DD/MM/YYYY"
+                class="form-control form-control-date"
+                 formControlName="fromDate"
+                    [(ngModel)]="insFormDate"
+                    [value]="insFormDate"
+                         datepicker>
+            </td>
+            <td> To Date :</td>
+            <td>
+
+                <input  type="text" placeholder="DD/MM/YYYY"  class="form-control form-control-date"
+                formControlName="toDate"
+                    [(ngModel)]="insToDate"
+                    [value]="insToDate"
+                        datepicker>
+            </td>
+            <td >
+                <button class="btn btn-success"
+                (click)="fnSearchfilter()">
+                    Search
+                </button>
+            </td>
+            <td >
+                <button type="button"  class="btn btn-warning"
+                (click)="fnClearFilter()">
+                    Clear
+                  </button>
+            </td>
+        </tr>
+    </table>
+</form>
+ </div>
+ <br>
+<div widget class="card">
+
+    <div class="card-header">
+        <span class="divNavigation"  (click)="fnLoadCategory()" >Documents</span>
+        <span class="divNavigation" *ngIf="insMainCatName" (click)="fnLoadMainCategory()"> >
+             {{insMainCatName}}</span><span *ngIf="insSubCatName"> > {{insSubCatName}}</span>
+    </div>
+    <div class="card-body widget-body">
+
+        <div class="w-200 pull-right bottom-15">
+            <div class="input-group input-group-sm">
+                <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                <input class="form-control" id="table-search-input" [(ngModel)]="searchText" type="text" placeholder="Search...">
+            </div>
+        </div>
+
+        <div class="table-responsive datatable" >
+          <ngx-datatable *ngIf="lstCategorys.length!=0" [rows]="lstCategorys"
+                  class="bootstrap"
+                  rowHeight="auto"
+                  [columnMode]="'force'"
+                  [scrollbarH]="false"
+                  >
+                  <ngx-datatable-column [sortable]="false" width="50">
+                      <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                          <span colspan="8"><div  style="cursor: pointer" (click)="fnChangeCategory(row.StaffAreaCategoryCnfgId)"><img src="assets/img/Folder_Icon.svg" width="30px"> {{row.Category}}</div> </span>
+                      </ng-template>
+                  </ngx-datatable-column>
+          </ngx-datatable>
+          <table class="table table-striped table-hover table-sm">
+            <tbody *ngIf="lstCategorys.length==0 && lstUploadedFiles.length==0">
+              <tr>
+                  <th *ngIf="!loading" colspan="8" class="text-center">
+                      No Documents found.
+                  </th>
+                  <th *ngIf="loading" colspan="8" class="text-center">
+                      <i class="fa fa-spinner fa-spin"></i> Loading please wait...
+                  </th>
+              </tr>
+          </tbody>
+        </table>
+          <ngx-datatable *ngIf="lstUploadedFiles.length!=0" [rows]="lstUploadedFiles  | SearchFilter : 'Title,Description,UploadedDate,ExpiryDate': searchText" style="font-size: smalll;"
+                  class="bootstrap"
+                  rowHeight="auto"
+                  [columnMode]="'force'"
+                  [scrollbarH]="true"
+                  [footerHeight] = 50
+                  [limit]="filesListLimit"
+                  [messages]="footerMessage">
+                  <ngx-datatable-column [sortable]="false" width="10">
+                    <ng-template  let-value="value" let-row="row" ngx-datatable-cell-template>
+                      <img [src]="row.IconPath" width="25px">
+                    </ng-template>
+                    <ng-template  let-value="value" let-row="row" ngx-datatable-cell-template>
+                      {{value}}
+                     </ng-template>
+                  </ngx-datatable-column>
+                  <ngx-datatable-column name="Title" prop="Title" [sortable]="true" width="30">
+                    <ng-template  let-value="value" let-row="row" ngx-datatable-cell-template>
+                     {{value}}
+                    </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column *ngIf="IsVisibleDateOfUploaded&&intformCnfgId!=352&&intformCnfgId!=3521" name="Date Uploaded" prop="UploadedDate" [sortable]="true">
+                  <ng-template  let-value="value" let-row="row" ngx-datatable-cell-template>
+                    {{ value | dateFormat:'dd/MM/yyyy'}}
+                  </ng-template>
+              </ngx-datatable-column>
+
+              <ngx-datatable-column name="Description" prop="Description" [sortable]="true" width="250">
+                <ng-template  let-value="value" let-row="row" ngx-datatable-cell-template>
+                  {{ value }}
+                </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column *ngIf="intformCnfgId==19" name="Expiry Date" prop="ExpiryDate" [sortable]="true" width="60">
+              <ng-template  let-value="value" let-row="row" ngx-datatable-cell-template>
+                {{ value | dateFormat:'dd/MM/yyyy'}}
+              </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column *ngIf="intformCnfgId==352||intformCnfgId==3521" name="Document Date" prop="DocumentDate" [sortable]="true" width="60">
+            <ng-template  let-value="value" let-row="row" ngx-datatable-cell-template>
+              {{ value | dateFormat:'dd/MM/yyyy'}}
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column name="Download" [sortable]="false" width="60">
+            <ng-template  let-value="value" let-row="row" ngx-datatable-cell-template>
+              <span nowrap>
+                <DownloadButton [Size]="'s'" [FormCnfgId]="insAccessFormcnfgId" (click)="fnDownload(row.DocumentId,row.DocumentName)">
+                </DownloadButton>
+            </span>
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column  *ngIf="IsAdmin" name="Edit" [sortable]="false" width="60">
+            <ng-template  let-value="value" let-row="row" ngx-datatable-cell-template>
+              <span nowrap>
+                <EditButton [Size]="'s'" [FormCnfgId]="insAccessFormcnfgId" (click)="fnEdit(row.DocumentId)">
+                </EditButton>
+            </span>
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column *ngIf="IsAdmin" name="Delete" [sortable]="false" width="60">
+            <ng-template  let-value="value" let-row="row" ngx-datatable-cell-template>
+              <span nowrap >
+                <DeleteButton [FormCnfgId]="insAccessFormcnfgId" (Click)="fnDelete(row.DocumentId)" [Size]="'S'" [SequenceNo]="row.DocumentId">
+                </DeleteButton>
+            </span>
+            </ng-template>
+          </ngx-datatable-column>
+          </ngx-datatable>
+          <br>
+          <div *ngIf="lstUploadedFiles.length>10"><PageSize (childPageSizeEvent) ="setPageSize($event)"></PageSize></div>
+          <button *ngIf="IsVisibleBack" class="btn btn-info" style="margin-bottom:5px ;" (click)="fnBack()">Back
+          </button>
+      </div>
+    </div>
+
+    <!-- <div class="card-body widget-body">
+
+        <div class="w-200 pull-right bottom-15">
+            <div class="input-group input-group-sm">
+                <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                <input class="form-control" id="table-search-input" [(ngModel)]="searchText" type="text" placeholder="Search...">
+            </div>
+        </div>
+        <div class="table-responsive datatable">
+            <table class="table table-striped table-hover table-sm" [mfData]="lstUploadedFiles | SearchFilter : 'Title,Description,UploadedDate,ExpiryDate': searchText" #mf="mfDataTable" [mfRowsOnPage]="10">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th><mfDefaultSorter by="Title"> Title </mfDefaultSorter></th>
+                        <th *ngIf="IsVisibleDateOfUploaded&&intformCnfgId!=352&&intformCnfgId!=3521"><mfDefaultSorter by="UploadedDate" > Date Uploaded </mfDefaultSorter></th>
+                        <th><mfDefaultSorter by="Description"> Description</mfDefaultSorter></th>
+                        <th *ngIf="intformCnfgId==19"><mfDefaultSorter by="ExpiryDate"> Expiry Date </mfDefaultSorter></th>
+                        <th *ngIf="intformCnfgId==352||intformCnfgId==3521"><mfDefaultSorter by="DocumentDate"> Document Date </mfDefaultSorter></th>
+                        <th> Download</th>
+                        <th *ngIf="IsAdmin">Edit</th>
+                        <th *ngIf="IsAdmin"> Delete</th>
+                    </tr>
+                </thead>
+                <tbody *ngIf="lstCategorys.length==0 && lstUploadedFiles.length==0">
+                    <tr>
+                        <th *ngIf="!loading" colspan="8" class="text-center">
+                            No documents uploaded.
+                        </th>
+                        <th *ngIf="loading" colspan="8" class="text-center">
+                            <i class="fa fa-spinner fa-spin"></i> Loading please wait...
+                        </th>
+                    </tr>
+                </tbody>
+
+                <tbody>
+                    <tr *ngFor="let item of lstCategorys">
+                        <td colspan="8"><div  style="cursor: pointer" (click)="fnChangeCategory(item.StaffAreaCategoryCnfgId)"><img src="assets/img/Folder_Icon.svg" width="30px"> {{item.Category}}</div> </td>
+                    </tr>
+                    <tr *ngFor="let item of mf.data">
+                        <td width="30px">
+                            <img [src]="item.IconPath" width="25px">
+
+                        </td>
+                        <td>{{ item.Title}}</td>
+                        <td *ngIf="IsVisibleDateOfUploaded&&intformCnfgId!=352&&intformCnfgId!=3521">{{ item.UploadedDate | dateFormat:'dd/MM/yyyy'}} </td>
+                        <td>{{ item.Description }} </td>
+                        <td *ngIf="intformCnfgId==19">
+                            {{ item.ExpiryDate | dateFormat:'dd/MM/yyyy'}}
+                        </td>
+                        <td *ngIf="intformCnfgId==352||intformCnfgId==3521">
+                            {{ item.DocumentDate | dateFormat:'dd/MM/yyyy'}}
+                        </td>
+                        <td nowrap>
+                            <DownloadButton [Size]="'s'" [FormCnfgId]="insAccessFormcnfgId" (click)="fnDownload(item.DocumentId,item.DocumentName)">
+                            </DownloadButton>
+                        </td>
+                        <td nowrap *ngIf="IsAdmin">
+                            <EditButton [Size]="'s'" [FormCnfgId]="insAccessFormcnfgId" (click)="fnEdit(item.DocumentId)">
+                            </EditButton>
+                        </td>
+                        <td nowrap *ngIf="IsAdmin">
+
+
+                            <DeleteButton [FormCnfgId]="insAccessFormcnfgId"
+                                          (Click)="fnDelete(item.DocumentId)" [Size]="'S'" [SequenceNo]="item.DocumentId">
+                            </DeleteButton>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="12">
+                            <mfBootstrapPaginator [rowsOnPageSet]="[10, 25, 50, 100]"></mfBootstrapPaginator>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+            <button *ngIf="IsVisibleBack" class="btn btn-info" style="margin-bottom:5px ;"
+                (click)="fnBack()">
+                    Back
+                </button>
+        </div>
+    </div> -->
+</div>
+
+
+
+

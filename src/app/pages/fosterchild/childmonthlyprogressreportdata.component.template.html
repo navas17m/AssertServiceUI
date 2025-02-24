@@ -1,0 +1,244 @@
+﻿<form [formGroup]="_Form">
+    <div class="col-xl-12 col-lg-12 col-12 bottom-30">
+        <AutoSavedMessage [Text]="saveDraftText" [Time]="draftSavedTime" [Visible]="showAutoSave"></AutoSavedMessage>
+        <Child-Header></Child-Header>
+        <div widget class="card">
+            <div class="card-header">
+                <span>Monthly Progress Report</span>
+                <div class="widget-controls">
+                    <i class="fa fa-file-pdf-o" (click)="fnDonloadPDF()" style="font-size:18px;color:white;cursor:pointer;" title="Download PDF"></i>
+                    <i class="fa fa-file-word-o" (click)="fnDonloadWord()" style="font-size:18px;color:white;cursor:pointer;padding-left:5px;" title="Download Word"></i>
+                    <i class="fa fa-print" (click)="fnPrint()" style="font-size:18px;color:white;cursor:pointer;padding-left:5px;padding-right:5px" title="Print"></i>
+                    <i class="fa fa-envelope-open" (click)="fnShowEmail()" style="font-size:18px;color:white;cursor:pointer;" title="Email"></i>
+                </div>
+            </div>
+            <div class="card-body widget-body">
+                <div class="row mbm-20">
+                    <div class="col-lg-12 col-12 bottom-30">
+                        <div class="clearfix">
+                            <ul class="nav nav-tabs top pull-left w-100p">
+                                <li class="nav-item" (click)="fnTab1()">
+                                    <a class="nav-link {{Tab1Active}}" data-toggle="tab" href="#t1">
+                                        Monthly Progress Report
+                                    </a>
+                                </li>
+                                <li class="nav-item" (click)="fnTab2()">
+                                    <a class="nav-link {{Tab2Active}}" data-toggle="tab" href="#UploadDocuments">Upload Documents</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="tab-content top">
+                            <div class="tab-pane {{Tab1Active}}" id="t1">
+
+
+                                <Dynamic-Form #dynamicDefault [dynamicformcontrols]="dynamicformcontrol | filter:'ControlLoadFormat':'Default'" [formbuilder]="_Form"
+                                (OnValChange)="DynamicDefaultOnValChange($event)" [submitted]="submitted"></Dynamic-Form>
+
+                                <!--CLAMedical-->
+                                <Dynamic-Form #dynamicCLA [dynamicformcontrols]="dynamicformcontrol | FilterLike:'ControlLoadFormat':'CLAMedical'" [formbuilder]="_Form" [submitted]="submitted"
+                                              (OnValChange)="DynamicOnValChange($event)"></Dynamic-Form>
+
+                                <div style="padding-bottom:10px"  *ngIf="clamedicalList.length>0 && clamedicalList !=null && clamedicalListVisible && clamedicalListVisible">
+                                    <div widget class="card">
+                                        <div class="card-header">
+                                            <span class="text-uppercase">CLA Medical Details</span>
+                                        </div>
+                                        <div class="card-body widget-body">
+                                            <div class="table table-responsive">
+                                                <ngx-datatable [rows]="lstClaMedical"
+                                                    class="bootstrap"
+                                                    rowHeight="auto"
+                                                    [columnMode]="'force'"
+                                                    [limit]="limit"
+                                                    rowHeight="auto"
+                                                    [scrollbarH]="true"
+                                                    [footerHeight]="50"
+                                                    [messages]="footerMessage">
+
+                                                    <ngx-datatable-column name="Medical Date" prop="MedicalDate">
+                                                        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+                                                            {{value}}
+                                                        </ng-template>
+                                                    </ngx-datatable-column>
+                                                    <ngx-datatable-column name="Due Date" prop="DueDate">
+                                                        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+                                                            {{value}}
+                                                        </ng-template>
+                                                    </ngx-datatable-column>
+                                                    <ngx-datatable-column name="On File" prop="OnFile">
+                                                        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+                                                            {{value}}
+                                                        </ng-template>
+                                                    </ngx-datatable-column>
+
+                                                    </ngx-datatable>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!--Dental-->
+                                <Dynamic-Form #dynamicDental [dynamicformcontrols]="dynamicformcontrol | FilterLike:'ControlLoadFormat':'Dental'" [formbuilder]="_Form" [submitted]="submitted"
+                                              (OnValChange)="DynamicOnValChange($event)"></Dynamic-Form>
+
+                                <div style="padding-bottom:10px" *ngIf="dentalList.length>0 && dentalList !=null && dentalListVisible && dentalListVisible">
+                                    <div widget class="card">
+                                        <div class="card-header">
+                                            <span class="text-uppercase">Dental Details</span>
+                                        </div>
+                                        <div class="card-body widget-body">
+                                            <div class="table table-responsive">
+                                                <ngx-datatable [rows]="lstDental"
+                                                    class="bootstrap"
+                                                    rowHeight="auto"
+                                                    [columnMode]="'force'"
+                                                    [limit]="limit"
+                                                    rowHeight="auto"
+                                                    [scrollbarH]="true"
+                                                    [footerHeight]="50"
+                                                    [messages]="footerMessage">
+
+                                                    <ngx-datatable-column name="Medical Date" prop="MedicalDate">
+                                                        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+                                                            {{value}}
+                                                        </ng-template>
+                                                    </ngx-datatable-column>
+                                                    <ngx-datatable-column name="Due Date" prop="DueDate">
+                                                        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+                                                            {{value}}
+                                                        </ng-template>
+                                                    </ngx-datatable-column>
+                                                    <ngx-datatable-column name="On File" prop="OnFile">
+                                                        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+                                                            {{value}}
+                                                        </ng-template>
+                                                    </ngx-datatable-column>
+
+                                                    </ngx-datatable>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!--Optician-->
+                                <Dynamic-Form #dynamicOptician [dynamicformcontrols]="dynamicformcontrol | FilterLike:'ControlLoadFormat':'Optician'" [formbuilder]="_Form" [submitted]="submitted" (OnValChange)="DynamicOnValChange($event)"></Dynamic-Form>
+
+                                <div  style="padding-bottom:10px"  *ngIf="opticianList.length>0 && opticianList !=null && opticianVisible && opticianVisible">
+                                    <div widget class="card">
+                                        <div class="card-header">
+                                            <span class="text-uppercase">Optician Details</span>
+                                        </div>
+                                        <div class="card-body widget-body">
+                                            <div class="table table-responsive">
+                                                <ngx-datatable [rows]="lstOptician"
+                                                    class="bootstrap"
+                                                    rowHeight="auto"
+                                                    [columnMode]="'force'"
+                                                    [limit]="limit"
+                                                    rowHeight="auto"
+                                                    [scrollbarH]="true"
+                                                    [footerHeight]="50"
+                                                    [messages]="footerMessage">
+
+                                                    <ngx-datatable-column name="Medical Date" prop="MedicalDate">
+                                                        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+                                                            {{value}}
+                                                        </ng-template>
+                                                    </ngx-datatable-column>
+                                                    <ngx-datatable-column name="Due Date" prop="DueDate">
+                                                        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+                                                            {{value}}
+                                                        </ng-template>
+                                                    </ngx-datatable-column>
+                                                    <ngx-datatable-column name="On File" prop="OnFile">
+                                                        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+                                                            {{value}}
+                                                        </ng-template>
+                                                    </ngx-datatable-column>
+
+                                                    </ngx-datatable>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!--Default2-->
+                                <Dynamic-Form #dynamicDefault2 [dynamicformcontrols]="dynamicformcontrol | FilterLike:'ControlLoadFormat':'Default2'" [formbuilder]="_Form" [submitted]="submitted"></Dynamic-Form>
+
+                            </div>
+                            <div class="tab-pane {{Tab2Active}}" id="UploadDocuments">
+                                <Upload-Documents #uploads [formCnfgId]="formId" [primaryKeyId]="tblPrimaryKey"
+                                                   [submittedUpload]="submittedUpload"
+                                                  [userTypeCnfgId]="4" [typeId]="TypeId"></Upload-Documents>
+                                                  <!-- [IsUpload] [formbuilder] -->
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <button *ngIf="showbtnSaveDraft" [ladda]="isLoadingSAD" #btnSaveDraft (click)="fnSaveDraft(dynamicDefault.dynamicformcontrols,
+                                dynamicCLA.dynamicformcontrols,
+                                dynamicDental.dynamicformcontrols,
+                                dynamicOptician.dynamicformcontrols,
+                                dynamicDefault2.dynamicformcontrols,
+                                uploads.IsUpload,uploads.formbuilder)" class="btn btn-primary expand-right">{{saveAsDraftText}}</button>
+
+                                <SubmitButton #btnSubmit (Click)="clicksubmit(dynamicDefault.dynamicformcontrols,dynamicDefault.formbuilder,
+                                    dynamicCLA.dynamicformcontrols,dynamicCLA.formbuilder,
+                                    dynamicDental.dynamicformcontrols,dynamicDental.formbuilder,
+                                    dynamicOptician.dynamicformcontrols,dynamicOptician.formbuilder,
+                        dynamicDefault2.dynamicformcontrols,dynamicDefault2.formbuilder,
+                 uploads.UploadDocIds,uploads.IsUpload,uploads.formbuilder)"
+                                              [IsLoading]="isLoading" [IsDiasable]="isLoadingSAD" [Text]="submitText"></SubmitButton>
+                                <BackButton></BackButton>
+                                <ViewDisable></ViewDisable>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<div>
+    <button #btnPrint type="button" [hidden]="true" class="btn btn-primary" data-toggle="modal" data-target="#lg-modal1">Large</button>
+    <div class="modal fade" id="lg-modal1" tabindex="-1" role="dialog" aria-labelledby="modal-large-label" style="display: none;">
+        <div class="modal-dialog modal-lg" role="document">
+            <form [formGroup]="_FormPrint">
+                <div class="modal-content">
+                    <div class="modal-header state modal-primary">
+                        <h4 class="modal-title" id="modal-large-label">
+                            <i class="fa fa-print"></i>Email
+                        </h4>
+                        <div *ngIf="isLoading"><i class="fa fa-spinner fa-spin"></i> Sending email please wait...</div>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="form-group">
+                            Enter Email Subject:
+                            <input type="text" [(ngModel)]="subject" class="form-control" formControlName="subject" required />
+                            <div *ngIf="(!_FormPrint.controls.subject.valid && submittedprint && _FormPrint.controls.subject.errors.required )" class="alert alert-danger">
+                                Please enter Email Subject
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            Enter Email Address(es):
+                            <textarea [(ngModel)]="eAddress" class="form-control" formControlName="eAddress" required></textarea>
+                            <div *ngIf="(!_FormPrint.controls.eAddress.valid && submittedprint && _FormPrint.controls.eAddress.errors.required )" class="alert alert-danger">
+                                Please enter Email Address(es)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <!--<button type="button" class="btn btn-success" (click)="fnPrint()">Print</button>-->
+                        <button type="button" class="btn btn-success" (click)="fnEmail(_FormPrint)" [disabled]="isLoading">Email</button>
+                        <button #btnCancel type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>

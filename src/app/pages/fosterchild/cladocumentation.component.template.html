@@ -1,0 +1,479 @@
+﻿<form [formGroup]="_Form">
+    <div class="col-xl-12 col-lg-12 col-12 bottom-30">
+        <Child-Header></Child-Header>
+        <div widget class="card">
+            <div class="card-header">
+                <span>CLA Documentation</span>
+                <div class="widget-controls">
+                    <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                    <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                    <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+                    <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+                    <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a>
+                </div>
+            </div>
+            <div class="card-body widget-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover table-sm">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th style="padding-left:48px">Date</th>
+                                <th style="padding-left:65px">On File</th>
+                                <th  style="padding-left:65px">Comments</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td> Foster Placement Agreement</td>
+                                <td>
+                                    <input type="text" placeholder="DD/MM/YYYY" readonly class="form-control form-control-date"
+                                           formControlName="PlacementAgreementDate" [(ngModel)]="objCLADocumentationDTO.PlacementAgreementDate"
+                                           [value]="objCLADocumentationDTO.PlacementAgreementDate" datepicker />
+                                </td>
+                                <td>
+                                    <select *ngIf="listddlYesNoNotApplicable.length>0" formControlName="PlacementAgreementOnFile" class="form-control" [(ngModel)]="objCLADocumentationDTO.PlacementAgreementOnFile">
+                                        <option value="" [attr.selected]="objCLADocumentationDTO.PlacementAgreementOnFile == null ? true : null">Select</option>
+                                        <option *ngFor="let op of listddlYesNoNotApplicable" value="{{op.CofigTableValuesId}}">
+                                            {{op.Value}}
+                                        </option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <textarea formControlName="PlacementAgreementComments" class="form-control" [(ngModel)]="objCLADocumentationDTO.PlacementAgreementComments"></textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td> Placement Information Record</td>
+                                <td>
+                                    <input type="text" placeholder="DD/MM/YYYY" readonly class="form-control form-control-date"
+                                           formControlName="PlacementInformationDate" [(ngModel)]="objCLADocumentationDTO.PlacementInformationDate"
+                                           [value]="objCLADocumentationDTO.PlacementInformationDate" datepicker />
+                                </td>
+                                <td>
+                                    <select *ngIf="listddlYesNoNotApplicable.length>0" formControlName="PlacementInformationOnFile" class="form-control" [(ngModel)]="objCLADocumentationDTO.PlacementInformationOnFile">
+                                        <option value="" [attr.selected]="objCLADocumentationDTO.PlacementInformationOnFile == null ? true : null">Select</option>
+                                        <option *ngFor="let op of listddlYesNoNotApplicable" value="{{op.CofigTableValuesId}}">
+                                            {{op.Value}}
+                                        </option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <textarea formControlName="PlacementInformationComments" class="form-control" [(ngModel)]="objCLADocumentationDTO.PlacementInformationComments"></textarea>
+                                </td>
+                            </tr>
+                            <tr> 
+                                <td>Local Authority Placement Plan</td>
+                                <td>
+                                    <input type="text" placeholder="DD/MM/YYYY" readonly class="form-control form-control-date"
+                                           formControlName="LAPlacementPlanDate" [(ngModel)]="objCLADocumentationDTO.LAPlacementPlanDate"
+                                           [value]="objCLADocumentationDTO.LAPlacementPlanDate" datepicker />
+                                </td>
+                                <td>
+                                    <select *ngIf="listddlYesNoNotApplicable.length>0" formControlName="LAPlacementPlanOnFile" class="form-control" [(ngModel)]="objCLADocumentationDTO.LAPlacementPlanOnFile">
+                                        <option value="" [attr.selected]="objCLADocumentationDTO.LAPlacementPlanOnFile == null ? true : null">Select</option>
+                                        <option *ngFor="let op of listddlYesNoNotApplicable" value="{{op.CofigTableValuesId}}">
+                                            {{op.Value}}
+                                        </option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <textarea formControlName="LAPlacementPlanComments" class="form-control" [(ngModel)]="objCLADocumentationDTO.LAPlacementPlanComments"></textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Local Authority Risk Assessment</td>
+                                <td>
+                                    <input type="text" placeholder="DD/MM/YYYY" readonly class="form-control form-control-date"
+                                           formControlName="LARiskAssessmentDate" [(ngModel)]="objCLADocumentationDTO.LARiskAssessmentDate"
+                                           [value]="objCLADocumentationDTO.LARiskAssessmentDate" datepicker />
+                                </td>
+                                <td>
+                                    <select *ngIf="listddlYesNoNotApplicable.length>0" formControlName="LARiskAssessmentOnFile" class="form-control" [(ngModel)]="objCLADocumentationDTO.LARiskAssessmentOnFile">
+                                        <option value="" [attr.selected]="objCLADocumentationDTO.LARiskAssessmentOnFile == null ? true : null">Select</option>
+                                        <option *ngFor="let op of listddlYesNoNotApplicable" value="{{op.CofigTableValuesId}}">
+                                            {{op.Value}}
+                                        </option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <textarea formControlName="LARiskAssessmentComments" class="form-control" [(ngModel)]="objCLADocumentationDTO.LARiskAssessmentComments"></textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Delegated Authority</td>
+                                <td>
+                                    <input type="text" placeholder="DD/MM/YYYY" readonly class="form-control form-control-date"
+                                           formControlName="DelegatedAuthorityDate" [(ngModel)]="objCLADocumentationDTO.DelegatedAuthorityDate"
+                                           [value]="objCLADocumentationDTO.DelegatedAuthorityDate" datepicker />
+                                </td>
+                                <td>
+                                    <select *ngIf="listddlYesNoNotApplicable.length>0" formControlName="DelegatedAuthorityOnFile" class="form-control" [(ngModel)]="objCLADocumentationDTO.DelegatedAuthorityOnFile">
+                                        <option value="" [attr.selected]="objCLADocumentationDTO.DelegatedAuthorityOnFile == null ? true : null">Select</option>
+                                        <option *ngFor="let op of listddlYesNoNotApplicable" value="{{op.CofigTableValuesId}}">
+                                            {{op.Value}}
+                                        </option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <textarea formControlName="DelegatedAuthorityComments" class="form-control" [(ngModel)]="objCLADocumentationDTO.DelegatedAuthorityComments"></textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>CLA Medical Date</td>
+                                <td>
+                                    <input type="text" placeholder="DD/MM/YYYY" readonly class="form-control form-control-date"
+                                           formControlName="CLAMedicalDate" [(ngModel)]="objCLADocumentationDTO.CLAMedicalDate"
+                                           [value]="objCLADocumentationDTO.CLAMedicalDate" datepicker />
+                                </td>
+                                <td>
+                                    <select *ngIf="listddlYesNoNotApplicable.length>0" formControlName="CLAMedicalOnFile" class="form-control" [(ngModel)]="objCLADocumentationDTO.CLAMedicalOnFile">
+                                        <option value="" [attr.selected]="objCLADocumentationDTO.CLAMedicalOnFile == null ? true : null">Select</option>
+                                        <option *ngFor="let op of listddlYesNoNotApplicable" value="{{op.CofigTableValuesId}}">
+                                            {{op.Value}}
+                                        </option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <textarea formControlName="CLAMedicalComments" class="form-control" [(ngModel)]="objCLADocumentationDTO.CLAMedicalComments"></textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>CLA Review Date</td>
+                                <td>
+                                    <input type="text" placeholder="DD/MM/YYYY" readonly class="form-control form-control-date"
+                                           formControlName="CLAReviewDate" [(ngModel)]="objCLADocumentationDTO.CLAReviewDate"
+                                           [value]="objCLADocumentationDTO.CLAReviewDate" datepicker />
+                                </td>
+                                <td>
+                                    <select *ngIf="listddlYesNoNotApplicable.length>0" formControlName="CLAReviewOnFile" class="form-control" [(ngModel)]="objCLADocumentationDTO.CLAReviewOnFile">
+                                        <option value="" [attr.selected]="objCLADocumentationDTO.CLAReviewOnFile == null ? true : null">Select</option>
+                                        <option *ngFor="let op of listddlYesNoNotApplicable" value="{{op.CofigTableValuesId}}">
+                                            {{op.Value}}
+                                        </option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <textarea formControlName="CLAReviewComments" class="form-control" [(ngModel)]="objCLADocumentationDTO.CLAReviewComments"></textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Care Plan Pt1 Date</td>
+                                <td>
+                                    <input type="text" placeholder="DD/MM/YYYY" readonly class="form-control form-control-date"
+                                           formControlName="CarePlanPt1Date" [(ngModel)]="objCLADocumentationDTO.CarePlanPt1Date"
+                                           [value]="objCLADocumentationDTO.CarePlanPt1Date" datepicker />
+                                </td>
+                                <td>
+                                    <select *ngIf="listddlYesNoNotApplicable.length>0" formControlName="CarePlanPt1OnFile" class="form-control" [(ngModel)]="objCLADocumentationDTO.CarePlanPt1OnFile">
+                                        <option value="" [attr.selected]="objCLADocumentationDTO.CarePlanPt1OnFile == null ? true : null">Select</option>
+                                        <option *ngFor="let op of listddlYesNoNotApplicable" value="{{op.CofigTableValuesId}}">
+                                            {{op.Value}}
+                                        </option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <textarea formControlName="CarePlanPt1Comments" class="form-control" [(ngModel)]="objCLADocumentationDTO.CarePlanPt1Comments"></textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Care Plan Pt2 Date</td>
+                                <td>
+                                    <input type="text" placeholder="DD/MM/YYYY" readonly class="form-control form-control-date"
+                                           formControlName="CarePlanPt2Date" [(ngModel)]="objCLADocumentationDTO.CarePlanPt2Date"
+                                           [value]="objCLADocumentationDTO.CarePlanPt2Date" datepicker />
+                                </td>
+                                <td>
+                                    <select *ngIf="listddlYesNoNotApplicable.length>0" formControlName="CarePlanPt2OnFile" class="form-control" [(ngModel)]="objCLADocumentationDTO.CarePlanPt2OnFile">
+                                        <option value="" [attr.selected]="objCLADocumentationDTO.CarePlanPt2OnFile == null ? true : null">Select</option>
+                                        <option *ngFor="let op of listddlYesNoNotApplicable" value="{{op.CofigTableValuesId}}">
+                                            {{op.Value}}
+                                        </option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <textarea formControlName="CarePlanPt2Comments" class="form-control" [(ngModel)]="objCLADocumentationDTO.CarePlanPt2Comments"></textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>PEP Date</td>
+                                <td>
+                                    <input type="text" placeholder="DD/MM/YYYY" readonly class="form-control form-control-date"
+                                           formControlName="PEPDate" [(ngModel)]="objCLADocumentationDTO.PEPDate"
+                                           [value]="objCLADocumentationDTO.PEPDate" datepicker />
+                                </td>
+                                <td>
+                                    <select *ngIf="listddlYesNoNotApplicable.length>0" formControlName="PEPOnFile" class="form-control" [(ngModel)]="objCLADocumentationDTO.PEPOnFile">
+                                        <option value="" [attr.selected]="objCLADocumentationDTO.PEPOnFile == null ? true : null">Select</option>
+                                        <option *ngFor="let op of listddlYesNoNotApplicable" value="{{op.CofigTableValuesId}}">
+                                            {{op.Value}}
+                                        </option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <textarea formControlName="PEPComments" class="form-control" [(ngModel)]="objCLADocumentationDTO.PEPComments"></textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>EHCP Date</td>
+                                <td>
+                                    <input type="text" placeholder="DD/MM/YYYY" readonly class="form-control form-control-date"
+                                           formControlName="EHCPDate" [(ngModel)]="objCLADocumentationDTO.EHCPDate"
+                                           [value]="objCLADocumentationDTO.EHCPDate" datepicker />
+                                </td>
+                                <td>
+                                    <select *ngIf="listddlYesNoNotApplicable.length>0" formControlName="EHCPOnFile" class="form-control" [(ngModel)]="objCLADocumentationDTO.EHCPOnFile">
+                                        <option value="" [attr.selected]="objCLADocumentationDTO.EHCPOnFile == null ? true : null">Select</option>
+                                        <option *ngFor="let op of listddlYesNoNotApplicable" value="{{op.CofigTableValuesId}}">
+                                            {{op.Value}}
+                                        </option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <textarea formControlName="EHCPComments" class="form-control" [(ngModel)]="objCLADocumentationDTO.EHCPComments"></textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Pathway Plan</td>
+                                <td>
+                                    <input type="text" placeholder="DD/MM/YYYY" readonly class="form-control form-control-date"
+                                           formControlName="PathwayPlanDate" [(ngModel)]="objCLADocumentationDTO.PathwayPlanDate"
+                                           [value]="objCLADocumentationDTO.PathwayPlanDate" datepicker />
+                                </td>
+                                <td>
+                                    <select *ngIf="listddlYesNoNotApplicable.length>0" formControlName="PathwayPlanOnFile" class="form-control" [(ngModel)]="objCLADocumentationDTO.PathwayPlanOnFile">
+                                        <option value="" [attr.selected]="objCLADocumentationDTO.PathwayPlanOnFile == null ? true : null">Select</option>
+                                        <option *ngFor="let op of listddlYesNoNotApplicable" value="{{op.CofigTableValuesId}}">
+                                            {{op.Value}}
+                                        </option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <textarea formControlName="PathwayPlanComments" class="form-control" [(ngModel)]="objCLADocumentationDTO.PathwayPlanComments"></textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Grab Pack </td>
+                                <td>
+                                    <input type="text" placeholder="DD/MM/YYYY" readonly class="form-control form-control-date"
+                                           formControlName="GrabPackDate" [(ngModel)]="objCLADocumentationDTO.GrabPackDate"
+                                           [value]="objCLADocumentationDTO.GrabPackDate" datepicker />
+                                </td>
+                                <td>
+                                    <select *ngIf="listddlYesNoNotApplicable.length>0" formControlName="GrabPackOnFile" class="form-control" [(ngModel)]="objCLADocumentationDTO.GrabPackOnFile">
+                                        <option value="" [attr.selected]="objCLADocumentationDTO.GrabPackOnFile == null ? true : null">Select</option>
+                                        <option *ngFor="let op of listddlYesNoNotApplicable" value="{{op.CofigTableValuesId}}">
+                                            {{op.Value}}
+                                        </option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <textarea formControlName="GrabPackComments" class="form-control" [(ngModel)]="objCLADocumentationDTO.GrabPackComments"></textarea>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="form-group">
+                    <SubmitButton (Click)="clicksubmit()" [IsLoading]="isLoading"></SubmitButton>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="col-xl-12 col-lg-12 col-12 bottom-30">
+        <div widget class="card">
+            <div class="changeColor" *ngIf="lstcladoumentationHistory.length>0">
+                <div widget class="card">
+                    <div class="card-header">
+                        <span>History</span>
+                    </div>
+                    <!-- <div class="card-body widget-body">
+                        <div class="table-responsive datatable">
+                            <table class="table table-striped table-hover table-sm" [mfData]="lstcladoumentationHistory" #mf="mfDataTable" [mfRowsOnPage]="10">
+                                <thead>
+                                    <tr>
+                                        <th><mfDefaultSorter by="CreatedDate"><b> Created Date</b></mfDefaultSorter></th>
+                                        <th><b>View</b></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of lstcladoumentationHistory">
+                                        <td>{{item.CreatedDate | dateFormat:'dd/MM/yyyy'}}</td>
+                                        <td>
+                                            <button (click)="fnViewCLADocu(item.CLADocumentationId)" style="cursor:pointer" class="btn btn-warning ">
+                                                View
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="12">
+                                            <mfBootstrapPaginator [rowsOnPageSet]="[10, 25, 50, 100]"></mfBootstrapPaginator>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div> -->
+                </div>
+            </div>
+            <div>
+                <button #btnViewCLADocu type="button" [hidden]="true" class="btn btn-primary" data-toggle="modal" data-target="#lg-modal2">Large</button>
+                <div class="modal fade" id="lg-modal2" tabindex="-1" role="dialog" aria-labelledby="modal-large-label" style="display: none;">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header state modal-primary">
+                                <h4 class="modal-title" id="modal-large-label"><i class="fa fa fa-user"></i>CLA Documentation</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                            </div>
+                            <table class="table table-striped table-hover table-sm">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Date</th>
+                                        <th>On File</th>
+                                        <th>Comments</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td width="30%">Foster Placement Agreement</td>
+                                        <td width="18%">
+                                            {{hisCLADocumentationDTO.PlacementAgreementDate|dateFormat:'dd/MM/yyyy'}}
+                                        </td>
+                                        <td width="18%">
+                                            {{hisCLADocumentationDTO.PlacementAgreementOnFile==1017?'Yes':hisCLADocumentationDTO.PlacementAgreementOnFile==1018?'No':hisCLADocumentationDTO.PlacementAgreementOnFile==1019?'Not Applicable':''}}
+                                        </td>
+                                        <td width="34%">{{hisCLADocumentationDTO.PlacementAgreementComments}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Placement Information Record</td>
+                                        <td>
+                                            {{hisCLADocumentationDTO.PlacementInformationDate|dateFormat:'dd/MM/yyyy'}}
+                                        </td>
+                                        <td>
+                                            {{hisCLADocumentationDTO.PlacementInformationOnFile==1017?'Yes':hisCLADocumentationDTO.PlacementInformationOnFile==1018?'No':hisCLADocumentationDTO.PlacementInformationOnFile==1019?'Not Applicable':''}}
+                                        </td>
+                                        <td>{{hisCLADocumentationDTO.PlacementInformationComments}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Local Authority Placement Plan</td>
+                                        <td>
+                                            {{hisCLADocumentationDTO.LAPlacementPlanDate|dateFormat:'dd/MM/yyyy'}}
+                                        </td>
+                                        <td>
+                                            {{hisCLADocumentationDTO.LAPlacementPlanOnFile==1017?'Yes':hisCLADocumentationDTO.LAPlacementPlanOnFile==1018?'No':hisCLADocumentationDTO.LAPlacementPlanOnFile==1019?'Not Applicable':''}}
+                                        </td>
+                                        <td>{{hisCLADocumentationDTO.LAPlacementPlanComments}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Local Authority Risk Assessment</td>
+                                        <td>
+                                            {{hisCLADocumentationDTO.LARiskAssessmentDate|dateFormat:'dd/MM/yyyy'}}
+                                        </td>
+                                        <td>
+                                            {{hisCLADocumentationDTO.LARiskAssessmentOnFile==1017?'Yes':hisCLADocumentationDTO.LARiskAssessmentOnFile==1018?'No':hisCLADocumentationDTO.LARiskAssessmentOnFile==1019?'Not Applicable':''}}
+                                        </td>
+                                        <td>{{hisCLADocumentationDTO.LARiskAssessmentComments}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Delegated Authority</td>
+                                        <td>
+                                            {{hisCLADocumentationDTO.DelegatedAuthorityDate|dateFormat:'dd/MM/yyyy'}}
+                                        </td>
+                                        <td>
+                                            {{hisCLADocumentationDTO.DelegatedAuthorityOnFile==1017?'Yes':hisCLADocumentationDTO.DelegatedAuthorityOnFile==1018?'No':hisCLADocumentationDTO.DelegatedAuthorityOnFile==1019?'Not Applicable':''}}
+                                        </td>
+                                        <td>{{hisCLADocumentationDTO.DelegatedAuthorityComments}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>CLA Medical Date</td>
+                                        <td>
+                                            {{hisCLADocumentationDTO.CLAMedicalDate|dateFormat:'dd/MM/yyyy'}}
+                                        </td>
+                                        <td>
+                                            {{hisCLADocumentationDTO.CLAMedicalOnFile==1017?'Yes':hisCLADocumentationDTO.CLAMedicalOnFile==1018?'No':hisCLADocumentationDTO.CLAMedicalOnFile==1019?'Not Applicable':''}}
+                                        </td>
+                                        <td>{{hisCLADocumentationDTO.CLAMedicalComments}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>CLA Review Date</td>
+                                        <td>
+                                            {{hisCLADocumentationDTO.CLAReviewDate|dateFormat:'dd/MM/yyyy'}}
+                                        </td>
+                                        <td>
+                                            {{hisCLADocumentationDTO.CLAReviewOnFile==1017?'Yes':hisCLADocumentationDTO.CLAReviewOnFile==1018?'No':hisCLADocumentationDTO.CLAReviewOnFile==1019?'Not Applicable':''}}
+                                        </td>
+                                        <td>{{hisCLADocumentationDTO.CLAReviewComments}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Care Plan Pt1 Date</td>
+                                        <td>
+                                            {{hisCLADocumentationDTO.CarePlanPt1Date|dateFormat:'dd/MM/yyyy'}}
+                                        </td>
+                                        <td>
+                                            {{hisCLADocumentationDTO.CarePlanPt1OnFile==1017?'Yes':hisCLADocumentationDTO.CarePlanPt1OnFile==1018?'No':hisCLADocumentationDTO.CarePlanPt1OnFile==1019?'Not Applicable':''}}
+                                        </td>
+                                        <td>{{hisCLADocumentationDTO.CarePlanPt1Comments}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Care Plan Pt2 Date</td>
+                                        <td>
+                                            {{hisCLADocumentationDTO.CarePlanPt2Date|dateFormat:'dd/MM/yyyy'}}
+                                        </td>
+                                        <td>
+                                            {{hisCLADocumentationDTO.CarePlanPt2OnFile==1017?'Yes':hisCLADocumentationDTO.CarePlanPt2OnFile==1018?'No':hisCLADocumentationDTO.CarePlanPt2OnFile==1019?'Not Applicable':''}}
+                                        </td>
+                                        <td>{{hisCLADocumentationDTO.CarePlanPt2Comments}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>PEP Date</td>
+                                        <td>
+                                            {{hisCLADocumentationDTO.PEPDate|dateFormat:'dd/MM/yyyy'}}
+                                        </td>
+                                        <td>
+                                            {{hisCLADocumentationDTO.PEPOnFile==1017?'Yes':hisCLADocumentationDTO.PEPOnFile==1018?'No':hisCLADocumentationDTO.PEPOnFile==1019?'Not Applicable':''}}
+                                        </td>
+                                        <td>{{hisCLADocumentationDTO.PEPComments}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>EHCP Date</td>
+                                        <td>
+                                            {{hisCLADocumentationDTO.EHCPDate|dateFormat:'dd/MM/yyyy'}}
+                                        </td>
+                                        <td>
+                                            {{hisCLADocumentationDTO.EHCPOnFile==1017?'Yes':hisCLADocumentationDTO.EHCPOnFile==1018?'No':hisCLADocumentationDTO.EHCPOnFile==1019?'Not Applicable':''}}
+                                        </td>
+                                        <td>{{hisCLADocumentationDTO.EHCPComments}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Pathway Plan</td>
+                                        <td>
+                                            {{hisCLADocumentationDTO.PathwayPlanDate|dateFormat:'dd/MM/yyyy'}}
+                                        </td>
+                                        <td>
+                                            {{hisCLADocumentationDTO.PathwayPlanOnFile==1017?'Yes':hisCLADocumentationDTO.PathwayPlanOnFile==1018?'No':hisCLADocumentationDTO.PathwayPlanOnFile==1019?'Not Applicable':''}}
+                                        </td>
+                                        <td>{{hisCLADocumentationDTO.PathwayPlanComments}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Grab Pack </td>
+                                        <td>
+                                            {{hisCLADocumentationDTO.GrabPackDate|dateFormat:'dd/MM/yyyy'}}
+                                        </td>
+                                        <td>
+                                            {{hisCLADocumentationDTO.GrabPackOnFile==1017?'Yes':hisCLADocumentationDTO.GrabPackOnFile==1018?'No':hisCLADocumentationDTO.GrabPackOnFile==1019?'Not Applicable':''}}
+                                        </td>
+                                        <td>{{hisCLADocumentationDTO.GrabPackComments}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

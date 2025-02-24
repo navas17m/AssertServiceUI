@@ -1,0 +1,102 @@
+﻿<div class="col-xl-12 col-lg-12 col-12 bottom-30">
+    <!-- <div style="text-align:right" *ngIf="showAutoSave">
+        <b>{{saveDraftText}}  {{draftSavedTime | date: 'HH:mm'}}</b>
+    </div> -->
+    <AutoSavedMessage [Text]="saveDraftText" [Time]="draftSavedTime" [Visible]="showAutoSave"></AutoSavedMessage>
+    <ApprovedCarerHeader></ApprovedCarerHeader>
+    <div widget class="card">
+        <div class="card-header">
+            <span class="text-uppercase">Incident</span>
+            <div class="widget-controls">
+                <i class="fa fa-file-pdf-o" (click)="fnDonloadPDF()" style="font-size:18px;color:white;cursor:pointer;" title="Download PDF"></i>
+                <i class="fa fa-file-word-o" (click)="fnDonloadWord()" style="font-size:18px;color:white;cursor:pointer;padding-left:5px;" title="Download Word"></i>
+                <i class="fa fa-print" (click)="fnPrint()" style="font-size:18px;color:white;cursor:pointer;padding-left:5px;padding-right:5px" title="Print"></i>
+                <i class="fa fa-envelope-open" (click)="fnShowEmail()" style="font-size:18px;color:white;cursor:pointer;" title="Email"></i>
+            </div>
+        </div>
+        <div class="card-body widget-body">
+            <form [formGroup]="_Form">
+                <div class="clearfix">
+                    <ul class="nav nav-tabs top pull-left w-100p">
+                        <li class="nav-item" (click)="fnTab1Active()">
+                            <a class="nav-link {{tab1Active}}" data-toggle="tab" href="#ta">Incident</a>
+                        </li>
+                        <li class="nav-item" (click)="fnTab2Active()">
+                            <a class="nav-link {{tab2Active}}" data-toggle="tab" href="#tb">Upload Documents</a>
+                        </li>
+
+                    </ul>
+                </div>
+                <div class="tab-content top">
+                    <div class="tab-pane {{tab1Active}}" id="ta">
+                        <div class="form-group">
+                            URN Number : {{urnNumber}}
+                        </div>
+                        <Dynamic-Form #dynamic [dynamicformcontrols]="dynamicformcontrol"
+                                      (OnValChange)="DynamicOnValChange($event)"
+                                      [formbuilder]="_Form" [submitted]="submitted"></Dynamic-Form>
+                        <EmailNotification #Notification [FormCnfgId]="211"  ></EmailNotification>
+                    </div>
+                    <div class="tab-pane {{tab2Active}}" id="tb">
+                        <Upload-Documents #uploads [formCnfgId]="211" [primaryKeyId]="tblPrimaryKey"
+                                           [submittedUpload]="submitted"
+                                          [userTypeCnfgId]="4" [typeId]="TypeId"></Upload-Documents>
+
+                    </div>
+                    <div class="form-group col-md-6">
+                        <button *ngIf="showbtnSaveDraft" [ladda]="isLoadingSAD" #btnSaveDraft (click)="fnSaveDraft(dynamic.dynamicformcontrols,uploads.IsUpload,uploads.formbuilder)" class="btn btn-primary expand-right">{{saveAsDraftText}}</button>
+                        <SubmitButton #btnSubmit (Click)="clicksubmit(_Form,dynamic.dynamicformcontrols,dynamic.formbuilder,uploads.UploadDocIds,uploads.IsUpload,uploads.formbuilder,
+                                      Notification.AddtionalEmailIds,Notification.EmailIds)" [IsDiasable]="isLoadingSAD" [Text]="submitText" [IsLoading]="IsLoading"></SubmitButton>
+                        <BackButton></BackButton>
+                        <ViewDisable></ViewDisable>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<div>
+    <button #btnPrint type="button" [hidden]="true" class="btn btn-primary" data-toggle="modal" data-target="#lg-modal1">Large</button>
+    <div class="modal fade" id="lg-modal1" tabindex="-1" role="dialog" aria-labelledby="modal-large-label" style="display: none;">
+        <div class="modal-dialog modal-lg" role="document">
+            <form [formGroup]="_FormPrint">
+                <div class="modal-content">
+                    <div class="modal-header state modal-primary">
+                        <h4 class="modal-title" id="modal-large-label">
+                            <i class="fa fa-print"></i>Email
+                        </h4>
+                        <div *ngIf="IsLoading"><i class="fa fa-spinner fa-spin"></i> Sending email please wait...</div>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="form-group">
+                            Enter Email Subject:
+                            <input type="text" [(ngModel)]="subject" class="form-control" formControlName="subject" required />
+                            <div *ngIf="(!_FormPrint.controls.subject.valid && submittedprint && _FormPrint.controls.subject.errors.required )" class="alert alert-danger">
+                                Please enter Email Subject
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            Enter Email Address(es):
+                            <textarea [(ngModel)]="eAddress" class="form-control" formControlName="eAddress" required></textarea>
+                            <div *ngIf="(!_FormPrint.controls.eAddress.valid && submittedprint && _FormPrint.controls.eAddress.errors.required )" class="alert alert-danger">
+                                Please enter Email Address(es)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <!--<button type="button" class="btn btn-success" (click)="fnPrint()">Print</button>-->
+                        <button type="button" class="btn btn-success" (click)="fnEmail(_FormPrint)" [disabled]="IsLoading">Email</button>
+                        <button #btnCancel type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+

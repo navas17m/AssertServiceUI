@@ -1,0 +1,54 @@
+﻿<div class="row bottom-30">
+    <div class="col">
+        <div widget class="card">
+            <div class="card-header">
+                <span> Form Config </span>
+                <div class="widget-controls">
+                    <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                    <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                    <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+                    <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+                    <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a>
+                </div>
+            </div>
+            <div class="card-body widget-body">
+                <form [formGroup]="_FormcnfgForm">
+                    <ViewDisable></ViewDisable>
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <label class="">Module Name</label>
+                            <select *ngIf="parentModule != null" formControlName="ParentModuleId" class="form-control" required [(ngModel)]="objFormCon.ModuleCnfg.ModuleCnfgId">
+                                <option value="" [attr.selected]="objFormCon.ModuleCnfg.ModuleCnfgId == null ? true : null">Select a Module Name</option>
+                                <option *ngFor="let item of parentModule" value="{{item.ModuleCnfgId}}">
+                                    {{item.ModuleName}}
+                                </option>
+                            </select>
+                            <div class="alert alert-danger" *ngIf="(!_FormcnfgForm.controls.ParentModuleId.valid && submitted && _FormcnfgForm.controls.ParentModuleId.errors.required)">
+                                Please enter Parent module name
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="">Form Name</label>
+                            <input formControlName="FormName" type="text" class="form-control" [(ngModel)]="objFormCon.FormName"
+                                   required />
+                            <div class="alert alert-danger" *ngIf="(!_FormcnfgForm.controls.FormName.valid && submitted && _FormcnfgForm.controls.FormName.errors.required)">
+                                Please enter form name
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="">Pattern</label>
+                            <input formControlName="Pattern" type="text" class="form-control" [(ngModel)]="objFormCon.Pattern"
+                                   required />
+                            <div class="alert alert-danger" *ngIf="(!_FormcnfgForm.controls.Pattern.valid && submitted && _FormcnfgForm.controls.Pattern.errors.required)">
+                                Please enter Pattern
+                            </div>
+                        </div>
+                        <SubmitButton (Click)="formconfigSubmit(_FormcnfgForm)" [IsLoading]="isLoading"></SubmitButton>
+                        <BackButton></BackButton>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

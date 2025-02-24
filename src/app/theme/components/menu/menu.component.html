@@ -1,0 +1,54 @@
+<div class="sidebar"  [ngClass]="{'menu-collapsed': isMenuCollapsed}" (mouseleave)="hoverElemTop=-200">
+  <ul  class="nav nav-sidebar flex-column">
+    <ng-scrollbar pointerEventsMethod="scrollbar">
+      <li  class="sidebar-list-item">
+          <a   routerLinkActive="active-link" [routerLinkActiveOptions]="{exact:true}"  class="sidebar-list-link">
+              <i class="fa fa-home"></i><span>لوحة القيادة</span>
+          </a>
+      </li>
+      <li  class="sidebar-list-item">
+        <a [routerLink]="['systemadmin/usercarermapping/2']"  class="sidebar-list-link">
+            <i class="fa fa-file"></i><span>تسجيل الأصول </span>
+        </a>
+    </li>
+      <li class="sidebar-list-item">
+         
+          <ul class="sidebar-sublist">
+              <li class="sidebar-sublist-item">
+                  <a  style="width:auto">
+                    Asset register  
+                  </a>                 
+              </li>
+              <li class="sidebar-sublist-item">
+                <a  style="width:auto">
+                  Asset register 
+                </a>                 
+            </li>  
+              <!--<li *ngFor="let subitem of returnVal.ModuleConfig | filter : 'ParentModuleId':item.ModuleCnfgId" class="sidebar-sublist-item">
+
+                  <a [attr.href]="''" (click)="collapseMenu($event, item)" (mouseenter)="hoverItem($event, item)"
+                     class="sidebar-list-link subitem-submenu-link">
+                      <span>{{ subitem.ModuleName }}</span>
+                      <b class="fa fa-angle-down"></b>
+                  </a>
+
+                  <ul class="sidebar-sublist subitem-submenu-list">
+                      <li *ngFor="let subSubitem of returnVal.FormConfig | filter : 'ModuleCnfgId':subitem.ModuleCnfgId"
+                          (mouseenter)="hoverItem($event, item)">
+
+                          <a (mouseenter)="hoverItem($event, item)" [attr.target]="subSubitem.target || ''"
+                              [routerLink]="[subSubitem.Pattern,subitem.ModuleCnfgId]" (click)="collapseMenu($event, item)">
+                              {{ subSubitem.FormName }}
+                          </a>
+
+                      </li>
+                  </ul>
+              </li>-->
+
+          </ul> 
+      </li>
+     
+    </ng-scrollbar>
+  </ul>
+  <div class="sidebar-hover-elem" [ngStyle]="{top: hoverElemTop + 'px', height: hoverElemHeight + 'px'}" [ngClass]="{'show-hover-elem': showHoverElem }"></div>
+</div>

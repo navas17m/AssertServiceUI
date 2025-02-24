@@ -1,0 +1,687 @@
+﻿
+<form [formGroup]="_Form">
+    <style>
+        .datepickerwidth {
+            width: 36%;
+        }
+    </style>
+    <ViewDisable></ViewDisable>
+    <div class="col-xl-12 col-lg-12 col-12 bottom-30">
+        <Child-Header></Child-Header>
+        <div widget class="card">
+            <div class="card-header">
+                <span>Carers YP Progress Details</span>
+                <div class="widget-controls">
+                    <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                    <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                    <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+                    <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+                    <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a>
+                </div>
+            </div>
+            <div class="card-body widget-body">
+                <div class="row mbm-20">
+                    <div class="col-lg-12 col-12 bottom-30">
+                        <div class="form-group col-md-12">
+                            <div class="form-group ">
+                                <label class="">Child Name (Code):</label>
+                               {{insChildDetails.PersonalInfo.FullName}} ({{insChildDetails.ChildCode}})
+                            </div>
+                            <div class="form-group ">
+                                <label class="">Carer Name	:</label>
+                                {{CarerName}} 
+                            </div>
+                            <div class="form-group">
+                                <label class="">Report for the Day:</label>
+                                <input formControlName="ReportDate"  class="form-control" type="date"
+                                       [(ngModel)]="objCarersYpProgressDTO.ReportDate" [value]="objCarersYpProgressDTO.ReportDate"
+                                       datepicker>
+                                <div *ngIf="(!_Form.controls.ReportDate.valid && submitted && _Form.controls.ReportDate.errors.required )" class="alert alert-danger">
+                                    Please select the Report for the Day
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clearfix">
+                            <ul class="nav nav-tabs top pull-left w-100p">
+                                <li class="nav-item" (click)="fnEducationTab()">
+                                    <a class="nav-link {{EducationTabActive}}" data-toggle="tab" href="#Education">Education</a>
+                                </li>
+                                <li class="nav-item" (click)="fnSocialDeveTab()">
+                                    <a class="nav-link {{SocialDeveTabActive}}" data-toggle="tab" href="#SocialDeve">Social Development</a>
+                                </li>
+                                <li class="nav-item" (click)="fnHealthTab()">
+                                    <a class="nav-link {{HealthActive}}" data-toggle="tab" href="#Health">Health</a>
+                                </li>
+                                <li class="nav-item" (click)="fnContactTab()">
+                                    <a class="nav-link {{ContactActive}}" data-toggle="tab" href="#Contact">Contact</a>
+                                </li>
+                                <li class="nav-item" (click)="fnStaySafeTab()">
+                                    <a class="nav-link {{StaySafeActive}}" data-toggle="tab" href="#StaySafe">Stay Safe</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="tab-content top">
+
+                            <!--Education-->
+                            <div class="tab-pane {{EducationTabActive}}" id="Education">
+                                <div class="form-group">
+                                    <label class="">Did child/ young person attend school</label>
+                                    <input formControlName="AttendSchool" type="radio" [value]="1" [(ngModel)]="objCarersYpProgressDTO.AttendSchool">Yes
+
+                                    <input formControlName="AttendSchool" type="radio" [value]="2" [(ngModel)]="objCarersYpProgressDTO.AttendSchool">No
+                                    <input formControlName="AttendSchool" type="radio" [value]="3" [(ngModel)]="objCarersYpProgressDTO.AttendSchool">N/A
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Reason for Absence</label>
+                                    <select *ngIf="AbsenceReasonList.length>0" formControlName="AbsenceReason" class="form-control" [(ngModel)]="objCarersYpProgressDTO.AbsenceReason">
+                                        <option value="" [attr.selected]="objCarersYpProgressDTO.AbsenceReason == null ? true : null">Select a Reason for Absence </option>
+                                        <option *ngFor="let op of AbsenceReasonList" value="{{op.CofigTableValuesId}}">
+                                            {{op.Value}}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Did you read to the child/ young person – did child/ young person read</label>
+                                    <input formControlName="Reading" type="radio"  [value]="1" [(ngModel)]="objCarersYpProgressDTO.Reading">Yes
+                                    <input formControlName="Reading" type="radio"  [value]="2" [(ngModel)]="objCarersYpProgressDTO.Reading">No
+                                    <input formControlName="Reading" type="radio"  [value]="3" [(ngModel)]="objCarersYpProgressDTO.Reading">N/A
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Did you support homework with child/ young person</label>
+                                    <input formControlName="Homework" type="radio"  [value]="1" [(ngModel)]="objCarersYpProgressDTO.Homework">Yes
+                                    <input formControlName="Homework" type="radio"  [value]="2" [(ngModel)]="objCarersYpProgressDTO.Homework">No
+                                    <input formControlName="Homework" type="radio"  [value]="3" [(ngModel)]="objCarersYpProgressDTO.Homework">N/A
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Did child young person attend academic club or other learning material resources i.e. computer/ internet</label>
+                                    <input formControlName="Activity" type="radio"  [value]="1" [(ngModel)]="objCarersYpProgressDTO.Activity">Yes
+                                    <input formControlName="Activity" type="radio"  [value]="2" [(ngModel)]="objCarersYpProgressDTO.Activity">No
+                                    <input formControlName="Activity" type="radio"  [value]="3" [(ngModel)]="objCarersYpProgressDTO.Activity">N/A
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Does the child/ young person attend a school club/ activity/ school team</label>
+                                    <input formControlName="AttendAcademicClub" type="radio"  [value]="1" [(ngModel)]="objCarersYpProgressDTO.AttendAcademicClub">Yes
+                                    <input formControlName="AttendAcademicClub" type="radio"  [value]="2" [(ngModel)]="objCarersYpProgressDTO.AttendAcademicClub">No
+                                    <input formControlName="AttendAcademicClub" type="radio"  [value]="3" [(ngModel)]="objCarersYpProgressDTO.AttendAcademicClub">N/A
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Did the child/ young person attend a school trip/ holiday</label>
+                                    <input formControlName="SchoolTrip" type="radio"  [value]="1" [(ngModel)]="objCarersYpProgressDTO.SchoolTrip">Yes
+                                    <input formControlName="SchoolTrip" type="radio"  [value]="2" [(ngModel)]="objCarersYpProgressDTO.SchoolTrip">No
+                                    <input formControlName="SchoolTrip" type="radio"  [value]="3" [(ngModel)]="objCarersYpProgressDTO.SchoolTrip">N/A
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Has the child/ young person attended college</label>
+                                    <input formControlName="AttendCollege" type="radio"  [value]="1" [(ngModel)]="objCarersYpProgressDTO.AttendCollege">Yes
+                                    <input formControlName="AttendCollege" type="radio"  [value]="2" [(ngModel)]="objCarersYpProgressDTO.AttendCollege">No
+                                    <input formControlName="AttendCollege" type="radio"  [value]="3" [(ngModel)]="objCarersYpProgressDTO.AttendCollege">N/A
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Has the child/ young person attended Training</label>
+                                    <input formControlName="AttendTraining" type="radio"  [value]="1" [(ngModel)]="objCarersYpProgressDTO.AttendTraining">Yes
+                                    <input formControlName="AttendTraining" type="radio"  [value]="2" [(ngModel)]="objCarersYpProgressDTO.AttendTraining">No
+                                    <input formControlName="AttendTraining" type="radio"  [value]="3" [(ngModel)]="objCarersYpProgressDTO.AttendTraining">N/A
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Has the child/ young person attended work experience</label>
+                                    <input formControlName="AttendWorkExp" type="radio"  [value]="1" [(ngModel)]="objCarersYpProgressDTO.AttendWorkExp">Yes
+                                    <input formControlName="AttendWorkExp" type="radio"  [value]="2" [(ngModel)]="objCarersYpProgressDTO.AttendWorkExp">No
+                                    <input formControlName="AttendWorkExp" type="radio"  [value]="3" [(ngModel)]="objCarersYpProgressDTO.AttendWorkExp">N/A
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Have you attended school meeting with regard to child/ young person</label>
+                                    <input formControlName="Meeting" type="radio"  [value]="1" [(ngModel)]="objCarersYpProgressDTO.Meeting">Yes
+                                    <input formControlName="Meeting" type="radio"  [value]="2" [(ngModel)]="objCarersYpProgressDTO.Meeting">No
+                                    <input formControlName="Meeting" type="radio"  [value]="3" [(ngModel)]="objCarersYpProgressDTO.Meeting">N/A
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Meeting type</label>
+                                    <select *ngIf="MeetingTypeList.length>0" formControlName="MeetingType" class="form-control" [(ngModel)]="objCarersYpProgressDTO.MeetingType">
+                                        <option value="" [attr.selected]="objCarersYpProgressDTO.MeetingType == null ? true : null">Select a Meeting type</option>
+                                        <option *ngFor="let op of MeetingTypeList" value="{{op.CofigTableValuesId}}">
+                                            {{op.Value}}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Has the child/ young person had a Detention</label>
+                                    <input formControlName="Detention" type="radio"  [value]="1" [(ngModel)]="objCarersYpProgressDTO.Detention">Yes
+                                    <input formControlName="Detention" type="radio"  [value]="2" [(ngModel)]="objCarersYpProgressDTO.Detention">No
+                                    <input formControlName="Detention" type="radio"  [value]="3" [(ngModel)]="objCarersYpProgressDTO.Detention">N/A
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Did you transport the child/ young person to school/ nursery/ training</label>
+                                    <input formControlName="Training" type="radio"  [value]="1" [(ngModel)]="objCarersYpProgressDTO.Training">Yes
+                                    <input formControlName="Training" type="radio"  [value]="2" [(ngModel)]="objCarersYpProgressDTO.Training">No
+                                    <input formControlName="Training" type="radio"  [value]="3" [(ngModel)]="objCarersYpProgressDTO.Training">N/A
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Has the child been excluded?</label>
+                                    <input formControlName="Excluded" type="radio"  [value]="1" [(ngModel)]="objCarersYpProgressDTO.Excluded">Yes
+                                    <input formControlName="Excluded" type="radio"  [value]="2" [(ngModel)]="objCarersYpProgressDTO.Excluded">No
+                                    <input formControlName="Excluded" type="radio"  [value]="3" [(ngModel)]="objCarersYpProgressDTO.Excluded">N/A
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Exclusion type	</label>
+                                    <select *ngIf="ExclusionTypeList.length>0" formControlName="PermanentExclusion" class="form-control" [(ngModel)]="objCarersYpProgressDTO.PermanentExclusion">
+                                        <option value="" [attr.selected]="objCarersYpProgressDTO.PermanentExclusion == null ? true : null">Select a Exclusion type </option>
+                                        <option *ngFor="let op of ExclusionTypeList" value="{{op.CofigTableValuesId}}">
+                                            {{op.Value}}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Has the child taken Sats/GCSE Exams?</label>
+                                    <input formControlName="TakenExam" type="radio"  [value]="1" [(ngModel)]="objCarersYpProgressDTO.TakenExam">Yes
+                                    <input formControlName="TakenExam" type="radio"  [value]="2" [(ngModel)]="objCarersYpProgressDTO.TakenExam">No
+                                    <input formControlName="TakenExam" type="radio"  [value]="3" [(ngModel)]="objCarersYpProgressDTO.TakenExam">N/A
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Sats/GCSE Exams type</label>
+                                    <select *ngIf="TakenExamTypeList.length>0" formControlName="Exam" class="form-control" [(ngModel)]="objCarersYpProgressDTO.Exam">
+                                        <option value="" [attr.selected]="objCarersYpProgressDTO.Exam == null ? true : null">Select a Sats/GCSE Exams type </option>
+                                        <option *ngFor="let op of TakenExamTypeList" value="{{op.CofigTableValuesId}}">
+                                            {{op.Value}}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Pupil Premium Plus received</label>
+                                    <input formControlName="PupilPremium" type="radio"  [value]="1" [(ngModel)]="objCarersYpProgressDTO.PupilPremium">Yes
+                                    <input formControlName="PupilPremium" type="radio"  [value]="2" [(ngModel)]="objCarersYpProgressDTO.PupilPremium">No
+                                    <input formControlName="PupilPremium" type="radio"  [value]="3" [(ngModel)]="objCarersYpProgressDTO.PupilPremium">N/A
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Comments</label>
+                                    <textarea formControlName="EducationComments" class="form-control" [(ngModel)]="objCarersYpProgressDTO.EducationComments"></textarea>
+                                </div>
+
+                            </div>
+                            <!--SocialDeve-->
+                            <div class="tab-pane {{SocialDeveTabActive}}" id="SocialDeve">
+                                <div class="form-group">
+                                    <label class="">Does the child/ young person attend community activities</label>
+                                    <input formControlName="CommunityActivity" type="radio"  [value]="1" [(ngModel)]="objCarersYpProgressDTO.CommunityActivity">Yes
+                                    <input formControlName="CommunityActivity" type="radio"  [value]="2" [(ngModel)]="objCarersYpProgressDTO.CommunityActivity">No
+                                    <input formControlName="CommunityActivity" type="radio"  [value]="3" [(ngModel)]="objCarersYpProgressDTO.CommunityActivity">N/A
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Have you taken the child/ young person on a trip</label>
+                                    <input formControlName="Trip" type="radio"  [value]="1" [(ngModel)]="objCarersYpProgressDTO.Trip">Yes
+                                    <input formControlName="Trip" type="radio"  [value]="2" [(ngModel)]="objCarersYpProgressDTO.Trip">No
+                                    <input formControlName="Trip" type="radio"  [value]="3" [(ngModel)]="objCarersYpProgressDTO.Trip">N/A
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Have you taken the child/ young person on a holiday</label>
+                                    <input formControlName="Holiday" type="radio"  [value]="1" [(ngModel)]="objCarersYpProgressDTO.Holiday">Yes
+                                    <input formControlName="Holiday" type="radio"  [value]="2" [(ngModel)]="objCarersYpProgressDTO.Holiday">No
+                                    <input formControlName="Holiday" type="radio"  [value]="3" [(ngModel)]="objCarersYpProgressDTO.Holiday">N/A
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Has the child/ young person been involved in life story work	</label>
+                                    <input formControlName="LifeStory" type="radio"  [value]="1" [(ngModel)]="objCarersYpProgressDTO.LifeStory">Yes
+                                    <input formControlName="LifeStory" type="radio"  [value]="2" [(ngModel)]="objCarersYpProgressDTO.LifeStory">No
+                                    <input formControlName="LifeStory" type="radio"  [value]="3" [(ngModel)]="objCarersYpProgressDTO.LifeStory">N/A
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Have you contributed towards life story work</label>
+                                    <input formControlName="ContributeLifeStory" type="radio"  [value]="1" [(ngModel)]="objCarersYpProgressDTO.ContributeLifeStory">Yes
+                                    <input formControlName="ContributeLifeStory" type="radio"  [value]="2" [(ngModel)]="objCarersYpProgressDTO.ContributeLifeStory">No
+                                    <input formControlName="ContributeLifeStory" type="radio"  [value]="3" [(ngModel)]="objCarersYpProgressDTO.ContributeLifeStory">N/A
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Have you developed the child/ young person’s budgeting</label>
+                                    <input formControlName="Budget" type="radio"  [value]="1" [(ngModel)]="objCarersYpProgressDTO.Budget">Yes
+                                    <input formControlName="Budget" type="radio"  [value]="2" [(ngModel)]="objCarersYpProgressDTO.Budget">No
+                                    <input formControlName="Budget" type="radio"  [value]="3" [(ngModel)]="objCarersYpProgressDTO.Budget">N/A
+                                </div>
+                                <div class="form-group">
+                                    <label class="">How do you think the child/ young person achieved skill (1= poor- 10= very positive)</label>
+                                    <bar-rating name="rating" [(rate)]="objCarersYpProgressDTO.BudgetSkill" [max]="10" [theme]="'movie'" [showText]="true"
+                                                [titles]="['1', '2' , '3', '4','5','6','7','8','9','10']" disabled>
+                                    </bar-rating>
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Have you developed the child/ young person’s personal hygiene</label>
+                                    <input formControlName="Hygiene" type="radio"  [value]="1" [(ngModel)]="objCarersYpProgressDTO.Hygiene">Yes
+                                    <input formControlName="Hygiene" type="radio"  [value]="2" [(ngModel)]="objCarersYpProgressDTO.Hygiene">No
+                                    <input formControlName="Hygiene" type="radio"  [value]="3" [(ngModel)]="objCarersYpProgressDTO.Hygiene">N/A
+                                </div>
+                                <div class="form-group">
+                                    <label class="">How do you think the child/ young person achieved skill (1= poor- 10= very positive)</label>
+                                    <bar-rating name="rating" [(rate)]="objCarersYpProgressDTO.HygieneSkill" [max]="10" [theme]="'movie'" [showText]="true" [titles]="['1', '2' , '3', '4','5','6','7','8','9','10']" disabled>
+                                    </bar-rating>
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Have you developed the child/ young person’s healthy eating</label>
+                                    <input formControlName="HealthyEating" type="radio"  [value]="1" [(ngModel)]="objCarersYpProgressDTO.HealthyEating">Yes
+                                    <input formControlName="HealthyEating" type="radio"  [value]="2" [(ngModel)]="objCarersYpProgressDTO.HealthyEating">No
+                                    <input formControlName="HealthyEating" type="radio"  [value]="3" [(ngModel)]="objCarersYpProgressDTO.HealthyEating">N/A
+                                </div>
+                                <div class="form-group">
+                                    <label class="">How do you think the child/ young person achieved skill (1= poor- 10= very positive)</label>
+                                    <bar-rating name="rating" [(rate)]="objCarersYpProgressDTO.HealthyEatingSkill" [max]="10" [theme]="'movie'" [showText]="true" [titles]="['1', '2' , '3', '4','5','6','7','8','9','10']" disabled>
+                                    </bar-rating>
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Have you involved the child/ young person shopping for food/ cooking/ meal preparation</label>
+                                    <input formControlName="Cooking" type="radio"  [value]="1" [(ngModel)]="objCarersYpProgressDTO.Cooking">Yes
+                                    <input formControlName="Cooking" type="radio"  [value]="2" [(ngModel)]="objCarersYpProgressDTO.Cooking">No
+                                    <input formControlName="Cooking" type="radio"  [value]="3" [(ngModel)]="objCarersYpProgressDTO.Cooking">N/A
+                                </div>
+                                <div class="form-group">
+                                    <label class="">How do you think the child/ young person achieved skill (1= poor- 10= very positive)</label>
+                                    <bar-rating name="rating" [(rate)]="objCarersYpProgressDTO.CookingSkill" [max]="10" [theme]="'movie'" [showText]="true" [titles]="['1', '2' , '3', '4','5','6','7','8','9','10']" disabled>
+                                    </bar-rating>
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Have you involved the child/ young person’s cleaning/ washing/ ironing</label>
+                                    <input formControlName="Washing" type="radio"  [value]="1" [(ngModel)]="objCarersYpProgressDTO.Washing">Yes
+                                    <input formControlName="Washing" type="radio"  [value]="2" [(ngModel)]="objCarersYpProgressDTO.Washing">No
+                                    <input formControlName="Washing" type="radio"  [value]="3" [(ngModel)]="objCarersYpProgressDTO.Washing">N/A
+                                </div>
+                                <div class="form-group">
+                                    <label class="">How do you think the child/ young person achieved skill (1= poor- 10= very positive)</label>
+                                    <bar-rating name="rating" [(rate)]="objCarersYpProgressDTO.WashingSkill" [max]="10" [theme]="'movie'" [showText]="true" [titles]="['1', '2' , '3', '4','5','6','7','8','9','10']" disabled>
+                                    </bar-rating>
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Is the child happy in placement</label>
+                                    <input formControlName="HappyInPlacement" type="radio"  [value]="1" [(ngModel)]="objCarersYpProgressDTO.HappyInPlacement">Yes
+                                    <input formControlName="HappyInPlacement" type="radio"  [value]="2" [(ngModel)]="objCarersYpProgressDTO.HappyInPlacement">No
+                                    <input formControlName="HappyInPlacement" type="radio"  [value]="3" [(ngModel)]="objCarersYpProgressDTO.HappyInPlacement">N/A
+                                </div>
+                                <div class="form-group">
+                                    <label class="">How happy is the child in placement (1= very unhappy- 10= very happy)</label>
+                                    <bar-rating name="rating" [(rate)]="objCarersYpProgressDTO.HowHappyInPlacement" [max]="10" [theme]="'movie'" [showText]="true" [titles]="['1', '2' , '3', '4','5','6','7','8','9','10']" disabled>
+                                    </bar-rating>
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Bank Account</label>
+                                    <input formControlName="BankAccount" type="radio"  [value]="1" [(ngModel)]="objCarersYpProgressDTO.BankAccount">Yes
+                                    <input formControlName="BankAccount" type="radio"  [value]="2" [(ngModel)]="objCarersYpProgressDTO.BankAccount">No
+                                    <input formControlName="BankAccount" type="radio"  [value]="3" [(ngModel)]="objCarersYpProgressDTO.BankAccount">N/A
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Passport</label>
+                                    <input formControlName="Passport" type="radio"  [value]="1" [(ngModel)]="objCarersYpProgressDTO.Passport">Yes
+                                    <input formControlName="Passport" type="radio"  [value]="2" [(ngModel)]="objCarersYpProgressDTO.Passport">No
+                                    <input formControlName="Passport" type="radio"  [value]="3" [(ngModel)]="objCarersYpProgressDTO.Passport">N/A
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Post 18 support</label>
+                                    <input formControlName="Post18" type="radio"  [value]="1" [(ngModel)]="objCarersYpProgressDTO.Post18">Yes
+                                    <input formControlName="Post18" type="radio"  [value]="2" [(ngModel)]="objCarersYpProgressDTO.Post18">No
+                                    <input formControlName="Post18" type="radio"  [value]="3" [(ngModel)]="objCarersYpProgressDTO.Post18">N/A
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Post 18 support type</label>
+                                    <select *ngIf="Post18TypeList.length>0" formControlName="Post18Type" class="form-control" [(ngModel)]="objCarersYpProgressDTO.Post18Type">
+                                        <option value="" [attr.selected]="objCarersYpProgressDTO.Post18Type == null ? true : null">Select a Post 18 support type </option>
+                                        <option *ngFor="let op of Post18TypeList" value="{{op.CofigTableValuesId}}">
+                                            {{op.Value}}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Comments</label>
+                                    <textarea formControlName="SocialDevelopmentComments" class="form-control" [(ngModel)]="objCarersYpProgressDTO.SocialDevelopmentComments"></textarea>
+                                </div>
+                            </div>
+                            <!--Health-->
+                            <div class="tab-pane {{HealthActive}}" id="Health">
+                                <div class="form-group">
+                                    <label class="">Does the child/ young person smoke</label>
+                                    <input formControlName="Smoke" type="radio"  [value]="1" [(ngModel)]="objCarersYpProgressDTO.Smoke">Yes
+                                    <input formControlName="Smoke" type="radio"  [value]="2" [(ngModel)]="objCarersYpProgressDTO.Smoke">No
+                                    <input formControlName="Smoke" type="radio"  [value]="3" [(ngModel)]="objCarersYpProgressDTO.Smoke">N/A
+                                </div>
+                                <div class="form-group">
+                                    <label class="">How many per day</label>
+                                    <bar-rating name="rating" [(rate)]="objCarersYpProgressDTO.SmokePerDay" [max]="5" [theme]="'movie'" [showText]="true" [titles]="['1-5', '5-10' , '10-15', '15-20','More']" disabled>
+                                    </bar-rating>
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Does the child/ young person use substances</label>
+                                    <input formControlName="UseSubstance" type="radio"  [value]="1" [(ngModel)]="objCarersYpProgressDTO.UseSubstance">Yes
+                                    <input formControlName="UseSubstance" type="radio"  [value]="2" [(ngModel)]="objCarersYpProgressDTO.UseSubstance">No
+                                    <input formControlName="UseSubstance" type="radio"  [value]="3" [(ngModel)]="objCarersYpProgressDTO.UseSubstance">N/A
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Substances type</label>
+                                    <select *ngIf="SubstanceTypeList.length>0" formControlName="SubstanceType" class="form-control" [(ngModel)]="objCarersYpProgressDTO.SubstanceType">
+                                        <option value="" [attr.selected]="objCarersYpProgressDTO.SubstanceType == null ? true : null">Select a Substances Type</option>
+                                        <option *ngFor="let op of SubstanceTypeList" value="{{op.CofigTableValuesId}}">
+                                            {{op.Value}}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Does the child/ young person use alcohol</label>
+                                    <input formControlName="Alcohol" type="radio"  [value]="1" [(ngModel)]="objCarersYpProgressDTO.Alcohol">Yes
+                                    <input formControlName="Alcohol" type="radio"  [value]="2" [(ngModel)]="objCarersYpProgressDTO.Alcohol">No
+                                    <input formControlName="Alcohol" type="radio"  [value]="3" [(ngModel)]="objCarersYpProgressDTO.Alcohol">N/A
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Units per day</label>
+                                    <bar-rating name="rating" [(rate)]="objCarersYpProgressDTO.AlcoholPerDay" [max]="4" [theme]="'movie'" [showText]="true" [titles]="['1-5', '5-10' , '10-15', 'More']" disabled>
+                                    </bar-rating>
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Did child- young person enter into risk taking behaviour</label>
+                                    <input formControlName="RiskBehaviour" type="radio"  [value]="1" [(ngModel)]="objCarersYpProgressDTO.RiskBehaviour">Yes
+                                    <input formControlName="RiskBehaviour" type="radio"  [value]="2" [(ngModel)]="objCarersYpProgressDTO.RiskBehaviour">No
+                                    <input formControlName="RiskBehaviour" type="radio"  [value]="3" [(ngModel)]="objCarersYpProgressDTO.RiskBehaviour">N/A
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Risk behaviours</label>
+                                    <select *ngIf="BehaviourTypeList.length>0" formControlName="BehaviourType" class="form-control" [(ngModel)]="objCarersYpProgressDTO.BehaviourType">
+                                        <option value="" [attr.selected]="objCarersYpProgressDTO.BehaviourType == null ? true : null">Select a Risk behaviours</option>
+                                        <option *ngFor="let op of BehaviourTypeList" value="{{op.CofigTableValuesId}}">
+                                            {{op.Value}}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Do you save a proportion of DLA</label>
+                                    <input formControlName="DLA" type="radio"  [value]="1" [(ngModel)]="objCarersYpProgressDTO.DLA">Yes
+                                    <input formControlName="DLA" type="radio"  [value]="2" [(ngModel)]="objCarersYpProgressDTO.DLA">No
+                                    <input formControlName="DLA" type="radio"  [value]="3" [(ngModel)]="objCarersYpProgressDTO.DLA">N/A
+                                </div>
+                                <div class="form-group">
+                                    <label class="">How much £</label>
+                                    <bar-rating name="rating" [(rate)]="objCarersYpProgressDTO.HowMuchDLA" [max]="4" [theme]="'movie'" [showText]="true" [titles]="['1-5', '5-10' , '10-15', 'More']" disabled>
+                                    </bar-rating>
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Does the child receive DLA</label>
+                                    <input formControlName="ReceiveDLA" type="radio"  [value]="1" [(ngModel)]="objCarersYpProgressDTO.ReceiveDLA">Yes
+                                    <input formControlName="ReceiveDLA" type="radio"  [value]="2" [(ngModel)]="objCarersYpProgressDTO.ReceiveDLA">No
+                                    <input formControlName="ReceiveDLA" type="radio"  [value]="3" [(ngModel)]="objCarersYpProgressDTO.ReceiveDLA">N/A
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Health Appointment attended</label>
+                                    <select *ngIf="HealthAppointmentList.length>0" formControlName="HealthAppointment" class="form-control" [(ngModel)]="objCarersYpProgressDTO.HealthAppointment">
+                                        <option value="" [attr.selected]="objCarersYpProgressDTO.HealthAppointment == null ? true : null">Select a Health Appointment </option>
+                                        <option *ngFor="let op of HealthAppointmentList" value="{{op.CofigTableValuesId}}">
+                                            {{op.Value}}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Medication</label>
+                                    <input formControlName="Medication" type="radio"  [value]="1" [(ngModel)]="objCarersYpProgressDTO.Medication">Yes
+                                    <input formControlName="Medication" type="radio"  [value]="2" [(ngModel)]="objCarersYpProgressDTO.Medication">No
+                                    <input formControlName="Medication" type="radio"  [value]="3" [(ngModel)]="objCarersYpProgressDTO.Medication">N/A
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Comments</label>
+                                    <textarea formControlName="HealthComments" class="form-control" [(ngModel)]="objCarersYpProgressDTO.HealthComments"></textarea>
+                                </div>
+                            </div>
+                            <!--Contact-->
+                            <div class="tab-pane {{ContactActive}}" id="Contact">
+                                <div class="form-group">
+                                    <label class="">Did you facilitate transport for contact</label>
+                                    <input formControlName="TransportContact" type="radio"  [value]="1" [(ngModel)]="objCarersYpProgressDTO.TransportContact">Yes
+                                    <input formControlName="TransportContact" type="radio"  [value]="2" [(ngModel)]="objCarersYpProgressDTO.TransportContact">No
+                                    <input formControlName="TransportContact" type="radio"  [value]="3" [(ngModel)]="objCarersYpProgressDTO.TransportContact">N/A
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Did you supervise contact</label>
+                                    <input formControlName="SuperviseContact" type="radio"  [value]="1" [(ngModel)]="objCarersYpProgressDTO.SuperviseContact">Yes
+                                    <input formControlName="SuperviseContact" type="radio"  [value]="2" [(ngModel)]="objCarersYpProgressDTO.SuperviseContact">No
+                                    <input formControlName="SuperviseContact" type="radio"  [value]="3" [(ngModel)]="objCarersYpProgressDTO.SuperviseContact">N/A
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Contact taking place at placement address</label>
+                                    <input formControlName="Placement" type="radio"  [value]="1" [(ngModel)]="objCarersYpProgressDTO.Placement">Yes
+                                    <input formControlName="Placement" type="radio"  [value]="2" [(ngModel)]="objCarersYpProgressDTO.Placement">No
+                                    <input formControlName="Placement" type="radio"  [value]="3" [(ngModel)]="objCarersYpProgressDTO.Placement">N/A
+                                </div>
+                                <div class="form-group">
+                                    <label class="">How was the child/ young person emotionally/ behaviourally before contact
+(1= poor behaviour- 10 = positive behaviour)</label>
+                                    <bar-rating name="rating" [(rate)]="objCarersYpProgressDTO.BehaviourBeforeContact" [max]="10" [theme]="'movie'" [showText]="true" [titles]="['1', '2' , '3', '4','5','6','7','8','9','10']" disabled>
+                                    </bar-rating>
+                                </div>
+                                <div class="form-group">
+                                    <label class="">
+                                        How was the child/ young person emotionally/ behaviourally after contact
+                                        (1= poor behaviour- 10 = positive behaviour)
+                                    </label>
+                                    <bar-rating name="rating" [(rate)]="objCarersYpProgressDTO.BehaviourAfterContact" [max]="10" [theme]="'movie'" [showText]="true" [titles]="['1', '2' , '3', '4','5','6','7','8','9','10']" disabled>
+                                    </bar-rating>
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Who did the child have contact with</label>
+                                    <select *ngIf="ContactList.length>0" formControlName="Contact" class="form-control" [(ngModel)]="objCarersYpProgressDTO.Contact">
+                                        <option value="" [attr.selected]="objCarersYpProgressDTO.Contact == null ? true : null">Select a contact </option>
+                                        <option *ngFor="let op of ContactList" value="{{op.CofigTableValuesId}}">
+                                            {{op.Value}}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Sleepovers at placement address</label>
+                                    <input formControlName="SleepoverPlacement" type="radio"  [value]="1" [(ngModel)]="objCarersYpProgressDTO.SleepoverPlacement">Yes
+                                    <input formControlName="SleepoverPlacement" type="radio"  [value]="2" [(ngModel)]="objCarersYpProgressDTO.SleepoverPlacement">No
+                                    <input formControlName="SleepoverPlacement" type="radio"  [value]="3" [(ngModel)]="objCarersYpProgressDTO.SleepoverPlacement">N/A
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Sleepovers at other location</label>
+                                    <input formControlName="SleepoverLocation" type="radio"  [value]="1" [(ngModel)]="objCarersYpProgressDTO.SleepoverLocation">Yes
+                                    <input formControlName="SleepoverLocation" type="radio"  [value]="2" [(ngModel)]="objCarersYpProgressDTO.SleepoverLocation">No
+                                    <input formControlName="SleepoverLocation" type="radio"  [value]="3" [(ngModel)]="objCarersYpProgressDTO.SleepoverLocation">N/A
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Respite requested</label>
+                                    <input formControlName="RespiteRequested" type="radio"  [value]="1" [(ngModel)]="objCarersYpProgressDTO.RespiteRequested">Yes
+                                    <input formControlName="RespiteRequested" type="radio"  [value]="2" [(ngModel)]="objCarersYpProgressDTO.RespiteRequested">No
+                                    <input formControlName="RespiteRequested" type="radio"  [value]="3" [(ngModel)]="objCarersYpProgressDTO.RespiteRequested">N/A
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Respite for child/ young person</label>
+                                    <input formControlName="RespiteForChild" type="radio"  [value]="1" [(ngModel)]="objCarersYpProgressDTO.RespiteForChild">Yes
+                                    <input formControlName="RespiteForChild" type="radio"  [value]="2" [(ngModel)]="objCarersYpProgressDTO.RespiteForChild">No
+                                    <input formControlName="RespiteForChild" type="radio"  [value]="3" [(ngModel)]="objCarersYpProgressDTO.RespiteForChild">N/A
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Comments</label>
+                                    <textarea formControlName="ContactComments" class="form-control" [(ngModel)]="objCarersYpProgressDTO.ContactComments"></textarea>
+                                </div>
+                            </div>
+                            <!--StaySafe-->
+                            <div class="tab-pane {{StaySafeActive}}" id="StaySafe">
+                                <div class="form-group">
+                                    <label class="">Accident</label>
+                                    <input formControlName="AccidentPlacement" type="radio"  [value]="1" [(ngModel)]="objCarersYpProgressDTO.AccidentPlacement">Yes
+                                    <input formControlName="AccidentPlacement" type="radio"  [value]="2" [(ngModel)]="objCarersYpProgressDTO.AccidentPlacement">No
+                                    <input formControlName="AccidentPlacement" type="radio"  [value]="3" [(ngModel)]="objCarersYpProgressDTO.AccidentPlacement">N/A
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Accident outside of placement</label>
+                                    <input formControlName="AccidentOutsidePlacement" type="radio"  [value]="1" [(ngModel)]="objCarersYpProgressDTO.AccidentOutsidePlacement">Yes
+                                    <input formControlName="AccidentOutsidePlacement" type="radio"  [value]="2" [(ngModel)]="objCarersYpProgressDTO.AccidentOutsidePlacement">No
+                                    <input formControlName="AccidentOutsidePlacement" type="radio"  [value]="3" [(ngModel)]="objCarersYpProgressDTO.AccidentOutsidePlacement">N/A
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Accident Type	</label>
+                                    <select *ngIf="AccidentTypeList.length>0" formControlName="AccidentType" class="form-control" [(ngModel)]="objCarersYpProgressDTO.AccidentType">
+                                        <option value="" [attr.selected]="objCarersYpProgressDTO.AccidentType == null ? true : null">Select a Accident Type </option>
+                                        <option *ngFor="let op of AccidentTypeList" value="{{op.CofigTableValuesId}}">
+                                            {{op.Value}}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Unauthorised absence</label>
+                                    <input formControlName="UnauthorisedAbsence" type="radio"  [value]="1" [(ngModel)]="objCarersYpProgressDTO.UnauthorisedAbsence">Yes
+                                    <input formControlName="UnauthorisedAbsence" type="radio"  [value]="2" [(ngModel)]="objCarersYpProgressDTO.UnauthorisedAbsence">No
+                                    <input formControlName="UnauthorisedAbsence" type="radio"  [value]="3" [(ngModel)]="objCarersYpProgressDTO.UnauthorisedAbsence">N/A
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Hospital or first aid treatment</label>
+                                    <input formControlName="Treatment" type="radio"  [value]="1" [(ngModel)]="objCarersYpProgressDTO.Treatment">Yes
+                                    <input formControlName="Treatment" type="radio"  [value]="2" [(ngModel)]="objCarersYpProgressDTO.Treatment">No
+                                    <input formControlName="Treatment" type="radio"  [value]="3" [(ngModel)]="objCarersYpProgressDTO.Treatment">N/A
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Police/ EDT involvement</label>
+                                    <input formControlName="EDT" type="radio"  [value]="1" [(ngModel)]="objCarersYpProgressDTO.EDT">Yes
+                                    <input formControlName="EDT" type="radio"  [value]="2" [(ngModel)]="objCarersYpProgressDTO.EDT">No
+                                    <input formControlName="EDT" type="radio"  [value]="3" [(ngModel)]="objCarersYpProgressDTO.EDT">N/A
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Allegations/ complaints</label>
+                                    <input formControlName="Allegations" type="radio"  [value]="1" [(ngModel)]="objCarersYpProgressDTO.Allegations">Yes
+                                    <input formControlName="Allegations" type="radio"  [value]="2" [(ngModel)]="objCarersYpProgressDTO.Allegations">No
+                                    <input formControlName="Allegations" type="radio"  [value]="3" [(ngModel)]="objCarersYpProgressDTO.Allegations">N/A
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Restraint</label>
+                                    <input formControlName="Restraint" type="radio"  [value]="1" [(ngModel)]="objCarersYpProgressDTO.Restraint">Yes
+                                    <input formControlName="Restraint" type="radio"  [value]="2" [(ngModel)]="objCarersYpProgressDTO.Restraint">No
+                                    <input formControlName="Restraint" type="radio"  [value]="3" [(ngModel)]="objCarersYpProgressDTO.Restraint">N/A
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Involvement in prostitution</label>
+                                    <input formControlName="Prostitution" type="radio"  [value]="1" [(ngModel)]="objCarersYpProgressDTO.Prostitution">Yes
+                                    <input formControlName="Prostitution" type="radio"  [value]="2" [(ngModel)]="objCarersYpProgressDTO.Prostitution">No
+                                    <input formControlName="Prostitution" type="radio"  [value]="3" [(ngModel)]="objCarersYpProgressDTO.Prostitution">N/A
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Notifiable infectious disease</label>
+                                    <input formControlName="Disease" type="radio"  [value]="1" [(ngModel)]="objCarersYpProgressDTO.Disease">Yes
+                                    <input formControlName="Disease" type="radio"  [value]="2" [(ngModel)]="objCarersYpProgressDTO.Disease">No
+                                    <input formControlName="Disease" type="radio"  [value]="3" [(ngModel)]="objCarersYpProgressDTO.Disease">N/A
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Is child/ young person involved in the Criminal Justice system	</label>
+                                    <input formControlName="CriminalJustice" type="radio"  [value]="1" [(ngModel)]="objCarersYpProgressDTO.CriminalJustice">Yes
+                                    <input formControlName="CriminalJustice" type="radio"  [value]="2" [(ngModel)]="objCarersYpProgressDTO.CriminalJustice">No
+                                    <input formControlName="CriminalJustice" type="radio"  [value]="3" [(ngModel)]="objCarersYpProgressDTO.CriminalJustice">N/A
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Victim</label>
+                                    <input formControlName="Victim" type="radio"  [value]="1" [(ngModel)]="objCarersYpProgressDTO.Victim">Yes
+                                    <input formControlName="Victim" type="radio"  [value]="2" [(ngModel)]="objCarersYpProgressDTO.Victim">No
+                                    <input formControlName="Victim" type="radio"  [value]="3" [(ngModel)]="objCarersYpProgressDTO.Victim">N/A
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Offender</label>
+                                    <input formControlName="Offender" type="radio"  [value]="1" [(ngModel)]="objCarersYpProgressDTO.Offender">Yes
+                                    <input formControlName="Offender" type="radio"  [value]="2" [(ngModel)]="objCarersYpProgressDTO.Offender">No
+                                    <input formControlName="Offender" type="radio"  [value]="3" [(ngModel)]="objCarersYpProgressDTO.Offender">N/A
+                                </div>
+                                <div class="form-group">
+                                    <label class="">What offence was committed</label>
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Drug Offences</label>
+                                    <input formControlName="DrugOffences" type="radio"  [value]="1" [(ngModel)]="objCarersYpProgressDTO.DrugOffences">Yes
+                                    <input formControlName="DrugOffences" type="radio"  [value]="2" [(ngModel)]="objCarersYpProgressDTO.DrugOffences">No
+                                    <input formControlName="DrugOffences" type="radio"  [value]="3" [(ngModel)]="objCarersYpProgressDTO.DrugOffences">N/A
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Criminal Damage</label>
+                                    <input formControlName="CriminalDamage" type="radio"  [value]="1" [(ngModel)]="objCarersYpProgressDTO.CriminalDamage">Yes
+                                    <input formControlName="CriminalDamage" type="radio"  [value]="2" [(ngModel)]="objCarersYpProgressDTO.CriminalDamage">No
+                                    <input formControlName="CriminalDamage" type="radio"  [value]="3" [(ngModel)]="objCarersYpProgressDTO.CriminalDamage">N/A
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Theft (not shoplifting)</label>
+                                    <input formControlName="Theft" type="radio"  [value]="1" [(ngModel)]="objCarersYpProgressDTO.Theft">Yes
+                                    <input formControlName="Theft" type="radio"  [value]="2" [(ngModel)]="objCarersYpProgressDTO.Theft">No
+                                    <input formControlName="Theft" type="radio"  [value]="3" [(ngModel)]="objCarersYpProgressDTO.Theft">N/A
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Shoplifting</label>
+                                    <input formControlName="Shoplifting" type="radio"  [value]="1" [(ngModel)]="objCarersYpProgressDTO.Shoplifting">Yes
+                                    <input formControlName="Shoplifting" type="radio"  [value]="2" [(ngModel)]="objCarersYpProgressDTO.Shoplifting">No
+                                    <input formControlName="Shoplifting" type="radio"  [value]="3" [(ngModel)]="objCarersYpProgressDTO.Shoplifting">N/A
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Offences Against Vehicles</label>
+                                    <input formControlName="OffenceAgainstVehicles" type="radio"  [value]="1" [(ngModel)]="objCarersYpProgressDTO.OffenceAgainstVehicles">Yes
+                                    <input formControlName="OffenceAgainstVehicles" type="radio"  [value]="2" [(ngModel)]="objCarersYpProgressDTO.OffenceAgainstVehicles">No
+                                    <input formControlName="OffenceAgainstVehicles" type="radio"  [value]="3" [(ngModel)]="objCarersYpProgressDTO.OffenceAgainstVehicles">N/A
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Burglary</label>
+                                    <input formControlName="Burglary" type="radio"  [value]="1" [(ngModel)]="objCarersYpProgressDTO.Burglary">Yes
+                                    <input formControlName="Burglary" type="radio"  [value]="2" [(ngModel)]="objCarersYpProgressDTO.Burglary">No
+                                    <input formControlName="Burglary" type="radio"  [value]="3" [(ngModel)]="objCarersYpProgressDTO.Burglary">N/A
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Robbery</label>
+                                    <input formControlName="Robbery" type="radio"  [value]="1" [(ngModel)]="objCarersYpProgressDTO.Robbery">Yes
+                                    <input formControlName="Robbery" type="radio"  [value]="2" [(ngModel)]="objCarersYpProgressDTO.Robbery">No
+                                    <input formControlName="Robbery" type="radio"  [value]="3" [(ngModel)]="objCarersYpProgressDTO.Robbery">N/A
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Sexual</label>
+                                    <input formControlName="Sexual" type="radio"  [value]="1" [(ngModel)]="objCarersYpProgressDTO.Sexual">Yes
+                                    <input formControlName="Sexual" type="radio"  [value]="2" [(ngModel)]="objCarersYpProgressDTO.Sexual">No
+                                    <input formControlName="Sexual" type="radio"  [value]="3" [(ngModel)]="objCarersYpProgressDTO.Sexual">N/A
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Violence</label>
+                                    <input formControlName="Violence" type="radio"  [value]="1" [(ngModel)]="objCarersYpProgressDTO.Violence">Yes
+                                    <input formControlName="Violence" type="radio"  [value]="2" [(ngModel)]="objCarersYpProgressDTO.Violence">No
+                                    <input formControlName="Violence" type="radio"  [value]="3" [(ngModel)]="objCarersYpProgressDTO.Violence">N/A
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Any appointments of Court</label>
+                                    <input formControlName="Court" type="radio"  [value]="1" [(ngModel)]="objCarersYpProgressDTO.Court">Yes
+                                    <input formControlName="Court" type="radio"  [value]="2" [(ngModel)]="objCarersYpProgressDTO.Court">No
+                                    <input formControlName="Court" type="radio"  [value]="3" [(ngModel)]="objCarersYpProgressDTO.Court">N/A
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Youth Justice</label>
+                                    <input formControlName="YouthJustice" type="radio"  [value]="1" [(ngModel)]="objCarersYpProgressDTO.YouthJustice">Yes
+                                    <input formControlName="YouthJustice" type="radio"  [value]="2" [(ngModel)]="objCarersYpProgressDTO.YouthJustice">No
+                                    <input formControlName="YouthJustice" type="radio"  [value]="3" [(ngModel)]="objCarersYpProgressDTO.YouthJustice">N/A
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Police</label>
+                                    <input formControlName="Police" type="radio"  [value]="1" [(ngModel)]="objCarersYpProgressDTO.Police">Yes
+                                    <input formControlName="Police" type="radio"  [value]="2" [(ngModel)]="objCarersYpProgressDTO.Police">No
+                                    <input formControlName="Police" type="radio"  [value]="3" [(ngModel)]="objCarersYpProgressDTO.Police">N/A
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Has the child/ young person experienced bullying</label>
+                                    <input formControlName="ExperiencedBullying" type="radio"  [value]="1" [(ngModel)]="objCarersYpProgressDTO.ExperiencedBullying">Yes
+                                    <input formControlName="ExperiencedBullying" type="radio"  [value]="2" [(ngModel)]="objCarersYpProgressDTO.ExperiencedBullying">No
+                                    <input formControlName="ExperiencedBullying" type="radio"  [value]="3" [(ngModel)]="objCarersYpProgressDTO.ExperiencedBullying">N/A
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Have you attended meetings to address bullying</label>
+                                    <input formControlName="AdressBullying" type="radio"  [value]="1" [(ngModel)]="objCarersYpProgressDTO.AdressBullying">Yes
+                                    <input formControlName="AdressBullying" type="radio"  [value]="2" [(ngModel)]="objCarersYpProgressDTO.AdressBullying">No
+                                    <input formControlName="AdressBullying" type="radio"  [value]="3" [(ngModel)]="objCarersYpProgressDTO.AdressBullying">N/A
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Sanction</label>
+                                    <input formControlName="Sanction" type="radio"  [value]="1" [(ngModel)]="objCarersYpProgressDTO.Sanction">Yes
+                                    <input formControlName="Sanction" type="radio"  [value]="2" [(ngModel)]="objCarersYpProgressDTO.Sanction">No
+                                    <input formControlName="Sanction" type="radio"  [value]="3" [(ngModel)]="objCarersYpProgressDTO.Sanction">N/A
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Comments</label>
+                                    <textarea formControlName="StayingSafeComments" class="form-control" [(ngModel)]="objCarersYpProgressDTO.StayingSafeComments"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="form-group"></div>
+                            <div class="form-group col-lg-5">
+                                <SubmitButton (Click)="clicksubmit(_Form)" [IsLoading]="isLoading"></SubmitButton>
+                                <BackButton></BackButton>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

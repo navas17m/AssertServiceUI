@@ -1,0 +1,123 @@
+﻿import { Component } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Common } from '../common';
+import { PagesComponent } from '../pages.component';
+import { APICallService } from '../services/apicallservice.service';
+import { CarerUnannouncedHomeVisitDTO,CarerUnannouncedHomeVisitActionPointsDTO } from './DTO/carerunannouncedhomevisitdto';
+
+@Component({
+    selector: 'CarerUnannouncedHomeVisitFCSignature',
+    templateUrl: './carerunannouncedhomevisitfcsignature.component.template.html',
+})
+
+export class CarerUnannouncedHomeVisitFCSignatureComponet {
+    _Form: FormGroup;
+    controllerName = "CarerUnannouncedHomeVisit";
+    CarerParentId;
+    objQeryVal; UserTypeId;
+    objCarerSupervisoryHomeVisitDTO: CarerUnannouncedHomeVisitDTO = new CarerUnannouncedHomeVisitDTO();
+    objCarerSHV: CarerUnannouncedHomeVisitDTO = new CarerUnannouncedHomeVisitDTO();
+    lstCarerSecA = [];
+    dynamicformcontrol = [];
+    SequenceNo;
+    submittedUpload = false;
+    AgencyProfileId;
+    isLoading: boolean = false;
+    submitted = false;
+    inssignatureValue;
+    expanded = true;
+    constructor(private _formBuilder: FormBuilder, private activatedroute: ActivatedRoute, private _router: Router,
+        private apiService: APICallService, private module: PagesComponent) {
+
+        this._Form = _formBuilder.group({});
+        this.activatedroute.params.subscribe(data => { this.objQeryVal = data; });
+        this.SequenceNo = this.objQeryVal.sno;
+        this.CarerParentId = parseInt(Common.GetSession("ACarerParentId"));
+        this.AgencyProfileId = parseInt(Common.GetSession("AgencyProfileId"));
+        this.objCarerSupervisoryHomeVisitDTO.AgencyProfileId = this.AgencyProfileId;
+        this.objCarerSupervisoryHomeVisitDTO.CarerParentId = this.CarerParentId;
+        this.objCarerSupervisoryHomeVisitDTO.SequenceNo = this.SequenceNo;
+        if (Common.GetSession("ACarerParentId") == null || Common.GetSession("ACarerParentId") == "0") {
+            this._router.navigate(['/pages/fostercarer/approvedcarerlist', 3, 15]);
+        }
+        else {
+            this.CarerParentId = parseInt(Common.GetSession("ACarerParentId"));
+            this.BindCarerUnannouncedHomeDetail();
+        }
+        this.UserTypeId = Common.GetSession("UserTypeId");
+        // this.apiService.get("UploadDocuments", "GetImageById", 1).then(data => this.Response1(data));
+    }
+
+    lstCarerActionPoint=[];
+    BindCarerUnannouncedHomeDetail() {
+        if (this.CarerParentId != 0 && this.CarerParentId != null) {
+            this.apiService.post(this.controllerName, "GetSignatureBySequenceNo", this.objCarerSupervisoryHomeVisitDTO).then(data => {
+
+                this.lstCarerSecA = data.LstAgencyFieldMapping.filter(x => x.ControlLoadFormat == 'Default');
+                this.lstCarerActionPoint = data.LstAgencyFieldMapping.filter(x => x.ControlLoadFormat == 'ActionPoints');
+                this.dynamicformcontrol = data.LstAgencyFieldMapping.filter(x => x.ControlLoadFormat == 'FCSignature');
+                //console.log(this.dynamicformcontrol);
+                this.LoadAlreadyStoreActionPoints(data.lstActionPointsList);
+            });
+        }
+    }
+
+    clicksubmit(SectionAdynamicValue, SectionAdynamicForm) {
+        this.submitted = true;
+
+        if (SectionAdynamicForm.valid) {
+            let type = "save";
+            this.objCarerSupervisoryHomeVisitDTO.DynamicValue = SectionAdynamicValue;
+            this.objCarerSupervisoryHomeVisitDTO.CarerParentId = this.CarerParentId;
+            this.apiService.post(this.controllerName, "SaveFcSignature", this.objCarerSupervisoryHomeVisitDTO).then(data => this.Respone(data, type));
+        }
+    }
+
+    private Respone(data, type) {
+        this.isLoading = false;
+        if (data.IsError == true) {
+            this.module.alertDanger(data.ErrorMessage)
+        }
+        else if (data.IsError == false) {
+            if (type == "save") {
+                this.module.alertSuccess(Common.GetSaveSuccessfullMsg);
+            }
+            else {
+                this.module.alertSuccess(Common.GetUpdateSuccessfullMsg);
+            }
+            this._router.navigate(['/pages/fostercarer/carerunannouncedhomevisitlist/3']);
+        }
+    }
+
+
+    objActionPointsList: CarerUnannouncedHomeVisitActionPointsDTO[] = [];
+    objActionPointsListInsert = [];
+    globalobjActionPointsList = [];
+    submittedActionPoints = false;
+    LoadAlreadyStoreActionPoints(data) {
+
+        if (data != null) {
+            data.forEach(item => {
+                this.objActionPointsList = [];
+                item.forEach(subItem => {
+                    if (subItem.StatusId != 3) {
+                        let add: CarerUnannouncedHomeVisitActionPointsDTO = new CarerUnannouncedHomeVisitActionPointsDTO();
+                        add.FieldCnfgId = subItem.FieldCnfgId;
+                        add.FieldName = subItem.FieldName;
+                        add.FieldValue = subItem.FieldValue;
+                        add.FieldDataTypeName = subItem.FieldDataTypeName;
+                        add.FieldValueText = subItem.FieldValueText;
+                        add.UniqueID = subItem.UniqueID;
+                        add.SequenceNo = subItem.SequenceNo;
+                        add.StatusId = subItem.StatusId;
+                        this.objActionPointsList.push(add);
+                        this.objActionPointsListInsert.push(add);
+                    }
+                });
+                if (this.objActionPointsList.length > 0)
+                    this.globalobjActionPointsList.push(this.objActionPointsList);
+            });
+        }
+    }
+}

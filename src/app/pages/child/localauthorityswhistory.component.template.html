@@ -1,0 +1,91 @@
+﻿<form [formGroup]="_Form">
+    <ViewDisable></ViewDisable>
+    <div class="col-xl-12 col-lg-12 col-12 bottom-30">
+        <Child-Header></Child-Header>
+        <div widget class="card">
+            <div class="card-header">
+                <span>LA Social Worker History</span>
+                <div class="widget-controls">
+                    <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                    <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                    <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+                    <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+                    <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a>
+                </div>
+            </div>
+            <div class="card-body widget-body">
+                <div class="form-group">
+                    <div>
+                        <label class="">LA Social Worker Name : </label>
+                        <select *ngIf="LocalAuthoritySWInfo.length > 0" formControlName="LocalAuthoritySWInfoId" class="form-control"
+                                [(ngModel)]="objSWHistoryDTO.LocalAuthoritySWInfoId" required #LA (change)="fnChangeLA(LA.value,1)">
+                            <option value="" [attr.selected]="objSWHistoryDTO.LocalAuthoritySWInfoId == null ? true : null">Select a LA Social Worker Name</option>
+                            <option *ngFor="let op of LocalAuthoritySWInfo" value="{{op.LocalAuthoritySWInfoId}}">
+                                {{op.LocalAuthoritySWInfoName}}
+                            </option>
+                        </select>
+                        <div *ngIf="(!_Form.controls.LocalAuthoritySWInfoId.valid && submitted && _Form.controls.LocalAuthoritySWInfoId.errors.required )" class="alert alert-danger">
+                            Please select a LA Social Worker Name
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="IsVisible">
+                    <div class="form-group">
+                        <label class="class1">LA Social Worker EDT Number : </label>
+                        <label class="">&nbsp;  {{objLocalAuthority.EDTNumber}} </label>
+
+                    </div>
+                    <div class="form-group">
+                        <label class="class1">LA Social Worker Office Phone : </label>
+                        <label class="">&nbsp;  {{objLocalAuthority.ContactInfo.HomePhone}} </label>
+
+                    </div>
+                    <div class="form-group">
+                        <label class="class1">LA Social Worker Mobile : </label>
+                        <label class="">&nbsp; {{objLocalAuthority.ContactInfo.MobilePhone}} </label>
+
+                    </div>
+                    <div class="form-group">
+                        <label class="class1">LA Social Worker Email Address : </label>
+                        <label class="">&nbsp; {{objLocalAuthority.ContactInfo.EmailId}}</label>
+
+                    </div>
+                    <div class="form-group">
+                        <label class="class1">LA Social Worker Address : </label>
+                        <label class="">&nbsp;  {{objLocalAuthority.ContactInfo.AddressLine1}}</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div>
+                        <label class="">Change Date : </label>
+                        <input formControlName="ChangedDate"   type="text" placeholder="DD/MM/YYYY" readonly class="form-control form-control-date"
+                               [(ngModel)]="objSWHistoryDTO.ChangedDate" [value]="objSWHistoryDTO.ChangedDate" datepicker>
+                        <!--<div *ngIf="(!_Form.controls.ChangedDate.valid && submitted && _Form.controls.ChangedDate.errors.required )" class="alert alert-danger">
+                            Please enter the Change Date
+                        </div>-->
+                    </div>
+                </div>
+                <!--Local Authority SW Visit Date History Detail-->
+                <div class="form-group" style="border: 2px solid #979aa0;padding:10px;background-color:#edf1f7">
+                    <LocalAuthoritySWVDateHistory #LADateHistory [Value]="objSWHistoryDTO.SWVisitDateHistory"></LocalAuthoritySWVDateHistory>
+                </div>                
+                <div class="form-group"></div>
+                <div class="form-group" [hidden]="!IsVisibleAddtoSiblingsRecord">
+                        <label class="">Add to Siblings Record : </label>
+                        <input formControlName="AddtoSiblingsRecord"  type="checkbox"
+                               [(ngModel)]="objSWHistoryDTO.AddtoSiblingsRecord">
+                </div>
+                <div class="form-group" [hidden]="!IsVisibleAddtoSiblingsRecord">
+                    <label class="">Add to Parent/Child Record : </label>
+                    <input formControlName="AddtoParentChildRecord"  type="checkbox" 
+                           [(ngModel)]="objSWHistoryDTO.AddtoParentChildRecord"  >
+                </div>
+                <div class="form-group col-lg-5">
+                    <SubmitButton  #btnSubmit (Click)="clicksubmit(_Form,LADateHistory.Value)"  [IsLoading]="isLoading"></SubmitButton>
+                   
+                    <BackButton></BackButton>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

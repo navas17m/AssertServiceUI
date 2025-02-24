@@ -1,0 +1,42 @@
+﻿<div class="col-xl-12 col-lg-12 col-12 bottom-30">
+    <Child-Header></Child-Header>
+    <div widget class="card">
+        <div class="card-header">
+            <span>Move to Current Referral</span>
+            <div class="widget-controls">
+                <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+                <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+                <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a>
+            </div>
+        </div>
+        <div class="card-body widget-body">
+            <div>                
+                <form [formGroup]="formMovetoCurrentReferral">
+                    <div *ngIf="notediv">
+                        <div class="form-group">
+                            <label class="class1">Note :</label>
+                            <label class=""> {{note}} </label>
+                        </div>
+                    </div>
+                    <div *ngIf="showdiv">
+                        <div class="form-group">
+                            <label class="">Date moved :</label>
+                            <input  type="text" placeholder="DD/MM/YYYY" readonly class="form-control form-control-date" formControlName="StatusChangeDate" required
+                                   [(ngModel)]="objChildProfile.StatusChangeDate" [value]="objChildProfile.StatusChangeDate" datepicker />
+                            <div class="alert alert-danger"
+                                 *ngIf="(!formMovetoCurrentReferral.controls.StatusChangeDate.valid && submittedref && formMovetoCurrentReferral.controls.StatusChangeDate.errors.required)">
+                                Please select date
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <SubmitButton (Click)="clicksubmit(formMovetoCurrentReferral)" [Text]="'Move to Current Referral'" [IsLoading]="isLoading"></SubmitButton>
+                        </div>
+                    </div>
+                </form>                
+            </div>
+        </div>
+    </div>
+</div>
+

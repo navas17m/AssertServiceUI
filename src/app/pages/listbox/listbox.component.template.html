@@ -1,0 +1,10 @@
+﻿<form>
+    <div style="padding-bottom:13px">
+        <select #selectList name="listbox" multiple class="form-control" (change)="change($event.target.options)">
+            <option *ngFor="let item of lstoption" [value]="item.CofigTableValuesId"
+                    [attr.selected]="exists(item.CofigTableValuesId)">
+                {{item.Value}}
+            </option>
+        </select>
+    </div>
+</form>

@@ -1,0 +1,114 @@
+﻿<div class="row bottom-30">
+    <div class="col">
+        <Child-Header></Child-Header>
+        <div widget class="card">
+            <div class="card-header">
+                <span><DisplayFormName [FormCnfgId]="216"></DisplayFormName></span>
+                <div class="widget-controls">
+                    <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                    <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                    <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+                    <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+                    <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a>
+                </div>
+            </div>
+            <div class="card-body widget-body">
+                <form [formGroup]="_Form">
+                    <div>
+                        <Dynamic-Form #dynamicA [dynamicformcontrols]="dynamicformcontroldata | filter : 'ControlLoadFormat':'Default'"
+                                      [formbuilder]="_Form" [submitted]="submitted"
+                                      (OnValChange)="DynamicOnValChange($event,dynamicA.dynamicformcontrols)">
+                        </Dynamic-Form>
+                        <div style="border: 2px solid #979aa0;padding:10px;background-color:#edf1f7">
+                            <Dynamic-Form #dynamicB [dynamicformcontrols]="dynamicformcontroldataSub"
+                                          [formbuilder]="_Form" [submitted]="submittedStatus"
+                                          (OnValChange)="DynamicOnValChange($event,dynamicA.dynamicformcontrols)">
+                            </Dynamic-Form>
+
+                            <div *ngIf="(submitted && AttendedDateValid)" class="alert alert-danger">
+                                Please Add From,To Date and Goal Achieved Days
+                            </div>
+                            <button *ngIf="!isEdit" (click)="AddAttendedDetails(dynamicB.dynamicformcontrols,dynamicB.formbuilder)" class="btn btn-success">Add</button>
+                            <div *ngIf="isEdit">
+                                <button (click)="UpdateAttendedDetails(dynamicB.dynamicformcontrols,dynamicB.formbuilder)" class="btn btn-success">Update</button>
+                                <button (click)="CancelEdit()" class="btn btn-danger">Cancel</button>
+                            </div>
+                            <div class="changeColor" style="padding-top:20px" *ngIf="globalObjAtteStatusList.length>0 && globalObjAtteStatusList !=null">
+                                <div widget class="card">
+                                    <div class="card-header">
+                                        <span class="text-uppercase">  Existing Details</span>
+                                    </div>
+                                    <div class="card-body widget-body">
+                                        <div class="table table-responsive">
+                                            <ngx-datatable [rows]="ngxList"
+                                                class="bootstrap"
+                                                rowHeight="auto"
+                                                [columnMode]="'force'"
+                                                [limit]="limit"
+                                                rowHeight="auto"
+                                                [scrollbarH]="true"
+                                                [footerHeight]="50"
+                                                [messages]="footerMessage">
+                                                <ngx-datatable-column *ngFor="let col of subColumns; let i = index" [name]="col.name" [prop]="col.prop">
+                                                    <ng-template ngx-datatable-header-template >{{ col.name }}</ng-template>
+                                                    <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                                                    <div>{{value}}</div>
+                                                    </ng-template>
+                                                </ngx-datatable-column>
+                                                <ngx-datatable-column name="Edit" [sortable]=false>
+                                                    <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+                                                        <div *ngIf="row.StatusId==3">
+                                                            <button disabled class="btn  btn-warning"><i style="font-size:20px" class="fa fa-edit" title="Deleted"></i></button>
+                                                        </div>
+
+                                                        <div *ngIf="row.StatusId != 3">
+                                                            <button *ngIf="AttendedStatusId !=rowIndex" class="btn  btn-warning"
+                                                                    (click)="EditAttendedStatusList(rowIndex)">
+                                                                <i style="font-size:20px" class="fa  fa fa-edit"></i>
+                                                            </button>
+
+                                                            <button disabled *ngIf="AttendedStatusId ==rowIndex"
+                                                                    class="btn  btn-warning">
+                                                                <i style="font-size:20px" class="fa  fa fa-edit"></i>
+                                                            </button>
+                                                        </div>
+
+                                                    </ng-template>
+                                                </ngx-datatable-column>
+                                                <ngx-datatable-column name="Delete" [sortable]=false>
+                                                    <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+                                                <div *ngIf="row.StatusId==3">
+                                                    <button *ngIf="deletbtnAccess" disabled class="btn  btn-danger" title="Deleted"><i style="font-size:20px" class="fa fa-trash-o"></i></button>
+                                                </div>
+                                                <div *ngIf="row.StatusId != 3">
+                                                    <button  *ngIf="deletbtnAccess"  [disabled]="AttendedStatusId != null"
+                                                            class="btn  btn-danger"
+                                                            (click)="DeleteAttendedStatusList (rowIndex)">
+                                                        <i style="font-size:20px" class="fa fa-trash-o"></i>
+                                                    </button>
+                                                </div>
+                                            </ng-template>
+                                                </ngx-datatable-column>
+                                                </ngx-datatable>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <Dynamic-Form #dynamicC [dynamicformcontrols]="dynamicformcontroldata | filter : 'ControlLoadFormat':'Comments'"
+                                      [formbuilder]="_Form" [submitted]="submitted">
+                        </Dynamic-Form>
+                        <div class="form-group">
+                            <SubmitButton (click)="clicksubmitdata(_Form,dynamicA.dynamicformcontrols,dynamicA.formbuilder
+                                          ,dynamicC.dynamicformcontrols,dynamicC.formbuilder)" [IsLoading]="isLoading"></SubmitButton>
+                            <BackButton></BackButton>
+                            <ViewDisable></ViewDisable>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

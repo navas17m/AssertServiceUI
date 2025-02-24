@@ -1,0 +1,171 @@
+﻿<div class="col-xl-12 col-lg-12 col-12 bottom-30">
+    <AutoSavedMessage [Text]="saveDraftText" [Time]="draftSavedTime" [Visible]="showAutoSave"></AutoSavedMessage>
+    <ApprovedCarerHeader></ApprovedCarerHeader>
+
+    <!-- <div style="text-align:right" *ngIf="showAutoSave">
+        <b>{{saveDraftText}}  {{draftSavedTime | date: 'HH:mm'}}</b>
+    </div> -->
+    <ViewDisable></ViewDisable>
+    <div widget class="card">
+        <div class="card-header">
+            <span><span><DisplayFormName [FormCnfgId]="formId"></DisplayFormName></span></span>
+            <div class="widget-controls">
+                <i class="fa fa-file-pdf-o" (click)="fnDonloadPDF()" style="font-size:18px;color:white;cursor:pointer;" title="Download PDF"></i>
+                <i class="fa fa-file-word-o" (click)="fnDonloadWord()" style="font-size:18px;color:white;cursor:pointer;padding-left:5px;" title="Download Word"></i>
+                <i class="fa fa-print" (click)="fnPrint()" style="font-size:18px;color:white;cursor:pointer;padding-left:5px;padding-right:5px" title="Print"></i>
+                <i class="fa fa-envelope-open" (click)="fnShowEmail()" style="font-size:18px;color:white;cursor:pointer;" title="Email"></i>
+            </div>
+        </div>
+        <div class="card-body widget-body">
+            <form [formGroup]="_Form">
+                <div>
+                    <div class="clearfix">
+                        <ul class="nav nav-tabs top pull-left w-100p">
+                            <li class="nav-item" (click)="fnChildSectionA()">
+                                <a class="nav-link {{ChildSectionAActive}}" data-toggle="tab" href="#Page1">Child Section A</a>
+                            </li>
+                            <li class="nav-item" (click)="fnChildSectionB()" [hidden]="ChildSectionBVisible">
+                                <a class="nav-link {{ChildSectionBActive}}" data-toggle="tab" href="#Page2">Child Section B</a>
+                            </li>
+                            <li class="nav-item" (click)="fnDocumentDetail()">
+                                <a class="nav-link {{ChildDocumentActive}}" data-toggle="tab" href="#Document">Document</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="tab-content top">
+                        <!--Section A-->
+                        <div class="tab-pane {{ChildSectionAActive}}" id="Page1">
+                            <div class="form-group">
+                                Supervising Social Worker : {{CarerSSWName}}
+                            </div>
+                            <div class="form-group">
+                                <label class="">Select Child</label>
+                                <select #child [attr.disabled]="IsEnable" *ngIf="lstChild" formControlName="ChildId"
+                                        required class="form-control" [(ngModel)]="objChildSupervisoryHomeVisitDTO.ChildId"
+                                        (change)="fnChildChange(child.value)">
+                                    <option value="" [attr.selected]="objChildSupervisoryHomeVisitDTO.ChildId == null ? true : null">Select Child</option>
+                                    <option *ngFor="let item of lstChild" value="{{item.ChildId}}">
+                                        {{item.PersonalInfo.FullName}} ({{item.ChildCode}})
+                                    </option>
+                                </select>
+                                <div *ngIf="(!_Form.controls.ChildId.valid && submitted &&_Form.controls.ChildId.errors.required)" class="alert alert-danger">
+                                    Please select Child
+                                </div>
+                            </div>
+                            <div class="form-group" *ngIf="ChildDOB">
+                                Date of Birth : {{ChildDOB |dateFormat:'dd/MM/yyyy'}}
+                            </div>
+
+                            <Dynamic-Form #SectionADynamic [dynamicformcontrols]="dynamicformcontrol| filter : 'ControlLoadFormat' :
+                               'Child Section A'" [formbuilder]="_Form" [submitted]="submitted" (OnValChange)="DynamicOnValChange($event)"></Dynamic-Form>
+                            <EmailNotification #Notification [FormCnfgId]="100"  ></EmailNotification>
+                        </div>
+                        <!--Section B-->
+                        <div class="tab-pane {{ChildSectionBActive}}" id="Page2" [hidden]="ChildSectionBVisible">
+                            <Dynamic-Form #SectionBDynamic [dynamicformcontrols]="dynamicformcontrol| filter : 'ControlLoadFormat' :
+                              'Child Section B'" [formbuilder]="_Form" [submitted]="submitted"  (OnValChange)="DynamicOnValChange($event)"></Dynamic-Form>
+                        </div>
+                        <!--Upload Document-->
+                        <div class="tab-pane {{ChildDocumentActive}}" id="Document">
+                            <Upload-Documents #uploads [formCnfgId]="formId" [primaryKeyId]="tblPrimaryKey"
+                                               [submittedUpload]="submittedUpload"
+                                              [userTypeCnfgId]="5" [typeId]="TypeId"></Upload-Documents>
+
+                        </div>
+                        <div class="form-group col-md-12" >
+                            <div class="col-md-12 alert alert-danger" *ngIf="ShowError" style="margin:0px 10px 0px 10px">
+                                Attended school days should not be greater than actual school days
+                            </div>
+                        </div>
+                        <div class="form-group col-md-12">
+
+                            <button *ngIf="showbtnSaveDraft" [ladda]="isLoadingSAD" #btnSaveDraft (click)="fnSaveDraft(SectionADynamic.dynamicformcontrols,
+                                        SectionBDynamic.dynamicformcontrols,
+                                            uploads.IsUpload,
+                                            uploads.formbuilder)" class="btn btn-primary expand-right">{{saveAsDraftText}}
+                            </button>
+                            <SubmitButton #btnSubmit (Click)="clicksubmit(_Form,SectionADynamic.dynamicformcontrols,SectionADynamic.formbuilder,
+                                    SectionBDynamic.dynamicformcontrols,SectionBDynamic.formbuilder,
+                                    uploads.UploadDocIds,
+                                 uploads.IsUpload,
+                                  uploads.formbuilder,0,Notification.AddtionalEmailIds,Notification.EmailIds)" [IsLoading]="isLoading" [IsDiasable]="isLoadingSAD" [Text]="submitText"></SubmitButton>
+                            <SubmitButton *ngIf="ShowSubmitLockBtn" #btnSubmit (Click)="fnLockConfirmClick()" [IsLoading]="isLoading" [IsDiasable]="isLoadingSAD"  [Text]="'Submit & Lock'"></SubmitButton>
+                            <!-- <BackButton></BackButton> -->
+
+<button style="cursor:pointer;" id="BackBtn"  class="btn btn-warning BackBtn" (click)="fnBack()">Back</button>
+                        </div>
+                    </div>
+                </div>
+                <!--Submit and Lock Confirm Box-->
+                <div>
+                    <button id="btnLockModel" #btnLockModel [hidden]="true" type="button" class="btn btn-info" data-toggle="modal" data-target="#info-modal">Info</button>
+                    <div class="modal fade" id="info-modal" tabindex="-1" role="dialog" aria-labelledby="modal-info-label">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header state modal-danger">
+                                    <h4 class="modal-title" id="modal-error-label"><i class="fa fa-warning"> Alert</i></h4>
+                                    <button type="button" class="close closebtn" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                                </div>
+                                <div class="modal-body">
+                                    Are you sure you want to submit and lock this record? Once locked, record cannot be unlocked.
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-danger closebtn" data-dismiss="modal" (click)="clicksubmit(_Form,SectionADynamic.dynamicformcontrols,SectionADynamic.formbuilder,
+                                    SectionBDynamic.dynamicformcontrols,SectionBDynamic.formbuilder,
+                                    uploads.UploadDocIds,
+                                 uploads.IsUpload,
+                                  uploads.formbuilder,1,Notification.AddtionalEmailIds,Notification.EmailIds)">
+                                        Ok
+                                    </button>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div>
+    <button #btnPrint type="button" [hidden]="true" class="btn btn-primary" data-toggle="modal" data-target="#lg-modal1">Large</button>
+    <div class="modal fade" id="lg-modal1" tabindex="-1" role="dialog" aria-labelledby="modal-large-label" style="display: none;">
+        <div class="modal-dialog modal-lg" role="document">
+            <form [formGroup]="_FormPrint">
+                <div class="modal-content">
+                    <div class="modal-header state modal-primary">
+                        <h4 class="modal-title" id="modal-large-label">
+                            <i class="fa fa-print"></i>Email
+                        </h4>
+                        <div *ngIf="isLoading"><i class="fa fa-spinner fa-spin"></i> Sending email please wait...</div>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="form-group">
+                            Enter Email Subject:
+                            <input type="text" [(ngModel)]="subject" class="form-control" formControlName="subject" required />
+                            <div *ngIf="(!_FormPrint.controls.subject.valid && submittedprint && _FormPrint.controls.subject.errors.required )" class="alert alert-danger">
+                                Please enter Email Subject
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            Enter Email Address(es):
+                            <textarea [(ngModel)]="eAddress" class="form-control" formControlName="eAddress" required></textarea>
+                            <div *ngIf="(!_FormPrint.controls.eAddress.valid && submittedprint && _FormPrint.controls.eAddress.errors.required )" class="alert alert-danger">
+                                Please enter Email Address(es)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <!--<button type="button" class="btn btn-success" (click)="fnPrint()">Print</button>-->
+                        <button type="button" class="btn btn-success" (click)="fnEmail(_FormPrint)" [disabled]="isLoading">Email</button>
+                        <button #btnCancel type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,75 @@
+﻿<div class="row bottom-30"><ViewDisable></ViewDisable>
+    <div class="col">
+        <div widget class="card">
+            <div class="card-header" *ngIf="showWidgetControls==true">
+                <span><DisplayFormName FormCnfgId="119"></DisplayFormName>  </span>
+                <div class="widget-controls">
+                    <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                    <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                    <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+                    <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+                    <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a>
+                </div>
+            </div>
+            <div class="card-body widget-body">
+                <form [formGroup]="_PhysicianInfoForm">
+                    <div >
+                        <div class="form-group">
+                            <label class="">Physician Name</label>
+                            <input formControlName="PhysicianName" type="text" class="form-control" [(ngModel)]="objPhysicianInfo.PhysicianName"
+                                   required />
+                            <div class="alert alert-danger" *ngIf="(!_PhysicianInfoForm.controls.PhysicianName.valid && submitted && _PhysicianInfoForm.controls.PhysicianName.errors.required)">
+                                Please Enter Your Physician Name
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="">Physician Type </label>
+                            <select *ngIf="PhysicianTypeList.length>0" formControlName="PhysicianTypeId" class="form-control" required [(ngModel)]="objPhysicianInfo.PhysicianTypeId">
+                                <option value="" [attr.selected]="objPhysicianInfo.PhysicianTypeId == null ? true : null">Select a Physician Type</option>
+                                <option *ngFor="let op of PhysicianTypeList" [value]="op.CofigTableValuesId">{{op.Value}}</option>
+                            </select>
+                            <div class="alert alert-danger" *ngIf="(!_PhysicianInfoForm.controls.PhysicianTypeId.valid && submitted && _PhysicianInfoForm.controls.PhysicianTypeId.errors.required)">
+                                Please Enter Your Physician Name
+                            </div>
+                        </div>
+                        <!--<div class="form-group">
+                            <input formControlName="AddtoSiblingsRecord" type="checkbox" [(ngModel)]="objPhysicianInfo.AddtoSiblingsRecord" /> Add to Siblings Record
+                        </div>
+                        <div class="form-group">
+                            <input formControlName="AddtoParentorChildRecord" type="checkbox" [(ngModel)]="objPhysicianInfo.AddtoParentorChildRecord" /> Add to Parent/Child Record
+                        </div>-->
+                        <contact #ConatactPhysicianInfo [Visible]="objContactVisible" [contactval1]="objPhysicianInfo.ContactInfo"
+                                 [formbuilder]="submitted"></contact>
+                        <div class="col-md-5 form-group">
+                            <SubmitButton (Click)="PhysicianInfoSubmit(_PhysicianInfoForm,ConatactPhysicianInfo.contactval1,ConatactPhysicianInfo.formbuilder)" [IsLoading]="isLoading"></SubmitButton>
+                            <BackButton *ngIf="insTypeId!=1"></BackButton>
+
+                            <button *ngIf="insTypeId==1" type="button" style="cursor:pointer;" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button id="btnValidation" #btnValidation [hidden]="true" type="button" class="btn btn-danger"
+    data-toggle="modal" data-target="#Validationerror-modal">Danger</button>
+    <div  class="modal fade" id="Validationerror-modal" tabindex="-1" role="dialog" aria-labelledby="modal-error-label"
+    >
+       <div class="modal-dialog" role="document">
+           <div class="modal-content">
+               <div class="modal-header state modal-danger">
+                   <h4 class="modal-title" id="modal-error-label"><i class="fa fa-warning"></i>Alert</h4>
+               </div>
+               <div class="modal-body">
+                The Physician Name with this Type Already Exist, Do you want to continue.?
+               </div>
+               <div class="modal-footer">
+                   <button type="button" class="btn btn-success closebtn" data-dismiss="modal" (click)="clickContinue()">Continue</button>
+                   <button id="btnlogout" type="button" class="btn btn-danger closebtn" data-dismiss="modal"
+                            (click)="clickClose()">Cancal</button>
+               </div>
+           </div>
+       </div>
+    </div>

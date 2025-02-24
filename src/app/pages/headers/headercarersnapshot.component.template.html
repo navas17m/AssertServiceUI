@@ -1,0 +1,157 @@
+﻿<!--<form>
+    <div class="col-xl-12 col-lg-12 col-12 bottom-30">
+
+        <div class="child-header alert alert-info" role="alert">
+            <div class="container" *ngIf="objCarerProfile">
+                <div class="row">
+
+                    <div class="col-lg-2">
+                        Primary Carer
+                        <div class="row child-header-pics">
+                            <img [attr.src]="srcPath" class="img-responsive" />
+                        </div>
+                    </div>
+                    <div class="col-lg-10" style="padding-top:10px">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <b> Carer Name :</b> {{objCarerProfile.PersonalInfo.FirstName}} {{objCarerProfile.PersonalInfo.lastName}}
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <div class="col-lg-6">
+                                <b> D.O.B :</b>
+                                <span *ngIf="objCarerProfile && objCarerProfile.PersonalInfo">
+                                    {{ objCarerProfile.PersonalInfo.DateOfBirth | date :'dd/MM/yyyy'}}
+                                </span>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <b> Ethnicity :</b> {{objCarerProfile.Ethinicity}}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <b> Religion :</b> {{objCarerProfile.Religion}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2" *ngIf="objSCCarerProfile">
+                        Second Carer
+                        <div class="row child-header-pics">
+                            <img [attr.src]="scsrcPath" class="img-responsive" />
+                        </div>
+                    </div>
+                    <div class="col-lg-10" style="padding-top:10px" *ngIf="objSCCarerProfile">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <b> Carer Name :</b> {{objSCCarerProfile.PersonalInfo.FirstName}} {{objSCCarerProfile.PersonalInfo.lastName}}
+
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <div class="col-lg-6">
+                                <b> D.O.B :</b>
+                                <span *ngIf="objSCCarerProfile && objSCCarerProfile.PersonalInfo">
+                                    {{ objSCCarerProfile.PersonalInfo.DateOfBirth | date :'dd/MM/yyyy'}}
+                                </span>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <b> Ethnicity :</b> {{objSCCarerProfile.Ethinicity}}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <b> Religion :</b> {{objSCCarerProfile.Religion}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body widget-body">
+            <div class="row mbm-20">
+                <div class="col-lg-12 col-12 bottom-30">
+                    <div class="clearfix">
+                        <ul class="nav nav-tabs top pull-left w-100p">
+                            <li class="nav-item">
+                                <a class="nav-link active" data-toggle="tab" href="#t1">Personal Details</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#t2">Last Updated</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#t3">    Statutory checks</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#t4">Current Placements</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#t5">Current Approval Details</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="tab-content top">
+                        <div class="tab-pane active" id="t1">
+
+                            <div class="container" *ngIf="objCarerProfile">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="row">
+
+                                            <div class="col-lg-6">
+                                                <b> Carer Code :</b>
+                                                {{objCarerProfile.CarerCode}}
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <b> Available Vacancies :</b>                                               {{objCarerProfile.AvailableVacancies}}
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <b> Address	 :</b>
+                                                <span *ngIf="objCarerProfile.ContactInfo">
+                                                    {{objCarerProfile.ContactInfo.AddressLine1}}<br />
+                                                    <b> Phone:</b> {{objCarerProfile.ContactInfo.MobilePhone}}
+                                                </span>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <b> Review Date :</b>
+                                                <span *ngIf="objCarerProfile.ReviewDate !='0001-01-01T00:00:00'">{{objCarerProfile.ReviewDate |date:'dd/MM/yyyy'}}</span>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <b>Agency Supervising Social Worker:</b>
+                                                {{objCarerProfile.SSocialWorker}}
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <b> Next Review Date :</b>
+                                                <span *ngIf="objCarerProfile.NextReviewDate !='0001-01-01T00:00:00'">{{objCarerProfile.NextReviewDate |date:'dd/MM/yyyy'}}</span>
+                                            </div>
+
+                                            <div class="col-lg-6">
+                                                <b>  Second Carer Mobile :</b>
+                                                <span *ngIf="objSCCarerProfile && objSCCarerProfile.ContactInfo">
+                                                    {{objSCCarerProfile.ContactInfo.MobilePhone}}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>-->

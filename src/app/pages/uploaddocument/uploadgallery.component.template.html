@@ -1,0 +1,135 @@
+
+
+
+<style>
+    .my-drop-zone {
+        border: 3px dotted #3F4F66;
+        border-radius: 5px;
+        height: 300px;
+        background-color:#F3F3F3;
+    }
+    
+
+    .nv-file-over {
+        border: dotted 3px red;
+    }
+    /* Default class applied to drop zones on over */
+    .another-file-over-class {
+        border: dotted 3px green;
+    }
+</style>
+<div>
+    <form [formGroup]="_uploadForm">
+        <div class="row">
+            <div class="form-group col-md-6">
+                <label class="">Category</label>
+                <select *ngIf="lstCategory.length>0" formControlName="CategoryId" class="form-control" [(ngModel)]="objEventsGalleryDTO.CategoryId">
+                    <option value="" [attr.selected]="objEventsGalleryDTO.CategoryId == null ? true : null">Select Category</option>
+                    <option *ngFor="let item of lstCategory" value="{{item.CofigTableValuesId}}">
+                        {{item.Value}}
+                    </option>
+                </select>
+                <!-- <div *ngIf="(!_uploadForm.controls.CategoryId.valid && submittedUpload && _uploadForm.controls.CategoryId.errors )" class="alert alert-danger">
+                    Please select Category
+                </div> -->
+            </div>
+            <div class="form-group col-md-6">
+                Event Date :
+                <input  type="text" placeholder="DD/MM/YYYY" required class="form-control form-control-date"
+                    formControlName="EventDate"
+                       [(ngModel)]="objEventsGalleryDTO.EventDate" [value]="objEventsGalleryDTO.EventDate" datepicker>
+                <div *ngIf="(!_uploadForm.controls.EventDate.valid && submittedUpload && _uploadForm.controls.EventDate.errors )" class="alert alert-danger">
+                        Please select Event Date
+                </div>
+            </div> 
+            <div class="form-group col-md-12">
+                <label class="">Title</label>:
+                <input  type="text" required class="form-control form-control-date1"
+                    formControlName="Title"
+                       [(ngModel)]="objEventsGalleryDTO.Title" maxlength="200" >
+                <div *ngIf="(!_uploadForm.controls.Title.valid && submittedUpload && _uploadForm.controls.Title.errors )" class="alert alert-danger">
+                        Please Enter Title
+                </div>       
+            </div>     
+            <div class="form-group  col-md-12">
+                <label class="">Details</label>
+                <textarea formControlName="Details" class="form-control" [(ngModel)]="objEventsGalleryDTO.Details"></textarea>
+            </div>
+            <div  class="form-group  col-md-12" *ngIf="IsSaveMode">
+                <label class=""><h6 style="color:lightcoral"> Select multiple files </h6></label>
+                <input type="file" ng2FileSelect [uploader]="uploader" multiple />
+            </div>
+            <div  class="form-group  col-md-12" *ngIf="IsSaveMode"><h6>Or </h6></div>
+            <div  class="form-group  col-md-12" *ngIf="IsSaveMode">
+                <h6 style="color:lightcoral"> Drag and drop files</h6>
+                <br />
+                <div ng2FileDrop
+                     [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
+                     (fileOver)="fileOverBase($event)"
+                     [uploader]="uploader"
+                     class="well my-drop-zone">
+                    --- Drag And drop zone ---
+                </div>
+                <br />
+            </div>
+        </div>
+    </form>
+    <div>
+        <div widget class="card" *ngIf="IsSaveMode">
+            <div class="card-header">
+                <span>No of files selected for upload: {{ uploader?.queue?.length }}</span>
+
+            </div>
+            <div class="card-body widget-body">
+                <div class="table-responsive datatable" *ngIf="uploader?.queue?.length>0">
+                    <table class="table table-striped table-hover table-sm">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Size (Bytes)</th>
+                                <th>Type</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of uploader.queue">
+                                <td><strong>{{ item?.file?.name }}</strong></td>
+                                <td><strong>{{ item?.file?.size }} </strong></td>
+                                <td><strong>{{ item?.file?.type }} </strong></td>
+                                <td nowrap>
+                                    <button type="button" class="btn btn-danger btn-xs"
+                                            (click)="item.remove()">
+                                        <span class="glyphicon glyphicon-trash"></span> Remove
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div>
+                    <button type="button" class="btn btn-danger btn-s"
+                            (click)="uploader.clearQueue()" [disabled]="!uploader.queue.length">
+                        <span class="glyphicon glyphicon-trash"></span> Remove all
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div style="padding:6px 0px 6px 0px" >
+            <!--<button type="button" id="btnSubmit" class="btn btn-primary" (click)="fnSave(_uploadForm)">{{saveText}}</button>-->
+
+            <SubmitButton [FormCnfgId]="btnAccessFormCnfgId" (click)="fnSave(_uploadForm)"
+                         [Text]="saveText" ></SubmitButton>
+
+            <!-- <button class="btn btn-warning"
+                    (click)="fnClear()">
+                Clear
+            </button> -->
+            <BackButton></BackButton>
+        </div>
+       
+    </div>
+</div>
+
+
+
+

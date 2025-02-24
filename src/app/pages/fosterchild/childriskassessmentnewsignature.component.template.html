@@ -1,0 +1,215 @@
+
+<div class="col-xl-12 col-lg-12 col-12 bottom-30">
+    <Child-Header></Child-Header>
+    <div widget class="card overflow-container">
+        <div class="card-header">
+            <span>Risk Assessment Signature</span>
+            <div class="widget-controls"> 
+                <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+                <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+                <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a>
+            </div>
+        </div>
+        <div class="card-body widget-body">
+            <form [formGroup]="_Form">
+                <div class="row mbm-20">
+                    <div class="col-lg-12 col-12 bottom-30">
+                        <div class="clearfix">
+                            <ul class="nav nav-tabs top pull-left w-100p">
+                                <li class="nav-item" (click)="fnChildDetailTab()">
+                                    <a class="nav-link {{ChildDetailTabActive}}" data-toggle="tab" href="#ChildDetails">RA-Child Details</a>
+                                </li>
+                                <li class="nav-item" (click)="fnChildYPTab()" [hidden]="ChildYPVisible">
+                                    <a class="nav-link {{ChildYPTabActive}}" data-toggle="tab" href="#ChildYoungPerson">RA-Child Information</a>
+                                </li>
+                                <li class="nav-item" (click)="fnFosterHomeTab()" [hidden]="FosterVisible">
+                                    <a class="nav-link {{FosterHomeTabActive}}" data-toggle="tab" href="#FosterHome">RA-Child Risk Details</a>
+                                </li>
+                                <li class="nav-item" (click)="fnHealthTab()" [hidden]="HealthVisible">
+                                    <a class="nav-link {{HealthTabActive}}" data-toggle="tab" href="#Health">RA-Delegated Authority</a>
+                                </li>
+
+                                <li class="nav-item" (click)="fnDocumentDetailTab()">
+                                    <a class="nav-link {{DocumentActive}}" data-toggle="tab" href="#UploadDocument">Signature</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="tab-content top">
+                            <div class="tab-pane {{ChildDetailTabActive}}" id="ChildDetails">
+                                <div class="table-responsive datatable">
+                                    <table class="table table-striped table-hover table-sm">
+                                        <tbody *ngIf="lstCarerSecA.length==0">
+                                            <tr>
+                                                <th colspan="11" class="text-center">
+                                                    <i class="fa fa-spinner fa-spin"></i> Loading please wait...
+                                                </th>
+                                            </tr>
+                                        </tbody>
+                                        <tbody *ngIf="lstCarerSecA.length>0">
+                                             <!-- <tr>
+                                                <td>Carer Name</td>
+                                                <td> : {{carerName}}</td>
+                                            </tr>  -->
+                                            <tr *ngFor="let item of lstCarerSecA|filter:'ControlLoadFormat':'ChildDetails'">
+                                                <td width="50%"><span [innerHTML]="''+item.DisplayName+''"></span> </td>
+                                                <td width="50%"> : {{item.FieldValue}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="tab-pane {{ChildYPTabActive}}" id="ChildYoungPerson">
+                                <div class="table-responsive datatable">
+                                    <table class="table table-striped table-hover table-sm">
+                                        <tbody *ngIf="lstCarerSecA.length>0">
+                                            <tr *ngFor="let item of lstCarerSecA|filter:'ControlLoadFormat':'ChildInfo'">
+                                                <td width="50%"><span [innerHTML]="''+item.DisplayName+''"></span> </td>
+                                                <td width="50%"> : {{item.FieldValue}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="changeColor" style="padding-top:20px" *ngIf="globalobjSignificantList.length>0 && globalobjSignificantList !=null">
+                                        <div widget class="card">
+                                            <div class="card-header">
+                                                <span class="text-uppercase">  Significant events during the child's Local Authority care episode: (Include date and risk - keep this updated)</span>
+                                            </div>
+                                            <!-- <div class="card-body widget-body">
+                                                <div class="table-responsive datatable">
+                                                    <table class="table table-striped table-hover table-sm" [mfData]="returnVal" #mf="mfDataTable" [mfRowsOnPage]="10">
+                                                        <thead>
+                                                            <tr>
+                                                                <th *ngFor="let item of dynamicformcontrolSignificant
+                                                                | FilterTwoValue : 'ControlLoadFormat':'Significant':'DisplayName':'IsActive'">{{item.DisplayName}}</th>
+
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr *ngFor="let item of globalobjSignificantList;let i=index">
+                                                                <td *ngFor="let subitem of item |NotEqual:'FieldName':'IsActive'">
+                                                                    <span *ngIf="subitem.FieldDataTypeName=='date'">
+                                                                        {{subitem.FieldValue | dateFormat:'dd/MM/yyyy'}}
+                                                                    </span>
+                                                                    <span *ngIf="subitem.FieldDataTypeName =='Dropdown'">
+                                                                        {{subitem.FieldValueText}}
+                                                                    </span>
+                                                                    <span *ngIf="subitem.FieldDataTypeName !='date' &&subitem.FieldDataTypeName !='Dropdown'">
+                                                                        {{subitem.FieldValue}}
+                                                                    </span>
+                                                                </td>
+
+                                                            </tr>
+                                                        </tbody>
+
+                                                        <tfoot>
+                                                            <tr>
+                                                                <td colspan="12">
+                                                                    <mfBootstrapPaginator [rowsOnPageSet]="[10, 25, 50, 100]"></mfBootstrapPaginator>
+                                                                </td>
+                                                            </tr>
+                                                        </tfoot>
+                                                    </table>
+                                                </div>
+                                            </div> -->
+
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="tab-pane {{FosterHomeTabActive}}" id="FosterVisible">
+                                <div class="table-responsive datatable">
+                                    <div class="changeColor" style="padding-top:20px" *ngIf="globalobjRiskList.length>0 && globalobjRiskList !=null">
+                                        <div widget class="card">
+
+                                            <div class="card-body widget-body">
+                                                <div class="table-responsive datatable">
+                                                    <table class="table table-striped table-hover table-sm" >
+                                                        <thead>
+                                                            <tr>
+                                                                <th *ngFor="let item of dynamicformcontrolRiskCausing | FilterTwoValue : 'ControlLoadFormat':'Risk':'DisplayName':'IsActive'">{{item.DisplayName}}</th>
+
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr *ngFor="let item of globalobjRiskList;let i=index">
+                                                                <td *ngFor="let subitem of item |NotEqual:'FieldName':'IsActive'">
+                                                                    <span *ngIf="subitem.FieldDataTypeName=='date'">
+                                                                        {{subitem.FieldValue | dateFormat:'dd/MM/yyyy'}}
+                                                                    </span>
+                                                                    <span *ngIf="subitem.FieldDataTypeName =='ColorDropdown'">
+                                                                        {{subitem.FieldValue==1?'Low':subitem.FieldValue==2?'Med':subitem.FieldValue==3?'High':''}}
+                                                                    </span>
+                                                                    <span *ngIf="subitem.FieldDataTypeName =='Dropdown'">
+                                                                        {{subitem.FieldValueText}}
+                                                                    </span>
+                                                                    <span *ngIf="subitem.FieldDataTypeName !='date' &&subitem.FieldDataTypeName !='Dropdown'&&subitem.FieldDataTypeName !='ColorDropdown'">
+                                                                        {{subitem.FieldValue}}
+                                                                    </span>
+                                                                </td>
+
+                                                            </tr>
+                                                        </tbody>
+
+                                                        <tfoot>
+                                                            <tr>
+                                                                <td colspan="12">
+                                                                    <mfBootstrapPaginator [rowsOnPageSet]="[10, 25, 50, 100]"></mfBootstrapPaginator>
+                                                                </td>
+                                                            </tr>
+                                                        </tfoot>
+                                                    </table>
+                                                </div>
+                                            </div> 
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane {{HealthTabActive}}" id="Health">
+                                <div class="table-responsive datatable">
+                                    <table class="table table-striped table-hover table-sm">
+                                        <tbody *ngIf="lstCarerSecA.length>0">
+                                            <tr *ngFor="let item of lstCarerSecA|filter:'ControlLoadFormat':'DelegatedAutho'">
+                                                <td width="50%"><span [innerHTML]="''+item.DisplayName+''"></span> </td>
+                                                <td width="50%"> : {{item.FieldValue}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="tab-pane {{DocumentActive}}" id="UploadDocument">
+                                <!-- --><div class="form-group" [hidden]="AgencySignatureHidden">
+                                    <label class="">Signature Type  </label>
+
+                                    <select required  *ngIf="lstAgencySignatureCnfg.length>0" #selectSignature (change)="AgencySignatureCnfgChange(selectSignature.value)"
+                                            formControlName="AgencySignatureCnfgId" class="form-control" [(ngModel)]="objSaferCarePolicyDTO.AgencySignatureCnfgId">
+                                        <option value="" [attr.selected]="objSaferCarePolicyDTO.AgencySignatureCnfgId == null ? true : null">Select Signature Type</option>
+                                        <option *ngFor="let op of lstAgencySignatureCnfg" value="{{op.AgencySignatureCnfgId}}">
+                                            {{op.Signature}}
+                                        </option>
+                                    </select>
+                                    <div *ngIf="(!_Form.controls.AgencySignatureCnfgId.valid && submitted && _Form.controls.AgencySignatureCnfgId.errors )" class="alert alert-danger">
+                                        Please select Signature Type
+                                    </div>
+                                </div> 
+                                <Dynamic-Form #SectionAdynamic [dynamicformcontrols]="dynamicformcontrol"
+                                              [formbuilder]="_Form"
+                                              [submitted]="submitted"></Dynamic-Form>
+                                <!-- <EmailNotification #Notification [FormCnfgId]="239"  ></EmailNotification> -->
+
+                            </div>
+                            <div class="form-group col-lg-5">
+                                <SubmitButton #btnSubmitAdd (Click)="clicksubmit(SectionAdynamic.dynamicformcontrols,SectionAdynamic.formbuilder
+                                )" [IsLoading]="isLoading" [Text]="'Submit'">
+                                </SubmitButton>
+                                <BackButton></BackButton>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

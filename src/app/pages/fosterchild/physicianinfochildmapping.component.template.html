@@ -1,0 +1,235 @@
+﻿<div class="col-xl-12 col-lg-12 col-12 bottom-30">
+    <style>
+        .class1 {
+        padding-left:10px;}
+    </style>
+    <Child-Header></Child-Header>
+    <!--<BackButton></BackButton><br />-->
+    <div widget class="card overflow-container" style="margin-top:10px">
+        <div class="card-header">
+            <span><DisplayFormName FormCnfgId="119"></DisplayFormName> Child Mapping</span>
+            <div class="widget-controls">
+                <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+                <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+                <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a>
+            </div>
+        </div>
+        <div class="card-body widget-body">
+            <form [formGroup]="_Form">
+                <div style="min-height:300px">
+                    <div>
+                        <div class="form-group">
+                            <label class="">Select Child</label>
+                            <select style="pointer-events:none;opacity:0.6;" *ngIf="lstChildList.length>0" #Child formControlName="ChildId" required class="form-control"
+                                    [(ngModel)]="objPhysicianChildMappingDTO.ChildId" (change)="ChildChange(Child.value)" disabled>
+                                <option value="" [attr.selected]="objPhysicianChildMappingDTO.ChildId == null ? true : null">Select Child</option>
+                                <option *ngFor="let item of lstChildList" value="{{item.ChildId}}">
+                                    {{item.PersonalInfo.FullName}} ({{item.ChildCode}}) ({{item.ChildStatus}})
+                                </option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="">Select Physician</label>
+                            <table>
+                                <tr>
+                                    <!-- <td><Multiselect-Dropdown #ddPhysicianList [BindValue]="arrayPhysicianList" [DefaultSelection]="objPhysicianChildMappingDTO.PhysicianInfoIds"></Multiselect-Dropdown></td> -->
+                                    <td><p-multiSelect class="p-0" [style]="{'width':'100%'}"
+                                      placeholder="Select" filterPlaceHolder="Search"
+                                      [maxSelectedLabels]="3" selectedItemsLabel="{0} physicians selected" [options]="arrayPhysicianList" optionLabel="name" optionValue="id" [(ngModel)]="physicianIds" [ngModelOptions]="{standalone:true}"></p-multiSelect></td>
+                                    <td style="padding-left:20px">
+                                        &nbsp;<i class="fa fa-plus-circle" (click)="fnAddNewGP()" style="font-size:15px;cursor:pointer;text-decoration:none;text-align:left" title="Add Physician"> Add New</i>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <div style="padding-top:10px" class="alert alert-danger" *ngIf="(submitted && IsShowError)">
+                                Please Select Physician
+                            </div>
+                        </div>
+                    </div>
+
+                   <!--  <label class="">Status</label>
+                            <select disabled formControlName="ChildStatusId" [(ngModel)]="ChildStatusId"
+                                    class="form-control" (change)="fnLoadChild()">
+                                <option value="" [attr.selected]="true">All Status</option>
+                                <option value="19">Placed</option>
+                                <option value="20">Discharged</option>
+                            </select>
+                         <div class="form-group">
+                        <label class="">Area Offices</label>
+                        <select *ngIf="lstAreaOffice" formControlName="AreaOfficeProfileId" [(ngModel)]="AreaOfficeProfileId"
+                                class="form-control" (change)="fnLoadChild()">
+                            <option value="" [attr.selected]="true">All Area Office</option>
+                            <option *ngFor="let item of lstAreaOffice" value="{{item.AreaOfficeProfileId}}">
+                                {{item.AreaOfficeName }}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="">Select Child</label>
+                        <select *ngIf="lstChildList.length > 0" #Child formControlName="ChildId" required class="form-control"
+                                [(ngModel)]="objPhysicianChildMappingDTO.ChildId"
+                                (change)="ChildChange(Child.value)">
+                            <option value="" [attr.selected]="objPhysicianChildMappingDTO.ChildId == null ? true : null">Select Child</option>
+                            <option *ngFor="let item of lstChildList" value="{{item.ChildId}}">
+                                {{item.PersonalInfo.FullName}} ({{item.ChildCode}}) ({{item.ChildStatus}})
+                            </option>
+                        </select>
+                        <select *ngIf="lstChildList.length==0" #Child formControlName="ChildId" required class="form-control"
+                                [(ngModel)]="objPhysicianChildMappingDTO.ChildId"
+                                (change)="ChildChange(Child.value)">
+                            <option value="" [attr.selected]="objPhysicianChildMappingDTO.ChildId == null ? true : null">Select Child</option>
+                        </select>
+                        <div class="alert alert-danger" *ngIf="(!_Form.controls.ChildId.valid && submitted && _Form.controls.ChildId.errors.required)">
+                            Please Select Child
+                        </div>
+                    </div>-->
+
+                    <div class="form-group">
+                        <SubmitButton (Click)="Submit(_Form,physicianIds)" [IsLoading]="isLoading" [Text]="'Assign'"></SubmitButton>
+                    </div>
+                    <div class="changeColor" style="padding-top:20px">
+                        <div widget class="card">
+                            <div class="card-header">
+                                <span class="text-uppercase">Assigned Physician List</span>
+                            </div>
+                            <div class="card-body widget-body">
+                                <table class="table table-striped table-hover table-sm">
+                                    <tbody *ngIf="AssignedPhysicianList.length==0">
+                                        <tr>
+                                            <th *ngIf="!loading" colspan="9" class="text-center">
+                                                No Records found.
+                                            </th>
+                                            <th *ngIf="loading" colspan="9" class="text-center">
+                                                <i class="fa fa-spinner fa-spin"></i> Loading please wait...
+                                            </th>
+                                        </tr>
+                                    </tbody>
+                                    </table>
+                                    <div class="table-responsive datatable" *ngIf="AssignedPhysicianList.length>0">
+                                        <ngxdatatable [rows]="AssignedPhysicianList" [columns]="columns"  [searchFilter]="false"
+                                        (onEdit)="onEdit($event)" (onDelete)="onDelete($event)" (onButtonEvent)="onButtonEvent($event)"></ngxdatatable>
+                                    </div>
+                            </div>
+
+                            <div>
+                                <button #btnViewGPDetails type="button" [hidden]="true" class="btn btn-primary" data-toggle="modal" data-target="#lg-modal2">Large</button>
+                                <div class="modal fade" id="lg-modal2" tabindex="-1" role="dialog" aria-labelledby="modal-large-label" style="display: none;">
+                                    <div class="modal-dialog modal-lg" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header state modal-primary">
+                                                <h4 class="modal-title" id="modal-large-label">
+                                                    <i class="fa fa-user-md"></i>
+                                                    <DisplayFormName FormCnfgId="119"></DisplayFormName>
+                                                </h4>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                                            </div>
+                                            <!--start-->
+                                            <div class="row mbm-20">
+                                                <div class="col-lg-12 col-12 bottom-30">
+                                                    <div class="clearfix">
+                                                        <div *ngIf="insGPDetails">
+                                                            <div class="table-responsive datatable">
+                                                                <table class="table table-striped table-hover table-sm">
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td class="class1" width="20%">Physician Name</td>
+                                                                            <td width="30%">: <b>{{insGPDetails.PhysicianName}}</b></td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="class1" width="20%">Physician Type</td>
+                                                                            <td width="30%">: <b>{{insGPDetails.PhysicianType}}</b></td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="class1">Address</td>
+                                                                            <td>: <b>{{insGPDetails.ContactInfo.AddressLine1}}</b></td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="class1">City</td>
+                                                                            <td>: <b>{{insGPDetails.ContactInfo.City}}</b></td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="class1">Telephone</td>
+                                                                            <td>: <b>{{insGPDetails.ContactInfo.HomePhone}}</b></td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="class1">Mobile Phone</td>
+                                                                            <td>: <b>{{insGPDetails.ContactInfo.MobilePhone}}</b></td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="class1">Email</td>
+                                                                            <td>: <b>{{insGPDetails.ContactInfo.EmailId}}</b></td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="class1">County</td>
+                                                                            <td>: <b>{{insGPDetails.ContactInfo.County}}</b></td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="class1">Country</td>
+                                                                            <td>: <b>{{insGPDetails.ContactInfo.Country}}</b></td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="class1">Postal Code</td>
+                                                                            <td>: <b>{{insGPDetails.ContactInfo.PostalCode}}</b></td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--end-->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <button #btnUnAssign type="button" [hidden]="true" class="btn btn-primary" data-toggle="modal" data-target="#lg-model-delete">Large</button>
+                                <div class="modal fade" id="lg-model-delete" tabindex="-1" role="dialog" aria-labelledby="modal-large-label" style="display: none;">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header state modal-danger">
+                                                <h4 class="modal-title" id="modal-error-label"><i class="fa fa-warning"></i>Are you sure you want to                                                         un-assign?</h4>
+                                                <button type="button" class="close closebtn" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" style="cursor:pointer;" class="btn btn-danger closebtn" (click)="fnUnassignConfirm()" data-dismiss="modal">Yes</button>
+                                                <button type="button"  style="cursor:pointer;" class="btn btn-default" data-dismiss="modal">No</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <button #btnAddNewGP type="button" [hidden]="true" class="btn btn-primary" data-toggle="modal" data-target="#lg-model-new-gp">Large</button>
+                                <div class="modal fade" id="lg-model-new-gp" tabindex="-1" role="dialog" aria-labelledby="modal-large-label" style="display: none;">
+                                    <div class="modal-dialog modal-lg" role="document">
+                                        <div class="modal-content">
+                                          <div class="modal-header state modal-primary">
+                                            <h4 class="modal-title" id="modal-large-label">
+                                                <i class="fa fa-user-md"></i>
+                                                <DisplayFormName FormCnfgId="119"></DisplayFormName>
+                                            </h4>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                                        </div>
+                                            <div class="modal-footer">
+                                              <physicianinfo [TypeId]="'1'" (Click)="fnSubmitNewPhsicianInfo()" [showWidgetControls]="false"></physicianinfo>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

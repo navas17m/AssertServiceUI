@@ -1,0 +1,52 @@
+﻿<div class="col-xl-12 col-lg-12 col-12 bottom-30">
+    <div widget class="card">
+        <div class="card-header">
+            <span>Local Authority Social Worker</span>
+            <div class="widget-controls">
+                <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+                <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+                <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a>
+            </div>
+        </div>
+        <div class="card-body widget-body">
+            <form [formGroup]="_localauthorityswForm">
+                <ViewDisable></ViewDisable>
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label class="">Local Authority Social worker Name</label>
+                        <input formControlName="LocalAuthoritySWName" type="text" class="form-control" [(ngModel)]="objLocalAuthoritySWInfoIdDTO.LocalAuthoritySWInfoName"
+                               required />
+                        <div class="alert alert-danger" *ngIf="(!_localauthorityswForm.controls.LocalAuthoritySWName.valid && submitted && _localauthorityswForm.controls.LocalAuthoritySWName.errors.required)">
+                            Please Enter Local Authority Social worker Name
+                        </div>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label class="">EDT Number</label>
+                        <textarea formControlName="EDTNumber"  class="form-control" [(ngModel)]="objLocalAuthoritySWInfoIdDTO.EDTNumber"></textarea>
+                        <!--<input formControlName="EDTNumber" type="text" class="form-control" [(ngModel)]="objLocalAuthoritySWInfoIdDTO.EDTNumber" /> -->
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label class="">Local Authority</label>
+                        <select *ngIf="lstLocalAuthority.length>0" formControlName="LocalAuthorityId" class="form-control"  [(ngModel)]="objLocalAuthoritySWInfoIdDTO.LocalAuthorityId">
+                            <option value="" [attr.selected]="objLocalAuthoritySWInfoIdDTO.LocalAuthorityId== null ? true : null">
+                                Select Local Authority
+                            </option>
+                            <option *ngFor="let op of lstLocalAuthority" value="{{op.LocalAuthorityId}}">
+                                {{op.LocalAuthorityName}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <contact #ConatactLocalAuthority [Visible]="insContactVisible" [formbuilder]="submitted" [contactval1]="contactVal1"></contact>
+                <div class="form-group">
+                    <SubmitButton (Click)="LocalAuthoritySWSubmit(_localauthorityswForm,ConatactLocalAuthority.contactval1,ConatactLocalAuthority.formbuilder)"
+                                  [IsLoading]="isLoading"></SubmitButton>
+                    <BackButton></BackButton>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>

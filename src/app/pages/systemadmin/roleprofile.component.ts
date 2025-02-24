@@ -1,0 +1,473 @@
+﻿import { Component } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
+//import {Http, Response, Headers, RequestOptions, Jsonp} from '@angular/http';
+import { ActivatedRoute, Router } from '@angular/router';
+import { data } from 'jquery';
+import { Common } from '../common';
+import { PagesComponent } from '../pages.component';
+import { APICallService } from '../services/apicallservice.service';
+import { RoleFormMapping } from './DTO/roleformmapping';
+import { RoleProfile } from './DTO/roleprofile';
+import{  StaffAreaCategoryCnfgDTO} from './staffarea.component'
+import { UserAuditHistoryDetailDTO } from '../common';
+import * as moment from 'moment';
+declare var $: any;
+
+@Component({
+    selector: 'RoleProfile',
+    templateUrl: './roleprofile.component.template.html',
+})
+
+export class roleprofilecomponent {
+    AgencyFormMappingNModuleCnfg;
+    tempModuleCnfgList;
+    tempModuleCnfgList2;
+    lstRoleFormMapping = [];
+    objRoleProfile: RoleProfile = new RoleProfile();
+    RoleProfileID;
+    respoError;
+    agencyformmappinglist;
+    isvisible;
+    lstRoleProfile;
+    roleNameDuplicateCheck;
+    accessIsActive = false;
+    ReferralsStatus;
+    submitted = false; objQeryVal;
+    AgencyProfileId: number;
+    //  _Form: FormGroup;
+    isLoading: boolean = false;
+   // @ViewChild('menu') insViewChildMenu;
+    controllerName = "RoleProfile";
+    insReBindMenu;
+    lstStaffAreaCategory=[];
+    lstStaffAreaCategorySub=[];
+    lstStaffAreaCategoryNew=[];
+    objStaffAreaCategoryCnfgDTO=new StaffAreaCategoryCnfgDTO();
+    objUserAuditDetailDTO: UserAuditHistoryDetailDTO = new UserAuditHistoryDetailDTO();
+    FormCnfgId=16;
+    constructor(private apiService: APICallService, _formBuilder: FormBuilder,
+        private _router: Router, private activatedroute: ActivatedRoute, private pComponent: PagesComponent) {
+
+        this.activatedroute.params.subscribe(data => { this.objQeryVal = data; });
+        //this._Form = _formBuilder.group({
+        //    RoleName: [],
+        //    ApplicantStatusGrd: [],
+        //    CarerStatusGrd: [],
+        //    ChildStatusGrd: [],
+        //    ReferralsStatusGrd:[]
+        //});
+
+        this.AgencyProfileId = parseInt(Common.GetSession("AgencyProfileId"));
+        this.RoleProfileID = this.objQeryVal.Id;
+        if (this.RoleProfileID != 0 && this.RoleProfileID != null) {
+
+            this.apiService.get(this.controllerName, "GetById", this.RoleProfileID).then(data => this.ResponeVal(data), error => this.respoError = error);
+            //_RoleProfileService.getRoleProfilesById(this.RoleProfileID).then(data => this.ResponeVal(data), error => this.respoError = error);
+
+            this.apiService.get("AgencyFormMapping", "GetAllByAgencyProfileIdForRoleMappingEdit", this.RoleProfileID).then(data => {
+                this.AgencyFormMappingNModuleCnfg = data;
+                this.CheckModuleStatusCnfg();
+                this.tempModuleCnfgList2 = this.AgencyFormMappingNModuleCnfg.ModuleCnfgList;
+                let index = this.tempModuleCnfgList2.filter(x => x.ModuleCnfgId != 13);
+                let index1 = index.filter(x => x.ModuleCnfgId != 16);
+                this.tempModuleCnfgList = index1;
+            });
+            //this._agencyFormMappingService.GetAllByAgencyProfileIdForRoleMappingEdit(this.RoleProfileID).subscribe(data => {
+            //    this.AgencyFormMappingNModuleCnfg = data;
+            //    this.CheckModuleStatusCnfg();
+            //    this.tempModuleCnfgList2 = this.AgencyFormMappingNModuleCnfg.ModuleCnfgList;
+            //    let index = this.tempModuleCnfgList2.filter(x => x.ModuleCnfgId != 13);
+            //    let index1 = index.filter(x => x.ModuleCnfgId != 16);
+            //    this.tempModuleCnfgList = index1;
+            //});
+        }
+        else {
+            this.apiService.get("AgencyFormMapping", "GetAllByAgencyProfileIdForRoleMapping", this.AgencyProfileId).then(data => {
+                this.AgencyFormMappingNModuleCnfg = data;
+                this.tempModuleCnfgList2 = this.AgencyFormMappingNModuleCnfg.ModuleCnfgList;
+                let index = this.tempModuleCnfgList2.filter(x => x.ModuleCnfgId != 13);
+                let index1 = index.filter(x => x.ModuleCnfgId != 16);
+                this.tempModuleCnfgList = index1;
+            });
+            //this._agencyFormMappingService.GetAllByAgencyProfileIdForRoleMapping(this.AgencyProfileId).subscribe(data => {
+            //    this.AgencyFormMappingNModuleCnfg = data;
+            //    this.tempModuleCnfgList2 = this.AgencyFormMappingNModuleCnfg.ModuleCnfgList;
+            //    let index = this.tempModuleCnfgList2.filter(x => x.ModuleCnfgId != 13);
+            //    let index1 = index.filter(x => x.ModuleCnfgId != 16);
+            //    this.tempModuleCnfgList = index1;
+            //});
+            this.accessIsActive = true;
+        }
+
+        this.objStaffAreaCategoryCnfgDTO.AgencyProfileId=this.AgencyProfileId;
+        this.objStaffAreaCategoryCnfgDTO.RoleCnfgId=this.RoleProfileID;
+        this.apiService.post("StaffAreaCategoryCnfg","GetAllByRoleId",this.objStaffAreaCategoryCnfgDTO).then(data=>{
+           //console.log(data);
+            this.lstStaffAreaCategory=data.filter(x=>x.ParentCategoryId==null);
+            this.lstStaffAreaCategorySub=data.filter(x=>x.ParentCategoryId!=null);
+
+            this.lstStaffAreaCategory.forEach(mainItem=>{
+                this.lstStaffAreaCategoryNew.push(mainItem);
+
+                let temp=this.lstStaffAreaCategorySub.filter(subItem=>subItem.ParentCategoryId==mainItem.StaffAreaCategoryCnfgId);
+               // console.log(temp);
+                if(temp.length>0)
+                {
+                    temp.forEach(item=>{
+                        //console.log(temp);
+                        this.lstStaffAreaCategoryNew.push(item);
+                    })
+
+                }
+            })
+            console.log(this.lstStaffAreaCategoryNew);
+
+        })
+        
+        if (Common.GetSession("ViweDisable") == '1') {
+            this.objUserAuditDetailDTO.ActionId = 4;
+            this.objUserAuditDetailDTO.ActionDateTime = moment(new Date()).format("YYYY-MM-DD HH:mm:ss");
+            this.objUserAuditDetailDTO.UserAuditHistoryId = parseInt(Common.GetSession("UserAuditHistoryId"));
+            this.objUserAuditDetailDTO.FormCnfgId = this.FormCnfgId;
+            this.objUserAuditDetailDTO.ChildCarerEmpType = 0;
+            this.objUserAuditDetailDTO.ChildCarerEmpId = 0;
+            this.objUserAuditDetailDTO.RecordNo = this.objQeryVal.id;
+            Common.addUserAuditHistoryDetails(this.objUserAuditDetailDTO);
+        }
+    }
+
+    ModuleStausCnfg = []; RoleDocumentTypeMapping = [];
+    private ResponeVal(RProfile: RoleProfile) {
+        if (RProfile != null) {
+            this.objRoleProfile = RProfile;
+            if (!this.objRoleProfile.IsPublic) {
+                var $input = $('#RoleName');
+                $input.attr("disabled", true);
+            }
+            else
+            {
+                var $input = $('#RoleName');
+                $input.removeAttr("disabled");
+            }
+        }
+    }
+
+    fnSetDefault(ModuleCnfgId, ModuleStatusCnfgId) {
+        let inItem = this.AgencyFormMappingNModuleCnfg.ModuleStausCnfg.filter(x => x.ModuleCnfgId == ModuleCnfgId && x.ModuleStatusCnfgId != ModuleStatusCnfgId);
+        if (inItem.length > 0) {
+            inItem.forEach(item => {
+                item.IsDefault = 0;
+            });
+        }
+    }
+
+    //btn Submit
+    RoleProfileSubmit() {
+        this.submitted = true;
+
+        if (this.objRoleProfile.RoleName) {
+            this.isLoading = true;
+            let type = "save";
+            if (this.RoleProfileID == 0) {
+                for (let insAFM of this.AgencyFormMappingNModuleCnfg.AgencyFormMappingList) {
+                    //if (insAFM.IsActive != insAFM.OriginalIsActive) {
+                    var _insRFM = new RoleFormMapping();
+                    _insRFM.AgencyFormMapping.AgencyFormMappingId = insAFM.AgencyFormMappingId;
+                    _insRFM.AgencyFormMapping.FormCnfg.FormCnfgId = insAFM.FormCnfg.FormCnfgId;
+                    _insRFM.IsActive = insAFM.IsActive;
+                    _insRFM.AgencyFormMapping.ViewAccess = insAFM.ViewAccess;
+                    _insRFM.AgencyFormMapping.AddAccess = insAFM.AddAccess;
+                    _insRFM.AgencyFormMapping.EditAccess = insAFM.EditAccess;
+                    _insRFM.AgencyFormMapping.DeleteAccess = insAFM.DeleteAccess;
+                    this.lstRoleFormMapping.push(_insRFM);
+                    // }
+                }
+                this.RoleDocumentTypeMapping = this.AgencyFormMappingNModuleCnfg.RoleDocumentTypeMapping;
+                this.ModuleStausCnfg = this.AgencyFormMappingNModuleCnfg.ModuleStausCnfg;
+            }
+            else {
+                type = "update";
+
+                for (let insAFM of this.AgencyFormMappingNModuleCnfg.AgencyFormMappingList) {
+                    if (insAFM.IsActive != insAFM.OriginalIsActive
+                        || insAFM.ViewAccess != insAFM.OriginalViewAccess
+                        || insAFM.AddAccess != insAFM.OriginalAddAccess
+                        || insAFM.EditAccess != insAFM.OriginalEditAccess
+                        || insAFM.DeleteAccess != insAFM.OriginalDeleteAccess) {
+                        var _insRFM = new RoleFormMapping();
+                        _insRFM.AgencyFormMapping.AgencyFormMappingId = insAFM.AgencyFormMappingId;
+                        _insRFM.AgencyFormMapping.FormCnfg.FormCnfgId = insAFM.FormCnfg.FormCnfgId;
+                        _insRFM.IsActive = insAFM.IsActive;
+                        _insRFM.AgencyFormMapping.ViewAccess = insAFM.ViewAccess;
+                        _insRFM.AgencyFormMapping.AddAccess = insAFM.AddAccess;
+                        _insRFM.AgencyFormMapping.EditAccess = insAFM.EditAccess;
+                        _insRFM.AgencyFormMapping.DeleteAccess = insAFM.DeleteAccess;
+                        this.lstRoleFormMapping.push(_insRFM);
+                    }
+                }
+                for (let insMS of this.AgencyFormMappingNModuleCnfg.ModuleStausCnfg) {
+                    if (insMS.IsActive != insMS.OriginalIsActive || insMS.IsDefault != insMS.OriginalIsDefault) {
+                        this.ModuleStausCnfg.push(insMS);
+                    }
+                }
+                for (let insRT of this.AgencyFormMappingNModuleCnfg.RoleDocumentTypeMapping) {
+                    if (insRT.IsActive != insRT.OriginalIsActive) {
+                        this.RoleDocumentTypeMapping.push(insRT);
+                    }
+                }
+            }
+
+            this.objRoleProfile.RoleFormMapping = this.lstRoleFormMapping;
+            this.objRoleProfile.AgencyProfile.AgencyProfileId = this.AgencyProfileId;
+            this.objRoleProfile.RoleDocumentTypeMapping = this.RoleDocumentTypeMapping;
+            this.objRoleProfile.ModuleStausCnfg = this.ModuleStausCnfg;
+            this.objRoleProfile.StaffAreaCategory=this.lstStaffAreaCategoryNew;
+            this.apiService.save(this.controllerName, this.objRoleProfile, type).then(data => this.Respone(data));
+            //this._RoleProfileService.postRoleProfile(this.objRoleProfile, type).then(data => this.Respone(data));
+        }
+    }
+
+    fnCheckDuplicateRoleName(value) {
+        if (this.RoleProfileID == 0)
+            this.objRoleProfile.DuplicateCheck = true;
+        else
+            this.objRoleProfile.RoleProfileId = this.RoleProfileID;
+
+        this.objRoleProfile.RoleName = value;
+        this.objRoleProfile.AgencyProfile.AgencyProfileId = this.AgencyProfileId;
+        this.apiService.post(this.controllerName, "CheckDuplicateRoleNameExist", this.objRoleProfile).then(data => this.roleNameDuplicateCheck = data);
+        //this._RoleProfileService.CheckDuplicateRoleNameExist(this.objRoleProfile).then(data => this.roleNameDuplicateCheck = data);
+    }
+
+    fncheckNuncheckFormAll(Id, value) {
+        if (value) {
+            for (let insAFM of this.AgencyFormMappingNModuleCnfg.AgencyFormMappingList) {
+                if (insAFM.FormCnfg.ModuleCnfg.ModuleCnfgId == Id)
+                    insAFM.IsActive = true;
+            }
+        }
+        else {
+            for (let insAFM of this.AgencyFormMappingNModuleCnfg.AgencyFormMappingList) {
+                if (insAFM.FormCnfg.ModuleCnfg.ModuleCnfgId == Id)
+                    insAFM.IsActive = false;
+            }
+        }
+
+        //this._AgencyFormMappingService.postAgencyFormMapping(this.agencyformmappinglist).then(data => this.ResponeVal(data));
+    }
+
+    fncheckNuncheckDocumentStatusAll(Id, value) {
+        if (value) {
+            for (let insAFM of this.AgencyFormMappingNModuleCnfg.RoleDocumentTypeMapping) {
+                if (insAFM.ModuleId == Id)
+                    insAFM.IsActive = true;
+            }
+        }
+        else {
+            for (let insAFM of this.AgencyFormMappingNModuleCnfg.RoleDocumentTypeMapping) {
+                if (insAFM.ModuleId == Id)
+                    insAFM.IsActive = false;
+            }
+        }
+
+        //this._AgencyFormMappingService.postAgencyFormMapping(this.agencyformmappinglist).then(data => this.ResponeVal(data));
+    }
+
+    fncheckNuncheckMainFormAll(value) {
+        if (value) {
+            for (let insAFM of this.AgencyFormMappingNModuleCnfg.AgencyFormMappingList) {
+                insAFM.IsActive = true;
+            }
+        }
+        else {
+            for (let insAFM of this.AgencyFormMappingNModuleCnfg.AgencyFormMappingList) {
+                insAFM.IsActive = false;
+            }
+        }
+    }
+
+    fncheckNuncheck(insAFM, access, value) {
+        switch (access) {
+            case "view":
+                insAFM.ViewAccess = value;
+                break;
+            case "add":
+                insAFM.AddAccess = value;
+                break;
+            case "edit":
+                insAFM.EditAccess = value;
+                break;
+            case "delete":
+                insAFM.DeleteAccess = value;
+                break;
+        }
+    }
+
+    fncheckNuncheckCRUDAll(Id, value, access) {
+        if (value) {
+            for (let insAFM of this.AgencyFormMappingNModuleCnfg.AgencyFormMappingList) {
+                if (insAFM.FormCnfg.ModuleCnfg.ModuleCnfgId == Id) {
+                    this.fncheckNuncheck(insAFM, access, value);
+                }
+            }
+        }
+        else {
+            for (let insAFM of this.AgencyFormMappingNModuleCnfg.AgencyFormMappingList) {
+                if (insAFM.FormCnfg.ModuleCnfg.ModuleCnfgId == Id) {
+                    this.fncheckNuncheck(insAFM, access, value);
+                }
+            }
+        }
+    }
+
+    fncheckNuncheckAllMain(value, access) {
+        if (value) {
+            for (let insAFM of this.AgencyFormMappingNModuleCnfg.AgencyFormMappingList) {
+                this.fncheckNuncheck(insAFM, access, value);
+            }
+        }
+        else {
+            for (let insAFM of this.AgencyFormMappingNModuleCnfg.AgencyFormMappingList) {
+                this.fncheckNuncheck(insAFM, access, value);
+            }
+        }
+    }
+
+    fncheckNuncheckForm(Id, value) {
+        if (value) {
+            for (let insAFM of this.AgencyFormMappingNModuleCnfg.AgencyFormMappingList) {
+                if (insAFM.AgencyFormMappingId == Id) {
+                    insAFM.ViewAccess = true;
+                    insAFM.AddAccess = true;
+                    insAFM.EditAccess = true;
+                    insAFM.DeleteAccess = true;
+                }
+            }
+        }
+        else {
+            for (let insAFM of this.AgencyFormMappingNModuleCnfg.AgencyFormMappingList) {
+                if (insAFM.AgencyFormMappingId == Id) {
+                    insAFM.ViewAccess = false;
+                    insAFM.AddAccess = false;
+                    insAFM.EditAccess = false;
+                    insAFM.DeleteAccess = false;
+                }
+            }
+        }
+    }
+
+    private Respone(RoleProfile) {
+
+        this.isLoading = false;
+        if (RoleProfile.IsError == true) {
+            this.pComponent.alertDanger(RoleProfile.ErrorMessage)
+        }
+        else {
+
+            if (RoleProfile.FormRoleAccessMapping.length > 0 && RoleProfile.FormRoleAccessMapping != null) {
+                let NewRoleProfileID = RoleProfile.FormRoleAccessMapping[0].RoleProfileId;
+                if (Common.GetSession("FormRoleAccessMapping") != "0" && Common.GetSession("FormRoleAccessMapping") != null) {
+                    let OldFormRoleAccessMapping = JSON.parse(Common.GetSession("FormRoleAccessMapping"));
+                    let oldRoleProfileID = OldFormRoleAccessMapping[0].RoleProfileId;
+                    if (NewRoleProfileID == oldRoleProfileID) {
+                        Common.SetSession("FormRoleAccessMapping", JSON.stringify(RoleProfile.FormRoleAccessMapping));
+                    }
+                }
+            }
+
+            this.lstRoleFormMapping = [];
+            if (this.RoleProfileID == 0)
+            {
+                this.objUserAuditDetailDTO.ActionId =1;
+                this.objUserAuditDetailDTO.RecordNo = RoleProfile.SequenceNumber;
+                this.pComponent.alertSuccess(Common.GetSaveSuccessfullMsg);
+            }                
+            else
+            {
+                this.objUserAuditDetailDTO.ActionId =2;
+                this.objUserAuditDetailDTO.RecordNo = this.objQeryVal.id;
+                this.pComponent.alertSuccess(Common.GetUpdateSuccessfullMsg);
+            }
+            
+            this.objUserAuditDetailDTO.ActionDateTime = moment(new Date()).format("YYYY-MM-DD HH:mm:ss");
+            this.objUserAuditDetailDTO.UserAuditHistoryId = parseInt(Common.GetSession("UserAuditHistoryId"));
+            this.objUserAuditDetailDTO.FormCnfgId = this.FormCnfgId;
+            this.objUserAuditDetailDTO.ChildCarerEmpType = 0;
+            this.objUserAuditDetailDTO.ChildCarerEmpId = 0;
+            Common.addUserAuditHistoryDetails(this.objUserAuditDetailDTO);
+            this._router.navigate(['/pages/systemadmin/roleprofilelist/10']);
+        }
+    }
+
+    fnUnSelectDefault(item, Values) {
+        if (Values == false) {
+            item.IsDefault = false;
+        }
+    }
+
+    SetCheckedkModuleStatus(Value, type) {
+        let moduleId = 13;
+        if (type == 'Carer')
+            moduleId = 3;
+        else if (type == 'Child')
+            moduleId = 4;
+        else if (type == 'Referrals')
+            moduleId = 16;
+
+        let data = this.AgencyFormMappingNModuleCnfg.ModuleStausCnfg.filter(x => x.ModuleCnfgId == moduleId);
+        data.forEach(item => {
+            item.IsActive = Value;
+        });
+    }
+
+    ApplicantStatusGrd = false;
+    CarerStatusGrd = false;
+    ChildStatusGrd = false;
+    ReferralsStatusGrd = false;
+
+    CheckModuleStatusCnfg() {
+        let data = this.AgencyFormMappingNModuleCnfg.ModuleStausCnfg.filter(x => x.ModuleCnfgId == 13 && x.IsActive == true);
+        if (data.length > 0) {
+            this.ApplicantStatusGrd = true;
+        }
+
+        let data1 = this.AgencyFormMappingNModuleCnfg.ModuleStausCnfg.filter(x => x.ModuleCnfgId == 3 && x.IsActive == true);
+        if (data1.length > 0) {
+            this.CarerStatusGrd = true;
+        }
+
+        let data2 = this.AgencyFormMappingNModuleCnfg.ModuleStausCnfg.filter(x => x.ModuleCnfgId == 4 && x.IsActive == true);
+        if (data2.length > 0) {
+
+            this.ChildStatusGrd = true;
+        }
+
+        let data3 = this.AgencyFormMappingNModuleCnfg.ModuleStausCnfg.filter(x => x.ModuleCnfgId == 16 && x.IsActive == true);
+        if (data3.length > 0) {
+            this.ReferralsStatusGrd = true;
+        }
+    }
+
+    SetDefault(item, ModuleStatusCnfgId) {
+        let findDefault = item.filter(x => x.IsDefault != 0);
+        if (findDefault.length > 0) {
+            item.find(x => x.IsDefault != 0).IsDefault = 0;
+        }
+
+        //let setDefault = item.find(x => x.ModuleStatusCnfgId == ModuleStatusCnfgId);
+        //if (setDefault.length > 0) {
+        //    console.log("setDefault");
+        //    setDefault.IsDefault = ModuleStatusCnfgId;
+        //}
+
+        item.find(x => x.ModuleStatusCnfgId == ModuleStatusCnfgId).IsDefault = ModuleStatusCnfgId;
+    }
+
+    fncheckNuncheckStaffAreaAll(value)
+    {
+        for (let insAFM of this.lstStaffAreaCategory) {
+            insAFM.IsApproved = value;
+        }
+
+    }
+}

@@ -1,0 +1,50 @@
+﻿<form [formGroup]="_Form">
+    <button (click)="this.location.back()" class="btn btn-warning">Back</button>
+    <div class="col-xl-12 col-lg-12 col-12 bottom-30">
+
+        <div widget class="card">
+            <div class="card-header">
+                <span>Placement Review</span>
+                <div class="widget-controls">
+                    <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                    <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                    <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+                    <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+                    <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a>
+                </div>
+            </div>
+            <div class="card-body widget-body">
+                <div class="row mbm-20">
+                    <div class="col-lg-12 col-12 bottom-30">
+
+                        <div *ngIf="CarerInfos" class="form-group">
+
+                            <label class="">Carer Name (Code)</label>&nbsp;
+                            <label class="" style="font-weight:bold">
+                                {{CarerInfos.PCCarerName}}{{CarerInfos.SCCarerName}}
+                                ({{CarerInfos.CarerCode}})
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label class="" style="vertical-align:top">Address</label>&nbsp;
+                            <label class="" style="font-weight:bold">
+                                {{CarerInfos.Address}}<br />
+                                Phone:{{CarerInfos.Phone}}<br />
+                                Mobile:{{CarerInfos.Mobile}}<br />
+                                Email:{{CarerInfos.Email}}
+                            </label>
+                        </div>
+
+                        <!-- <div class="form-group col-md-5">
+                            <button type="button" id="btnModuleConfig" class="btn btn-primary"
+                                    (click)="SubmitAnnualReview(_Form)">
+                                Add
+                            </button>
+
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

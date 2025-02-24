@@ -1,0 +1,2161 @@
+﻿
+<div class="col-xl-12 col-lg-12 col-12 bottom-30">
+    <ViewDisable></ViewDisable>
+    <Child-Header></Child-Header>
+    <div widget class="card">
+        <div class="card-header">
+            <span>Child Specific Plan </span>
+            <div class="widget-controls">
+                <i class="fa fa-file-pdf-o" (click)="fnDonloadPDF()" style="font-size:18px;color:white;cursor:pointer;" title="Download PDF"></i>
+                <i class="fa fa-file-word-o" (click)="fnDonloadWord()" style="font-size:18px;color:white;cursor:pointer;padding-left:5px;" title="Download Word"></i>
+                <i class="fa fa-print" (click)="fnPrint()" style="font-size:18px;color:white;cursor:pointer;padding-left:5px;padding-right:5px" title="Print"></i>
+                <i class="fa fa-envelope-open" (click)="fnShowEmail()" style="font-size:18px;color:white;cursor:pointer;" title="Email"></i>
+            </div>
+        </div>
+        <div class="card-body widget-body">
+            <form [formGroup]="_Form">
+                <div class="row mbm-20">
+                    <div class="col-lg-12 col-12 bottom-30">
+                        <div class="clearfix">
+                            <ul class="nav nav-tabs top pull-left w-100p">
+                                <li class="nav-item" (click)="fnRiskTab()">
+                                    <a class="nav-link {{RiskTabActive}}" data-toggle="tab" href="#RiskInfo">
+                                        Part A – Risk Assessment
+                                    </a>
+                                </li>
+                                <li class="nav-item" (click)="fnSaferTab()">
+                                    <a class="nav-link {{SaferTabActive}}" data-toggle="tab" href="#SaferInfo">
+                                        Part B - Safer Care Plan
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="tab-content top" *ngIf="objChildSP">
+                            <div class="tab-pane {{RiskTabActive}}" id="RiskInfo">
+                                <div class="row" style="padding-bottom:10px">
+                                    <div class="col-md-6">
+                                        Carer Name :<b> {{CarerName}}</b>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        Supervising Social Worker  :
+                                        <b> {{SocialWorkerName}}</b>
+                                    </div>
+
+
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Review Date </label>
+                                    <input type="text" placeholder="DD/MM/YYYY" class="form-control form-control-date" formControlName="ReviewDate" required [(ngModel)]="objChildSP.ReviewDate" [value]="objChildSP.ReviewDate" datepicker />
+                                    <div class="alert alert-danger" *ngIf="(!_Form.controls.ReviewDate.valid && submitted && _Form.controls.ReviewDate.errors.required)">
+                                        Please select Review Date
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class=""><b> Reason for Update</b></label>
+                                    <textarea formControlName="ReasonforUpdate" rows="4" class="form-control" [(ngModel)]="objChildSP.ReasonforUpdate"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label class=""><b> Information</b></label>
+                                    <br />
+                                    Please note: brief summary/overview for the child/young person
+                                    <textarea formControlName="ChildSummary" rows="4" class="form-control" [(ngModel)]="objChildSP.ChildSummary"></textarea>
+                                </div>
+                                <!--<h3>Likelihood of risk:</h3>
+                                <table >
+                                    <tr>
+                                        <td width="50%">
+                                            <table rowspace="2">
+                                                <tr>
+                                                    <td>0 = Not likely (never shown interest in or participated in this risk) </td>
+                                                </tr>
+                                                <tr>
+                        <td>1 = Unlikely (possible interest in this or certain vulnerabilities which make this risk possible but no current concern)</td>
+                                                </tr>
+                                                <tr>
+                             <td>2 = Likely (Active signs or interest of this risk are displayed, or risk has happened but is historical)  </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>3 = Happening – (Risk is happening but infrequently) </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>4 = Happening Regularly– (Risk Is happening regularly) </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                        <td width="50%" align="center">
+                                            <table border="1">
+                                                <tr>
+                                                    <td colspan="2" align="center"><b>Risk</b></td>
+                                                </tr>
+                                                <tr style="background-color:red">
+                                                    <td>HIGH</td>
+                                                    <td>10-16</td>
+                                                </tr>
+                                                <tr style="background-color:yellow">
+                                                    <td>MEDIUM</td>
+                                                    <td>4-9</td>
+                                                </tr>
+                                                <tr style="background-color:greenyellow">
+                                                    <td>LOW</td>
+                                                    <td>1-3</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>No Risk Identified</td>
+                                                    <td>0</td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                   
+                                </table>
+                                <br />
+                                <h3>Consequences of risk </h3>
+                                <table>
+                                    <tr>
+                                        <td width="50%">
+                                            <table>
+                                                <tr>
+                                                    <td>0 = No Harm</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>1 = Mild harm (it is likely child would make complete recovery) </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>2 = Moderate harm (treatment or support needed to assist recovery)  </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>3 = Significant harm (ongoing support and treatment to assist recovery) </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>4 = Severe harm (long term injury, life changing injury, PTSD or death) </td>
+                                                </tr>
+                                            </table>
+
+                                        </td>
+                                        <td width="50%" align="center">
+                                            <table width="70%" border="1">
+                                                <tr>
+                                                    <td width="20%">4</td>
+                                                    <td width="20%" style="background-color:yellow">4</td>
+                                                    <td width="20%" style="background-color:yellow">8</td>
+                                                    <td width='20%' style='background-color:red'>12</td>
+                                                    <td width='20%' style='background-color:red'>16</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>3</td>
+                                                    <td style='background-color:greenyellow'>3</td>
+                                                    <td style='background-color:yellow'>6</td>
+                                                    <td style='background-color:yellow'>9</td>
+                                                    <td style='background-color:red'>12</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>2</td>
+                                                    <td style='background-color:greenyellow'>2</td>
+                                                    <td style='background-color:yellow'>4</td>
+                                                    <td style='background-color:yellow'>6</td>
+                                                    <td style='background-color:yellow'>8</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>1</td>
+                                                    <td style='background-color:greenyellow'>1</td>
+                                                    <td style='background-color:greenyellow'>2</td>
+                                                    <td style='background-color:greenyellow'>3</td>
+                                                    <td style='background-color:yellow'>4</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>0</td>
+                                                    <td>1</td>
+                                                    <td>2</td>
+                                                    <td>3</td>
+                                                    <td>4</td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>-->
+
+
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-hover table-sm">
+                                        <thead>
+                                            <tr>
+                                                <th>Risk</th>
+                                                <th style="padding-left:48px">Yes (Y) / No (N) / Not Known (NK)</th>
+                                                <th style="padding-left:65px">Score out of 16</th>
+                                                <th style="padding-left:65px">RAG Rating Red / Amber / Green</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><b>Risk or history of Self Harm behaviour</b> </td>
+                                                <td>
+                                                    <select *ngIf="listddlYesNoNotApplicable.length>0" formControlName="SelfHarmBehaviour" class="form-control" [(ngModel)]="objChildSP.SelfHarmBehaviour">
+                                                        <option value="" [attr.selected]="objChildSP.SelfHarmBehaviour == null ? true : null">Select</option>
+                                                        <option *ngFor="let op of listddlYesNoNotApplicable" value="{{op.CofigTableValuesId}}">
+                                                            {{op.Value}}
+                                                        </option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <input type="number" max="16" class="form-control" formControlName="SelfHarmBehaviourScore" [(ngModel)]="objChildSP.SelfHarmBehaviourScore" />
+                                                </td>
+                                                <td>
+                                                    <select formControlName="SelfHarmBehaviourRating" class="form-control" [(ngModel)]="objChildSP.SelfHarmBehaviourRating">
+                                                        <option value="" [attr.selected]="objChildSP.SelfHarmBehaviourRating == null ? true : null">Select</option>
+                                                        <option value="1" class="ddlValred">Red</option>
+                                                        <option value="2" class="ddlValAmber">Amber</option>
+                                                        <option value="3" class="ddlValGree">Green</option>
+                                                    </select>
+                                                </td>
+
+                                            </tr>
+                                            <tr>
+                                                <td colspan="4">
+                                                    <textarea formControlName="SelfHarmBehaviourInfo" class="form-control" [(ngModel)]="objChildSP.SelfHarmBehaviourInfo"
+                                                              placeholder="Risk Minimisation Strategies"></textarea>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><b> Risk or history of Suicide Threats / Attempts</b></td>
+                                                <td>
+                                                    <select *ngIf="listddlYesNoNotApplicable.length>0" formControlName="SuicideThreats" class="form-control" [(ngModel)]="objChildSP.SuicideThreats">
+                                                        <option value="" [attr.selected]="objChildSP.SuicideThreats == null ? true : null">Select</option>
+                                                        <option *ngFor="let op of listddlYesNoNotApplicable" value="{{op.CofigTableValuesId}}">
+                                                            {{op.Value}}
+                                                        </option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <input type="number" max="16" class="form-control" formControlName="SuicideThreatsScore" [(ngModel)]="objChildSP.SuicideThreatsScore" />
+                                                </td>
+                                                <td>
+                                                    <select formControlName="SuicideThreatsRating" class="form-control" [(ngModel)]="objChildSP.SuicideThreatsRating">
+                                                        <option value="" [attr.selected]="objChildSP.SuicideThreatsRating == null ? true : null">Select</option>
+                                                        <option value="1" class="ddlValred">Red</option>
+                                                        <option value="2" class="ddlValAmber">Amber</option>
+                                                        <option value="3" class="ddlValGree">Green</option>
+                                                    </select>
+                                                </td>
+
+                                            </tr>
+                                            <tr>
+                                                <td colspan="4">
+                                                    <textarea formControlName="SuicideThreatsInfo" class="form-control" [(ngModel)]="objChildSP.SuicideThreatsInfo"
+                                                              placeholder="Risk Minimisation Strategies"></textarea>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><b> Medical Condition which may affect behaviour</b></td>
+                                                <td>
+                                                    <select *ngIf="listddlYesNoNotApplicable.length>0" formControlName="MedicalCondition" class="form-control" [(ngModel)]="objChildSP.MedicalCondition">
+                                                        <option value="" [attr.selected]="objChildSP.MedicalCondition == null ? true : null">Select</option>
+                                                        <option *ngFor="let op of listddlYesNoNotApplicable" value="{{op.CofigTableValuesId}}">
+                                                            {{op.Value}}
+                                                        </option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <input type="number" max="16" class="form-control" formControlName="MedicalConditionScore" [(ngModel)]="objChildSP.MedicalConditionScore" />
+                                                </td>
+                                                <td>
+                                                    <select formControlName="MedicalConditionRating" class="form-control" [(ngModel)]="objChildSP.MedicalConditionRating">
+                                                        <option value="" [attr.selected]="objChildSP.MedicalConditionRating == null ? true : null">Select</option>
+                                                        <option value="1" class="ddlValred">Red</option>
+                                                        <option value="2" class="ddlValAmber">Amber</option>
+                                                        <option value="3" class="ddlValGree">Green</option>
+                                                    </select>
+                                                </td>
+
+                                            </tr>
+                                            <tr>
+                                                <td colspan="4">
+                                                    <textarea formControlName="MedicalConditionInfo" class="form-control" [(ngModel)]="objChildSP.MedicalConditionInfo"
+                                                              placeholder="Risk Minimisation Strategies"></textarea>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><b>High Risk medical condition (e.g. allergies / asthma / heart condition)</b> </td>
+                                                <td>
+                                                    <select *ngIf="listddlYesNoNotApplicable.length>0" formControlName="HighRiskMedicalCondition" class="form-control" [(ngModel)]="objChildSP.HighRiskMedicalCondition">
+                                                        <option value="" [attr.selected]="objChildSP.HighRiskMedicalCondition == null ? true : null">Select</option>
+                                                        <option *ngFor="let op of listddlYesNoNotApplicable" value="{{op.CofigTableValuesId}}">
+                                                            {{op.Value}}
+                                                        </option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <input type="number" max="16" class="form-control" formControlName="HighRiskMedicalConditionScore" [(ngModel)]="objChildSP.HighRiskMedicalConditionScore" />
+                                                </td>
+                                                <td>
+                                                    <select formControlName="HighRiskMedicalConditionRating" class="form-control" [(ngModel)]="objChildSP.HighRiskMedicalConditionRating">
+                                                        <option value="" [attr.selected]="objChildSP.HighRiskMedicalConditionRating == null ? true : null">Select</option>
+                                                        <option value="1" class="ddlValred">Red</option>
+                                                        <option value="2" class="ddlValAmber">Amber</option>
+                                                        <option value="3" class="ddlValGree">Green</option>
+                                                    </select>
+                                                </td>
+
+                                            </tr>
+                                            <tr>
+                                                <td colspan="4">
+                                                    <textarea formControlName="HighRiskMedicalConditionInfo" class="form-control" [(ngModel)]="objChildSP.HighRiskMedicalConditionInfo"
+                                                              placeholder="Risk Minimisation Strategies"></textarea>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><b>Eating disorders</b> </td>
+                                                <td>
+                                                    <select *ngIf="listddlYesNoNotApplicable.length>0" formControlName="EatingDisorders" class="form-control" [(ngModel)]="objChildSP.EatingDisorders">
+                                                        <option value="" [attr.selected]="objChildSP.EatingDisorders == null ? true : null">Select</option>
+                                                        <option *ngFor="let op of listddlYesNoNotApplicable" value="{{op.CofigTableValuesId}}">
+                                                            {{op.Value}}
+                                                        </option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <input type="number" max="16" class="form-control" formControlName="EatingDisordersScore" [(ngModel)]="objChildSP.EatingDisordersScore" />
+                                                </td>
+                                                <td>
+                                                    <select formControlName="EatingDisordersRating" class="form-control" [(ngModel)]="objChildSP.EatingDisordersRating">
+                                                        <option value="" [attr.selected]="objChildSP.EatingDisordersRating == null ? true : null">Select</option>
+                                                        <option value="1" class="ddlValred">Red</option>
+                                                        <option value="2" class="ddlValAmber">Amber</option>
+                                                        <option value="3" class="ddlValGree">Green</option>
+                                                    </select>
+                                                </td>
+
+                                            </tr>
+                                            <tr>
+                                                <td colspan="4">
+                                                    <textarea formControlName="EatingDisordersInfo" class="form-control" [(ngModel)]="objChildSP.EatingDisordersInfo"
+                                                              placeholder="Risk Minimisation Strategies"></textarea>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><b>History of verbal violence/aggression/bullying towards other children </b> </td>
+                                                <td>
+                                                    <select *ngIf="listddlYesNoNotApplicable.length>0" formControlName="VerbalViolenceOtherChildren" class="form-control" [(ngModel)]="objChildSP.VerbalViolenceOtherChildren">
+                                                        <option value="" [attr.selected]="objChildSP.VerbalViolenceOtherChildren == null ? true : null">Select</option>
+                                                        <option *ngFor="let op of listddlYesNoNotApplicable" value="{{op.CofigTableValuesId}}">
+                                                            {{op.Value}}
+                                                        </option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <input type="number" max="16" class="form-control" formControlName="VerbalViolenceOtherChildrenScore" [(ngModel)]="objChildSP.VerbalViolenceOtherChildrenScore" />
+                                                </td>
+                                                <td>
+                                                    <select formControlName="VerbalViolenceOtherChildrenRating" class="form-control" [(ngModel)]="objChildSP.VerbalViolenceOtherChildrenRating">
+                                                        <option value="" [attr.selected]="objChildSP.VerbalViolenceOtherChildrenRating == null ? true : null">Select</option>
+                                                        <option value="1" class="ddlValred">Red</option>
+                                                        <option value="2" class="ddlValAmber">Amber</option>
+                                                        <option value="3" class="ddlValGree">Green</option>
+                                                    </select>
+                                                </td>
+
+                                            </tr>
+                                            <tr>
+                                                <td colspan="4">
+                                                    <textarea formControlName="VerbalViolenceOtherChildrenInfo" class="form-control" [(ngModel)]="objChildSP.VerbalViolenceOtherChildrenInfo"
+                                                              placeholder="Risk Minimisation Strategies"></textarea>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><b>History of physical violence/aggression/bullying towards other children</b> </td>
+                                                <td>
+                                                    <select *ngIf="listddlYesNoNotApplicable.length>0" formControlName="PhysicalViolenceOtherChildren" class="form-control" [(ngModel)]="objChildSP.PhysicalViolenceOtherChildren">
+                                                        <option value="" [attr.selected]="objChildSP.PhysicalViolenceOtherChildren == null ? true : null">Select</option>
+                                                        <option *ngFor="let op of listddlYesNoNotApplicable" value="{{op.CofigTableValuesId}}">
+                                                            {{op.Value}}
+                                                        </option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <input type="number" max="16" class="form-control" formControlName="PhysicalViolenceOtherChildrenScore" [(ngModel)]="objChildSP.PhysicalViolenceOtherChildrenScore" />
+                                                </td>
+                                                <td>
+                                                    <select formControlName="PhysicalViolenceOtherChildrenRating" class="form-control" [(ngModel)]="objChildSP.PhysicalViolenceOtherChildrenRating">
+                                                        <option value="" [attr.selected]="objChildSP.PhysicalViolenceOtherChildrenRating == null ? true : null">Select</option>
+                                                        <option value="1" class="ddlValred">Red</option>
+                                                        <option value="2" class="ddlValAmber">Amber</option>
+                                                        <option value="3" class="ddlValGree">Green</option>
+                                                    </select>
+                                                </td>
+
+                                            </tr>
+                                            <tr>
+                                                <td colspan="4">
+                                                    <textarea formControlName="PhysicalViolenceOtherChildrenInfo" class="form-control" [(ngModel)]="objChildSP.PhysicalViolenceOtherChildrenInfo"
+                                                              placeholder="Risk Minimisation Strategies"></textarea>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><b>History of verbal violence/aggression towards adults</b> </td>
+                                                <td>
+                                                    <select *ngIf="listddlYesNoNotApplicable.length>0" formControlName="VerbalViolenceAdults" class="form-control" [(ngModel)]="objChildSP.VerbalViolenceAdults">
+                                                        <option value="" [attr.selected]="objChildSP.VerbalViolenceAdults == null ? true : null">Select</option>
+                                                        <option *ngFor="let op of listddlYesNoNotApplicable" value="{{op.CofigTableValuesId}}">
+                                                            {{op.Value}}
+                                                        </option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <input type="number" max="16" class="form-control" formControlName="VerbalViolenceAdultsScore" [(ngModel)]="objChildSP.VerbalViolenceAdultsScore" />
+                                                </td>
+                                                <td>
+                                                    <select formControlName="VerbalViolenceAdultsRating" class="form-control" [(ngModel)]="objChildSP.VerbalViolenceAdultsRating">
+                                                        <option value="" [attr.selected]="objChildSP.VerbalViolenceAdultsRating == null ? true : null">Select</option>
+                                                        <option value="1" class="ddlValred">Red</option>
+                                                        <option value="2" class="ddlValAmber">Amber</option>
+                                                        <option value="3" class="ddlValGree">Green</option>
+                                                    </select>
+                                                </td>
+
+                                            </tr>
+                                            <tr>
+                                                <td colspan="4">
+                                                    <textarea formControlName="VerbalViolenceAdultsInfo" class="form-control" [(ngModel)]="objChildSP.VerbalViolenceAdultsInfo"
+                                                              placeholder="Risk Minimisation Strategies"></textarea>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><b>History of physical violence/aggression towards adults</b> </td>
+                                                <td>
+                                                    <select *ngIf="listddlYesNoNotApplicable.length>0" formControlName="PhysicalViolenceAdults" class="form-control" [(ngModel)]="objChildSP.PhysicalViolenceAdults">
+                                                        <option value="" [attr.selected]="objChildSP.PhysicalViolenceAdults == null ? true : null">Select</option>
+                                                        <option *ngFor="let op of listddlYesNoNotApplicable" value="{{op.CofigTableValuesId}}">
+                                                            {{op.Value}}
+                                                        </option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <input type="number" max="16" class="form-control" formControlName="PhysicalViolenceAdultsScore" [(ngModel)]="objChildSP.PhysicalViolenceAdultsScore" />
+                                                </td>
+                                                <td>
+                                                    <select formControlName="PhysicalViolenceAdultsRating" class="form-control" [(ngModel)]="objChildSP.PhysicalViolenceAdultsRating">
+                                                        <option value="" [attr.selected]="objChildSP.PhysicalViolenceAdultsRating == null ? true : null">Select</option>
+                                                        <option value="1" class="ddlValred">Red</option>
+                                                        <option value="2" class="ddlValAmber">Amber</option>
+                                                        <option value="3" class="ddlValGree">Green</option>
+                                                    </select>
+                                                </td>
+
+                                            </tr>
+                                            <tr>
+                                                <td colspan="4">
+                                                    <textarea formControlName="PhysicalViolenceAdultsInfo" class="form-control" [(ngModel)]="objChildSP.PhysicalViolenceAdultsInfo"
+                                                              placeholder="Risk Minimisation Strategies"></textarea>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><b>History of violence / cruelty to animals</b> </td>
+                                                <td>
+                                                    <select *ngIf="listddlYesNoNotApplicable.length>0" formControlName="ViolenceCrueltyAnimals" class="form-control" [(ngModel)]="objChildSP.ViolenceCrueltyAnimals">
+                                                        <option value="" [attr.selected]="objChildSP.ViolenceCrueltyAnimals == null ? true : null">Select</option>
+                                                        <option *ngFor="let op of listddlYesNoNotApplicable" value="{{op.CofigTableValuesId}}">
+                                                            {{op.Value}}
+                                                        </option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <input type="number" max="16" class="form-control" formControlName="ViolenceCrueltyAnimalsScore" [(ngModel)]="objChildSP.ViolenceCrueltyAnimalsScore" />
+                                                </td>
+                                                <td>
+                                                    <select formControlName="ViolenceCrueltyAnimalsRating" class="form-control" [(ngModel)]="objChildSP.ViolenceCrueltyAnimalsRating">
+                                                        <option value="" [attr.selected]="objChildSP.ViolenceCrueltyAnimalsRating == null ? true : null">Select</option>
+                                                        <option value="1" class="ddlValred">Red</option>
+                                                        <option value="2" class="ddlValAmber">Amber</option>
+                                                        <option value="3" class="ddlValGree">Green</option>
+                                                    </select>
+                                                </td>
+
+                                            </tr>
+                                            <tr>
+                                                <td colspan="4">
+                                                    <textarea formControlName="ViolenceCrueltyAnimalsInfo" class="form-control" [(ngModel)]="objChildSP.ViolenceCrueltyAnimalsInfo"
+                                                              placeholder="Risk Minimisation Strategies"></textarea>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><b>History or risk of sexually harmful behaviour to others </b> </td>
+                                                <td>
+                                                    <select *ngIf="listddlYesNoNotApplicable.length>0" formControlName="SexuallyHarmfulOthers" class="form-control" [(ngModel)]="objChildSP.SexuallyHarmfulOthers">
+                                                        <option value="" [attr.selected]="objChildSP.SexuallyHarmfulOthers == null ? true : null">Select</option>
+                                                        <option *ngFor="let op of listddlYesNoNotApplicable" value="{{op.CofigTableValuesId}}">
+                                                            {{op.Value}}
+                                                        </option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <input type="number" max="16" class="form-control" formControlName="SexuallyHarmfulOthersScore" [(ngModel)]="objChildSP.SexuallyHarmfulOthersScore" />
+                                                </td>
+                                                <td>
+                                                    <select formControlName="SexuallyHarmfulOthersRating" class="form-control" [(ngModel)]="objChildSP.SexuallyHarmfulOthersRating">
+                                                        <option value="" [attr.selected]="objChildSP.SexuallyHarmfulOthersRating == null ? true : null">Select</option>
+                                                        <option value="1" class="ddlValred">Red</option>
+                                                        <option value="2" class="ddlValAmber">Amber</option>
+                                                        <option value="3" class="ddlValGree">Green</option>
+                                                    </select>
+                                                </td>
+
+                                            </tr>
+                                            <tr>
+                                                <td colspan="4">
+                                                    <textarea formControlName="SexuallyHarmfulOthersInfo" class="form-control" [(ngModel)]="objChildSP.SexuallyHarmfulOthersInfo"
+                                                              placeholder="Risk Minimisation Strategies"></textarea>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><b>Vulnerability, due to issues around sexuality </b> </td>
+                                                <td>
+                                                    <select *ngIf="listddlYesNoNotApplicable.length>0" formControlName="VulnerabilityAroundSexuality" class="form-control" [(ngModel)]="objChildSP.VulnerabilityAroundSexuality">
+                                                        <option value="" [attr.selected]="objChildSP.VulnerabilityAroundSexuality == null ? true : null">Select</option>
+                                                        <option *ngFor="let op of listddlYesNoNotApplicable" value="{{op.CofigTableValuesId}}">
+                                                            {{op.Value}}
+                                                        </option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <input type="number" max="16" class="form-control" formControlName="VulnerabilityAroundSexualityScore" [(ngModel)]="objChildSP.VulnerabilityAroundSexualityScore" />
+                                                </td>
+                                                <td>
+                                                    <select formControlName="VulnerabilityAroundSexualityRating" class="form-control" [(ngModel)]="objChildSP.VulnerabilityAroundSexualityRating">
+                                                        <option value="" [attr.selected]="objChildSP.VulnerabilityAroundSexualityRating == null ? true : null">Select</option>
+                                                        <option value="1" class="ddlValred">Red</option>
+                                                        <option value="2" class="ddlValAmber">Amber</option>
+                                                        <option value="3" class="ddlValGree">Green</option>
+                                                    </select>
+                                                </td>
+
+                                            </tr>
+                                            <tr>
+                                                <td colspan="4">
+                                                    <textarea formControlName="VulnerabilityAroundSexualityInfo" class="form-control" [(ngModel)]="objChildSP.VulnerabilityAroundSexualityInfo"
+                                                              placeholder="Risk Minimisation Strategies"></textarea>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><b>History or risk of Child Sexual Exploitation </b> </td>
+                                                <td>
+                                                    <select *ngIf="listddlYesNoNotApplicable.length>0" formControlName="ChildSexualExploitation" class="form-control" [(ngModel)]="objChildSP.ChildSexualExploitation">
+                                                        <option value="" [attr.selected]="objChildSP.ChildSexualExploitation == null ? true : null">Select</option>
+                                                        <option *ngFor="let op of listddlYesNoNotApplicable" value="{{op.CofigTableValuesId}}">
+                                                            {{op.Value}}
+                                                        </option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <input type="number" max="16" class="form-control" formControlName="ChildSexualExploitationScore" [(ngModel)]="objChildSP.ChildSexualExploitationScore" />
+                                                </td>
+                                                <td>
+                                                    <select formControlName="ChildSexualExploitationRating" class="form-control" [(ngModel)]="objChildSP.ChildSexualExploitationRating">
+                                                        <option value="" [attr.selected]="objChildSP.ChildSexualExploitationRating == null ? true : null">Select</option>
+                                                        <option value="1" class="ddlValred">Red</option>
+                                                        <option value="2" class="ddlValAmber">Amber</option>
+                                                        <option value="3" class="ddlValGree">Green</option>
+                                                    </select>
+                                                </td>
+
+                                            </tr>
+                                            <tr>
+                                                <td colspan="4">
+                                                    <textarea formControlName="ChildSexualExploitationInfo" class="form-control" [(ngModel)]="objChildSP.ChildSexualExploitationInfo"
+                                                              placeholder="Risk Minimisation Strategies"></textarea>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><b>History or risk of Child Criminal Exploitation</b> </td>
+                                                <td>
+                                                    <select *ngIf="listddlYesNoNotApplicable.length>0" formControlName="ChildCriminalExploitation" class="form-control" [(ngModel)]="objChildSP.ChildCriminalExploitation">
+                                                        <option value="" [attr.selected]="objChildSP.ChildCriminalExploitation == null ? true : null">Select</option>
+                                                        <option *ngFor="let op of listddlYesNoNotApplicable" value="{{op.CofigTableValuesId}}">
+                                                            {{op.Value}}
+                                                        </option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <input type="number" max="16" class="form-control" formControlName="ChildCriminalExploitationScore" [(ngModel)]="objChildSP.ChildCriminalExploitationScore" />
+                                                </td>
+                                                <td>
+                                                    <select formControlName="ChildCriminalExploitationRating" class="form-control" [(ngModel)]="objChildSP.ChildCriminalExploitationRating">
+                                                        <option value="" [attr.selected]="objChildSP.ChildCriminalExploitationRating == null ? true : null">Select</option>
+                                                        <option value="1" class="ddlValred">Red</option>
+                                                        <option value="2" class="ddlValAmber">Amber</option>
+                                                        <option value="3" class="ddlValGree">Green</option>
+                                                    </select>
+                                                </td>
+
+                                            </tr>
+                                            <tr>
+                                                <td colspan="4">
+                                                    <textarea formControlName="ChildCriminalExploitationInfo" class="form-control" [(ngModel)]="objChildSP.ChildCriminalExploitationInfo"
+                                                              placeholder="Risk Minimisation Strategies"></textarea>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><b>History or risk of fire setting</b> </td>
+                                                <td>
+                                                    <select *ngIf="listddlYesNoNotApplicable.length>0" formControlName="RiskFireSetting" class="form-control" [(ngModel)]="objChildSP.RiskFireSetting">
+                                                        <option value="" [attr.selected]="objChildSP.RiskFireSetting == null ? true : null">Select</option>
+                                                        <option *ngFor="let op of listddlYesNoNotApplicable" value="{{op.CofigTableValuesId}}">
+                                                            {{op.Value}}
+                                                        </option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <input type="number" max="16" class="form-control" formControlName="RiskFireSettingScore" [(ngModel)]="objChildSP.RiskFireSettingScore" />
+                                                </td>
+                                                <td>
+                                                    <select formControlName="RiskFireSettingRating" class="form-control" [(ngModel)]="objChildSP.RiskFireSettingRating">
+                                                        <option value="" [attr.selected]="objChildSP.RiskFireSettingRating == null ? true : null">Select</option>
+                                                        <option value="1" class="ddlValred">Red</option>
+                                                        <option value="2" class="ddlValAmber">Amber</option>
+                                                        <option value="3" class="ddlValGree">Green</option>
+                                                    </select>
+                                                </td>
+
+                                            </tr>
+                                            <tr>
+                                                <td colspan="4">
+                                                    <textarea formControlName="RiskFireSettingInfo" class="form-control" [(ngModel)]="objChildSP.RiskFireSettingInfo"
+                                                              placeholder="Risk Minimisation Strategies"></textarea>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><b>History or risk of destruction to property</b> </td>
+                                                <td>
+                                                    <select *ngIf="listddlYesNoNotApplicable.length>0" formControlName="RiskDestructionToProperty" class="form-control" [(ngModel)]="objChildSP.RiskDestructionToProperty">
+                                                        <option value="" [attr.selected]="objChildSP.RiskDestructionToProperty == null ? true : null">Select</option>
+                                                        <option *ngFor="let op of listddlYesNoNotApplicable" value="{{op.CofigTableValuesId}}">
+                                                            {{op.Value}}
+                                                        </option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <input type="number" max="16" class="form-control" formControlName="RiskDestructionToPropertyScore" [(ngModel)]="objChildSP.RiskDestructionToPropertyScore" />
+                                                </td>
+                                                <td>
+                                                    <select formControlName="RiskDestructionToPropertyRating" class="form-control" [(ngModel)]="objChildSP.RiskDestructionToPropertyRating">
+                                                        <option value="" [attr.selected]="objChildSP.RiskDestructionToPropertyRating == null ? true : null">Select</option>
+                                                        <option value="1" class="ddlValred">Red</option>
+                                                        <option value="2" class="ddlValAmber">Amber</option>
+                                                        <option value="3" class="ddlValGree">Green</option>
+                                                    </select>
+                                                </td>
+
+                                            </tr>
+                                            <tr>
+                                                <td colspan="4">
+                                                    <textarea formControlName="RiskDestructionToPropertyInfo" class="form-control" [(ngModel)]="objChildSP.RiskDestructionToPropertyInfo"
+                                                              placeholder="Risk Minimisation Strategies"></textarea>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><b>History or risk of offending behaviour / criminal record</b> </td>
+                                                <td>
+                                                    <select *ngIf="listddlYesNoNotApplicable.length>0" formControlName="RiskOffendingBehaviour" class="form-control" [(ngModel)]="objChildSP.RiskOffendingBehaviour">
+                                                        <option value="" [attr.selected]="objChildSP.RiskOffendingBehaviour == null ? true : null">Select</option>
+                                                        <option *ngFor="let op of listddlYesNoNotApplicable" value="{{op.CofigTableValuesId}}">
+                                                            {{op.Value}}
+                                                        </option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <input type="number" max="16" class="form-control" formControlName="RiskOffendingBehaviourScore" [(ngModel)]="objChildSP.RiskOffendingBehaviourScore" />
+                                                </td>
+                                                <td>
+                                                    <select formControlName="RiskOffendingBehaviourRating" class="form-control" [(ngModel)]="objChildSP.RiskOffendingBehaviourRating">
+                                                        <option value="" [attr.selected]="objChildSP.RiskOffendingBehaviourRating == null ? true : null">Select</option>
+                                                        <option value="1" class="ddlValred">Red</option>
+                                                        <option value="2" class="ddlValAmber">Amber</option>
+                                                        <option value="3" class="ddlValGree">Green</option>
+                                                    </select>
+                                                </td>
+
+                                            </tr>
+                                            <tr>
+                                                <td colspan="4">
+                                                    <textarea formControlName="RiskOffendingBehaviourInfo" class="form-control" [(ngModel)]="objChildSP.RiskOffendingBehaviourInfo"
+                                                              placeholder="Risk Minimisation Strategies"></textarea>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><b>History or risk of radicalisation</b> </td>
+                                                <td>
+                                                    <select *ngIf="listddlYesNoNotApplicable.length>0" formControlName="RiskRadicalisation" class="form-control" [(ngModel)]="objChildSP.RiskRadicalisation">
+                                                        <option value="" [attr.selected]="objChildSP.RiskRadicalisation == null ? true : null">Select</option>
+                                                        <option *ngFor="let op of listddlYesNoNotApplicable" value="{{op.CofigTableValuesId}}">
+                                                            {{op.Value}}
+                                                        </option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <input type="number" max="16" class="form-control" formControlName="RiskRadicalisationScore" [(ngModel)]="objChildSP.RiskRadicalisationScore" />
+                                                </td>
+                                                <td>
+                                                    <select formControlName="RiskRadicalisationRating" class="form-control" [(ngModel)]="objChildSP.RiskRadicalisationRating">
+                                                        <option value="" [attr.selected]="objChildSP.RiskRadicalisationRating == null ? true : null">Select</option>
+                                                        <option value="1" class="ddlValred">Red</option>
+                                                        <option value="2" class="ddlValAmber">Amber</option>
+                                                        <option value="3" class="ddlValGree">Green</option>
+                                                    </select>
+                                                </td>
+
+                                            </tr>
+                                            <tr>
+                                                <td colspan="4">
+                                                    <textarea formControlName="RiskRadicalisationInfo" class="form-control" [(ngModel)]="objChildSP.RiskRadicalisationInfo"
+                                                              placeholder="Risk Minimisation Strategies"></textarea>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><b>History or risk of making allegations</b> </td>
+                                                <td>
+                                                    <select *ngIf="listddlYesNoNotApplicable.length>0" formControlName="RiskMakingAllegation" class="form-control" [(ngModel)]="objChildSP.RiskMakingAllegation">
+                                                        <option value="" [attr.selected]="objChildSP.RiskMakingAllegation == null ? true : null">Select</option>
+                                                        <option *ngFor="let op of listddlYesNoNotApplicable" value="{{op.CofigTableValuesId}}">
+                                                            {{op.Value}}
+                                                        </option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <input type="number" max="16" class="form-control" formControlName="RiskMakingAllegationScore" [(ngModel)]="objChildSP.RiskMakingAllegationScore" />
+                                                </td>
+                                                <td>
+                                                    <select formControlName="RiskMakingAllegationRating" class="form-control" [(ngModel)]="objChildSP.RiskMakingAllegationRating">
+                                                        <option value="" [attr.selected]="objChildSP.RiskMakingAllegationRating == null ? true : null">Select</option>
+                                                        <option value="1" class="ddlValred">Red</option>
+                                                        <option value="2" class="ddlValAmber">Amber</option>
+                                                        <option value="3" class="ddlValGree">Green</option>
+                                                    </select>
+                                                </td>
+
+                                            </tr>
+                                            <tr>
+                                                <td colspan="4">
+                                                    <textarea formControlName="RiskMakingAllegationInfo" class="form-control" [(ngModel)]="objChildSP.RiskMakingAllegationInfo"
+                                                              placeholder="Risk Minimisation Strategies"></textarea>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><b>History of smoking cigarettes</b> </td>
+                                                <td>
+                                                    <select *ngIf="listddlYesNoNotApplicable.length>0" formControlName="SmokingCigarettes" class="form-control" [(ngModel)]="objChildSP.SmokingCigarettes">
+                                                        <option value="" [attr.selected]="objChildSP.SmokingCigarettes == null ? true : null">Select</option>
+                                                        <option *ngFor="let op of listddlYesNoNotApplicable" value="{{op.CofigTableValuesId}}">
+                                                            {{op.Value}}
+                                                        </option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <input type="number" max="16" class="form-control" formControlName="SmokingCigarettesScore" [(ngModel)]="objChildSP.SmokingCigarettesScore" />
+                                                </td>
+                                                <td>
+                                                    <select formControlName="SmokingCigarettesRating" class="form-control" [(ngModel)]="objChildSP.SmokingCigarettesRating">
+                                                        <option value="" [attr.selected]="objChildSP.SmokingCigarettesRating == null ? true : null">Select</option>
+                                                        <option value="1" class="ddlValred">Red</option>
+                                                        <option value="2" class="ddlValAmber">Amber</option>
+                                                        <option value="3" class="ddlValGree">Green</option>
+                                                    </select>
+                                                </td>
+
+                                            </tr>
+                                            <tr>
+                                                <td colspan="4">
+                                                    <textarea formControlName="SmokingCigarettesInfo" class="form-control" [(ngModel)]="objChildSP.SmokingCigarettesInfo"
+                                                              placeholder="Risk Minimisation Strategies"></textarea>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><b>History or risk of taking / dealing with illegal drugs or psychoactive substances (legal highs).</b> </td>
+                                                <td>
+                                                    <select *ngIf="listddlYesNoNotApplicable.length>0" formControlName="RiskTakingDealingDrugs" class="form-control" [(ngModel)]="objChildSP.RiskTakingDealingDrugs">
+                                                        <option value="" [attr.selected]="objChildSP.RiskTakingDealingDrugs == null ? true : null">Select</option>
+                                                        <option *ngFor="let op of listddlYesNoNotApplicable" value="{{op.CofigTableValuesId}}">
+                                                            {{op.Value}}
+                                                        </option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <input type="number" max="16" class="form-control" formControlName="RiskTakingDealingDrugsScore" [(ngModel)]="objChildSP.RiskTakingDealingDrugsScore" />
+                                                </td>
+                                                <td>
+                                                    <select formControlName="RiskTakingDealingDrugsRating" class="form-control" [(ngModel)]="objChildSP.RiskTakingDealingDrugsRating">
+                                                        <option value="" [attr.selected]="objChildSP.RiskTakingDealingDrugsRating == null ? true : null">Select</option>
+                                                        <option value="1" class="ddlValred">Red</option>
+                                                        <option value="2" class="ddlValAmber">Amber</option>
+                                                        <option value="3" class="ddlValGree">Green</option>
+                                                    </select>
+                                                </td>
+
+                                            </tr>
+                                            <tr>
+                                                <td colspan="4">
+                                                    <textarea formControlName="RiskTakingDealingDrugsInfo" class="form-control" [(ngModel)]="objChildSP.RiskTakingDealingDrugsInfo"
+                                                              placeholder="Risk Minimisation Strategies"></textarea>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><b>History or risk of alcohol consumption / abuse</b> </td>
+                                                <td>
+                                                    <select *ngIf="listddlYesNoNotApplicable.length>0" formControlName="RiskAlcoholConsumption" class="form-control" [(ngModel)]="objChildSP.RiskAlcoholConsumption">
+                                                        <option value="" [attr.selected]="objChildSP.RiskAlcoholConsumption == null ? true : null">Select</option>
+                                                        <option *ngFor="let op of listddlYesNoNotApplicable" value="{{op.CofigTableValuesId}}">
+                                                            {{op.Value}}
+                                                        </option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <input type="number" max="16" class="form-control" formControlName="RiskAlcoholConsumptionScore" [(ngModel)]="objChildSP.RiskAlcoholConsumptionScore" />
+                                                </td>
+                                                <td>
+                                                    <select formControlName="RiskAlcoholConsumptionRating" class="form-control" [(ngModel)]="objChildSP.RiskAlcoholConsumptionRating">
+                                                        <option value="" [attr.selected]="objChildSP.RiskAlcoholConsumptionRating == null ? true : null">Select</option>
+                                                        <option value="1" class="ddlValred">Red</option>
+                                                        <option value="2" class="ddlValAmber">Amber</option>
+                                                        <option value="3" class="ddlValGree">Green</option>
+                                                    </select>
+                                                </td>
+
+                                            </tr>
+                                            <tr>
+                                                <td colspan="4">
+                                                    <textarea formControlName="RiskAlcoholConsumptionInfo" class="form-control" [(ngModel)]="objChildSP.RiskAlcoholConsumptionInfo"
+                                                              placeholder="Risk Minimisation Strategies"></textarea>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><b>History or risk of Absconding </b> </td>
+                                                <td>
+                                                    <select *ngIf="listddlYesNoNotApplicable.length>0" formControlName="RiskAbsconding" class="form-control" [(ngModel)]="objChildSP.RiskAbsconding">
+                                                        <option value="" [attr.selected]="objChildSP.RiskAbsconding == null ? true : null">Select</option>
+                                                        <option *ngFor="let op of listddlYesNoNotApplicable" value="{{op.CofigTableValuesId}}">
+                                                            {{op.Value}}
+                                                        </option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <input type="number" max="16" class="form-control" formControlName="RiskAbscondingScore" [(ngModel)]="objChildSP.RiskAbscondingScore" />
+                                                </td>
+                                                <td>
+                                                    <select formControlName="RiskAbscondingRating" class="form-control" [(ngModel)]="objChildSP.RiskAbscondingRating">
+                                                        <option value="" [attr.selected]="objChildSP.RiskAbscondingRating == null ? true : null">Select</option>
+                                                        <option value="1" class="ddlValred">Red</option>
+                                                        <option value="2" class="ddlValAmber">Amber</option>
+                                                        <option value="3" class="ddlValGree">Green</option>
+                                                    </select>
+                                                </td>
+
+                                            </tr>
+                                            <tr>
+                                                <td colspan="4">
+                                                    <textarea formControlName="RiskAbscondingInfo" class="form-control" [(ngModel)]="objChildSP.RiskAbscondingInfo"
+                                                              placeholder="Risk Minimisation Strategies"></textarea>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><b>Participation in high risk sports/activities which can present an increased risk – i.e. horse riding, quad bikes, mini motor bikes, wall climbing activities etc  </b> </td>
+                                                <td>
+                                                    <select *ngIf="listddlYesNoNotApplicable.length>0" formControlName="RiskSportsActivities" class="form-control" [(ngModel)]="objChildSP.RiskSportsActivities">
+                                                        <option value="" [attr.selected]="objChildSP.RiskSportsActivities == null ? true : null">Select</option>
+                                                        <option *ngFor="let op of listddlYesNoNotApplicable" value="{{op.CofigTableValuesId}}">
+                                                            {{op.Value}}
+                                                        </option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <input type="number" max="16" class="form-control" formControlName="RiskSportsActivitiesScore" [(ngModel)]="objChildSP.RiskSportsActivitiesScore" />
+                                                </td>
+                                                <td>
+                                                    <select formControlName="RiskSportsActivitiesRating" class="form-control" [(ngModel)]="objChildSP.RiskSportsActivitiesRating">
+                                                        <option value="" [attr.selected]="objChildSP.RiskSportsActivitiesRating == null ? true : null">Select</option>
+                                                        <option value="1" class="ddlValred">Red</option>
+                                                        <option value="2" class="ddlValAmber">Amber</option>
+                                                        <option value="3" class="ddlValGree">Green</option>
+                                                    </select>
+                                                </td>
+
+                                            </tr>
+                                            <tr>
+                                                <td colspan="4">
+                                                    <textarea formControlName="RiskSportsActivitiesInfo" class="form-control" [(ngModel)]="objChildSP.RiskSportsActivitiesInfo"
+                                                              placeholder="Risk Minimisation Strategies"></textarea>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><b>History of risk-taking behaviour/adrenaline seeking behaviour </b> </td>
+                                                <td>
+                                                    <select *ngIf="listddlYesNoNotApplicable.length>0" formControlName="RiskTakingBehaviourAdrenaline" class="form-control" [(ngModel)]="objChildSP.RiskTakingBehaviourAdrenaline">
+                                                        <option value="" [attr.selected]="objChildSP.RiskTakingBehaviourAdrenaline == null ? true : null">Select</option>
+                                                        <option *ngFor="let op of listddlYesNoNotApplicable" value="{{op.CofigTableValuesId}}">
+                                                            {{op.Value}}
+                                                        </option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <input type="number" max="16" class="form-control" formControlName="RiskTakingBehaviourAdrenalineScore" [(ngModel)]="objChildSP.RiskTakingBehaviourAdrenalineScore" />
+                                                </td>
+                                                <td>
+                                                    <select formControlName="RiskTakingBehaviourAdrenalineRating" class="form-control" [(ngModel)]="objChildSP.RiskTakingBehaviourAdrenalineRating">
+                                                        <option value="" [attr.selected]="objChildSP.RiskTakingBehaviourAdrenalineRating == null ? true : null">Select</option>
+                                                        <option value="1" class="ddlValred">Red</option>
+                                                        <option value="2" class="ddlValAmber">Amber</option>
+                                                        <option value="3" class="ddlValGree">Green</option>
+                                                    </select>
+                                                </td>
+
+                                            </tr>
+                                            <tr>
+                                                <td colspan="4">
+                                                    <textarea formControlName="RiskTakingBehaviourAdrenalineInfo" class="form-control" [(ngModel)]="objChildSP.RiskTakingBehaviourAdrenalineInfo"
+                                                              placeholder="Risk Minimisation Strategies"></textarea>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><b>Any other risk identified (please list)</b> </td>
+                                                <td>
+                                                    <select *ngIf="listddlYesNoNotApplicable.length>0" formControlName="OtherRiskIdentified" class="form-control" [(ngModel)]="objChildSP.OtherRiskIdentified">
+                                                        <option value="" [attr.selected]="objChildSP.OtherRiskIdentified == null ? true : null">Select</option>
+                                                        <option *ngFor="let op of listddlYesNoNotApplicable" value="{{op.CofigTableValuesId}}">
+                                                            {{op.Value}}
+                                                        </option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <input type="number" max="16" class="form-control" formControlName="OtherRiskIdentifiedScore" [(ngModel)]="objChildSP.OtherRiskIdentifiedScore" />
+                                                </td>
+                                                <td>
+                                                    <select formControlName="OtherRiskIdentifiedRating" class="form-control" [(ngModel)]="objChildSP.OtherRiskIdentifiedRating">
+                                                        <option value="" [attr.selected]="objChildSP.OtherRiskIdentifiedRating == null ? true : null">Select</option>
+                                                        <option value="1" class="ddlValred">Red</option>
+                                                        <option value="2" class="ddlValAmber">Amber</option>
+                                                        <option value="3" class="ddlValGree">Green</option>
+                                                    </select>
+                                                </td>
+
+                                            </tr>
+                                            <tr>
+                                                <td colspan="4">
+                                                    <textarea formControlName="OtherRiskIdentifiedInfo" class="form-control" [(ngModel)]="objChildSP.OtherRiskIdentifiedInfo"
+                                                              placeholder="Risk Minimisation Strategies"></textarea>
+                                                </td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="tab-pane {{SaferTabActive}}" id="SaferInfo">
+
+                                <div class="form-group">
+                                    <label class=""><b> Child/Young Person’s preferred name & the names used in the foster family</b></label>
+                                    <textarea formControlName="ChildPreferredName" rows="4" class="form-control" [(ngModel)]="objChildSP.ChildPreferredName"></textarea>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-hover table-sm">
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th width="35%" style="padding-left:48px">Details</th>
+                                                <th width="35%">Strategies in place to provide safer care. Note when they will be applied and by whom</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <b>Health/Disability</b><br />
+                                                    <b>Please note;</b>i.e. allergies, illness, any disability, any learning disability any medication
+                                                </td>
+                                                <td>
+                                                    <textarea formControlName="HealthDisabilityDetails" class="form-control" [(ngModel)]="objChildSP.HealthDisabilityDetails"></textarea>
+                                                </td>
+                                                <td>
+                                                    <textarea formControlName="HealthDisabilityStrategies" class="form-control" [(ngModel)]="objChildSP.HealthDisabilityStrategies"></textarea>
+                                                </td>
+
+
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    <b>Personal Care</b><br />
+                                                    <b>Please note;</b>the way we dress in the home, is there a need for supervision.
+                                                </td>
+                                                <td>
+                                                    <textarea formControlName="PersonalCareDetails" class="form-control" [(ngModel)]="objChildSP.PersonalCareDetails"></textarea>
+                                                </td>
+                                                <td>
+                                                    <textarea formControlName="PersonalCareStrategies" class="form-control" [(ngModel)]="objChildSP.PersonalCareStrategies"></textarea>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    <b>Showing affection</b><br />
+                                                    <b>Please note;</b>thehow do you promote ‘appropriate dress’
+                                                </td>
+                                                <td>
+                                                    <textarea formControlName="ShowingAffectionDetails" class="form-control" [(ngModel)]="objChildSP.ShowingAffectionDetails"></textarea>
+                                                </td>
+                                                <td>
+                                                    <textarea formControlName="ShowingAffectionStrategies" class="form-control" [(ngModel)]="objChildSP.ShowingAffectionStrategies"></textarea>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    <b>Daily Routines/Bedtime Routines </b><br />
+                                                    <b>Please note;</b>include safer care practice.
+                                                </td>
+                                                <td>
+                                                    <textarea formControlName="DailyRoutinesBedtimeDetails" class="form-control" [(ngModel)]="objChildSP.DailyRoutinesBedtimeDetails"></textarea>
+                                                </td>
+                                                <td>
+                                                    <textarea formControlName="DailyRoutinesBedtimeStrategies" class="form-control" [(ngModel)]="objChildSP.DailyRoutinesBedtimeStrategies"></textarea>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    <b>Privacy – Bathroom and Bedrooms </b><br />
+                                                    <b>Please note;</b>how it is managed, safer care practice
+                                                </td>
+                                                <td>
+                                                    <textarea formControlName="PrivacyBathroomBedroomsDetails" class="form-control" [(ngModel)]="objChildSP.PrivacyBathroomBedroomsDetails"></textarea>
+                                                </td>
+                                                <td>
+                                                    <textarea formControlName="PrivacyBathroomBedroomsStrategies" class="form-control" [(ngModel)]="objChildSP.PrivacyBathroomBedroomsStrategies"></textarea>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    <b>Play  </b>(if age appropriate) <br />
+                                                    <b>Please note;</b>play in communal areas, level of supervision required.
+                                                </td>
+                                                <td>
+                                                    <textarea formControlName="PlayDetails" class="form-control" [(ngModel)]="objChildSP.PlayDetails"></textarea>
+                                                </td>
+                                                <td>
+                                                    <textarea formControlName="PlayStrategies" class="form-control" [(ngModel)]="objChildSP.PlayStrategies"></textarea>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    <b>Social Media, Photos, Internet Use, Mobile Phones & Technology </b><br />
+                                                    <b>Please note;</b>taking photos, safety, where the devices are used, is the child vulnerable to bullying and grooming.
+                                                </td>
+                                                <td>
+                                                    <textarea formControlName="SocialMediaPhotosDetails" class="form-control" [(ngModel)]="objChildSP.SocialMediaPhotosDetails"></textarea>
+                                                </td>
+                                                <td>
+                                                    <textarea formControlName="SocialMediaPhotosStrategies" class="form-control" [(ngModel)]="objChildSP.SocialMediaPhotosStrategies"></textarea>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    <b>Does the child have any learning support needs or sensory needs? </b><br />
+                                                    <b>Please note;</b>i.e. forms of communication, BSL, PECS, guidance where English is not their first language.
+                                                </td>
+                                                <td>
+                                                    <textarea formControlName="LearningSupportNeedsDetails" class="form-control" [(ngModel)]="objChildSP.LearningSupportNeedsDetails"></textarea>
+                                                </td>
+                                                <td>
+                                                    <textarea formControlName="LearningSupportNeedsStrategies" class="form-control" [(ngModel)]="objChildSP.LearningSupportNeedsStrategies"></textarea>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    <b>Does the child have a limited sense of danger? </b><br />
+                                                    <b>Please note;</b>lack of stranger awareness, road safety, lack of awareness of the danger presented by hot or sharp items
+                                                </td>
+                                                <td>
+                                                    <textarea formControlName="LimitedSenseDangerDetails" class="form-control" [(ngModel)]="objChildSP.LimitedSenseDangerDetails"></textarea>
+                                                </td>
+                                                <td>
+                                                    <textarea formControlName="LimitedSenseDangerStrategies" class="form-control" [(ngModel)]="objChildSP.LimitedSenseDangerStrategies"></textarea>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    <b>Does the child need advice or support in managing self-stimulatory behaviours or sexualised feelings?</b><br />
+                                                    <b>Please note;</b>i.e. masturbation, stimming which could include rocking, pacing or hand flapping.
+                                                </td>
+                                                <td>
+                                                    <textarea formControlName="AdviceSelfStimulatorySexualisedDetails" class="form-control" [(ngModel)]="objChildSP.AdviceSelfStimulatorySexualisedDetails"></textarea>
+                                                </td>
+                                                <td>
+                                                    <textarea formControlName="AdviceSelfStimulatorySexualisedStrategies" class="form-control" [(ngModel)]="objChildSP.AdviceSelfStimulatorySexualisedStrategies"></textarea>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    <b>Visitors to the home/Identified Support People/Emergency care </b><br />
+                                                    <b>Please note;</b>what arrangements are in place. If child care is provide by any one other than the foster parent(s).
+                                                </td>
+                                                <td>
+                                                    <textarea formControlName="VisitorsHomeDetails" class="form-control" [(ngModel)]="objChildSP.VisitorsHomeDetails"></textarea>
+                                                </td>
+                                                <td>
+                                                    <textarea formControlName="VisitorsHomeStrategies" class="form-control" [(ngModel)]="objChildSP.VisitorsHomeStrategies"></textarea>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    <b>Travel & Transport  </b><br />
+                                                    <b>Please note;</b> is a car seat required, child safety locks on rear doors.
+                                                </td>
+                                                <td>
+                                                    <textarea formControlName="TravelTransportDetails" class="form-control" [(ngModel)]="objChildSP.TravelTransportDetails"></textarea>
+                                                </td>
+                                                <td>
+                                                    <textarea formControlName="TravelTransportStrategies" class="form-control" [(ngModel)]="objChildSP.TravelTransportStrategies"></textarea>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    <b>Going out alone  </b><br />
+                                                    <b>Please note;</b> is there a history/risk of going missing, personal safety, using cycle helmets, friends, inappropriate friends.
+                                                </td>
+                                                <td>
+                                                    <textarea formControlName="GoingOutAloneDetails" class="form-control" [(ngModel)]="objChildSP.GoingOutAloneDetails"></textarea>
+                                                </td>
+                                                <td>
+                                                    <textarea formControlName="GoingOutAloneStrategies" class="form-control" [(ngModel)]="objChildSP.GoingOutAloneStrategies"></textarea>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    <b>Contact with Friends and Family  </b><br />
+                                                    <b>Please note;</b> level of supervision, any known risk by family members
+                                                </td>
+                                                <td>
+                                                    <textarea formControlName="ContactWithFriendsFamilyDetails" class="form-control" [(ngModel)]="objChildSP.ContactWithFriendsFamilyDetails"></textarea>
+                                                </td>
+                                                <td>
+                                                    <textarea formControlName="ContactWithFriendsFamilyStrategies" class="form-control" [(ngModel)]="objChildSP.ContactWithFriendsFamilyStrategies"></textarea>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    <b>Regular Visitors to the Fostering Household – levels of supervision. </b><br />
+                                                    <b>Please note;</b> where do visitors have access to/not have access to.
+                                                </td>
+                                                <td>
+                                                    <textarea formControlName="RegularVisitorsDetails" class="form-control" [(ngModel)]="objChildSP.RegularVisitorsDetails"></textarea>
+                                                </td>
+                                                <td>
+                                                    <textarea formControlName="RegularVisitorsStrategies" class="form-control" [(ngModel)]="objChildSP.RegularVisitorsStrategies"></textarea>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    <b>Confidentiality & Secrets  </b><br />
+                                                    <b>Please note;</b> how will you promote open communication and the need to pass on information of concern
+                                                </td>
+                                                <td>
+                                                    <textarea formControlName="ConfidentialitySecretsDetails" class="form-control" [(ngModel)]="objChildSP.ConfidentialitySecretsDetails"></textarea>
+                                                </td>
+                                                <td>
+                                                    <textarea formControlName="ConfidentialitySecretsStrategies" class="form-control" [(ngModel)]="objChildSP.ConfidentialitySecretsStrategies"></textarea>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    <b>Other – add any additional issues not covered above</b>
+                                                </td>
+                                                <td>
+                                                    <textarea formControlName="OtherDetails" class="form-control" [(ngModel)]="objChildSP.OtherDetails"></textarea>
+                                                </td>
+                                                <td>
+                                                    <textarea formControlName="OtherStrategies" class="form-control" [(ngModel)]="objChildSP.OtherStrategies"></textarea>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+
+                                </div>
+                            </div>
+
+                            <div class="col-md-5 form-group">
+                                <SubmitButton FormCnfgId="278" #btnSubmit
+                                              (Click)="clicksubmit()" [IsLoading]="isLoading"></SubmitButton>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+<div class="col-xl-12 col-lg-12 col-12 bottom-30">
+
+    <div widget class="card">
+        <div class="changeColor" *ngIf="LstChildSpecificPlanHistory.length>0">
+            <div widget class="card">
+                <div class="card-header">
+                    <span>History</span>
+                </div>
+                <!-- <div class="card-body widget-body">
+                    <div class="table-responsive datatable">
+                        <table class="table table-striped table-hover table-sm" [mfData]="LstChildSpecificPlanHistory" #mf="mfDataTable" [mfRowsOnPage]="10">
+                            <thead>
+                                <tr>
+                                    <th><mfDefaultSorter by="CreatedDate"><b> Created Date</b></mfDefaultSorter></th>
+                                    <th><b>View</b></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of LstChildSpecificPlanHistory">
+                                    <td>{{item.CreatedDate | dateFormat:'dd/MM/yyyy'}}</td>
+                                    <td>
+                                        <button (click)="fnViewCSPDocu(item.ChildSpecificPlanId)" style="cursor:pointer" class="btn btn-warning ">
+                                            View
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="12">
+                                        <mfBootstrapPaginator [rowsOnPageSet]="[10, 25, 50, 100]"></mfBootstrapPaginator>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+        <div>
+            <button #btnViewCSPDocu type="button" [hidden]="true" class="btn btn-primary" data-toggle="modal" data-target="#lg-modal2">Large</button>
+            <div class="modal fade" id="lg-modal2" tabindex="-1" role="dialog" aria-labelledby="modal-large-label" style="display: none;">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header state modal-primary">
+                            <h4 class="modal-title" id="modal-large-label"><i class="fa fa fa-user"></i>Child Specific Plan</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                        </div>
+                        <div class="row mbm-20">
+                            <div class="col-lg-12 col-12 bottom-30">
+                                <div class="clearfix">
+                                    <ul class="nav nav-tabs top pull-left w-100p">
+                                        <li class="nav-item">
+                                            <a class="nav-link active" data-toggle="tab" href="#RiskInfo1">
+                                                Part A – Risk Assessment
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" data-toggle="tab" href="#SaferInfo1">
+                                                Part B - Safer Care Plan
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="tab-content top" *ngIf="hisobjChildSP">
+                                    <div class="tab-pane active" id="RiskInfo1">
+                                        <div class="form-group">
+                                            <label class="">Carer Name :  </label>
+                                            <b>{{hisobjChildSP.CarerName}}</b>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="">Supervising Social Worker : </label>
+                                            <b>{{hisobjChildSP.SSWName}}</b></div>
+                                        <div class="form-group">
+                                            <label class="">Review Date :</label>
+                                            <b> {{hisobjChildSP.ReviewDate|dateFormat:'dd/MM/yyyy'}}</b>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class=""><b> Reason for Update:</b></label>
+                                            <br />
+                                            {{hisobjChildSP.ReasonforUpdate}}
+                                        </div>
+                                        <div class="form-group">
+                                            <label class=""><b> Information:</b></label>
+                                            <br />
+                                            Please note: brief summary/overview for the child/young person
+                                            <br />
+                                            {{hisobjChildSP.ChildSummary}}
+                                        </div>
+                                        <div class="table-responsive">
+                                            <table class="table table-striped table-hover table-sm">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Risk</th>
+                                                        <th>Yes (Y) / No (N) / Not Known (NK)</th>
+                                                        <th>Score out of 16</th>
+                                                        <th>RAG Rating Red / Amber / Green</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td><b>Risk or history of Self Harm behaviour</b> </td>
+                                                        <td class="alignCenter">
+                                                            {{hisobjChildSP.SelfHarmBehaviour==1017?'Yes':hisobjChildSP.SelfHarmBehaviour==1018?'No':hisobjChildSP.SelfHarmBehaviour==1019?'Not Applicable':''}}
+                                                        </td>
+                                                        <td class="alignCenter">
+                                                            {{hisobjChildSP.SelfHarmBehaviourScore}}
+                                                        </td>
+                                                        <td class="alignCenter">
+                                                            {{hisobjChildSP.SelfHarmBehaviourRating==1?'Red':hisobjChildSP.SelfHarmBehaviourRating==2?'Amber':hisobjChildSP.SelfHarmBehaviourRating==3?'Green':'' }}
+                                                        </td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="4">
+                                                            {{hisobjChildSP.SelfHarmBehaviourInfo}}
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td><b> Risk or history of Suicide Threats / Attempts</b></td>
+                                                        <td>
+                                                            {{hisobjChildSP.SuicideThreats==1017?'Yes':hisobjChildSP.SuicideThreats==1018?'No':hisobjChildSP.SuicideThreats==1019?'Not Applicable':''}}
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.SuicideThreatsScore}}
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.SuicideThreatsRating==1?'Red':hisobjChildSP.SuicideThreatsRating==2?'Amber':hisobjChildSP.SuicideThreatsRating==3?'Green':'' }}
+                                                        </td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="4">
+                                                            {{hisobjChildSP.SuicideThreatsInfo}}
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td><b> Medical Condition which may affect behaviour</b></td>
+                                                        <td>
+                                                            {{hisobjChildSP.MedicalCondition==1017?'Yes':hisobjChildSP.MedicalCondition==1018?'No':hisobjChildSP.MedicalCondition==1019?'Not Applicable':''}}
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.MedicalConditionScore}}
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.MedicalConditionRating==1?'Red':hisobjChildSP.MedicalConditionRating==2?'Amber':hisobjChildSP.MedicalConditionRating==3?'Green':'' }}
+                                                        </td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="4">
+                                                            {{hisobjChildSP.MedicalConditionInfo}}
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td><b>High Risk medical condition (e.g. allergies / asthma / heart condition)</b> </td>
+                                                        <td>
+                                                            {{hisobjChildSP.HighRiskMedicalCondition==1017?'Yes':hisobjChildSP.HighRiskMedicalCondition==1018?'No':hisobjChildSP.HighRiskMedicalCondition==1019?'Not Applicable':''}}
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.HighRiskMedicalConditionScore}}
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.HighRiskMedicalConditionRating==1?'Red':hisobjChildSP.HighRiskMedicalConditionRating==2?'Amber':hisobjChildSP.HighRiskMedicalConditionRating==3?'Green':'' }}
+                                                        </td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="4">
+                                                            {{hisobjChildSP.HighRiskMedicalConditionInfo}}
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td><b>Eating disorders</b> </td>
+                                                        <td>
+                                                            {{hisobjChildSP.EatingDisorders==1017?'Yes':hisobjChildSP.EatingDisorders==1018?'No':hisobjChildSP.EatingDisorders==1019?'Not Applicable':''}}
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.EatingDisordersScore}}
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.EatingDisordersRating==1?'Red':hisobjChildSP.EatingDisordersRating==2?'Amber':hisobjChildSP.EatingDisordersRating==3?'Green':'' }}
+                                                        </td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="4">
+                                                            {{hisobjChildSP.EatingDisordersInfo}}
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td><b>History of verbal violence/aggression/bullying towards other children </b> </td>
+                                                        <td>
+                                                            {{hisobjChildSP.VerbalViolenceOtherChildren==1017?'Yes':hisobjChildSP.VerbalViolenceOtherChildren==1018?'No':hisobjChildSP.VerbalViolenceOtherChildren==1019?'Not Applicable':''}}
+
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.VerbalViolenceOtherChildrenScore}}
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.VerbalViolenceOtherChildrenRating==1?'Red':hisobjChildSP.VerbalViolenceOtherChildrenRating==2?'Amber':hisobjChildSP.VerbalViolenceOtherChildrenRating==3?'Green':'' }}
+
+
+                                                        </td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="4">
+                                                            {{hisobjChildSP.VerbalViolenceOtherChildrenInfo}}
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td><b>History of physical violence/aggression/bullying towards other children</b> </td>
+                                                        <td>
+                                                            {{hisobjChildSP.PhysicalViolenceOtherChildren==1017?'Yes':hisobjChildSP.PhysicalViolenceOtherChildren==1018?'No':hisobjChildSP.PhysicalViolenceOtherChildren==1019?'Not Applicable':''}}
+
+
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.PhysicalViolenceOtherChildrenScore}}
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.PhysicalViolenceOtherChildrenRating==1?'Red':hisobjChildSP.PhysicalViolenceOtherChildrenRating==2?'Amber':hisobjChildSP.PhysicalViolenceOtherChildrenRating==3?'Green':'' }}
+
+                                                        </td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="4">
+                                                            {{hisobjChildSP.PhysicalViolenceOtherChildrenInfo}}
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td><b>History of verbal violence/aggression towards adults</b> </td>
+                                                        <td>
+                                                            {{hisobjChildSP.VerbalViolenceAdults==1017?'Yes':hisobjChildSP.VerbalViolenceAdults==1018?'No':hisobjChildSP.VerbalViolenceAdults==1019?'Not Applicable':''}}
+
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.VerbalViolenceAdultsScore}}
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.VerbalViolenceAdultsRating==1?'Red':hisobjChildSP.VerbalViolenceAdultsRating==2?'Amber':hisobjChildSP.VerbalViolenceAdultsRating==3?'Green':'' }}
+
+
+                                                        </td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="4">
+                                                            {{hisobjChildSP.VerbalViolenceAdultsInfo}}
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td><b>History of physical violence/aggression towards adults</b> </td>
+                                                        <td>
+                                                            {{hisobjChildSP.PhysicalViolenceAdults==1017?'Yes':hisobjChildSP.PhysicalViolenceAdults==1018?'No':hisobjChildSP.PhysicalViolenceAdults==1019?'Not Applicable':''}}
+
+
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.PhysicalViolenceAdultsScore}}
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.PhysicalViolenceAdultsRating==1?'Red':hisobjChildSP.PhysicalViolenceAdultsRating==2?'Amber':hisobjChildSP.PhysicalViolenceAdultsRating==3?'Green':'' }}
+
+                                                        </td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="4">
+                                                            {{hisobjChildSP.PhysicalViolenceAdultsInfo}}
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td><b>History of violence / cruelty to animals</b> </td>
+                                                        <td>
+                                                            {{hisobjChildSP.ViolenceCrueltyAnimals==1017?'Yes':hisobjChildSP.ViolenceCrueltyAnimals==1018?'No':hisobjChildSP.ViolenceCrueltyAnimals==1019?'Not Applicable':''}}
+
+
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.ViolenceCrueltyAnimalsScore}}
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.ViolenceCrueltyAnimalsRating==1?'Red':hisobjChildSP.ViolenceCrueltyAnimalsRating==2?'Amber':hisobjChildSP.ViolenceCrueltyAnimalsRating==3?'Green':'' }}
+
+                                                        </td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="4">
+                                                            {{hisobjChildSP.ViolenceCrueltyAnimalsInfo}}
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td><b>History or risk of sexually harmful behaviour to others </b> </td>
+                                                        <td>
+                                                            {{hisobjChildSP.SexuallyHarmfulOthers==1017?'Yes':hisobjChildSP.SexuallyHarmfulOthers==1018?'No':hisobjChildSP.SexuallyHarmfulOthers==1019?'Not Applicable':''}}
+
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.SexuallyHarmfulOthersScore}}
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.SexuallyHarmfulOthersRating==1?'Red':hisobjChildSP.SexuallyHarmfulOthersRating==2?'Amber':hisobjChildSP.SexuallyHarmfulOthersRating==3?'Green':'' }}
+
+
+                                                        </td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="4">
+                                                            {{hisobjChildSP.SexuallyHarmfulOthersInfo}}
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td><b>Vulnerability, due to issues around sexuality </b> </td>
+                                                        <td>
+                                                            {{hisobjChildSP.VulnerabilityAroundSexuality==1017?'Yes':hisobjChildSP.VulnerabilityAroundSexuality==1018?'No':hisobjChildSP.VulnerabilityAroundSexuality==1019?'Not Applicable':''}}
+
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.VulnerabilityAroundSexualityScore}}
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.VulnerabilityAroundSexualityRating==1?'Red':hisobjChildSP.VulnerabilityAroundSexualityRating==2?'Amber':hisobjChildSP.VulnerabilityAroundSexualityRating==3?'Green':'' }}
+                                                        </td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="4">
+                                                            {{hisobjChildSP.VulnerabilityAroundSexualityInfo}}
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td><b>History or risk of Child Sexual Exploitation </b> </td>
+                                                        <td>
+                                                            {{hisobjChildSP.ChildSexualExploitation==1017?'Yes':hisobjChildSP.ChildSexualExploitation==1018?'No':hisobjChildSP.ChildSexualExploitation==1019?'Not Applicable':''}}
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.ChildSexualExploitationScore}}
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.ChildSexualExploitationRating==1?'Red':hisobjChildSP.ChildSexualExploitationRating==2?'Amber':hisobjChildSP.ChildSexualExploitationRating==3?'Green':'' }}
+                                                        </td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="4">
+                                                            {{hisobjChildSP.ChildSexualExploitationInfo}}
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td><b>History or risk of Child Criminal Exploitation</b> </td>
+                                                        <td>
+                                                            {{hisobjChildSP.ChildCriminalExploitation==1017?'Yes':hisobjChildSP.ChildCriminalExploitation==1018?'No':hisobjChildSP.ChildCriminalExploitation==1019?'Not Applicable':''}}
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.ChildCriminalExploitationScore}}
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.ChildCriminalExploitationRating==1?'Red':hisobjChildSP.ChildCriminalExploitationRating==2?'Amber':hisobjChildSP.ChildCriminalExploitationRating==3?'Green':'' }}
+                                                        </td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="4">
+                                                            {{hisobjChildSP.ChildCriminalExploitationInfo}}
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td><b>History or risk of fire setting</b> </td>
+                                                        <td>
+                                                            {{hisobjChildSP.RiskFireSetting==1017?'Yes':hisobjChildSP.RiskFireSetting==1018?'No':hisobjChildSP.RiskFireSetting==1019?'Not Applicable':''}}
+
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.RiskFireSettingScore}}
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.RiskFireSettingRating==1?'Red':hisobjChildSP.RiskFireSettingRating==2?'Amber':hisobjChildSP.RiskFireSettingRating==3?'Green':'' }}
+                                                        </td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="4">
+                                                            {{hisobjChildSP.RiskFireSettingInfo}}
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td><b>History or risk of destruction to property</b> </td>
+                                                        <td>
+                                                            {{hisobjChildSP.RiskDestructionToProperty==1017?'Yes':hisobjChildSP.RiskDestructionToProperty==1018?'No':hisobjChildSP.RiskDestructionToProperty==1019?'Not Applicable':''}}
+
+
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.RiskDestructionToPropertyScore}}
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.RiskDestructionToPropertyRating==1?'Red':hisobjChildSP.RiskDestructionToPropertyRating==2?'Amber':hisobjChildSP.RiskDestructionToPropertyRating==3?'Green':'' }}
+                                                        </td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="4">
+                                                            {{hisobjChildSP.RiskDestructionToPropertyInfo}}
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td><b>History or risk of offending behaviour / criminal record</b> </td>
+                                                        <td>
+                                                            {{hisobjChildSP.RiskOffendingBehaviour==1017?'Yes':hisobjChildSP.RiskOffendingBehaviour==1018?'No':hisobjChildSP.RiskOffendingBehaviour==1019?'Not Applicable':''}}
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.RiskOffendingBehaviourScore}}
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.RiskOffendingBehaviourRating==1?'Red':hisobjChildSP.RiskOffendingBehaviourRating==2?'Amber':hisobjChildSP.RiskOffendingBehaviourRating==3?'Green':'' }}
+                                                        </td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="4">
+                                                            {{hisobjChildSP.RiskOffendingBehaviourInfo}}
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td><b>History or risk of radicalisation</b> </td>
+                                                        <td>
+                                                            {{hisobjChildSP.RiskRadicalisation==1017?'Yes':hisobjChildSP.RiskRadicalisation==1018?'No':hisobjChildSP.RiskRadicalisation==1019?'Not Applicable':''}}
+
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.RiskRadicalisationScore}}
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.RiskRadicalisationRating==1?'Red':hisobjChildSP.RiskRadicalisationRating==2?'Amber':hisobjChildSP.RiskRadicalisationRating==3?'Green':'' }}
+                                                        </td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="4">
+                                                            {{hisobjChildSP.RiskRadicalisationInfo}}
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td><b>History or risk of making allegations</b> </td>
+                                                        <td>
+                                                            {{hisobjChildSP.RiskMakingAllegation==1017?'Yes':hisobjChildSP.RiskMakingAllegation==1018?'No':hisobjChildSP.RiskMakingAllegation==1019?'Not Applicable':''}}
+
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.RiskMakingAllegationScore}}
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.RiskMakingAllegationRating==1?'Red':hisobjChildSP.RiskMakingAllegationRating==2?'Amber':hisobjChildSP.RiskMakingAllegationRating==3?'Green':'' }}
+
+
+                                                        </td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="4">
+                                                            {{hisobjChildSP.RiskMakingAllegationInfo}}
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td><b>History of smoking cigarettes</b> </td>
+                                                        <td>
+                                                            {{hisobjChildSP.SmokingCigarettes==1017?'Yes':hisobjChildSP.SmokingCigarettes==1018?'No':hisobjChildSP.SmokingCigarettes==1019?'Not Applicable':''}}
+
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.SmokingCigarettesScore}}
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.SmokingCigarettesRating==1?'Red':hisobjChildSP.SmokingCigarettesRating==2?'Amber':hisobjChildSP.SelfHarmBehaviourRatingSmokingCigarettesRating3?'Green':'' }}
+
+
+                                                        </td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="4">
+                                                            {{hisobjChildSP.SmokingCigarettesInfo}}
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td><b>History or risk of taking / dealing with illegal drugs or psychoactive substances (legal highs).</b> </td>
+                                                        <td>
+                                                            {{hisobjChildSP.RiskTakingDealingDrugs==1017?'Yes':hisobjChildSP.RiskTakingDealingDrugs==1018?'No':hisobjChildSP.RiskTakingDealingDrugs==1019?'Not Applicable':''}}
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.RiskTakingDealingDrugsScore}}
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.RiskTakingDealingDrugsRating==1?'Red':hisobjChildSP.RiskTakingDealingDrugsRating==2?'Amber':hisobjChildSP.RiskTakingDealingDrugsRating==3?'Green':'' }}
+                                                        </td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="4">
+                                                            {{hisobjChildSP.RiskTakingDealingDrugsInfo}}
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td><b>History or risk of alcohol consumption / abuse</b> </td>
+                                                        <td>
+                                                            {{hisobjChildSP.RiskAlcoholConsumption==1017?'Yes':hisobjChildSP.RiskAlcoholConsumption==1018?'No':hisobjChildSP.RiskAlcoholConsumption==1019?'Not Applicable':''}}
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.RiskAlcoholConsumptionScore}}
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.RiskAlcoholConsumptionRating==1?'Red':hisobjChildSP.RiskAlcoholConsumptionRating==2?'Amber':hisobjChildSP.RiskAlcoholConsumptionRating==3?'Green':'' }}
+                                                        </td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="4">
+                                                            {{hisobjChildSP.RiskAlcoholConsumptionInfo}}
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td><b>History or risk of Absconding </b> </td>
+                                                        <td>
+                                                            {{hisobjChildSP.RiskAbsconding==1017?'Yes':hisobjChildSP.RiskAbsconding==1018?'No':hisobjChildSP.RiskAbsconding==1019?'Not Applicable':''}}
+
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.RiskAbscondingScore}}
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.RiskAbscondingRating==1?'Red':hisobjChildSP.RiskAbscondingRating==2?'Amber':hisobjChildSP.RiskAbscondingRating==3?'Green':'' }}
+
+                                                        </td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="4">
+                                                            {{hisobjChildSP.RiskAbscondingInfo}}
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td><b>Participation in high risk sports/activities which can present an increased risk – i.e. horse riding, quad bikes, mini motor bikes, wall climbing activities etc  </b> </td>
+                                                        <td>
+                                                            {{hisobjChildSP.RiskSportsActivities==1017?'Yes':hisobjChildSP.RiskSportsActivities==1018?'No':hisobjChildSP.RiskSportsActivities==1019?'Not Applicable':''}}
+
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.RiskSportsActivitiesScore}}
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.RiskSportsActivitiesRating==1?'Red':hisobjChildSP.RiskSportsActivitiesRating==2?'Amber':hisobjChildSP.RiskSportsActivitiesRating==3?'Green':'' }}
+                                                        </td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="4">
+                                                            {{hisobjChildSP.RiskSportsActivitiesInfo}}
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td><b>History of risk-taking behaviour/adrenaline seeking behaviour </b> </td>
+                                                        <td>
+                                                            {{hisobjChildSP.RiskTakingBehaviourAdrenaline==1017?'Yes':hisobjChildSP.RiskTakingBehaviourAdrenaline==1018?'No':hisobjChildSP.RiskTakingBehaviourAdrenaline==1019?'Not Applicable':''}}
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.RiskTakingBehaviourAdrenalineScore}}
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.RiskTakingBehaviourAdrenalineRating==1?'Red':hisobjChildSP.RiskTakingBehaviourAdrenalineRating==2?'Amber':hisobjChildSP.RiskTakingBehaviourAdrenalineRating==3?'Green':'' }}
+
+
+                                                        </td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="4">
+                                                            {{hisobjChildSP.RiskTakingBehaviourAdrenalineInfo}}
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td><b>Any other risk identified (please list)</b> </td>
+                                                        <td>
+                                                            {{hisobjChildSP.OtherRiskIdentified==1017?'Yes':hisobjChildSP.OtherRiskIdentified==1018?'No':hisobjChildSP.OtherRiskIdentified==1019?'Not Applicable':''}}
+
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.OtherRiskIdentifiedScore}}
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.OtherRiskIdentifiedRating==1?'Red':hisobjChildSP.OtherRiskIdentifiedRating==2?'Amber':hisobjChildSP.OtherRiskIdentifiedRating==3?'Green':'' }}
+
+                                                        </td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="4">
+                                                            {{hisobjChildSP.OtherRiskIdentifiedInfo}}
+                                                        </td>
+                                                    </tr>
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane" id="SaferInfo1">
+
+                                        <div class="form-group">
+                                            <label class=""><b> Child/Young Person’s preferred name & the names used in the foster family:</b></label><br />
+                                            {{hisobjChildSP.ChildPreferredName}}
+                                        </div>
+                                        <div class="table-responsive">
+                                            <table class="table table-striped table-hover table-sm">
+                                                <thead>
+                                                    <tr>
+                                                        <th></th>
+                                                        <th width="35%" style="padding-left:48px">Details</th>
+                                                        <th width="35%">Strategies in place to provide safer care. Note when they will be applied and by whom</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>
+                                                            <b>Health/Disability</b><br />
+                                                            <b>Please note;</b>i.e. allergies, illness, any disability, any learning disability any medication
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.HealthDisabilityDetails}}
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.HealthDisabilityStrategies}}
+                                                        </td>
+
+
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td>
+                                                            <b>Personal Care</b><br />
+                                                            <b>Please note;</b>the way we dress in the home, is there a need for supervision.
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.PersonalCareDetails}}
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.PersonalCareStrategies}}
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td>
+                                                            <b>Showing affection</b><br />
+                                                            <b>Please note;</b>thehow do you promote ‘appropriate dress’
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.ShowingAffectionDetails}}
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.ShowingAffectionStrategies}}
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td>
+                                                            <b>Daily Routines/Bedtime Routines </b><br />
+                                                            <b>Please note;</b>include safer care practice.
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.DailyRoutinesBedtimeDetails}}
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.DailyRoutinesBedtimeStrategies}}
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td>
+                                                            <b>Privacy – Bathroom and Bedrooms </b><br />
+                                                            <b>Please note;</b>how it is managed, safer care practice
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.PrivacyBathroomBedroomsDetails}}
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.PrivacyBathroomBedroomsStrategies}}
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td>
+                                                            <b>Play  </b>(if age appropriate) <br />
+                                                            <b>Please note;</b>play in communal areas, level of supervision required.
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.PlayDetails}}
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.PlayStrategies}}
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td>
+                                                            <b>Social Media, Photos, Internet Use, Mobile Phones & Technology </b><br />
+                                                            <b>Please note;</b>taking photos, safety, where the devices are used, is the child vulnerable to bullying and grooming.
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.SocialMediaPhotosDetails}}
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.SocialMediaPhotosStrategies}}
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td>
+                                                            <b>Does the child have any learning support needs or sensory needs? </b><br />
+                                                            <b>Please note;</b>i.e. forms of communication, BSL, PECS, guidance where English is not their first language.
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.LearningSupportNeedsDetails}}
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.LearningSupportNeedsStrategies}}
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td>
+                                                            <b>Does the child have a limited sense of danger? </b><br />
+                                                            <b>Please note;</b>lack of stranger awareness, road safety, lack of awareness of the danger presented by hot or sharp items
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.LimitedSenseDangerDetails}}
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.LimitedSenseDangerStrategies}}
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td>
+                                                            <b>Does the child need advice or support in managing self-stimulatory behaviours or sexualised feelings?</b><br />
+                                                            <b>Please note;</b>i.e. masturbation, stimming which could include rocking, pacing or hand flapping.
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.AdviceSelfStimulatorySexualisedDetails}}
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.AdviceSelfStimulatorySexualisedStrategies}}
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td>
+                                                            <b>Visitors to the home/Identified Support People/Emergency care </b><br />
+                                                            <b>Please note;</b>what arrangements are in place. If child care is provide by any one other than the foster parent(s).
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.VisitorsHomeDetails}}
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.VisitorsHomeStrategies}}
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td>
+                                                            <b>Travel & Transport  </b><br />
+                                                            <b>Please note;</b> is a car seat required, child safety locks on rear doors.
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.TravelTransportDetails}}
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.TravelTransportStrategies}}
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td>
+                                                            <b>Going out alone  </b><br />
+                                                            <b>Please note;</b> is there a history/risk of going missing, personal safety, using cycle helmets, friends, inappropriate friends.
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.GoingOutAloneDetails}}
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.GoingOutAloneStrategies}}
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td>
+                                                            <b>Contact with Friends and Family  </b><br />
+                                                            <b>Please note;</b> level of supervision, any known risk by family members
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.ContactWithFriendsFamilyDetails}}
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.ContactWithFriendsFamilyStrategies}}
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td>
+                                                            <b>Regular Visitors to the Fostering Household – levels of supervision. </b><br />
+                                                            <b>Please note;</b> where do visitors have access to/not have access to.
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.RegularVisitorsDetails}}
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.RegularVisitorsStrategies}}
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td>
+                                                            <b>Confidentiality & Secrets  </b><br />
+                                                            <b>Please note;</b> how will you promote open communication and the need to pass on information of concern
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.ConfidentialitySecretsDetails}}
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.ConfidentialitySecretsStrategies}}
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td>
+                                                            <b>Other – add any additional issues not covered above</b>
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.OtherDetails}}
+                                                        </td>
+                                                        <td>
+                                                            {{hisobjChildSP.OtherStrategies}}
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div>
+    <button #btnPrint type="button" [hidden]="true" class="btn btn-primary" data-toggle="modal" data-target="#lg-modal1">Large</button>
+    <div class="modal fade" id="lg-modal1" tabindex="-1" role="dialog" aria-labelledby="modal-large-label" style="display: none;">
+        <div class="modal-dialog modal-lg" role="document">
+            <form [formGroup]="_FormPrint">
+                <div class="modal-content">
+                    <div class="modal-header state modal-primary">
+                        <h4 class="modal-title" id="modal-large-label">
+                            <i class="fa fa-print"></i>Email
+                        </h4>
+                        <div *ngIf="isLoading"><i class="fa fa-spinner fa-spin"></i> Sending email please wait...</div>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <!--<div class="form-group">
+                            Click to attach the signatures
+                            <input type="checkbox" [(ngModel)]="attachSignature" formControlName="signature"/>
+                        </div>-->
+                        <div class="form-group">
+                            Enter Email Subject:
+                            <input type="text" [(ngModel)]="subject" class="form-control" formControlName="subject" required />
+                            <div *ngIf="(!_FormPrint.controls.subject.valid && submittedprint && _FormPrint.controls.subject.errors.required )" class="alert alert-danger">
+                                Please enter Email Subject
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            Enter Email Address(es):
+                            <textarea [(ngModel)]="eAddress" class="form-control" formControlName="eAddress" required></textarea>
+                            <div *ngIf="(!_FormPrint.controls.eAddress.valid && submittedprint && _FormPrint.controls.eAddress.errors.required )" class="alert alert-danger">
+                                Please enter Email Address(es)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <!--<button type="button" class="btn btn-success" (click)="fnPrint()">Print</button>-->
+                        <button type="button" class="btn btn-success" (click)="fnEmail(_FormPrint)" [disabled]="isLoading">Email</button>
+                        <button #btnCancel type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>

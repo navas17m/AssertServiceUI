@@ -1,0 +1,362 @@
+﻿
+<div class="col-xl-12 col-lg-12 col-12 bottom-30">
+    <!-- <div style="text-align:right" *ngIf="showAutoSave">
+        <b>{{saveDraftText}}  {{draftSavedTime | date: 'HH:mm'}}</b>
+    </div> -->
+    <AutoSavedMessage [Text]="saveDraftText" [Time]="draftSavedTime" [Visible]="showAutoSave"></AutoSavedMessage>
+    <ViewDisable></ViewDisable>
+    <Child-Header></Child-Header>
+    <div widget class="card">
+        <div class="card-header">
+            <span><DisplayFormName [FormCnfgId]="formId"></DisplayFormName><br></span>
+            <div class="widget-controls">
+                <i class="fa fa-file-pdf-o" (click)="fnDonloadPDF()" style="font-size:18px;color:white;cursor:pointer;" title="Download PDF"></i>
+                <i class="fa fa-file-word-o" (click)="fnDonloadWord()" style="font-size:18px;color:white;cursor:pointer;padding-left:5px;" title="Download Word"></i>
+                <i class="fa fa-print" (click)="fnPrint()" style="font-size:18px;color:white;cursor:pointer;padding-left:5px;padding-right:5px" title="Print"></i>
+                <i class="fa fa-envelope-open" (click)="fnShowEmail()" style="font-size:18px;color:white;cursor:pointer;" title="Email"></i>
+            </div>
+
+        </div>
+        <!-- Risk Assessment New Add to sibling feature -->
+        <div class="card-body widget-body">
+            <form [formGroup]="_Form">
+                <div class="row mbm-20">
+                    <div class="col-lg-12 col-12 bottom-30">
+                        <div class="clearfix">
+                            <ul class="nav nav-tabs top pull-left w-100p">
+                                <li class="nav-item" (click)="fnChildDetailsTab()">
+                                    <a class="nav-link {{ChildDetailsActive}}" data-toggle="tab" href="#ChildDetails">
+                                        RA-Child Details
+                                    </a>
+                                </li>
+                                <li class="nav-item" (click)="fnChildInformationTab()" [hidden]="ChildInformaVisible">
+                                    <a class="nav-link {{ChildInformationActive}}" data-toggle="tab" href="#ChildInformation">
+                                        RA-Child Information
+                                    </a>
+                                </li>
+                                <li class="nav-item" (click)="fnChildRiskDetailsTab()" [hidden]="ChildRiskDetailsVisible">
+                                    <a class="nav-link {{ChildRiskDetailsActive}}" data-toggle="tab" href="#ChildRiskDetails">
+                                        RA-Child Risk Details
+                                    </a>
+                                </li>
+                                <li class="nav-item" (click)="fnDelegatedAuthorityTab()" [hidden]="DelegatedAuthorityVisible">
+                                    <a class="nav-link {{DelegatedAuthorityActive}}" data-toggle="tab" href="#DelegatedAuthority">
+                                        RA-Delegated Authority
+                                    </a>
+                                </li>
+                                <li class="nav-item" (click)="fnDocumentDetailTab()" >
+                                    <a class="nav-link {{DocumentActive}}" data-toggle="tab" href="#UploadDocuments">Upload Documents</a>
+                                </li>
+
+                            </ul>
+
+                        </div>
+                        <div class="tab-content top">
+                            <div class="tab-pane {{ChildDetailsActive}}" id="ChildDetails">
+                                <div *ngIf="insChildDetails" class="row" style="padding-bottom:10px">
+                                    <!-- <div class="col-md-12" style="text-align: right;" *ngIf="IsVisibleFCSing">
+                                        <span >
+                                            <a title="fc signed" *ngIf="IsFCSignatureSigned"  (click)="BindChildRiskAssemenntFCSignDetails()" class="btn btn-success"
+                                           style="color: white;"  >FC Signed <i class="fa fa-check"></i></a>
+
+                                     <a title="fc not signed" *ngIf="!IsFCSignatureSigned"   (click)="BindChildRiskAssemenntFCSignDetails()" class="btn
+                                                btn-primary" style="color: white;"  >FC Sign <i class="fa fa-pencil"></i></a>
+
+                                        </span>
+                                    </div> -->
+                                    <div class="col-md-6">
+                                        Carer Name :<b> {{CarerName}}</b>
+                                    </div>
+                                    <div class="col-md-6">
+                                        Placing Authority :<b> {{insChildDetails.PlacingAuthority}}</b>
+
+                                    </div>
+                                    <div class="col-md-6">
+                                        Ethnicity :<b> {{insChildDetails.Ethnicity}}</b>
+                                    </div>
+                                    <div class="col-md-6">
+                                        Child's LA Social Worker :
+                                        <b> {{ChildSSWName}}</b>
+                                    </div>
+                                    <div class="col-md-6">
+                                        LA SW Email Address :<b *ngIf="insChildDetails.LocalAuthoritySWInfo && insChildDetails.LocalAuthoritySWInfo.ContactInfo"> {{insChildDetails.LocalAuthoritySWInfo.ContactInfo.EmailId}}</b>
+                                    </div>
+                                    <div class="col-md-6">
+                                        LA SW Contact Number :<b *ngIf="insChildDetails.LocalAuthoritySWInfo && insChildDetails.LocalAuthoritySWInfo.ContactInfo"> {{insChildDetails.LocalAuthoritySWInfo.ContactInfo.MobilePhone}}</b>
+                                    </div>
+                                    <div class="col-md-6">
+                                        Disabilities :<b> {{insChildDetails.Disability}}</b>
+                                    </div>
+                                    <div class="col-md-6">
+                                        Legal Status :<b> {{insChildDetails.LegalStatus}}</b>
+                                    </div>
+                                </div>
+                                <Dynamic-Form #dynamic [dynamicformcontrols]="dynamicformcontrol|filter:'ControlLoadFormat':'ChildDetails'" [formbuilder]="_Form"
+                                              (OnValChange)="DynamicOnValChange($event)" [submitted]="submitted"></Dynamic-Form>
+                                <EmailNotification #Notification [FormCnfgId]="formId" ></EmailNotification>
+                                <!-- [AddtionalEmailIds] [EmailIds] -->
+
+                            </div>
+                            <div class="tab-pane {{ChildInformationActive}}" id="ChildInformation"
+                                 [hidden]="ChildInformaVisible">
+                                <Dynamic-Form #dynamicChildInfo [dynamicformcontrols]="dynamicformcontrol|filter:'ControlLoadFormat':'ChildInfo'" [formbuilder]="_Form"
+                                              [submitted]="submitted"></Dynamic-Form>
+
+                                <div style="border: 2px solid #979aa0;padding:10px;background-color:#edf1f7">
+                                    Significant events during the child's Local Authority care episode: (Include date and risk - keep this updated)
+                                    <br />
+                                    <Dynamic-Form #dynamicB [dynamicformcontrols]="dynamicformcontrolSignificant"
+                                                  [formbuilder]="_Form" [submitted]="submittedSignificant">
+                                    </Dynamic-Form>
+
+                                    <button *ngIf="!isEdit" (click)="AddSingnificantDetails(dynamicB.dynamicformcontrols,dynamicB.formbuilder)" class="btn btn-success">Add</button>
+                                    <div *ngIf="isEdit">
+                                        <button (click)="UpdateSingnificantDetails(dynamicB.dynamicformcontrols,dynamicB.formbuilder)" class="btn btn-success">Update</button>
+                                        <button (click)="CancelEditSingnificant()" class="btn btn-danger">Cancel</button>
+                                    </div>
+                                    <div  *ngIf="isLoadinig" style="text-align: center;">
+                                      <i class="fa fa-spinner fa-spin"></i> Loading please wait...
+                                    </div>
+                                    <div class="changeColor" style="padding-top:20px" *ngIf="globalobjSignificantList.length>0 && globalobjSignificantList !=null">
+                                        <div widget class="card">
+                                            <div class="card-header">
+                                                <span class="text-uppercase">  Existing Details</span>
+                                            </div>
+                                            <div class="card-body widget-body">
+                                                <div class="table table-responsive">
+                                                    <ngx-datatable [rows]="significantList"
+                                                        class="bootstrap"
+                                                        rowHeight="auto"
+                                                        [columnMode]="'force'"
+                                                        [limit]="limit"
+                                                        rowHeight="auto"
+                                                        [scrollbarH]="true"
+                                                        [footerHeight]="50"
+                                                        [messages]="footerMessage"
+                                                        >
+                                                        <ngx-datatable-column *ngFor="let col of significantColumns; let i = index" [name]="col.name" [width]="col.width" [prop]="col.prop">
+                                                            <ng-template ngx-datatable-header-template >{{ col.name }}</ng-template>
+                                                            <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                                                            <div>{{value}}</div>
+                                                            </ng-template>
+                                                        </ngx-datatable-column>
+                                                        <ngx-datatable-column name="Edit" [sortable]=false width=60>
+                                                            <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+
+                                                                <div *ngIf="row.StatusId==3">
+                                                                    <button disabled class="btn  btn-warning"><i style="font-size:20px" class="fa fa-trash-o"></i></button>
+                                                                </div>
+                                                                <div *ngIf="row.StatusId != 3">
+                                                                    <button *ngIf="SignificantId !=rowIndex" class="btn  btn-warning"
+                                                                            (click)="EditSingnificantList(rowIndex)">
+                                                                        <i style="font-size:20px" class="fa  fa fa-edit"></i>
+                                                                    </button>
+
+                                                                    <button disabled *ngIf="SignificantId ==rowIndex"
+                                                                            class="btn  btn-warning">
+                                                                        <i style="font-size:20px" class="fa  fa fa-edit"></i>
+                                                                    </button>
+                                                                </div>
+
+                                                            </ng-template>
+                                                        </ngx-datatable-column>
+                                                        <ngx-datatable-column name="Delete" [sortable]=false width=60>
+                                                            <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+                                                                <div *ngIf="row.StatusId==3">
+                                                                    <button disabled class="btn  btn-warning"><i style="font-size:20px" class="fa fa-trash-o"></i></button>
+                                                                </div>
+
+                                                        <div *ngIf="row.StatusId != 3">
+                                                            <button   [disabled]="SignificantId != null"
+                                                                    class="btn  btn-danger"
+                                                                    (click)="DeleteSingnificantList(rowIndex)">
+                                                                <i style="font-size:20px" class="fa fa-trash-o"></i>
+                                                            </button>
+                                                        </div>
+                                                    </ng-template>
+                                                        </ngx-datatable-column>
+                                                        </ngx-datatable>
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+
+
+
+                                </div>
+
+
+                            </div>
+                            <div class="tab-pane {{ChildRiskDetailsActive}}" id="ChildRiskDetails"
+                                 [hidden]="ChildRiskDetailsVisible">
+
+                                <div style="border: 2px solid #979aa0;padding:10px;background-color:#edf1f7">
+
+                                    <Dynamic-Form #dynamicRisk [dynamicformcontrols]="dynamicformcontrolRiskCausing"
+                                                  [formbuilder]="_Form" [submitted]="submittedRisk">
+                                    </Dynamic-Form>
+
+                                    <button *ngIf="!isEditRisk" (click)="AddRiskDetails(dynamicRisk.dynamicformcontrols,dynamicRisk.formbuilder)" class="btn btn-success">Add</button>
+                                    <div *ngIf="isEditRisk">
+                                        <button (click)="UpdateRiskDetails(dynamicRisk.dynamicformcontrols,dynamicRisk.formbuilder)" class="btn btn-success">Update</button>
+                                        <button (click)="CancelEditRisk()" class="btn btn-danger">Cancel</button>
+                                    </div>
+                                    <div  *ngIf="isLoadinig" style="text-align: center;">
+                                      <i class="fa fa-spinner fa-spin"></i> Loading please wait...
+                                  </div>
+                                    <div class="changeColor" style="padding-top:20px" *ngIf="globalobjRiskList.length>0 && globalobjRiskList !=null">
+                                        <div widget class="card">
+                                            <div class="card-header">
+                                                <span class="text-uppercase">  Existing Details</span>
+                                            </div>
+
+                                            <div class="card-body widget-body">
+                                                <div class="table table-responsive">
+                                                    <ngx-datatable [rows]="riskList"
+                                                        class="bootstrap"
+                                                        rowHeight="auto"
+                                                        [columnMode]="'force'"
+                                                        [limit]="limit"
+                                                        rowHeight="auto"
+                                                        [scrollbarH]="true"
+                                                        [footerHeight]="50"
+                                                        [messages]="footerMessage">
+                                                        <ngx-datatable-column *ngFor="let col of riskColumns; let i = index" [name]="col.name" [width]="col.width" [prop]="col.prop">
+                                                            <ng-template ngx-datatable-header-template >{{ col.name }}</ng-template>
+                                                            <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                                                                <div *ngIf="col.prop =='Category'">
+                                                                    {{value==1?'Low':value==2?'Med':value==3?'High':''}}
+                                                                </div>
+                                                            <div *ngIf="col.prop !='Category'">{{value}}</div>
+                                                            </ng-template>
+                                                        </ngx-datatable-column>
+                                                        <ngx-datatable-column name="Edit" [sortable]=false width=60>
+                                                            <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+
+                                                                <div *ngIf="row.StatusId==3">
+                                                                    <button disabled class="btn  btn-warning"><i style="font-size:20px" class="fa fa-trash-o"></i></button>
+                                                                </div>
+                                                                <div *ngIf="row.StatusId != 3">
+                                                                    <button *ngIf="RiskId !=rowIndex" class="btn  btn-warning"
+                                                                            (click)="EditRiskList(rowIndex)">
+                                                                        <i style="font-size:20px" class="fa  fa fa-edit"></i>
+                                                                    </button>
+
+                                                                    <button disabled *ngIf="RiskId ==rowIndex"
+                                                                            class="btn  btn-warning">
+                                                                        <i style="font-size:20px" class="fa  fa fa-edit"></i>
+                                                                    </button>
+                                                                </div>
+
+                                                            </ng-template>
+                                                        </ngx-datatable-column>
+                                                        <ngx-datatable-column name="Delete" [sortable]=false width=60>
+                                                            <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+                                                                <div *ngIf="row.StatusId==3">
+                                                                    <button disabled class="btn  btn-warning"><i style="font-size:20px" class="fa fa-trash-o"></i></button>
+                                                                </div>
+
+                                                        <div *ngIf="row.StatusId != 3">
+                                                            <button   [disabled]="RiskId != null"
+                                                                    class="btn  btn-danger"
+                                                                    (click)="DeleteRiskList(rowIndex)">
+                                                                <i style="font-size:20px" class="fa fa-trash-o"></i>
+                                                            </button>
+                                                        </div>
+                                                    </ng-template>
+                                                        </ngx-datatable-column>
+                                                        </ngx-datatable>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="tab-pane {{DelegatedAuthorityActive}}" id="DelegatedAuthority"
+                                 [hidden]="DelegatedAuthorityVisible">
+                                <Dynamic-Form #dynamicDelegatedAutho [dynamicformcontrols]="dynamicformcontrol|filter:'ControlLoadFormat':'DelegatedAutho'" [formbuilder]="_Form"
+                                              [submitted]="submitted"></Dynamic-Form>
+
+
+                            </div>
+                            <div class="tab-pane {{DocumentActive}}" id="UploadDocuments">
+                                <Upload-Documents #uploads [formCnfgId]="formId" [primaryKeyId]="tblPrimaryKey"
+                                                   [submittedUpload]="submittedUpload"
+                                                  [userTypeCnfgId]="5" [typeId]="TypeId"></Upload-Documents>
+                                                  <!-- [IsUpload] [formbuilder] -->
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <button *ngIf="showbtnSaveDraft" [ladda]="isLoadingSAD" #btnSaveDraft (click)="fnSaveDraft(
+                                            dynamic.dynamicformcontrols,
+                                            dynamicChildInfo.dynamicformcontrols,
+                                            dynamicDelegatedAutho.dynamicformcontrols,
+                                            dynamicB.dynamicformcontrols,
+                                            dynamicRisk.dynamicformcontrols,
+                                            uploads.IsUpload,
+                                            uploads.formbuilder)" class="btn btn-primary expand-right">{{saveAsDraftText}}
+                                </button>
+                                <SubmitButton [FormCnfgId]="FormCnfgId" #btnSubmit (Click)="clicksubmit(dynamic.dynamicformcontrols,dynamic.formbuilder,
+                                              dynamicChildInfo.dynamicformcontrols,dynamicChildInfo.formbuilder,
+                                              dynamicDelegatedAutho.dynamicformcontrols,dynamicDelegatedAutho.formbuilder,
+                                    uploads.UploadDocIds,uploads.IsUpload,uploads.formbuilder,Notification.AddtionalEmailIds,Notification.EmailIds)"
+                                    [IsLoading]="isLoading" [IsDiasable]="isLoadingSAD" [Text]="submitText"></SubmitButton>
+                                    <!-- <BackButton></BackButton> -->
+
+<button style="cursor:pointer;" id="BackBtn"  class="btn btn-warning BackBtn" (click)="fnBack()">Back</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<div>
+    <button #btnPrint type="button" [hidden]="true" class="btn btn-primary" data-toggle="modal" data-target="#lg-modal1">Large</button>
+    <div class="modal fade" id="lg-modal1" tabindex="-1" role="dialog" aria-labelledby="modal-large-label" style="display: none;">
+        <div class="modal-dialog modal-lg" role="document">
+            <form [formGroup]="_FormPrint">
+                <div class="modal-content">
+                    <div class="modal-header state modal-primary">
+                        <h4 class="modal-title" id="modal-large-label">
+                            <i class="fa fa-print"></i>Email
+                        </h4>
+                        <div *ngIf="isLoading"><i class="fa fa-spinner fa-spin"></i> Sending email please wait...</div>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="form-group">
+                            Enter Email Subject:
+                            <input type="text" [(ngModel)]="subject" class="form-control" formControlName="subject" required />
+                            <div *ngIf="(!_FormPrint.controls.subject.valid && submittedprint && _FormPrint.controls.subject.errors.required )" class="alert alert-danger">
+                                Please enter Email Subject
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            Enter Email Address(es):
+                            <textarea [(ngModel)]="eAddress" class="form-control" formControlName="eAddress" required></textarea>
+                            <div *ngIf="(!_FormPrint.controls.eAddress.valid && submittedprint && _FormPrint.controls.eAddress.errors.required )" class="alert alert-danger">
+                                Please enter Email Address(es)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <!--<button type="button" class="btn btn-success" (click)="fnPrint()">Print</button>-->
+                        <button type="button" class="btn btn-success" (click)="fnEmail(_FormPrint)" [disabled]="isLoading">Email</button>
+                        <button #btnCancel type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>

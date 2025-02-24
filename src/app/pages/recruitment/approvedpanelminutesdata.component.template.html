@@ -1,0 +1,144 @@
+﻿<div class="col-xl-12 col-lg-12 col-12 bottom-30">
+    <ViewDisable></ViewDisable>
+    <ApprovedCarerHeader *ngIf="objQeryVal.mid == 3"></ApprovedCarerHeader>
+    <CarerHeader *ngIf="objQeryVal.mid == 13"></CarerHeader>
+    <div widget class="card">
+        <div class="card-header">
+            <span>Approved Panel Minutes</span>
+            <div class="widget-controls">
+                <i class="fa fa-file-pdf-o" (click)="fnDonloadPDF()" style="font-size:18px;color:white;cursor:pointer;" title="Download PDF"></i>
+                <i class="fa fa-file-word-o" (click)="fnDonloadWord()" style="font-size:18px;color:white;cursor:pointer;padding-left:5px;" title="Download Word"></i>
+                <i class="fa fa-print" (click)="fnPrint()" style="font-size:18px;color:white;cursor:pointer;padding-left:5px;padding-right:5px" title="Print"></i>
+                <i class="fa fa-envelope-open" (click)="fnShowEmail()" style="font-size:18px;color:white;cursor:pointer;" title="Email"></i>
+                <!--<a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+                <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+                <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a>-->
+            </div>
+        </div>
+        <div class="card-body widget-body">
+            <form [formGroup]="_Form">
+                <div class="row mbm-20">
+                    <div class="col-lg-12 col-12 bottom-30">
+                        <div class="clearfix">
+                            <ul class="nav nav-tabs top pull-left w-100p">
+                                <li class="nav-item" (click)="fnSectionA()">
+                                    <a class="nav-link {{SectionAActive}}" data-toggle="tab" href="#SectionA">Approved Panel Minutes</a>
+                                </li>
+                                <li class="nav-item" (click)="fnDocumentDetail()">
+                                    <a class="nav-link {{DocumentActive}}" data-toggle="tab" href="#UploadDocument">Upload Document</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="tab-content top">
+                            <!--Section A-->
+                            <div class="tab-pane {{SectionAActive}}" id="SectionA">
+                                <div class="form-group">
+                                    <label class="">User Name :</label>
+                                    {{UserName}}
+                                </div>
+                                <div class="form-group" *ngIf="objApprovedPanelMinutesDTO.UpdatedDate">
+                                    <label class="">Date of Entry :</label>
+                                    {{objApprovedPanelMinutesDTO.UpdatedDate|dateFormat:'dd/MM/yyyy'}}
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Date of Panel</label>
+                                    <input type="text" placeholder="DD/MM/YYYY" readonly class="form-control form-control-date" required formControlName="DateOfPanel"  [(ngModel)]="objApprovedPanelMinutesDTO.DateOfPanel"
+                                           [value]="objApprovedPanelMinutesDTO.DateOfPanel" datepicker />
+                                    <div *ngIf="(!_Form.controls.DateOfPanel.valid && submitted && _Form.controls.DateOfPanel.errors )" class="alert alert-danger">
+                                        Please select Date of Panel
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Decision Makers Approval Date</label>
+                                    <input type="text" placeholder="DD/MM/YYYY" readonly class="form-control form-control-date" formControlName="ApprovalDate"  [(ngModel)]="objApprovedPanelMinutesDTO.ApprovalDate"
+                                           [value]="objApprovedPanelMinutesDTO.ApprovalDate" datepicker />
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Agenda Items</label>
+                                    <textarea formControlName="AgendaItems" class="form-control" [(ngModel)]="objApprovedPanelMinutesDTO.AgendaItems"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Panel Minutes</label>
+                                    <textarea formControlName="PanelMinutes" class="form-control" [(ngModel)]="objApprovedPanelMinutesDTO.PanelMinutes"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Panel Final Decision</label>
+                                    <textarea formControlName="FinalDecision" class="form-control" [(ngModel)]="objApprovedPanelMinutesDTO.FinalDecision"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Decision Maker Minutes</label>
+                                    <textarea formControlName="MakerMinutes" class="form-control" [(ngModel)]="objApprovedPanelMinutesDTO.MakerMinutes"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label class="">Panel Approval</label>
+                                    <textarea formControlName="PanelApproval" class="form-control" [(ngModel)]="objApprovedPanelMinutesDTO.PanelApproval"></textarea>
+                                </div>
+                            </div>
+                            <!--Upload Document-->
+                            <div class="tab-pane {{DocumentActive}}" id="UploadDocument">
+                                <Upload-Documents #uploads [formCnfgId]="formId" [primaryKeyId]="tblPrimaryKey"
+                                                   [submittedUpload]="submittedUpload"
+                                                  [userTypeCnfgId]="4" [typeId]="TypeId"></Upload-Documents>
+                            </div>
+                            <div class="form-group col-lg-12">
+                                <EmailNotification #Notification [FormCnfgId]="formId" ></EmailNotification>
+                            </div>
+                            <div class="form-group col-lg-5">
+                                <SubmitButton #btnSubmit (Click)="clicksubmit(_Form,
+                                        uploads.UploadDocIds,uploads.IsUpload,uploads.formbuilder,
+                                              Notification.AddtionalEmailIds,Notification.EmailIds)" [IsLoading]="isLoading"></SubmitButton>
+                                <BackButton></BackButton>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div>
+    <button #btnPrint type="button" [hidden]="true" class="btn btn-primary" data-toggle="modal" data-target="#lg-modal1">Large</button>
+    <div class="modal fade" id="lg-modal1" tabindex="-1" role="dialog" aria-labelledby="modal-large-label" style="display: none;">
+        <div class="modal-dialog modal-lg" role="document">
+            <form [formGroup]="_FormPrint">
+                <div class="modal-content">
+                    <div class="modal-header state modal-primary">
+                        <h4 class="modal-title" id="modal-large-label">
+                            <i class="fa fa-print"></i>Email
+                        </h4>
+                        <div *ngIf="isLoading"><i class="fa fa-spinner fa-spin"></i> Sending email please wait...</div>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="form-group">
+                            Enter Email Subject:
+                            <input type="text" [(ngModel)]="subject" class="form-control" formControlName="subject" required />
+                            <div *ngIf="(!_FormPrint.controls.subject.valid && submittedprint && _FormPrint.controls.subject.errors.required )" class="alert alert-danger">
+                                Please enter Email Subject
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            Enter Email Address(es):
+                            <textarea [(ngModel)]="eAddress" class="form-control" formControlName="eAddress" required></textarea>
+                            <div *ngIf="(!_FormPrint.controls.eAddress.valid && submittedprint && _FormPrint.controls.eAddress.errors.required )" class="alert alert-danger">
+                                Please enter Email Address(es)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <!--<button type="button" class="btn btn-success" (click)="fnPrint()">Print</button>-->
+                        <button type="button" class="btn btn-success" (click)="fnEmail(_FormPrint)" [disabled]="isLoading">Email</button>
+                        <button #btnCancel type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>

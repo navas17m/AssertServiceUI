@@ -1,0 +1,39 @@
+﻿<form [formGroup]="_Form">
+   
+    <div class="bottom-30">
+        <ApprovedCarerHeader *ngIf="objQeryVal.mid == 3"></ApprovedCarerHeader>
+        <CarerHeader *ngIf="objQeryVal.mid == 13"></CarerHeader>
+        <div widget class="card">
+            <div class="card-header">
+                <span>Swap Carer</span>
+                <div class="widget-controls">
+                    <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                    <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                    <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+                    <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+                    <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a>
+                </div>
+            </div>
+            <div class="card-body widget-body">
+                <div class="form-group">
+                    <label class="class1">Note :</label>
+                    <label class=""> {{note}} </label>
+                </div>
+                <div class="form-group" *ngIf="isValid">
+                    <div>
+                        <input formControlName="swCarereOptions" required type="radio" [value]="1" [(ngModel)]="objSwapCarerDTO.SwapId">Swap Carer
+                        <input formControlName="swCarereOptions" required type="radio" [value]="2" [(ngModel)]="objSwapCarerDTO.SwapId">Remove Joint Carer
+                        <div *ngIf="(!_Form.controls.swCarereOptions.valid && submitted && _Form.controls.swCarereOptions.errors.required )" class="alert alert-danger">
+                            Please Select any option
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group" style="padding-top:0px">&nbsp;
+                </div>
+                <div class="form-group col-lg-5" *ngIf="isValid">
+                    <SubmitButton [FormCnfgId]="FormCnfgId" *ngIf="isValid" (Click)="clicksubmit(_Form)" [IsLoading]="isLoading"></SubmitButton>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

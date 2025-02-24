@@ -1,0 +1,154 @@
+﻿
+<div class="col-xl-12 col-lg-12 col-12 bottom-30">
+    <AutoSavedMessage [Text]="saveDraftText" [Time]="draftSavedTime" [Visible]="showAutoSave"></AutoSavedMessage>
+    <Child-Header></Child-Header>
+    <!-- <div style="text-align:right" *ngIf="showAutoSave">
+        <b>{{saveDraftText}}  {{draftSavedTime | date: 'HH:mm'}}</b>
+    </div> -->
+    <ViewDisable></ViewDisable>
+    <div widget class="card overflow-container">
+        <div class="card-header">
+            <span>Safe Care Policy</span>
+            <div class="widget-controls">
+                <i class="fa fa-file-pdf-o" (click)="fnDonloadPDF()" style="font-size:18px;color:white;cursor:pointer;" title="Download PDF"></i>
+                <i class="fa fa-file-word-o" (click)="fnDonloadWord()" style="font-size:18px;color:white;cursor:pointer;padding-left:5px;" title="Download Word"></i>
+                <i class="fa fa-print" (click)="fnPrint()" style="font-size:18px;color:white;cursor:pointer;padding-left:5px;padding-right:5px" title="Print"></i>
+                <i class="fa fa-envelope-open" (click)="fnShowEmail()" style="font-size:18px;color:white;cursor:pointer;" title="Email"></i>
+            </div>
+        </div>
+        <div class="card-body widget-body">
+            <form [formGroup]="_Form">
+                <div class="row mbm-20">
+                    <div class="col-lg-12 col-12 bottom-30">
+                        <div class="clearfix">
+                            <ul class="nav nav-tabs top pull-left w-100p">
+                                <li class="nav-item" (click)="fnSectionA()">
+                                    <a class="nav-link {{SectionAActive}}" data-toggle="tab" href="#SectionA">Section A</a>
+                                </li>
+                                <li class="nav-item" (click)="fnSectionB()">
+                                    <a class="nav-link {{SectionBActive}}" data-toggle="tab" href="#SectionB">Section B</a>
+                                </li>
+                                <li class="nav-item" (click)="fnDocumentDetail()">
+                                    <a class="nav-link {{DocumentActive}}" data-toggle="tab" href="#UploadDocument">Upload Document</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="tab-content top">
+                            <div class="tab-pane {{SectionAActive}}" id="SectionA">
+                                <div class="row">
+                                    <div class="form-group col-md-12">
+                                        Carer Name : {{carerName==null?'Not Placed':carerName}}
+                                    </div>
+                                                            <!--<div class="form-group">
+                                    <label class="">Date of Entry :</label>
+                                    {{DateofEntry|dateFormat:'dd/MM/yyyy'}}
+                                </div>-->
+                                    <div class="form-group col-md-6"  *ngIf="showbtnSaveDraft && isChildAvailable">
+                                         Add to Child Record : <!-- <Multiselect-Dropdown #ddChild [BindValue]="arrayChildList"  [DefaultSelection]="objSaferCarePolicyDTO.ChildIds"></Multiselect-Dropdown> -->
+                                        <p-multiSelect class="p-0" [style]="{'width':'100%'}"
+                                        placeholder="Select" filterPlaceHolder="Search"
+                                        [maxSelectedLabels]="3" selectedItemsLabel="{0} children selected"[options]="arrayChildList" optionLabel="name" optionValue="id" [(ngModel)]="selectedChildren" [ngModelOptions]="{standalone:true}"></p-multiSelect>
+                                    </div>
+                                    <div class="form-group col-md-6" *ngIf="showbtnSaveDraft && isCarerAvailable">
+                                        <label class="">Add to Carer:</label>
+                                        <p-multiSelect class="p-0" [style]="{'width':'100%'}"
+                                        placeholder="Select" filterPlaceHolder="Search"
+                                        [maxSelectedLabels]="3" selectedItemsLabel="{0} carers selected" [options]="arrayCarerList" optionLabel="name" optionValue="id" [(ngModel)]="selectedCarers" [ngModelOptions]="{standalone:true}"></p-multiSelect>
+                                        <!-- <Multiselect-Dropdown #ddCarerList [BindValue]="arrayCarerList" (selected)="onSelection($event)"
+                                                              [DefaultSelection]="CarerParentIdsLst"></Multiselect-Dropdown> -->
+                                    </div>
+                                </div>
+                                <Dynamic-Form #SectionADynamic [dynamicformcontrols]="dynamicformcontrol| filter : 'ControlLoadFormat' : 'default'"
+                                             (OnValChange)="DynamicOnValChange($event)" [formbuilder]="_Form" [submitted]="submitted"></Dynamic-Form>
+                            </div>
+                            <div class="tab-pane {{SectionBActive}}" id="SectionB">
+                                <span *ngIf="objSaferCarePolicyDTO.ChildIds.length == 0">
+                                    General Policy
+                                </span>
+                                <span *ngIf="objSaferCarePolicyDTO.ChildIds.length > 0">
+                                    Policy Specific To
+                                </span>
+
+                                <Dynamic-Form #SectionBDynamic [dynamicformcontrols]="dynamicformcontrol| filter : 'ControlLoadFormat' : 'tab1'"
+                                              [formbuilder]="_Form" [submitted]="submitted"></Dynamic-Form>
+
+
+                            </div>
+                            <div class="tab-pane {{DocumentActive}}" id="UploadDocument">
+                                <Upload-Documents #uploads [formCnfgId]="formId" [primaryKeyId]="tblPrimaryKey"
+                                                  [submittedUpload]="submittedUpload"
+                                                  [userTypeCnfgId]="5" [typeId]="TypeId"></Upload-Documents>
+                                                  <!-- [IsUpload] [formbuilder]  -->
+                            </div>
+                            <div class="form-group col-lg-12">
+                                <EmailNotification #Notification [FormCnfgId]="formId" ></EmailNotification>
+                                <!-- [AddtionalEmailIds] [EmailIds] -->
+
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <button *ngIf="showbtnSaveDraft" [ladda]="isLoadingSAD" #btnSaveDraft (click)="fnSaveDraft(SectionADynamic.dynamicformcontrols,
+                                            uploads.IsUpload,
+                                            uploads.formbuilder)" class="btn btn-primary expand-right">{{saveAsDraftText}}
+                                </button>
+                                <SubmitButton  #btnSubmit (Click)="clicksubmit(_Form,SectionADynamic.dynamicformcontrols,SectionADynamic.formbuilder,
+                                        SectionBDynamic.dynamicformcontrols,SectionBDynamic.formbuilder,
+                                        uploads.UploadDocIds,
+                                        uploads.IsUpload,
+                                        uploads.formbuilder,
+                                        Notification.AddtionalEmailIds,Notification.EmailIds)" [IsDiasable]="isLoadingSAD" [Text]="submitText" [IsLoading]="isLoading"></SubmitButton>
+                                <!-- <BackButton></BackButton> -->
+                                <button style="cursor:pointer;" id="BackBtn"  class="btn btn-warning BackBtn" (click)="fnBack()">Back</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div>
+    <button #btnPrint type="button" [hidden]="true" class="btn btn-primary" data-toggle="modal" data-target="#lg-modal1">Large</button>
+    <div class="modal fade" id="lg-modal1" tabindex="-1" role="dialog" aria-labelledby="modal-large-label" style="display: none;">
+        <div class="modal-dialog modal-lg" role="document">
+            <form [formGroup]="_FormPrint">
+                <div class="modal-content">
+                    <div class="modal-header state modal-primary">
+                        <h4 class="modal-title" id="modal-large-label">
+                            <i class="fa fa-print"></i>Email
+                        </h4>
+                        <div *ngIf="isLoading"><i class="fa fa-spinner fa-spin"></i> Sending email please wait...</div>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <!--<div class="form-group">
+                            Click to attach the signatures
+                            <input type="checkbox" [(ngModel)]="attachSignature" formControlName="signature"/>
+                        </div>-->
+                        <div class="form-group">
+                            Enter Email Subject:
+                            <input type="text" [(ngModel)]="subject" class="form-control" formControlName="subject" required />
+                            <div *ngIf="(!_FormPrint.controls.subject.valid && submittedprint && _FormPrint.controls.subject.errors.required )" class="alert alert-danger">
+                                Please enter Email Subject
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            Enter Email Address(es):
+                            <textarea [(ngModel)]="eAddress" class="form-control" formControlName="eAddress" required></textarea>
+                            <div *ngIf="(!_FormPrint.controls.eAddress.valid && submittedprint && _FormPrint.controls.eAddress.errors.required )" class="alert alert-danger">
+                                Please enter Email Address(es)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <!--<button type="button" class="btn btn-success" (click)="fnPrint()">Print</button>-->
+                        <button type="button" class="btn btn-success" (click)="fnEmail(_FormPrint)" [disabled]="isLoading">Email</button>
+                        <button #btnCancel type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>

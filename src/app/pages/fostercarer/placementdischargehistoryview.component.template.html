@@ -1,0 +1,165 @@
+﻿<form>
+
+
+    <div class="col-xl-12 col-lg-12 col-12 bottom-30">
+        <ApprovedCarerHeader></ApprovedCarerHeader>
+        <div class="form-group">
+            <BackButton></BackButton>
+        </div>
+        <div widget class="card">
+            <div class="card-header">
+                <span>Placement / Discharge History </span>
+                <div class="widget-controls">
+                    <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                    <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                    <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+                    <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+                    <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a>
+                </div>
+            </div>
+            <div class="card-body widget-body">
+                <div class="row mbm-20">
+                    <div class="col-lg-12 col-12 bottom-30" *ngIf="insHistory">
+                        <div class="form-group">
+                            <label class="">Carer Name (Code):</label>&nbsp;
+                            <label class="">
+                                <b>
+                                    {{insHistory.PCCarerName}}{{insHistory.SecondCarerName}}
+                                    ({{insHistory.CarerCode}})
+                                </b>
+                            </label>
+                        </div>
+                        <div class="form-group" *ngIf="insHistory.ChildRespiteDetail && insHistory.ChildRespiteDetail.IsBackupCarer">
+                            <label class="">Backup Carer Name:</label>&nbsp;
+                            <label class="">
+                                <b>
+                                    {{insHistory.ChildRespiteDetail.BackupCarerName}}
+                                </b>
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label class="">Child Name (Code):</label>&nbsp;
+                            <label class="">
+                                <b>
+                                    {{insHistory.ChildName}}
+
+                                </b>
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label class="">Child Date Of Birth:</label>
+                            <label class="">
+                                {{insHistory.ChildDOB | dateFormat:'dd/MM/yyyy'}}
+
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label class="">Social Worker Name:</label>&nbsp;
+                            <label class="">
+                                <b>{{insHistory.SocialWorkerName}}</b>
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label class="">Local Authority:</label>&nbsp;
+                            <label class="">
+                                <b>{{insHistory.LocalAuthority.LocalAuthorityName}}</b>
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label><b>Placement Details (General Placement)</b></label>
+                        </div>
+                        <div class="form-group">
+                            <label class="">Placement Date & Time:</label>&nbsp;
+                            <label class="">
+                                {{insHistory.PlacementDate | dateFormat:'dd/MM/yyyy hh:mm a'}}
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label class="">Placement Type:</label>&nbsp;
+                            <label class="">
+                                {{insHistory.PlacementType}}
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label class="">Reason:</label>&nbsp;
+                            <label class="">
+                                {{insHistory.PlacementReason}}
+                            </label>
+                        </div>
+                        <div *ngIf="insHistory.PlacementEndDate && insHistory.PlacementEndReasonId !=3">
+                            <div class="form-group">
+                                <label><b>Discharge Details:</b></label>
+                            </div>
+                            <div class="form-group">
+                                <label class="">Discharge Date & Time:</label>&nbsp;
+                                <label class="">
+                                    {{insHistory.PlacementEndDate | dateFormat:'dd/MM/yyyy hh:mm a'}}
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label class="">Discharge Reason:</label>&nbsp;
+                                <label class="">
+                                    {{insHistory.DischargeReason}}
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label class="">Notes:</label>&nbsp;
+                                <label class="">
+                                    {{insHistory.DischargeNotes}}
+                                </label>
+                            </div>
+                        </div>
+                        <div *ngIf="insHistory.PlacementStartTypeId==3">
+                            <div class="form-group">
+                                <label><b>Transfer Details:</b></label>
+                            </div>
+                            <div class="form-group">
+                                <label class="">Transfer From Carer (Code):</label>&nbsp;
+                                <label class="">
+                                    {{insHistory.TransferFromCarer}}
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label class="">Transfer To Carer (Code):</label>&nbsp;
+                                <label class="">
+                                    {{insHistory.PCCarerName}}{{insHistory.SecondCarerName}}
+                                    ({{insHistory.CarerCode}})
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label class="">Transfer Date:</label>&nbsp;
+                                <label class="">
+                                    {{insHistory.PlacementDate | dateFormat:'dd/MM/yyyy hh:mm a'}}
+                                </label>
+                            </div>
+                        </div>
+                        <div *ngIf="insHistory.PlacementEndReasonId==3">
+                            <div class="form-group">
+                                <label><b>Transfer Details:</b></label>
+                            </div>
+                            <div class="form-group">
+                                <label class="">Transfer From Carer (Code):</label>&nbsp;
+                                <label class="">
+                                    {{insHistory.PCCarerName}}{{insHistory.SecondCarerName}}
+                                    ({{insHistory.CarerCode}})
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label class="">Transfer To Carer (Code):</label>&nbsp;
+                                <label class="">
+                                    {{insHistory.TransferToCarer}}
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label class="">Transfer Date:</label>&nbsp;
+                                <label class="">
+                                    {{insHistory.PlacementEndDate | dateFormat:'dd/MM/yyyy hh:mm a'}}
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,139 @@
+﻿<div class="col-xl-12 col-lg-12 col-12 bottom-30">
+    <div widget class="card">
+        <div class="card-header">
+            <span>Agency Form Mapping</span>
+
+            <div class="widget-controls">
+                <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+                <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+                <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a>
+            </div>
+        </div>
+        <div class="card-body widget-body">
+            <form #heroForm="ngForm">
+
+                <div>
+                    <div class="form-group">
+                        <label class="">Agency Name</label>
+                        <select *ngIf="agencyProfileList" name="AgencyProfileId" [(ngModel)]="agencyProfileId" class="form-control" (change)="loadAgencyFormMapping($event.target.value)">
+                            <option value="0">Select a Agency Name</option>
+                            <option *ngFor="let item of agencyProfileList" value="{{item.AgencyProfileId}}">
+                                {{item.AgencyName}}
+                            </option>
+                        </select>
+                    </div>
+                    <div *ngIf="AgencyFormMappingNModuleCnfg">
+                        <div id="accordion" role="tablist" aria-multiselectable="true">
+                            <div class="card" *ngFor="let itemMC of AgencyFormMappingNModuleCnfg.ModuleCnfgList | filter : 'ParentModuleId' : '0'">
+                                <div class="card-header" role="tab" id="heading{{itemMC.ModuleCnfgId}}">
+                                    <h5 class="mb-0">
+                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{itemMC.ModuleCnfgId}}" aria-controls="collapseOne">
+                                            {{itemMC.ModuleName}}
+                                        </a>
+                                    </h5>
+                                </div>
+                                <div id="collapse{{itemMC.ModuleCnfgId}}" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+                                    <div class="card-body">
+                                        <div class="table-responsive datatable">
+                                            <table class="table table-striped table-hover table-sm">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Form Name</th>
+                                                        <th>Module Name</th>
+                                                        <th> Select All <input type="checkbox" name="{{itemMC.ModuleCnfgId}}" (click)="fncheckNuncheckAll($event.target.name,$event.target.checked)" /></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody *ngIf="AgencyFormMappingNModuleCnfg">
+                                                    <tr *ngFor="let item of AgencyFormMappingNModuleCnfg.AgencyFormMappingList | filter : 'ModuleCnfgId' : itemMC.ModuleCnfgId" [ngStyle]="{'background-color': item.IsActive?'#CCCCCC':'white'}">
+                                                        <td>
+                                                            <div *ngIf="item.IsActive
+                                     && item.FormCnfg.ModuleCnfg.ModuleCnfgId!=1
+                                     && item.FormCnfg.ModuleCnfg.ModuleCnfgId!=2
+                                     && item.FormCnfg.ModuleCnfg.ModuleCnfgId!=10
+                                     && item.FormCnfg.ModuleCnfg.ModuleCnfgId!=11
+                                     && item.FormCnfg.ModuleCnfg.ModuleCnfgId!=12
+                                      && item.FormCnfg.ModuleCnfg.ModuleCnfgId!=34"><a [routerLink]="['/pages/superadmin/agencyfieldmapping',item.AgencyProfileId,item.FormCnfg.FormCnfgId]">{{item.FormCnfg.FormName}}</a></div>
+                                                            <div *ngIf="!item.IsActive
+                                     || item.FormCnfg.ModuleCnfg.ModuleCnfgId==1
+                                     || item.FormCnfg.ModuleCnfg.ModuleCnfgId==2
+                                     || item.FormCnfg.ModuleCnfg.ModuleCnfgId==10
+                                     || item.FormCnfg.ModuleCnfg.ModuleCnfgId==11
+                                     || item.FormCnfg.ModuleCnfg.ModuleCnfgId==12
+                                     || item.FormCnfg.ModuleCnfg.ModuleCnfgId==34">{{item.FormCnfg.FormName}}</div>
+                                                        </td>
+                                                        <td>{{item.FormCnfg.ModuleCnfg.ModuleName}}</td>
+                                                        <td>
+                                                            <input name="chkSelect-{{item.AgencyFormMappingId}}" type="checkbox" [(ngModel)]="item.IsActive" />
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+
+                                            <!-- sub -->
+                                            <div class="card" *ngFor="let itemMCSub of AgencyFormMappingNModuleCnfg.ModuleCnfgList | filter : 'ParentModuleId' : itemMC.ModuleCnfgId">
+                                                <div class="card-header" role="tab" id="heading{{itemMCSub.ModuleCnfgId}}">
+                                                    <h5 class="mb-0">
+                                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{itemMCSub.ModuleCnfgId}}" aria-controls="collapseOne">
+                                                            {{itemMCSub.ModuleName}}
+                                                        </a>
+                                                    </h5>
+                                                </div>
+                                                <div id="collapse{{itemMCSub.ModuleCnfgId}}" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+                                                    <div class="card-body">
+                                                        <div class="table-responsive datatable">
+                                                            <table class="table table-striped table-hover table-sm">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Form Name</th>
+                                                                        <th>Module Name</th>
+                                                                        <th> Select All <input type="checkbox" name="{{itemMCSub.ModuleCnfgId}}" (click)="fncheckNuncheckAll($event.target.name,$event.target.checked)" /></th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody *ngIf="AgencyFormMappingNModuleCnfg">
+                                                                    <tr *ngFor="let item of AgencyFormMappingNModuleCnfg.AgencyFormMappingList | filter : 'ModuleCnfgId' : itemMCSub.ModuleCnfgId" [ngStyle]="{'background-color': item.IsActive?'#CCCCCC':'white'}">
+                                                                        <td>
+                                                                            <div *ngIf="item.IsActive
+                                                     && item.FormCnfg.ModuleCnfg.ModuleCnfgId!=1
+                                                     && item.FormCnfg.ModuleCnfg.ModuleCnfgId!=2
+                                                     && item.FormCnfg.ModuleCnfg.ModuleCnfgId!=10
+                                                     && item.FormCnfg.ModuleCnfg.ModuleCnfgId!=11
+                                                     && item.FormCnfg.ModuleCnfg.ModuleCnfgId!=12
+                                                      && item.FormCnfg.ModuleCnfg.ModuleCnfgId!=34"><a [routerLink]="['/pages/superadmin/agencyfieldmapping',item.AgencyProfileId,item.FormCnfg.FormCnfgId]">{{item.FormCnfg.FormName}}</a></div>
+                                                                            <div *ngIf="!item.IsActive
+                                                     || item.FormCnfg.ModuleCnfg.ModuleCnfgId==1
+                                                     || item.FormCnfg.ModuleCnfg.ModuleCnfgId==2
+                                                     || item.FormCnfg.ModuleCnfg.ModuleCnfgId==10
+                                                     || item.FormCnfg.ModuleCnfg.ModuleCnfgId==11
+                                                     || item.FormCnfg.ModuleCnfg.ModuleCnfgId==12
+                                                     || item.FormCnfg.ModuleCnfg.ModuleCnfgId==34">{{item.FormCnfg.FormName}}</div>
+                                                                        </td>
+                                                                        <td>{{item.FormCnfg.ModuleCnfg.ModuleName}}</td>
+                                                                        <td>
+                                                                            <input name="chkSelect-{{item.AgencyFormMappingId}}" type="checkbox" [(ngModel)]="item.IsActive" />
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- sub end -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" style="padding-top:10px">
+                        <!--<button type="button" id="btnRoleProfile" class="btn btn-primary" (click)="agencyFormMappingSubmit()">Submit</button>-->
+
+                        <SubmitButton (click)="agencyFormMappingSubmit()" [IsLoading]="IsLoading"></SubmitButton>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

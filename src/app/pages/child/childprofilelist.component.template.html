@@ -1,0 +1,228 @@
+﻿<style>
+    ::ng-deep .rowSelected{
+      background-color: #344154 !important;
+      color:white !important;
+    }
+  </style>
+<form [formGroup]="_Form">
+    <div class="col-xl-12 col-lg-12 col-12 bottom-30">
+        <Child-Header #header [IsShowControl]="IsShow" [ChildProfile]="insChildProfileDTO"></Child-Header>
+        <div widget class="card">
+            <div class="card-header">
+                <span class="text-uppercase">Child List</span>
+                <div class="widget-controls">
+                    <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                    <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                    <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+                    <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+                    <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a>
+                </div>
+            </div>
+            <div class="card-body widget-body">
+                <div>
+                    <div *ngIf="FormCnfgId==70" class="form-group">
+                        <!--<a [routerLink]="['/pages/referral/childprofile',0]" class="btn btn-success">Add Child</a>-->
+                        <AddButton FormCnfgId="70" (Click)="fnAddData()"></AddButton>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <b> Status</b>
+                                <!-- <select *ngIf="lstChildStatus" formControlName="ChildStatusId" [(ngModel)]="ChildStatusId"
+                                        class="form-control" (change)="fnLoadChild()">
+                                    <option value="0">All Applicable Status</option>
+                                    <option *ngFor="let item of lstChildStatus" value="{{item.ModuleStatusCnfgId}}">
+                                        {{item.StatusName }}
+                                    </option>
+                                </select> -->
+                                <p-multiSelect class="p-0" [style]="{'width':'100%'}" placeholder="All Applicable Status" filterPlaceHolder="Search"
+                                [maxSelectedLabels]="3" selectedItemsLabel="{0} status selected" [options]="arrayStatus"
+                                 optionLabel="name" optionValue="id" [(ngModel)]="selectedStatus"
+                                  [ngModelOptions]="{standalone:true}"  (onSelectAllChange)="fnStatusAllChange($event)"
+                                  (onChange)="fnStatusChange($event)" (onUnSelectAllChange)="fnUnSelectAllChange($event)"></p-multiSelect>
+                            </div>
+                            <div class="col-md-3">
+                                <strong> Area Offices</strong>
+                                <select *ngIf="lstAreaOffice" formControlName="AreaOfficeProfileId" [(ngModel)]="AreaOfficeProfileId"
+                                        class="form-control" (change)="fnLoadChild()">
+                                    <option value="0">All Area Office</option>
+                                    <option *ngFor="let item of lstAreaOffice" value="{{item.AreaOfficeProfileId}}">
+                                        {{item.AreaOfficeName }}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <b>Local Authority</b>
+                                <select *ngIf="lstLocalAuthority" formControlName="LocalAuthorityId" [(ngModel)]="LocalAuthorityId"
+                                        class="form-control" (change)="fnLoadChild()">
+                                    <option value="0">All Local Authority</option>
+                                    <option *ngFor="let item of lstLocalAuthority" value="{{item.LocalAuthorityId}}">
+                                        {{item.LocalAuthorityName }}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <b>Supervising Social Worker</b>
+                                <select *ngIf="lstSSW" formControlName="SSWId" [(ngModel)]="SSWId"
+                                        class="form-control" (change)="fnLoadChild()">
+                                    <option value="0">All Supervising Social Worker</option>
+                                    <option *ngFor="let item of lstSSW" value="{{item.UserProfileId}}">
+                                        {{item.PersonalInfo.FullName}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="w-200 pull-right bottom-15">
+                        <div class="input-group input-group-sm">
+                            <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                            <input class="form-control" id="table-search-input" formControlName="searchText" [(ngModel)]="searchText" type="text" placeholder="Search...">
+                        </div>
+                    </div> -->
+                    <div class="table-responsive datatable">
+                        <div class="w-200 pull-right bottom-15">
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                                <input class="form-control" id="table-search-input" formControlName="searchText" [(ngModel)]="searchText" type="text" placeholder="Search...">
+                            </div>
+                        </div>
+                        <table class="table table-striped table-hover table-sm">
+                          <tbody *ngIf="lstChildProfile == null || lstChildProfile =='' ">
+                              <tr>
+                                  <th *ngIf="!loading" colspan="9" class="text-center">
+                                      No child found.
+                                  </th>
+                                  <th *ngIf="loading" colspan="9" class="text-center">
+                                      <i class="fa fa-spinner fa-spin"></i> Loading please wait...
+                                  </th>
+                              </tr>
+                          </tbody>
+                        </table>
+                        <div class="table-responsive datatable" *ngIf="lstChildProfile != null && lstChildProfile !='' "  >
+                            <ngx-datatable [rows]="lstChildProfile | SearchFilter : 'ChildCode,PersonalInfo.FullName,PersonalInfo.DateOfBirth,ReferralDate,ChildIdentifier,PlacementDate,LocalAuthority.LocalAuthorityName': searchText"
+                                    class="bootstrap table-responsive"
+                                    rowHeight="auto"
+                                    [columnMode]="'force'"
+                                    [limit]="limitPerPage"
+                                    [scrollbarH]="true"
+                                    [footerHeight]="50"
+                                    [messages]="footerMessage"
+                                    [rowClass]="getRowClass">
+
+                                    <ngx-datatable-column name="Select" [sortable]="false">
+                                        <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                                            <button type="button" (click)="fnSelectChild(row.ChildId)" id="btnSubmit" class="btn btn-xs" [ngStyle]="{'background-color': (row.DisabilityStrIds != null && row.DisabilityStrIds !='') ? '#248dad':'#5cb85c','color':'#fff'}">Select</button>
+                                        </ng-template>
+                                    </ngx-datatable-column>
+                                    <ngx-datatable-column name="Child Code" prop="ChildCode" sortable="true" >
+                                        <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                                        {{value}}
+                                        </ng-template>
+                                    </ngx-datatable-column>
+                                    <ngx-datatable-column name="Child Name" prop="PersonalInfo.FullName" sortable="true" >
+                                        <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                                            <a title="Child" (click)="fnSnapShot(row.ChildId)">{{value|uppercase}} </a>
+                                        </ng-template>
+                                    </ngx-datatable-column>
+                                    <ngx-datatable-column name="Child Identifier" prop="ChildIdentifier" sortable="true" >
+                                        <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                                            {{value!=null?value:'-'}}
+                                        </ng-template>
+                                    </ngx-datatable-column>
+                                    <ngx-datatable-column name="Date of Birth" prop="PersonalInfo.DateOfBirth" sortable="true" >
+                                        <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                                            {{value | dateFormat:'dd/MM/yyyy'}}
+                                        </ng-template>
+                                    </ngx-datatable-column>
+                                    <ngx-datatable-column *ngIf="showReferralDate" name="Referral Date" prop="ReferralDate" sortable="true">
+                                        <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                                           {{value | dateFormat:'dd/MM/yyyy'}}
+                                        </ng-template>
+                                    </ngx-datatable-column>
+                                    <ngx-datatable-column *ngIf="showPlacementDate" name="Placement Date" prop="PlacementDate" sortable="true" >
+                                        <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                                           {{value | dateFormat:'dd/MM/yyyy'}}
+                                        </ng-template>
+                                    </ngx-datatable-column>
+                                    <ngx-datatable-column *ngIf="showDischargePlacementDate" name="Placement Date" prop="DischargePlacementDate" sortable="true" >
+                                        <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                                           {{value | dateFormat:'dd/MM/yyyy'}}
+                                        </ng-template>
+                                    </ngx-datatable-column>
+                                    <ngx-datatable-column *ngIf="showDischargeDate" name="Discharge Date" prop="DischargeDate" sortable="true" >
+                                        <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                                            {{value | dateFormat:'dd/MM/yyyy'}}
+                                        </ng-template>
+                                    </ngx-datatable-column>
+                                    <ngx-datatable-column name="Local Authority" prop="LocalAuthority.LocalAuthorityName" sortable="true" >
+                                        <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                                            {{value}}
+                                        </ng-template>
+                                    </ngx-datatable-column>
+                                    <ngx-datatable-column *ngIf="showStatus" name="Status" prop="ChildStatus" sortable="false" >
+                                        <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                                          {{value}}
+                                        </ng-template>
+                                    </ngx-datatable-column>
+                                    <ngx-datatable-column name="Behaviour" [sortable]="false" >
+                                        <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                                            <div class="progress" *ngFor="let subitem of row.ChildBehaviourColorMapping" style="margin-top: 5px;margin-bottom:5px">
+                                                <div progress-animate class="progress-bar progress-bar-striped" role="progressbar" [ngStyle]="{'height':'10px','width':'100%','background-color':subitem.ColorCode }"></div>
+                                            </div>
+                                        </ng-template>
+                                    </ngx-datatable-column>
+                                    <ngx-datatable-column *ngIf="selectedStatus.length ==1 && selectedStatus[0]!=19" name="Delete" [sortable]="false" >
+                                        <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                                            <div *ngIf="row.ChildStatusId!=19"><DeleteButton [FormCnfgId]="FormCnfgId" (Click)="fnDelete(row.ChildId)" [Size]="'s'" [SequenceNo]="row.ChildId"></DeleteButton></div>
+                                        </ng-template>
+                                    </ngx-datatable-column>
+
+                            </ngx-datatable>
+                        </div>
+                        <br/>
+                        <div><PageSize (childPageSizeEvent)="setPageSize($event)"></PageSize></div>
+                        <div style="padding:5px"><u> Disability Color Identifier: </u></div>
+                        <table>
+                            <tr>
+                                <td style="width:17%">
+                                    <button type="button" class="btn btn-xs" [ngStyle]="{'background-color': '#248dad','color':'#fff'}">Select</button>
+                                </td>
+                                <td>&nbsp; Child has Disability</td>
+                            </tr>
+                        </table>
+                        <div style="padding:5px"><u> Behavioural Color Identifier: </u></div>
+
+                        <table class="">
+                            <tr *ngFor="let item of insBehaviourNameWithColor;let i=index">
+                                <td style="width:17%">
+                                    <div class="progress">
+                                        <div progress-animate class="progress-bar progress-bar-striped" role="progressbar" [ngStyle]="{'height':'10px','width':'100%','background-color':item.ColorCode }"></div>
+                                    </div>
+                                </td>
+                                <td>
+                                    &nbsp;<b>{{lstBehaviourType[i]}}</b> ({{item.BehaviourNames}} )
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                </div>
+            </div>            
+        </div>
+
+        <div>
+            <button #btnSnapshot type="button" [hidden]="true" class="btn btn-primary" data-toggle="modal" data-target="#lg-modal2">Large</button>
+            <div class="modal fade" id="lg-modal2" tabindex="-1" role="dialog" aria-labelledby="modal-large-label" style="display: none;">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content" style="padding: 10px 10px 10px 10px;">
+                        <div class="modal-header state modal-primary">
+                            <h4 class="modal-title" id="modal-large-label"><i class="fa fa-child"></i>Child Snapshot</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                        </div>
+                        <ChildSnapshot [ChildId]="insSnpChildId"></ChildSnapshot>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

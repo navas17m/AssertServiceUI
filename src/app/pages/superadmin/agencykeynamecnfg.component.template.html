@@ -1,0 +1,207 @@
+﻿<div class="row bottom-30">
+    <div class="col">
+        <div widget class="card">
+            <div class="card-header">
+                <span>Application Configuration </span>
+                <div class="widget-controls">
+                    <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                    <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                    <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+                    <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+                    <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a>
+                </div>
+            </div>
+            <div class="card-body widget-body">
+                <div class="row mbm-20">
+                    <div class="col-lg-12 col-12 bottom-30">
+                        <div class="form-group">
+                            <label class="">Agency</label>
+                            <select #Agency *ngIf="lstAgencyProfile.length>0" name="AgencyProfileId" class="form-control"
+                                required [(ngModel)]="objAgencyKeyNameValueCnfgDTO.AgencyProfileId"
+                                (change)="fnChangeAgencyName(Agency.value)"   >
+                                <option value="" [attr.selected]="objAgencyKeyNameValueCnfgDTO.AgencyProfileId == null ? true : null">Select a Agency Name</option>
+                                <option *ngFor="let item of lstAgencyProfile" value="{{item.AgencyProfileId}}">
+                                    {{item.AgencyName}}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="clearfix">
+                            <ul class="nav nav-tabs top pull-left w-100p">
+                                <li class="nav-item" >
+                                    <a class="nav-link active" data-toggle="tab" href="#AgencyKeyNameValue">
+                                        Agency Key and Value
+                                    </a>
+                                </li>
+                                <li class="nav-item" >
+                                    <a class="nav-link " data-toggle="tab" href="#FormToDaylogEntry">Agency Form To Daylog Entry </a>
+                                </li>
+                                <!-- <li class="nav-item" >
+                                    <a class="nav-link " data-toggle="tab" href="#Webconfig">Web Config</a>
+                                </li> -->
+                                <li class="nav-item" >
+                                    <a class="nav-link " data-toggle="tab" href="#note">Configuration Note</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="tab-content top">
+                            <div class="tab-pane active" id="AgencyKeyNameValue">
+                                <div class="col-lg-12">
+                                    
+                                    <div class="changeColor" style="padding-top:20px" *ngIf="lstAgencyKeyValue.length>0">
+                                        <div widget class="card">
+                                            <div class="card-header">
+                                                <span class="text-uppercase">  Existing Details</span>
+                                            </div>
+                                            <div class="card-body widget-body">
+                                                <div class="table-responsive datatable">
+                                                    <table class="table table-striped table-hover table-sm" >
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Approved</th>
+                                                                <th>Description</th>
+                                                                <th>Value</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr *ngFor="let item of lstAgencyKeyValue;let i=index">
+                                                                <td>
+                                                                    <input name="chkSelect-{{item.AgencyKeyNameCnfgId}}" type="checkbox"
+                                                                    (click)="fncheckNuncheckForm(item.AgencyKeyNameCnfgId,$event.target.checked)"
+                                                                    [(ngModel)]="item.IsApproved" >
+                                                                </td>
+                                                                <td>{{item.Description}}</td>
+                                                                <td><input type="text"   class="form-control" name="txt-{{item.AgencyKeyNameCnfgId}}"
+                                                                    [(ngModel)]="item.Value"></td>
+                                                            </tr>
+                                                        </tbody>
+                                                        
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                            <div class="tab-pane " id="FormToDaylogEntry">
+                                <div class="col-lg-12">
+                                    
+                                    <div class="changeColor" style="padding-top:20px" *ngIf="lstFormtoDaylog.length>0">
+                                        <div widget class="card">
+                                            <div class="card-header">
+                                                <span class="text-uppercase">  Existing Details</span>
+                                            </div>
+                                            <div class="card-body widget-body">
+                                                <div class="table-responsive datatable">
+                                                    <table class="table table-striped table-hover table-sm" >
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Approved</th>
+                                                                <th>Module Name</th>
+                                                                <th>Form Name</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr *ngFor="let item of lstFormtoDaylog;let i=index">
+                                                                <td>
+                                                                    <input name="chkSelectForm-{{item.FormCnfgId}}" type="checkbox"
+                                                                    (click)="fncheckNuncheckForm(item.FormCnfgId,$event.target.checked)"
+                                                                    [(ngModel)]="item.IsApproved" >
+                                                                </td>
+                                                                <td>{{item.ModuleName}}</td>
+                                                                <td>{{item.FormName}}</td>
+                                                            </tr>
+                                                        </tbody>
+                                                        
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                            <div class="tab-pane " id="note">
+                                <div class="col-lg-12">
+                                    
+                                    <form [formGroup]="_Form">
+                                        <div>
+                                            <div class="form-group">
+                                                <label class="">Applied Page</label>
+                                                <input formControlName="AppliedPage" type="text" class="form-control" [(ngModel)]="objApplicationConfigNotesDTO.AppliedPage"
+                                                       required />
+                                                <div class="alert alert-danger" *ngIf="(!_Form.controls.AppliedPage.valid && submittedNote && _Form.controls.AppliedPage.errors.required)">
+                                                    Please enter applied page
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="">Applied Value</label>
+                                                <input formControlName="AppliedValue" type="text" class="form-control" [(ngModel)]="objApplicationConfigNotesDTO.AppliedValue" />
+                                                <div class="alert alert-danger" *ngIf="(!_Form.controls.AppliedValue.valid && submittedNote && _Form.controls.AppliedValue.errors.required)">
+                                                    Please enter applied value
+                                                </div>
+                                            </div>   
+                                            <button *ngIf="!isUpdate" (click)="fnNotesSubmit(_Form)" class="btn  btn-success">
+                                               Add
+                                            </button>
+                                            <button *ngIf="isUpdate" (click)="fnNotesSubmit(_Form)" class="btn  btn-success">
+                                                Update
+                                             </button>
+                                             <button *ngIf="isUpdate" (click)="fnNotesCancel()" class="btn  btn-danger">
+                                                Cancel
+                                             </button>
+                                        </div>
+                                    </form>
+
+                                    <div class="changeColor" style="padding-top:20px" *ngIf="lstApplicationConfigNotes.length>0">
+                                        <div widget class="card">
+                                            <div class="card-header">
+                                                <span class="text-uppercase"> Existing Details</span>
+                                            </div>
+                                            <div class="card-body widget-body">
+                                                <div class="table-responsive datatable">
+                                                    <table class="table table-striped table-hover table-sm" >
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Applied Page</th>
+                                                                <th>Applied Value</th>
+                                                                <th>Edit</th>
+                                                                <th>Delete</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr *ngFor="let item of lstApplicationConfigNotes;let i=index">
+                                                                <td *ngIf="item.IsActive">{{item.AppliedPage}}</td>
+                                                                <td *ngIf="item.IsActive">{{item.AppliedValue}}</td>
+                                                                <td *ngIf="item.IsActive">
+                                                                    <button  (click)="fnEditNote(item,i)"  class="btn  btn-warning">
+                                                                      <i style="font-size:20px" class="fa  fa fa-edit"></i>
+                                                                    </button>
+                                                                </td>
+                                                                <td *ngIf="item.IsActive">
+                                                                    <button (click)="fnDeleteNote(item)" class="btn  btn-danger">
+                                                                        <i style="font-size:20px" class="fa  fa fa-trash-o"></i>
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                        
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+
+                        <br>
+                         <SubmitButton (Click)="fnSubmit()" [IsLoading]="isLoading"></SubmitButton>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,511 @@
+﻿
+<div class="col-xl-12 col-lg-12 col-12 bottom-30">
+    <BackButton></BackButton>
+    <div class="form-group"></div>
+    <ApprovedCarerHeader *ngIf="objQeryVal.mid == 3"></ApprovedCarerHeader>
+    <CarerHeader *ngIf="objQeryVal.mid == 13"></CarerHeader>
+    <Child-Header *ngIf="objQeryVal.mid == 19"></Child-Header>
+
+    <div widget class="card">
+        <div class="card-header">
+            <span *ngIf="!childCheckVisi">Statutory Checks</span>
+            <span *ngIf="childCheckVisi"><DisplayFormName FormCnfgId="120"></DisplayFormName></span>
+            <div class="widget-controls">
+                <!--<a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+                <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+                <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a>-->
+
+                <i class="fa fa-file-pdf-o" (click)="fnDonloadPDF()" style="font-size:18px;color:white;cursor:pointer;" title="Download PDF"></i>
+                <i class="fa fa-print" (click)="fnPrint()" style="font-size:18px;color:white;cursor:pointer;padding-left:5px;padding-right:5px" title="Print"></i>
+                <i class="fa fa-envelope-open" (click)="fnShowEmail()" style="font-size:18px;color:white;cursor:pointer;" title="Email"></i>
+            </div>
+        </div>
+        <div class="card-body widget-body">
+            <div class="row mbm-20">
+                <div class="col-lg-12 col-12 bottom-30">
+                    <div class="clearfix">
+                        <ul class="nav nav-tabs top pull-left w-100p">
+                            <li class="nav-item" *ngIf="carerCheckVisi">
+                                <a class="nav-link active" data-toggle="tab" href="#PrimaryCarer">Primary Carer</a>
+                            </li>
+                            <li class="nav-item" *ngIf="carerCheckVisi" [hidden]="SecondCarerHidden">
+                                <a class="nav-link" data-toggle="tab" href="#SecondCarer">Second Carer</a>
+                            </li>
+                            <li class="nav-item" *ngIf="carerCheckVisi">
+                                <a class="nav-link" data-toggle="tab" href="#CarerFamily">Carer Family</a>
+                            </li>
+                            <li class="nav-item" *ngIf="carerCheckVisi">
+                                <a class="nav-link" data-toggle="tab" href="#BackupCarer">Backup Carer</a>
+                            </li>
+                            <li class="nav-item" *ngIf="carerCheckVisi">
+                                <a class="nav-link" data-toggle="tab" href="#BackupCarerFamily">Backup Carer Family </a>
+                            </li>
+                            <li class="nav-item" *ngIf="childCheckVisi">
+                                <a class="nav-link active" data-toggle="tab" href="#StatutoryMedicalChecks"><DisplayFormName FormCnfgId="120"></DisplayFormName> </a>
+                            </li>
+                            <li class="nav-item" *ngIf="empCheckVisi">
+                                <a class="nav-link active" data-toggle="tab" href="#StatutoryChecks">Statutory Checks </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="tab-content top">
+                        <!--PrimaryCarer A-->
+                        <div class="tab-pane active" id="PrimaryCarer" *ngIf="carerCheckVisi">
+                            <!--Primary Carer Statutory Checks-->
+                            <div class="changeColor" style="padding-top:10px" *ngIf="globalPrimaryCheckList.length>0 && globalPrimaryCheckList !=null">
+                                <div >
+                                    <div *ngFor="let insPCCheckItem of insPCCheckIds">
+                                        <div widget class="card" >
+                                            <div class="card-header">
+                                                <span class="text-uppercase"> {{insPCCheckItem.Name}}</span>
+                                            </div>
+                                            <div class="card-body widget-body">
+                                                <div class="table-responsive datatable">
+                                                    <table class="table table-striped table-hover table-sm" >
+                                                        <thead>
+                                                            <tr *ngFor="let item of headerPrimaryCheckList;let i=index">
+                                                                <th *ngFor="let subitem of item |slice:0:3 | FilterTwoValue : 'ComplianceCheckId':insPCCheckItem.ComplianceCheckId:'FieldName':'IsActive';let i=index">
+                                                                    {{subitem.DisplayName}}
+                                                                </th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr *ngFor="let item of globalPrimaryCheckList;let i=index">
+                                                                <td *ngFor="let subitem of item |slice:0:3 | FilterTwoValue : 'ComplianceCheckId':insPCCheckItem.ComplianceCheckId:'FieldName':'IsActive'">
+                                                                    <span *ngIf="subitem.FieldDataTypeName=='date'">
+                                                                        {{subitem.FieldValue |dateFormat:'dd/MM/yyyy'}}
+                                                                    </span>
+                                                                    <span *ngIf="subitem.FieldDataTypeName =='Dropdown'">
+                                                                        {{subitem.FieldValueText}}
+                                                                    </span>
+                                                                    <span *ngIf="subitem.FieldDataTypeName !='date' &&subitem.FieldDataTypeName !='Dropdown' && subitem.FieldDataTypeName !='bit' &&
+                                                              subitem.FieldDataTypeName !='radio'">
+                                                                        {{subitem.FieldValue}}
+                                                                    </span>
+                                                                    <span *ngIf="subitem.FieldDataTypeName =='bit'
+                                                              || subitem.FieldDataTypeName =='radio'">
+                                                                        {{subitem.FieldValue==1?'Yes':'No'}}
+                                                                    </span>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div  class="text-center" *ngIf="globalPrimaryCheckList.length == 0 && !loading">
+                                <b>No Records found.</b>
+                            </div>
+                            <div *ngIf="globalPrimaryCheckList.length == 0 &&  loading" class="text-center">
+                                <i class="fa fa-spinner fa-spin"></i> Loading please wait...
+                            </div>
+                        </div>
+                        <!--SecondCarer-->
+                        <div class="tab-pane" id="SecondCarer" *ngIf="carerCheckVisi" [hidden]="SecondCarerHidden">
+                            <!--Second Carer Statutory Checks-->
+                            <div class="changeColor" style="padding-top:10px" *ngIf="globalSecondCheckList.length>0 && globalSecondCheckList !=null">
+                                <div>
+                                    <div *ngFor="let insSCCheckItem of insSCCheckIds">
+                                        <div widget class="card">
+                                            <div class="card-header">
+                                                <span class="text-uppercase"> {{insSCCheckItem.Name}}</span>
+                                            </div>
+                                            <div class="card-body widget-body">
+                                                <div class="table-responsive datatable">
+                                                    <table class="table table-striped table-hover table-sm" >
+                                                        <thead>
+                                                            <tr *ngFor="let item of headerSecondCheckList;let i=index">
+                                                                <th *ngFor="let subitem of item |slice:0:3 | FilterTwoValue : 'ComplianceCheckId':insSCCheckItem.ComplianceCheckId:'FieldName':'IsActive';let i=index">
+                                                                    {{subitem.DisplayName}}
+                                                                </th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr *ngFor="let item of globalSecondCheckList;let i=index">
+                                                                <td *ngFor="let subitem of item |slice:0:3 | FilterTwoValue : 'ComplianceCheckId':insSCCheckItem.ComplianceCheckId:'FieldName':'IsActive'">
+                                                                    <span *ngIf="subitem.FieldDataTypeName=='date'">
+                                                                        {{subitem.FieldValue |dateFormat:'dd/MM/yyyy'}}
+                                                                    </span>
+                                                                    <span *ngIf="subitem.FieldDataTypeName =='Dropdown'">
+                                                                        {{subitem.FieldValueText}}
+                                                                    </span>
+                                                                    <span *ngIf="subitem.FieldDataTypeName !='date' &&subitem.FieldDataTypeName !='Dropdown' && subitem.FieldDataTypeName !='bit' &&
+                                                              subitem.FieldDataTypeName !='radio'">
+                                                                        {{subitem.FieldValue}}
+                                                                    </span>
+                                                                    <span *ngIf="subitem.FieldDataTypeName =='bit'
+                                                              || subitem.FieldDataTypeName =='radio'">
+                                                                        {{subitem.FieldValue==1?'Yes':'No'}}
+                                                                    </span>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-center" *ngIf="globalSecondCheckList.length == 0 && !loading">
+                                <b>No Records found.</b>
+                            </div>
+                            <div *ngIf="globalSecondCheckList.length == 0 && loading" class="text-center">
+                                <i class="fa fa-spinner fa-spin"></i> Loading please wait...
+                            </div>
+                        </div>
+                        <!--CarerFamily-->
+                        <div class="tab-pane" *ngIf="carerCheckVisi" id="CarerFamily">
+                            <!--Carer Family Check-->
+                            <div class="changeColor" style="padding-top:10px" *ngIf="globalCarerFamilyCheckList.length>0 && globalCarerFamilyCheckList !=null">
+                                <div>
+                                    <div *ngFor="let insCarerFamilyCheckItem of insCarerFamilyCheckIds">
+                                        <div widget class="card">
+                                            <div class="card-header">
+                                                <span class="text-uppercase"> {{insCarerFamilyCheckItem.Name}}</span>
+                                            </div>
+                                            <div class="card-body widget-body">
+                                                <div class="table-responsive datatable">
+                                                    <table class="table table-striped table-hover table-sm" >
+                                                        <thead>
+                                                            <tr *ngFor="let item of headerCarerFamilyCheckList;let i=index">
+                                                                <th *ngFor="let subitem of item |slice:0:1 | filter : 'ComplianceCheckId':insCarerFamilyCheckItem.ComplianceCheckId">Family Member Name</th>
+                                                                <th *ngFor="let subitem of item |slice:0:3 | FilterTwoValue : 'ComplianceCheckId':insCarerFamilyCheckItem.ComplianceCheckId:'FieldName':'IsActive';let i=index">
+                                                                    {{subitem.DisplayName}}
+                                                                </th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr *ngFor="let item of globalCarerFamilyCheckList;let i=index">
+                                                                <td *ngFor="let subitem of item |slice:0:1 | filter : 'ComplianceCheckId':insCarerFamilyCheckItem.ComplianceCheckId">
+                                                                    {{subitem.MemberName}}
+                                                                </td>
+                                                                <td *ngFor="let subitem of item |slice:0:3 | FilterTwoValue : 'ComplianceCheckId':insCarerFamilyCheckItem.ComplianceCheckId:'FieldName':'IsActive'">
+                                                                    <span *ngIf="subitem.FieldDataTypeName=='date'">
+                                                                        {{subitem.FieldValue |dateFormat:'dd/MM/yyyy'}}
+                                                                    </span>
+                                                                    <span *ngIf="subitem.FieldDataTypeName =='Dropdown'">
+                                                                        {{subitem.FieldValueText}}
+                                                                    </span>
+                                                                    <span *ngIf="subitem.FieldDataTypeName !='date' &&subitem.FieldDataTypeName !='Dropdown' && subitem.FieldDataTypeName !='bit' &&
+                                                              subitem.FieldDataTypeName !='radio'">
+                                                                        {{subitem.FieldValue}}
+                                                                    </span>
+                                                                    <span *ngIf="subitem.FieldDataTypeName =='bit'
+                                                              || subitem.FieldDataTypeName =='radio'">
+                                                                        {{subitem.FieldValue==1?'Yes':'No'}}
+                                                                    </span>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-center" *ngIf="globalCarerFamilyCheckList.length == 0 && !loading">
+                                <b>No Records found.</b>
+                            </div>
+                            <div *ngIf="globalCarerFamilyCheckList.length == 0 && loading" class="text-center">
+                                <i class="fa fa-spinner fa-spin"></i> Loading please wait...
+                            </div>
+                        </div>
+                        <!--BackupCarer-->
+                        <div class="tab-pane" *ngIf="carerCheckVisi" id="BackupCarer">
+                            <!--Backup Carer Checks-->
+                            <div class="changeColor" style="padding-top:10px" *ngIf="globalBackupCarerCheckList.length>0 && globalBackupCarerCheckList !=null">
+                                <div>
+                                    <div *ngFor="let insBackupCarerCheckIdItem of insBackupCarerCheckIds">
+                                        <div widget class="card">
+                                            <div class="card-header">
+                                                <span class="text-uppercase"> {{insBackupCarerCheckIdItem.Name}}</span>
+                                            </div>
+                                            <div class="card-body widget-body">
+                                                <div class="table-responsive datatable">
+                                                    <table class="table table-striped table-hover table-sm" >
+                                                        <thead>
+
+                                                            <tr *ngFor="let item of headerBackupCarerCheckList;let i=index">
+                                                                <th *ngFor="let subitem of item |slice:0:1 | filter : 'ComplianceCheckId':insBackupCarerCheckIdItem.ComplianceCheckId">Backup Carer Name</th>
+                                                                <th *ngFor="let subitem of item |slice:0:3 | FilterTwoValue : 'ComplianceCheckId':insBackupCarerCheckIdItem.ComplianceCheckId:'FieldName':'IsActive';let i=index">
+                                                                    {{subitem.DisplayName}}
+                                                                </th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr *ngFor="let item of globalBackupCarerCheckList;let i=index">
+                                                                <td *ngFor="let subitem of item |slice:0:1 | filter : 'ComplianceCheckId':insBackupCarerCheckIdItem.ComplianceCheckId">
+                                                                    {{subitem.MemberName}}
+                                                                </td>
+                                                                <td *ngFor="let subitem of item |slice:0:3 | FilterTwoValue : 'ComplianceCheckId':insBackupCarerCheckIdItem.ComplianceCheckId:'FieldName':'IsActive'">
+                                                                    <span *ngIf="subitem.FieldDataTypeName=='date'">
+                                                                        {{subitem.FieldValue |dateFormat:'dd/MM/yyyy'}}
+                                                                    </span>
+                                                                    <span *ngIf="subitem.FieldDataTypeName =='Dropdown'">
+                                                                        {{subitem.FieldValueText}}
+                                                                    </span>
+                                                                    <span *ngIf="subitem.FieldDataTypeName !='date' &&subitem.FieldDataTypeName !='Dropdown' && subitem.FieldDataTypeName !='bit' &&
+                                                              subitem.FieldDataTypeName !='radio'">
+                                                                        {{subitem.FieldValue}}
+                                                                    </span>
+                                                                    <span *ngIf="subitem.FieldDataTypeName =='bit'
+                                                              || subitem.FieldDataTypeName =='radio'">
+                                                                        {{subitem.FieldValue==1?'Yes':'No'}}
+                                                                    </span>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-center" *ngIf="globalBackupCarerCheckList.length == 0 && !loading">
+                                <b>No Records found.</b>
+                            </div>
+                            <div *ngIf="globalBackupCarerCheckList.length == 0 && loading" class="text-center">
+                                <i class="fa fa-spinner fa-spin"></i> Loading please wait...
+                            </div>
+                        </div>
+                        <!--BackupCarerFamily-->
+                        <div class="tab-pane" *ngIf="carerCheckVisi" id="BackupCarerFamily">
+                            <!--Backup Carer Family Checks-->
+                            <div class="changeColor" style="padding-top:10px" *ngIf="globalBackupCarerFamilyCheckList.length>0 && globalBackupCarerFamilyCheckList !=null">
+                                <div>
+                                    <div *ngFor="let insBackupCarerFamilyCheckIdsItem of insBackupCarerFamilyCheckIds">
+                                        <div widget class="card">
+                                            <div class="card-header">
+                                                <span class="text-uppercase"> {{insBackupCarerFamilyCheckIdsItem.Name}}</span>
+                                            </div>
+                                            <div class="card-body widget-body">
+                                                <div class="table-responsive datatable">
+                                                    <table class="table table-striped table-hover table-sm" >
+                                                        <thead>
+                                                            <tr *ngFor="let item of headerBackupCarerFamilyCheckList;let i=index">
+                                                                <th *ngFor="let subitem of item |slice:0:1 | filter : 'ComplianceCheckId':insBackupCarerFamilyCheckIdsItem.ComplianceCheckId">Backup Carer Name</th>
+                                                                <th *ngFor="let subitem of item |slice:0:1 | filter : 'ComplianceCheckId':insBackupCarerFamilyCheckIdsItem.ComplianceCheckId">Family Member Name</th>
+                                                                <th *ngFor="let subitem of item |slice:0:3 | FilterTwoValue : 'ComplianceCheckId':insBackupCarerFamilyCheckIdsItem.ComplianceCheckId:'FieldName':'IsActive';let i=index">
+                                                                    {{subitem.DisplayName}}
+                                                                </th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr *ngFor="let item of globalBackupCarerFamilyCheckList;let i=index">
+                                                                <td *ngFor="let subitem of item |slice:0:1 | filter : 'ComplianceCheckId':insBackupCarerFamilyCheckIdsItem.ComplianceCheckId">
+                                                                    {{subitem.BackupCarerName}}
+                                                                </td>
+                                                                <td *ngFor="let subitem of item |slice:0:1 | filter : 'ComplianceCheckId':insBackupCarerFamilyCheckIdsItem.ComplianceCheckId">
+                                                                    {{subitem.MemberName}}
+                                                                </td>
+                                                                <td *ngFor="let subitem of item |slice:0:3 | FilterTwoValue : 'ComplianceCheckId':insBackupCarerFamilyCheckIdsItem.ComplianceCheckId:'FieldName':'IsActive'">
+                                                                    <span *ngIf="subitem.FieldDataTypeName=='date'">
+                                                                        {{subitem.FieldValue |dateFormat:'dd/MM/yyyy'}}
+                                                                    </span>
+                                                                    <span *ngIf="subitem.FieldDataTypeName =='Dropdown'">
+                                                                        {{subitem.FieldValueText}}
+                                                                    </span>
+                                                                    <span *ngIf="subitem.FieldDataTypeName !='date' &&subitem.FieldDataTypeName !='Dropdown' && subitem.FieldDataTypeName !='bit' &&
+                                                              subitem.FieldDataTypeName !='radio'">
+                                                                        {{subitem.FieldValue}}
+                                                                    </span>
+                                                                    <span *ngIf="subitem.FieldDataTypeName =='bit'
+                                                              || subitem.FieldDataTypeName =='radio'">
+                                                                        {{subitem.FieldValue==1?'Yes':'No'}}
+                                                                    </span>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-center" *ngIf="globalBackupCarerFamilyCheckList.length == 0 && !loading">
+                                <b>No Records found.</b>
+                            </div>
+                            <div *ngIf="globalBackupCarerFamilyCheckList.length == 0 && loading" class="text-center">
+                                <i class="fa fa-spinner fa-spin"></i> Loading please wait...
+                            </div>
+                        </div>
+                        <!--StatutoryMedicalChecks-->
+                        <div class="tab-pane active" *ngIf="childCheckVisi" id="StatutoryMedicalChecks">
+                            <div class="changeColor" style="padding-top:10px" *ngIf="globalChildCheckList.length>0 && globalChildCheckList !=null">
+                                <div>
+                                    <div *ngFor="let insChildCheckIdsItem of insChildCheckIds">
+                                        <div widget class="card">
+                                            <div class="card-header">
+                                                <span class="text-uppercase"> {{insChildCheckIdsItem.Name}}</span>
+                                            </div>
+                                            <div class="card-body widget-body">
+                                                <div class="table-responsive datatable">
+                                                    <table class="table table-striped table-hover table-sm">
+                                                        <thead>
+                                                            <tr *ngFor="let item of headerChildCheckList;let i=index">
+                                                                <th *ngFor="let subitem of item |slice:0:3 | FilterTwoValue : 'ComplianceCheckId':insChildCheckIdsItem.ComplianceCheckId:'FieldName':'IsActive';let i=index">
+                                                                    {{subitem.DisplayName}}
+                                                                </th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr *ngFor="let item of globalChildCheckList;let i=index">
+                                                                <td *ngFor="let subitem of item |slice:0:3 | FilterTwoValue : 'ComplianceCheckId':insChildCheckIdsItem.ComplianceCheckId:'FieldName':'IsActive'">
+                                                                    <span *ngIf="subitem.FieldDataTypeName=='date'">
+                                                                        {{subitem.FieldValue |dateFormat:'dd/MM/yyyy'}}
+                                                                    </span>
+                                                                    <span *ngIf="subitem.FieldDataTypeName =='Dropdown'">
+                                                                        {{subitem.FieldValueText}}
+                                                                    </span>
+                                                                    <span *ngIf="subitem.FieldDataTypeName !='date' &&subitem.FieldDataTypeName !='Dropdown' && subitem.FieldDataTypeName !='bit' &&
+                                                              subitem.FieldDataTypeName !='radio'">
+                                                                        {{subitem.FieldValue}}
+                                                                    </span>
+                                                                    <span *ngIf="subitem.FieldDataTypeName =='bit'
+                                                              || subitem.FieldDataTypeName =='radio'">
+                                                                        {{subitem.FieldValue==1?'Yes':'No'}}
+                                                                    </span>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-center" *ngIf="globalChildCheckList.length == 0 && !loading">
+                                <b>No Records found.</b>
+                            </div>
+                            <div *ngIf="globalChildCheckList.length == 0 && loading" class="text-center">
+                                <i class="fa fa-spinner fa-spin"></i> Loading please wait...
+                            </div>
+                        </div>
+                        <!--Emp StatutoryChecks-->
+                        <div class="tab-pane active" *ngIf="empCheckVisi" id="StatutoryChecks">
+                            <div class="changeColor" style="padding-top:10px" *ngIf="globalEmpCheckList.length>0 && globalEmpCheckList !=null">
+                                <div>
+                                    <div *ngFor="let insEmpCheckIdsItem of insEmpCheckIds">
+                                        <div widget class="card">
+                                            <div class="card-header">
+                                                <span class="text-uppercase"> {{insEmpCheckIdsItem.Name}}</span>
+                                            </div>
+                                            <div class="card-body widget-body">
+                                                <div class="table-responsive datatable">
+                                                    <table class="table table-striped table-hover table-sm">
+                                                        <thead>
+                                                            <tr *ngFor="let item of headerEmpCheckList;let i=index">
+                                                                <th *ngFor="let subitem of item |slice:0:3 | FilterTwoValue : 'ComplianceCheckId':insEmpCheckIdsItem.ComplianceCheckId:'FieldName':'IsActive';let i=index">
+                                                                    {{subitem.DisplayName}}
+                                                                </th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr *ngFor="let item of globalEmpCheckList;let i=index">
+                                                                <td *ngFor="let subitem of item |slice:0:3 | FilterTwoValue : 'ComplianceCheckId':insEmpCheckIdsItem.ComplianceCheckId:'FieldName':'IsActive'">
+                                                                    <span *ngIf="subitem.FieldDataTypeName=='date'">
+                                                                        {{subitem.FieldValue |dateFormat:'dd/MM/yyyy'}}
+                                                                    </span>
+                                                                    <span *ngIf="subitem.FieldDataTypeName =='Dropdown'">
+                                                                        {{subitem.FieldValueText}}
+                                                                    </span>
+                                                                    <span *ngIf="subitem.FieldDataTypeName !='date' &&subitem.FieldDataTypeName !='Dropdown' && subitem.FieldDataTypeName !='bit' &&
+                                                              subitem.FieldDataTypeName !='radio'">
+                                                                        {{subitem.FieldValue}}
+                                                                    </span>
+                                                                    <span *ngIf="subitem.FieldDataTypeName =='bit'
+                                                              || subitem.FieldDataTypeName =='radio'">
+                                                                        {{subitem.FieldValue==1?'Yes':'No'}}
+                                                                    </span>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-center" *ngIf="globalEmpCheckList.length == 0 && !loading">
+                                <b>No Records found.</b>
+                            </div>
+                            <div *ngIf="globalEmpCheckList.length == 0 && loading" class="text-center">
+                                <i class="fa fa-spinner fa-spin"></i> Loading please wait...
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div>
+    <button #btnPrint type="button" [hidden]="true" class="btn btn-primary" data-toggle="modal" data-target="#lg-modal1">Large</button>
+    <div class="modal fade" id="lg-modal1" tabindex="-1" role="dialog" aria-labelledby="modal-large-label" style="display: none;">
+        <div class="modal-dialog modal-lg" role="document">
+            <form [formGroup]="_FormPrint">
+                <div class="modal-content">
+                    <div class="modal-header state modal-primary">
+                        <h4 class="modal-title" id="modal-large-label">
+                            <i class="fa fa-print"></i>Email
+                        </h4>
+                        <div *ngIf="isLoading"><i class="fa fa-spinner fa-spin"></i> Sending email please wait...</div>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <!--<div class="form-group">
+                            Click to attach the signatures
+                            <input type="checkbox" [(ngModel)]="attachSignature" formControlName="signature"/>
+                        </div>-->
+                        <div class="form-group">
+                            Enter Email Subject:
+                            <input type="text" [(ngModel)]="subject" class="form-control" formControlName="subject" required />
+                            <div *ngIf="(!_FormPrint.controls.subject.valid && submittedprint && _FormPrint.controls.subject.errors.required )" class="alert alert-danger">
+                                Please enter Email Subject
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            Enter Email Address(es):
+                            <textarea [(ngModel)]="eAddress" class="form-control" formControlName="eAddress" required></textarea>
+                            <div *ngIf="(!_FormPrint.controls.eAddress.valid && submittedprint && _FormPrint.controls.eAddress.errors.required )" class="alert alert-danger">
+                                Please enter Email Address(es)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success" (click)="fnEmail(_FormPrint)" [disabled]="isLoading">Email</button>
+                        <button #btnCancel type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>

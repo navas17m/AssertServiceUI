@@ -1,0 +1,123 @@
+﻿
+<div [formGroup]="_contactForm" (onsubmit)="submit(_contactForm)" style="border:0px">
+    <div class="row">
+       
+        <div class="row col-md-12">
+            <div class="col-md-12">
+                <label><b>Contact details</b></label>
+            </div>
+            <div class="form-group col-md-6" *ngIf="objContactVisible.AddressLine1Visible">
+                <label class="">Address </label>
+                <textarea  formControlName="AddressLine1" rows="4" class="form-control" [(ngModel)]="contactval.AddressLine1" [required]="objContactVisible.AddressLine1Mandatory"></textarea>
+                <!--<div *ngIf="(!_contactForm.controls.AddressLine1.valid && submitted && _contactForm.controls.AddressLine1.errors )" class="alert alert-danger">
+                    Please enter Address
+                </div>-->
+                <div *ngIf="(!_contactForm.controls.AddressLine1.valid && submitted && _contactForm.controls.AddressLine1.errors)">
+                    <div class="alert alert-danger" *ngIf="_contactForm.controls.AddressLine1.errors.required"> Please enter Address</div>
+                    <div class="alert alert-danger" *ngIf="_contactForm.controls.AddressLine1.errors.maxlength">Address will be allowed 300 max characters</div>
+                </div>
+            </div>
+            <div class="form-group col-md-6" *ngIf="objContactVisible.AddressLine2Visible">
+                <label class="">Address Line 2 </label>
+                <textarea  formControlName="AddressLine2"  rows="4" class="form-control" [(ngModel)]="contactval.AddressLine2" [required]="objContactVisible.AddressLine2Mandatory"></textarea>
+                <!--<div *ngIf="(!_contactForm.controls.AddressLine2.valid && submitted && _contactForm.controls.AddressLine2.errors )" class="alert alert-danger">
+                    Please enter Address Line 2
+                </div>-->
+                <div *ngIf="(!_contactForm.controls.AddressLine2.valid && submitted && _contactForm.controls.AddressLine2.errors)">
+                    <div class="alert alert-danger" *ngIf="_contactForm.controls.AddressLine2.errors.required"> Please enter Address Line 2</div>
+                    <div class="alert alert-danger" *ngIf="_contactForm.controls.AddressLine2.errors.maxlength">Address Line 2 will be allowed 200 max characters</div>
+                </div>
+            </div>
+            <div class="form-group col-md-6" *ngIf="objContactVisible.CityVisible">
+                <label>Town/City</label>
+                <input formControlName="City" type="text" class="form-control" [(ngModel)]="contactval.City" [required]="objContactVisible.CityMandatory" />
+                <div *ngIf="(!_contactForm.controls.City.valid && submitted && _contactForm.controls.City.errors )" class="alert alert-danger">
+                    Please enter Town/City        
+                </div>
+            </div>
+            <div class="form-group col-md-6" *ngIf="objContactVisible.HomePhoneVisible">
+                <label class="">Telephone</label>
+                <input formControlName="HomePhone" type="text" class="form-control" [(ngModel)]="contactval.HomePhone" [required]="objContactVisible.HomePhoneMandatory"  pattern="[0-9\s]*" 
+                [placeholder]="objContactVisible.HomePhoneMandatory==true?'':'N/A'" />
+                <div *ngIf="(!_contactForm.controls.HomePhone.valid && submitted && _contactForm.controls.HomePhone.errors)">
+                    <div class="alert alert-danger" *ngIf="_contactForm.controls.HomePhone.errors.required">Please enter TelePhone</div>
+                    <div class="alert alert-danger" *ngIf="_contactForm.controls.HomePhone.errors.pattern">TelePhone should be only numbers</div>
+                    <div class="alert alert-danger" *ngIf="_contactForm.controls.HomePhone.errors.minlength ||_contactForm.controls.HomePhone.errors.maxlength">TelePhone number will be allowed in 10 to 50 max digit</div>
+
+                </div>
+            </div>
+            <div class="form-group col-md-6" *ngIf="objContactVisible.OfficePhoneVisible">
+                <label class="">Office Phone</label>
+                <input formControlName="OfficePhone" type="text" class="form-control" [(ngModel)]="contactval.OfficePhone" [required]="objContactVisible.OfficePhoneMandatory" pattern="[0-9\s]*"/>
+                <div *ngIf="(!_contactForm.controls.OfficePhone.valid && submitted && _contactForm.controls.OfficePhone.errors)">
+                    <div class="alert alert-danger" *ngIf="_contactForm.controls.OfficePhone.errors.required">Please enter Office Phone</div>
+                    <div class="alert alert-danger" *ngIf="_contactForm.controls.OfficePhone.errors.pattern">Phone should be only numbers</div>
+                    <div class="alert alert-danger" *ngIf="_contactForm.controls.OfficePhone.errors.minlength ||_contactForm.controls.OfficePhone.errors.maxlength">Phone number will be allowed in 10 to 20 max digit</div>
+                </div>
+            </div>
+            <div class="form-group col-md-6" *ngIf="objContactVisible.MobilePhoneVisible">
+                <label class="">Mobile Phone</label>
+                <input formControlName="MobilePhone" type="text" class="form-control" [(ngModel)]="contactval.MobilePhone" [required]="objContactVisible.MobilePhoneMandatory" pattern="[0-9\s]*" />
+                <div *ngIf="(!_contactForm.controls.MobilePhone.valid && submitted && _contactForm.controls.MobilePhone.errors)">
+                    <div class="alert alert-danger" *ngIf="_contactForm.controls.MobilePhone.errors.required">Please enter Mobile Phone</div>
+                    <div class="alert alert-danger" *ngIf="_contactForm.controls.MobilePhone.errors.pattern">Phone should be only numbers</div>
+                    <div class="alert alert-danger" *ngIf="_contactForm.controls.MobilePhone.errors.minlength ||_contactForm.controls.MobilePhone.errors.maxlength">Phone number will be allowed in 10 to 20 max digit</div>
+                </div>
+            </div>
+
+            <div class="form-group col-md-6" *ngIf="objContactVisible.EmailIdVisible">
+                <label>Email</label>
+                <input formControlName="EmailId" type="text" class="form-control" [(ngModel)]="contactval.EmailId" [required]="objContactVisible.EmailIdMandatory" />
+                <div *ngIf="(!_contactForm.controls.EmailId.valid && submitted && _contactForm.controls.EmailId.errors)">
+                    <div class="alert alert-danger" *ngIf="_contactForm.controls.EmailId.errors.required">Please enter email</div>
+                    <div class="alert alert-danger" *ngIf="_contactForm.controls.EmailId.errors.NotValidEmailFormat && !_contactForm.controls.EmailId.errors.required">Please enter valid email Id</div>
+                </div>
+            </div>
+            <div class="form-group col-md-6" *ngIf="objContactVisible.AlternativeEmailIdVisible">
+                <label>Alternative Email Id</label>
+                <input formControlName="AlternativeEmailId" type="text" class="form-control" [(ngModel)]="contactval.AlternativeEmailId" [required]="objContactVisible.AlternativeEmailIdMandatory" />
+                <div *ngIf="(!_contactForm.controls.AlternativeEmailId.valid && submitted && _contactForm.controls.AlternativeEmailId.errors)">
+                    <div class="alert alert-danger" *ngIf="_contactForm.controls.AlternativeEmailId.errors.required">Please enter email</div>
+                    <div class="alert alert-danger" *ngIf="_contactForm.controls.AlternativeEmailId.errors.NotValidEmailFormat && !_contactForm.controls.AlternativeEmailId.errors.required">Please enter valid email Id</div>
+                </div>
+            </div>
+            <div class="form-group col-md-6" *ngIf="objContactVisible.CountyIdVisible">
+                <label class="">County </label>
+                <ng-select #ngSelectCounty [hidden]="countyList == null" formControlName="CountyId" class="form-control" [required]="objContactVisible.CountyIdMandatory" [(ngModel)]="contactval.CountyId"
+                    [items]="countyList" bindValue="CofigTableValuesId" bindLabel="Value" placeholder="Select a County">
+                </ng-select>
+                <div *ngIf="(!_contactForm.controls.CountyId.valid && submitted && _contactForm.controls.CountyId.errors )" class="alert alert-danger">
+                    Please select the County
+                </div>
+            </div>
+            <div class="form-group col-md-6" *ngIf="objContactVisible.CountryIdVisible">
+                <label class="">Country </label>
+                <ng-select #ngSelectCountry [hidden]="countryList == null" formControlName="CountryId" class="form-control" [required]="objContactVisible.CountryIdMandatory" [(ngModel)]="contactval.CountryId"
+                    [items]="countryList" bindValue="CofigTableValuesId" bindLabel="Value" placeholder="Select a Country">
+                </ng-select>
+                <div *ngIf="(!_contactForm.controls.CountryId.valid && submitted && _contactForm.controls.CountryId.errors )" class="alert alert-danger">
+                    Please select the Country
+                </div>
+            </div>
+            <div class="form-group col-md-6" *ngIf="objContactVisible.PostalCodeVisible">
+                <label class="">Postal Code </label>
+                <input formControlName="PostalCode" type="text" class="form-control" [(ngModel)]="contactval.PostalCode" [required]="objContactVisible.PostalCodeMandatory" />
+                <div *ngIf="(!_contactForm.controls.PostalCode.valid && submitted && _contactForm.controls.PostalCode.errors)">
+                    <div class="alert alert-danger" *ngIf="_contactForm.controls.PostalCode.errors.required">Please enter Postal Code </div>
+                    <div class="alert alert-danger" *ngIf="_contactForm.controls.PostalCode.errors.minlength ||_contactForm.controls.PostalCode.errors.maxlength">Postal Code will be allowed in 7 to 10 max digit</div>
+                </div>
+            </div>
+            <div class="form-group col-md-6" *ngIf="objContactVisible.EmergencyContactVisible">
+                <label class="">Emergency Contact </label>
+                <input formControlName="EmergencyContact" type="text" class="form-control" [(ngModel)]="contactval.EmergencyContact"
+                       [required]="objContactVisible.EmergencyContactMandatory"  pattern="[0-9\s]*"/>
+                <div *ngIf="(!_contactForm.controls.EmergencyContact.valid && submitted && _contactForm.controls.EmergencyContact.errors)">
+                    <div class="alert alert-danger" *ngIf="_contactForm.controls.EmergencyContact.errors.required">Please enter Emergency Contact</div>
+                    <div class="alert alert-danger" *ngIf="_contactForm.controls.EmergencyContact.errors.pattern">Phone should be only numbers</div>
+                    <div class="alert alert-danger" *ngIf="_contactForm.controls.EmergencyContact.errors.minlength ||_contactForm.controls.EmergencyContact.errors.maxlength">Phone number will be allowed in 10 to 20 max digit</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--<button (click)="btnsubmit()" class="btn btn-warning">submit</button>-->
+</div>

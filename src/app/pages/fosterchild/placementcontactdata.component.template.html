@@ -1,0 +1,68 @@
+﻿
+<div class="col-xl-12 col-lg-12 col-12 bottom-30">
+    <ViewDisable></ViewDisable>
+    <div widget class="card">
+        <div class="card-header">
+            <span>Placement Contact</span>
+            <div class="widget-controls">
+                <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+                <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+                <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a>
+            </div>
+        </div>
+        <div class="card-body widget-body">
+            <form [formGroup]="_Form">
+
+                <div class="form-group">
+                    <label class="">Local Authority</label>
+                    <select *ngIf="LocalAuthorityList.length > 0" formControlName="LocalAuthorityId" required class="form-control" [(ngModel)]="objPlacementContactDTO.LocalAuthorityId">
+                        <option value="" [attr.selected]="objPlacementContactDTO.LocalAuthorityId == null ? true : null">Select Local Authority</option>
+                        <option *ngFor="let item of LocalAuthorityList" value="{{item.LocalAuthorityId}}">
+                            {{item.LocalAuthorityName}}
+                        </option>
+                    </select>
+                    <div class="alert alert-danger" *ngIf="(!_Form.controls.LocalAuthorityId.valid && submitted && _Form.controls.LocalAuthorityId.errors.required)">
+                        Please Select Local Authority
+                    </div>
+                </div>
+                <div class="form-group ">
+                    <label class="">First Name:</label>
+                    <input formControlName="FirstName" required class="form-control" type="text"
+                           [(ngModel)]="objPlacementContactDTO.FirstName" 
+                           >
+                    <div *ngIf="(!_Form.controls.FirstName.valid && submitted && _Form.controls.FirstName.errors.required )" class="alert alert-danger">
+                        Please enter First Name
+                    </div>
+                </div>
+                <div class="form-group ">
+                    <label class="">Last Name:</label>
+                    <input formControlName="LastName" required class="form-control" type="text"
+                           [(ngModel)]="objPlacementContactDTO.LastName">
+                    <div *ngIf="(!_Form.controls.LastName.valid && submitted && _Form.controls.LastName.errors.required )" class="alert alert-danger">
+                        Please enter Last  Name
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="">Job Title:</label>
+                    <select *ngIf="lstJobTitle.length>0"  formControlName="JobTitleId" class="form-control"
+                            [(ngModel)]="objPlacementContactDTO.JobTitleId">
+                        <option value="" [attr.selected]="objPlacementContactDTO.JobTitleId == null ? true : null">Select a Job Title</option>
+                        <option *ngFor="let op of lstJobTitle" value="{{op.CofigTableValuesId}}">
+                            {{op.Value}}
+                        </option>
+                    </select>
+                </div>
+                <!--Contact  Info-->
+                <contact #ConatactInfo [contactval1]="objPlacementContactDTO.ContactInfo" [formbuilder]="submitted"
+                         [Visible]="objContactVisible"></contact>
+                <div class="form-group">
+                    <SubmitButton (Click)="clicksubmit(_Form,ConatactInfo.formbuilder)" [IsLoading]="isLoading"></SubmitButton>
+                    <BackButton></BackButton>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+

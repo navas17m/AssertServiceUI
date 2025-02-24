@@ -1,0 +1,74 @@
+﻿<div class="child-header alert alert-info" role="alert" *ngIf="IsShow">
+    <div class="container" >
+        <div class="row">
+            <div class="col-md-2 pt-3">
+                <div class="row child-header-pics" >
+                    <img [attr.src]="srcPath" class="img-thumbnail rounded" />
+                </div>
+            </div>
+            <div class="col-md-10 pt-2">
+                <div class="row">
+                    <div class="col-lg-6 child-header-info">
+                        <b>Child Name (Code) :</b> {{insChildProfileDTO.PersonalInfo.FullName}} ({{insChildProfileDTO.ChildCode}})
+                    </div>
+                    
+                    <div class="col-lg-6">
+                        <b> Date Of Birth :</b> {{insChildProfileDTO.PersonalInfo.DateOfBirth | dateFormat:'dd/MM/yyyy'}}<b *ngIf="insChildProfileDTO.PersonalInfo.DateOfBirth==null">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b> &nbsp;<b> Age :</b> {{insChildProfileDTO.PersonalInfo.Age}}
+                    </div>                    
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <b> Type :</b> {{insChildProfileDTO.Type}}
+                    </div>
+                    <div class="col-lg-6">
+                        <b> Gender :</b> {{insChildProfileDTO.PersonalInfo.GenderId ==1 ?'Male':'Female'}} 
+                    </div>
+                    
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <b> Identifier :</b> {{insChildProfileDTO.ChildIdentifier}}
+                       
+                    </div>
+                    <div class="col-lg-6">
+                        <b> Area Office :</b> {{insChildProfileDTO.AreaOfficeProfile.AreaOfficeName}}
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <b> Local Authority :</b> {{insChildProfileDTO.LocalAuthority.LocalAuthorityName}}
+                    </div>
+                    <div class="col-lg-6" *ngIf="insChildProfileDTO.NewChildStatusId==17||insChildProfileDTO.NewChildStatusId==18">
+                        <b> Recommended Carer(s) :</b> {{insChildProfileDTO.RecommendedCarers == null ? 'Not Selected' : insChildProfileDTO.RecommendedCarers}}
+                    </div>
+                    <div class="col-lg-6" *ngIf="insChildProfileDTO.NewChildStatusId==19">
+                        <b> Foster Carer Name :</b> {{insChildProfileDTO.CarerName}}
+                    </div>
+                    <div class="col-lg-6" *ngIf="insChildProfileDTO.NewChildStatusId==20">
+                        <b> Last Placed Carer Name :</b> {{insChildProfileDTO.LastPlacedCarerName}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <b> Agency Social Worker :</b> {{insChildProfileDTO.SupervisingSocialWorker==null?'Not Assigned':insChildProfileDTO.SupervisingSocialWorker}}
+                    </div>
+                    <div class="col-lg-6">
+                        <b> LA Social Worker :</b> {{insChildProfileDTO.LASocialWorker==null?'Not Assigned':insChildProfileDTO.LASocialWorker}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <b> Known Allergies :</b> {{insChildProfileDTO.KnownAllergies}}
+                    </div>
+                    <div class="col-lg-6">
+                       
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+     
+

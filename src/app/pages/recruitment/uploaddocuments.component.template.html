@@ -1,0 +1,35 @@
+﻿
+<div class="col-xl-12 col-lg-12 col-12 bottom-30">
+    <ApprovedCarerHeader *ngIf="objQeryVal.mid == 3"></ApprovedCarerHeader>
+    <CarerHeader *ngIf="objQeryVal.mid == 13"></CarerHeader>
+    <div widget class="card">
+        <div class="card-header">
+            <span>Upload Documents</span>
+            <div class="widget-controls">
+                <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+                <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+                <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a>
+            </div>
+        </div>
+        <div class="card-body widget-body">
+            <Upload-Documents #uploads [formCnfgId]="38" [primaryKeyId]="tblPrimaryKey"
+                              [showColorBox]="true" [showCopyDocument]="false" [showEdit]="true"
+                               [submittedUpload]="submittedUpload"
+                              [userTypeCnfgId]="4" [typeId]="TypeId"
+                              [BtnAccessFormCnfgId]="formId"></Upload-Documents>
+
+
+            <!--<div class="col-md-5 form-group" style="padding-top:10px">
+                <button (click)="clicksubmit(uploads.UploadDocIds,
+                             uploads.IsUpload,
+                              uploads.formbuilder)" class="btn btn-primary">
+                    Submit
+                </button>
+                <button (click)="this.location.back()" class="btn btn-warning">Back</button>
+            </div>-->
+        </div>
+    </div>
+</div>
+

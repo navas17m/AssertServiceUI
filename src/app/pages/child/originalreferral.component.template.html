@@ -1,0 +1,123 @@
+﻿<div class="col-xl-12 col-lg-12 col-12 bottom-30">
+    <Child-Header></Child-Header>
+    <div widget class="card">
+        <div class="card-header">
+            <span>Original Referral</span>
+            <div class="widget-controls">
+                <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+                <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+                <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a>
+            </div>
+        </div>
+        <div class="card-body widget-body">
+            <div class="table-responsive">
+                <table class="table table-sm table-bordered">
+                    <tbody>
+                        <tr>
+                            <td width="20%"><b>Child Code </b></td>
+                            <td width="30%">                               
+                                <b>{{this.childCode}}</b>
+                            </td>
+                            <td width="20%"><b>Image </b></td>
+                            <td width="30%">
+                                <img [attr.src]="srcChildPath" class="img-thumbnail rounded">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><b>Type: </b></td>
+                            <td>
+                                {{objChildProfile.ChildOrParentId==2?'Parent and Child':'Child'}}
+                            </td>
+                            <td><b>Area Office </b></td>
+                            <td>
+                                {{objChildProfile.AreaOfficeProfile.AreaOfficeName}}
+                            </td>
+
+                        </tr>
+                        <tr *ngIf="objChildProfile.ChildOrParentId==2">
+                            <td><b>Parent Name: </b></td>
+                            <td>
+                                {{objChildProfile.ParentName}}
+                            </td>
+                            <td><b>Parent Date of Birth </b></td>
+                            <td>
+                                {{objChildProfile.ParentDateOfBirth | dateFormat:'dd/MM/yyyy'}}
+                            </td>
+
+                        </tr>
+                        <tr *ngIf="objChildProfile.ChildOrParentId==2">
+                            <td><b>Parent 2 Name: </b></td>
+                            <td>
+                                {{objChildProfile.ParentName2}}
+                            </td>
+                            <td><b>Parent 2 Date of Birth </b></td>
+                            <td>
+                                {{objChildProfile.ParentDateOfBirth2 | dateFormat:'dd/MM/yyyy'}}
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td><b>First Name </b></td>
+                            <td>{{objChildProfile.PersonalInfo.FirstName}}</td>
+                            <td><b *ngIf="objChildProfile.PersonalInfo.MiddleName">Middle Name </b></td>
+                            <td>{{objChildProfile.PersonalInfo.MiddleName}}</td>
+
+                        </tr>
+                        <tr>
+                            <td><b>Last Name </b></td>
+                            <td>{{objChildProfile.PersonalInfo.lastName}}</td>
+                            <td><b>Date of Birth </b></td>
+                            <td>{{objChildProfile.PersonalInfo.DateOfBirth| dateFormat:'dd/MM/yyyy'}}   <b>&nbsp;&nbsp;&nbsp;&nbsp; Age: </b>{{objChildProfile.PersonalInfo.Age}}</td>
+                            <!--<td><b>Age  </b></td>
+                            <td>{{objChildProfile.PersonalInfo.Age}}</td>-->
+                        </tr>
+                        <tr>
+                            <td><b>Gender  </b></td>
+                            <td>{{objChildProfile.PersonalInfo.GenderId==1?'Male':'Female'}}</td>
+                            <td><b>Ethnicity  </b></td>
+                            <td>{{objChildProfile.Ethinicity}}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Language</b></td>
+                            <td>{{objChildProfile.LanguageStrId}}</td>
+                            <td><b>Ofsted Ethnicity  </b></td>
+                            <td>{{objChildProfile.Ethinicity}}</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>Legal Status  </b>
+                            </td>
+                            <td> {{objChildProfile.LegalStatus}}</td>
+                            <td><b>Nationality  </b></td>
+                            <td>{{objChildProfile.Nationality}}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Religion   </b></td>
+                            <td>{{objChildProfile.Religion}}</td>
+                            <td><b>Immigration Status  </b></td>
+                            <td>{{objChildProfile.ImmigrationStatus}}</td>
+                        </tr>
+                        <tr>
+                            <!--<td><b>National Insurance No.   </b></td>
+                            <td></td>-->
+                            <td>
+                                <b>Disability  </b>
+                                
+                            </td>
+                            <td>{{objChildProfile.DisabilityStr}}</td>
+                            <td><b>Is the Child Currently in Education?   </b></td>
+                            <td>{{objChildProfile.ChildInEducation}}</td>
+                        </tr>
+                        <!--<tr>
+                           
+                            <td></td>
+                            <td></td>
+                        </tr>-->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

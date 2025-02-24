@@ -1,0 +1,292 @@
+﻿
+<div class="col-xl-12 col-lg-12 col-12 bottom-30">
+    <div widget class="card">
+        <div class="card-header">
+            <span>Child Discharge</span>
+
+            <div class="widget-controls">
+                <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+                <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+                <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a>
+            </div>
+        </div>
+        <div class="card-body widget-body">
+            <form [formGroup]="childDischargeForm" class="row">
+                <div class="form-group col-md-12">
+                    <label class="">Select a Child</label>
+                    <select *ngIf="lstChildProfileDropDown.length==0" formControlName="ChildProfile" required [(ngModel)]="test"
+                            class="form-control" (change)="fnLoadChildDetails($event.target.value)">
+                        <option value="" [attr.selected]="test == null ? true : null">Select Child</option>
+                        <option *ngFor="let item of lstChildProfileDropDown" value="{{item.ChildId}}">
+                            {{item.PersonalInfo.FullName }}({{item.ChildCode}})
+                        </option>
+                    </select>
+                    <ng-select *ngIf="lstChildProfileDropDown.length > 0"   formControlName="ChildProfile" required class="form-control"
+                      (change)="fnLoadChildDetails($event)" [(ngModel)]="test">
+                      <ng-option *ngFor="let item of lstChildProfileDropDown" [value]="item.ChildId">{{item.PersonalInfo.FullName }}({{item.ChildCode}})</ng-option>
+                    </ng-select>
+                    <div *ngIf="(!childDischargeForm.controls.ChildProfile.valid && submitted && childDischargeForm.controls.ChildProfile.errors )" class="alert alert-danger">
+                        Please Select Child
+                    </div>
+                </div>
+                <div *ngIf="objChildProfile" class="form-group col-md-12">
+                    <div widget class="card">
+                        <div class="card-header">
+                            <span class="text-uppercase">Selected Child</span>
+                        </div>
+                        <div class="card-body widget-body">
+                            <div class="row" style="border:1px double;border-radius: 5px;">
+                                <div class="col-lg-2">
+                                    <div class="row">
+                                        <img height="87px" width="100px" [attr.src]="srcChildPath">
+                                    </div>
+                                </div>
+                                <div class="col-lg-10" style="border-left:1px double;">
+                                    <div class="row" style="border-bottom:1px double;">
+                                        <div class="col-lg-3">
+                                            Child Name (Code) :
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <b> {{objChildProfile.PersonalInfo.FullName }}({{objChildProfile.ChildCode}})</b>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            Child Identifier :
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <b> {{objChildProfile.ChildIdentifier }}</b>
+                                        </div>
+                                    </div>
+                                    <div class="row" style="border-bottom:1px double;">
+                                        <div class="col-lg-3">
+                                            Age :
+                                        </div>
+                                        <div class="col-lg-3">
+                                            {{objChildProfile.PersonalInfo.Age}}
+                                        </div>
+                                        <div class="col-lg-3">
+                                            Gender :
+                                        </div>
+                                        <div class="col-lg-3">
+                                            {{objChildProfile.PersonalInfo.GenderId ==1?'Male':'Female'}}
+                                        </div>
+                                    </div>
+                                    <div class="row" style="border-bottom:1px double;">
+                                        <div class="col-lg-3">
+                                            Ethnicity :
+                                        </div>
+                                        <div class="col-lg-3">
+                                            {{objChildProfile.Ethinicity}}
+                                        </div>
+                                        <div class="col-lg-3">
+                                            Religion :
+                                        </div>
+                                        <div class="col-lg-3">
+                                            {{objChildProfile.Religion}}
+                                        </div>
+                                    </div>
+                                    <div class="row" >
+                                        <div class="col-lg-3">
+                                            Disability :
+                                        </div>
+                                        <div class="col-lg-3">
+                                            {{objChildProfile.DisabilityStr}}
+                                        </div>
+                                        <div class="col-lg-3">
+                                            Immigration Status :
+                                        </div>
+                                        <div class="col-lg-3">
+                                            {{objChildProfile.ImmigrationStatus}}
+                                        </div>
+                                    </div>
+                                    <div class="row" *ngIf="objChildProfile.ChildOrParentId==2" style="border-top:1px double;">
+                                        <div class="col-lg-3">
+                                            Parent Name :
+                                        </div>
+                                        <div class="col-lg-3">
+                                            {{objChildProfile.ParentName}}
+                                        </div>
+                                        <div class="col-lg-3">
+                                            Parent DOB :
+                                        </div>
+                                        <div class="col-lg-3">
+                                            {{objChildProfile.ParentDateOfBirth | dateFormat:'dd/MM/yyyy'}}
+                                        </div>
+                                    </div>
+                                    <div class="row" *ngIf="objChildProfile.ChildOrParentId==2" style="border-top:1px double;">
+                                        <div class="col-lg-3">
+                                            Parent 2 Name:
+                                        </div>
+                                        <div class="col-lg-3">
+                                            {{objChildProfile.ParentName2}}
+                                        </div>
+                                        <div class="col-lg-3">
+                                            Parent 2 DOB :
+                                        </div>
+                                        <div class="col-lg-3">
+                                            {{objChildProfile.ParentDateOfBirth2 | dateFormat:'dd/MM/yyyy'}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div widget class="card">
+                        <div class="card-header">
+                            <span class="text-uppercase">Carer & Placement Details</span>
+                        </div>
+                        <div class="card-body widget-body">
+                            <div *ngIf="objCarerInfo" class="row" style="border:1px double;border-radius: 5px;">
+                                <div class="col-lg-2">
+                                    <div class="row">
+                                        <img height="87px" width="100px" [attr.src]="srcCarerPath">
+                                    </div>
+                                </div>
+                                <div class="col-lg-10" style="border-left:1px double;">
+                                    <div class="row" style="border-bottom:1px double;">
+                                        <div class="col-lg-3">
+                                            Carer Name (Code) :
+                                        </div>
+                                        <div class="col-lg-9">
+                                            <b>  {{objCarerInfo.PCFullName }}({{objCarerInfo.CarerCode}})</b>
+                                        </div>
+                                    </div>
+                                    <div class="row" style="border-bottom:1px double;">
+                                        <div class="col-lg-3">
+                                            Placement Date :
+                                        </div>
+                                        <div class="col-lg-3">
+                                            {{objPlacementInfo.PlacementDate | dateFormat:'dd/MM/yyyy'}}
+                                        </div>
+                                        <div class="col-lg-3">
+                                            Placement Time :
+                                        </div>
+                                        <div class="col-lg-3">
+                                            {{objPlacementInfo.PlacementDate | date:'HH:mm'}}
+                                        </div>
+                                    </div>
+                                    <div class="row" style="border-bottom:1px double;">
+                                        <div class="col-lg-3">
+                                            Placement Type :
+                                        </div>
+                                        <div class="col-lg-3">
+                                            {{objPlacementInfo.PlacementType}}
+                                        </div>
+                                        <div class="col-lg-3">
+                                            Placement Reason :
+                                        </div>
+                                        <div class="col-lg-3">
+                                            {{objPlacementInfo.PlacementReason}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="form-group">
+                      <span [hidden]="lstSiblingDischarge.length==0">
+                        <input type="checkbox"  [checked]="siblingCheck" (change)="fnShowSiblingDischarge($event.target.checked)">
+                        Discharge Siblings
+                      </span>
+                      <span [hidden]="lstParentsDischarge.length==0">
+                        <input type="checkbox"  [checked]="parentCheck" (change)="fnShowParentsDischarge($event.target.checked)">
+                        Discharge Parent
+                      </span>
+                        <!-- <label class="custom-control custom-checkbox" [hidden]="lstSiblingDischarge.length==0">
+                            <input type="checkbox" class="custom-control-input checkbox-primary checkbox-circle" [checked]="siblingCheck" (change)="fnShowSiblingDischarge($event.target.checked)">
+                            <span class="custom-control-indicator"></span>
+                            <span class="custom-control-description">Discharge Siblings</span>
+                        </label>
+                        <label class="custom-control custom-checkbox" [hidden]="lstParentsDischarge.length==0">
+                            <input type="checkbox" class="custom-control-input checkbox-primary checkbox-circle" [checked]="parentCheck" (change)="fnShowParentsDischarge($event.target.checked)">
+                            <span class="custom-control-indicator"></span>
+                            <span class="custom-control-description">Discharge Parent</span>
+                        </label>      -->
+                    </div>
+                    <div *ngIf="showSiblingeTableDischarge">
+                        <div *ngIf="lstSiblingDischarge">
+                            <div>Siblings</div>
+                            <table class="table table-sm table-bordered" style="background-color:white">
+                                <thead>
+                                    <tr>
+                                        <th>Select</th>
+                                        <th>Child Name</th>
+                                        <th>Local Authority</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody *ngIf="lstSiblingDischarge.length==0">
+                                    <tr>
+                                        <th colspan="3" class="text-center"> No Siblings found.</th>
+                                    </tr>
+                                </tbody>
+                                <tbody>
+                                    <tr *ngFor="let item of lstSiblingDischarge | filter : 'HasChildSiblings' : true">
+                                        <td>
+                                            <input type="checkbox" [ngModelOptions]="{standalone: true}" [(ngModel)]="item.IsActive" />
+                                        </td>
+                                        <td>{{item.PersonalInfo.FullName }}({{item.ChildCode}})</td>
+                                        <td>{{item.LocalAuthority.LocalAuthorityName }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div *ngIf="showParentTableDischarge">
+                        <div *ngIf="lstParentsDischarge">
+                            <div>Parent</div>
+                            <table class="table table-sm table-bordered" style="background-color:white">
+                                <thead>
+                                    <tr>
+                                        <th>Select</th>
+                                        <th>Child Name</th>
+                                        <th>Local Authority</th>
+                                    </tr>
+                                </thead>
+                                <tbody *ngIf="lstParentsDischarge.length==0">
+                                    <tr>
+                                        <th colspan="3" class="text-center"> No Parents found.</th>
+                                    </tr>
+
+                                </tbody>
+                                <tbody>
+
+                                    <tr *ngFor="let item of lstParentsDischarge | filter : 'HasChildParents' : true">
+                                        <td>
+                                            <input type="checkbox" [ngModelOptions]="{standalone: true}" [(ngModel)]="item.IsActive" />
+                                        </td>
+                                        <td>{{item.PersonalInfo.FullName }}({{item.ChildCode}})</td>
+                                        <td>{{item.LocalAuthority.LocalAuthorityName }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div [hidden]="!objChildProfile" class="form-group col-md-12">
+                    <div>
+                        <label class="">Discharge Date</label>
+                        <input type="datetime" placeholder="dd/mm/yyyy --:--"  class="form-control" formControlName="DischargeDate" required
+                               [(ngModel)]="objChildPlacementDTO.DischargeDate"  datetimepicker/>
+                        <div *ngIf="(!childDischargeForm.controls.DischargeDate.valid && submitted && childDischargeForm.controls.DischargeDate.errors )" class="alert alert-danger">
+                             Discharge Date is required
+                        </div>
+                    </div>
+                    <div >
+                        <Dynamic-Form #dynamic [dynamicformcontrols]="dynamicformcontrol"
+                                      [formbuilder]="childDischargeForm" [submitted]="submitted"></Dynamic-Form>
+                                      <!-- [AddtionalEmailIds] [EmailIds] -->
+                        <EmailNotification #Notification [FormCnfgId]="78" ></EmailNotification>
+                    </div>
+                    <div>
+                        <!--<button type="button" id="btnSubmit" class="btn btn-primary" (click)="fnDischarge(dynamic.formbuilder)">Discharge</button>-->
+                        <br />
+                        <SubmitButton (click)="fnDischarge(dynamic.formbuilder,Notification.AddtionalEmailIds,Notification.EmailIds)" [IsLoading]="isLoading" [Text]="'Discharge'"></SubmitButton>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

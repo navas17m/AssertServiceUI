@@ -1,0 +1,650 @@
+<div *ngIf="objCarerProfile">
+
+
+  <div class="row" >
+     <!-- PC Carer Info -->
+    <div class="col-lg-4 col-md-12" >
+        <div widget class=" datamap card" >
+          <!-- <div style="max-width: 200px;padding-left:100px;">
+          <img class="card-img-top w-100 img-thumbnail rounded" [attr.src]="srcPath" height="120px" alt="user">
+          </div> -->
+          <div class="card-header" style="background-color: #248dad;">
+            <span>Primary Applicant</span>
+            <div class="widget-controls">
+              <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+              <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+            </div>
+          </div>
+          <div class="card-body widget-body" *ngIf="objCarerProfile" style="min-height: 500px;">
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-8">
+                  <img class="card-img-top w-100 img-thumbnail rounded" [attr.src]="srcPath" height="120px" alt="user">
+                </div>
+                <div class="col-md-2"></div>
+            </div>
+
+              <h5 class="card-title text-center">{{objCarerProfile.PersonalInfo.Title}}
+                {{objCarerProfile.PersonalInfo.FirstName}} {{objCarerProfile.PersonalInfo.lastName}} <br>
+                 ({{objCarerProfile.CarerCode}})</h5>
+
+              <p class="card-text text-justify" *ngIf="objCarerProfile.ContactInfo">
+                <b> Address	 :</b>
+                <span *ngIf="objCarerProfile.ContactInfo">
+                    {{objCarerProfile.ContactInfo.AddressLine1}}<br />
+                   <span *ngIf="objCarerProfile.ContactInfo.AddressLine2"> {{objCarerProfile.ContactInfo.AddressLine2}}<br /></span>
+                    {{objCarerProfile.ContactInfo.City}}, {{objCarerProfile.ContactInfo.County}}<br />
+                    {{objCarerProfile.ContactInfo.PostalCode}}<br />
+                    <b *ngIf="objCarerProfile.ContactInfo.HomePhone">P : {{objCarerProfile.ContactInfo.HomePhone}}<br /></b>
+                    <b *ngIf="objCarerProfile.ContactInfo.MobilePhone">M : {{objCarerProfile.ContactInfo.MobilePhone}}<br /></b>
+                    <b *ngIf="objCarerProfile.ContactInfo.EmailId">E : {{objCarerProfile.ContactInfo.EmailId}}</b>
+                </span>
+              </p>
+              <br>
+              <div class="dropdown-divider w-100"></div>
+             <div class="row">
+                <div class="col-md-12 text-left">D.O.B : <strong class="d-inline-block" *ngIf="objCarerProfile && objCarerProfile.PersonalInfo">{{ objCarerProfile.PersonalInfo.DateOfBirth | dateFormat :'dd/MM/yyyy'}}</strong></div>
+              </div>
+              <div class="row">
+                <div class="col-md-12 text-left">Gender : <strong class="d-inline-block" *ngIf="objCarerProfile && objCarerProfile.PersonalInfo">
+                  {{ objCarerProfile.PersonalInfo.GenderId==1?'Male':objCarerProfile.PersonalInfo.GenderId==2?'Female':objCarerProfile.PersonalInfo.GenderId==5?'Transgender Male':objCarerProfile.PersonalInfo.GenderId==6?'Transgender Female':objCarerProfile.PersonalInfo.GenderId==7?'Gender Variant/Non-Conforming':''}}
+                </strong>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12 text-left">Religion : <strong class="d-inline-block">{{objCarerProfile.Religion}}</strong></div>
+              </div>
+              <div class="row">
+                <div class="col-md-12 text-left">Ethnicity : <strong class="d-inline-block"> {{objCarerProfile.Ethinicity}}</strong></div>
+              </div>
+              <div class="dropdown-divider w-100"></div>
+          </div>
+        </div>
+    </div>
+     <!-- General Info -->
+    <div class="col-xl-4 col-lg-6 col-12 bottom-30"   *ngIf="objCarerProfile">
+        <br>
+        <div class="row" style="text-align: left;">
+           <div class="col-md-6" >
+               <circle-progress
+               [percent]="insCircleProgressVal"
+               radius="50"
+               [outerStrokeWidth]="8"
+               [innerStrokeWidth]="4"
+               [outerStrokeColor]="'#78C000'"
+               [innerStrokeColor]="'#C7E596'"
+               [animation]="true"  class="circle-progress"
+               [animationDuration]="300"></circle-progress>
+           </div>
+           <div class="col-md-6">
+               <ul class="list-group" style="color: #78C000;font-size: 12px;">
+                   <li>Initial Enquiry Date</li>
+                   <li >Application Filled Date</li>
+                   <li >Initial Home Visit Date</li>
+                   <li>Stage 1 Start Date</li>
+                   <li>Stage 1 End Date</li>
+                   <li>Stage 2 Start Date</li>
+                   <li>Stage 2 End Date</li>
+                   <li>Health and Safety Date</li>
+                   <li>Safe Care Policy Date </li>
+                   <li>Statutory Check</li>
+                   <li>Approval</li>
+               </ul>
+           </div>
+
+     </div>
+     <div widget class=" datamap card" style="margin-top: 10px;">
+           <div class="card-header" style="background-color: #2d922d;">
+               <span>General Information</span>
+               <div class="widget-controls">
+                 <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                 <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+             </div>
+           </div>
+           <div class="card-body widget-body" style="min-height: 246px;">
+               <ul class="list-group">
+                   <li class="list-group-item">Current Status : <b>{{objCarerProfile.CarerStatusName}}</b></li>
+                   <li class="list-group-item">Area Office : <b>{{objCarerProfile.AreaOfficeName}}</b></li>
+                   <li class="list-group-item">Agency SSW : <b>
+                     {{objCarerProfile.SSocialWorker==null?'Not Assigned':objCarerProfile.SSocialWorker}}</b></li>
+                   <li class="list-group-item" *ngIf="objApprovalDetails">Approved Vacancy : <b>{{objApprovalDetails.NoOfPlacement}}</b></li>
+                   <li class="list-group-item" *ngIf="objApprovalDetails">Available Vacancy : <b>{{objCarerProfile.AvailableVacancies}}</b></li>
+               </ul>
+
+           </div>
+       </div>
+    </div>
+
+   <!-- Carer Process -->
+   <div class="col-lg-4 col-md-12" >
+       <div widget class="datamap card" >
+         <div class="card-header" style="background-color: #f79a17;">
+             <span>Recruitment Process</span>
+             <div class="widget-controls">
+                 <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                 <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+             </div>
+         </div>
+         <div class="card-body widget-body" style="min-height: 500px;">
+           <div class="task-todo-container">
+             <div class="row">
+                 <div class="col-sm-12">
+                   <!-- [ngClass]="{checked: isChecked, active: !isChecked}" -->
+                     <ul class="todo-list" slim-scroll [slimScrollOptions]="{height: 420}">
+                         <li [ngClass]="{checked: objCarerProfile.InitialEnquiryDate, Unchecked: !objCarerProfile.InitialEnquiryDate}">
+                             <span class="cut-with-dots">Initial Enquiry Date : <b>{{objCarerProfile.InitialEnquiryDate |dateFormat:'dd/MM/yyyy'}}</b></span>
+                         </li>
+                         <li [ngClass]="{checked: objCarerProfile.ApplicationFilledDate, Unchecked: !objCarerProfile.ApplicationFilledDate}" >
+                           <span class="cut-with-dots">Application Filled Date : <b>{{objCarerProfile.ApplicationFilledDate |dateFormat:'dd/MM/yyyy'}}</b></span>
+                         </li>
+                         <li [ngClass]="{checked: objCarerProfile.InitialHomeVisitDate, Unchecked: !objCarerProfile.InitialHomeVisitDate}" >
+                           <span class="cut-with-dots">Initial Home Visit Date : <b>{{objCarerProfile.InitialHomeVisitDate |dateFormat:'dd/MM/yyyy'}}</b></span>
+                         </li>
+                         <li [ngClass]="{checked:  objCarerProfile.StatgeDates.Stage1StartDate !=null && objCarerProfile.StatgeDates.Stage1StartDate!='0001-01-01T00:00:00', Unchecked: objCarerProfile.StatgeDates.Stage1StartDate=='0001-01-01T00:00:00'}" >
+                           <span class="cut-with-dots">Stage 1 Start Date : <b *ngIf="objCarerProfile.StatgeDates && objCarerProfile.StatgeDates.Stage1StartDate!='0001-01-01T00:00:00'">{{objCarerProfile.StatgeDates.Stage1StartDate |dateFormat:'dd/MM/yyyy'}}</b></span>
+                         </li>
+                         <li [ngClass]="{checked: objCarerProfile.StatgeDates.Stage1EndDate !=null && objCarerProfile.StatgeDates.Stage1EndDate != '0001-01-01T00:00:00', Unchecked: objCarerProfile.StatgeDates.Stage1EndDate==null || objCarerProfile.StatgeDates.Stage1EndDate=='0001-01-01T00:00:00'}" >
+                           <span class="cut-with-dots">Stage 1 End Date : <b *ngIf="objCarerProfile.StatgeDates && objCarerProfile.StatgeDates.Stage1EndDate!='0001-01-01T00:00:00'">{{objCarerProfile.StatgeDates.Stage1EndDate |dateFormat:'dd/MM/yyyy'}}</b></span>
+                         </li>
+                         <li [ngClass]="{checked: objCarerProfile.StatgeDates.Stage2StartDate!=null && objCarerProfile.StatgeDates.Stage2StartDate!='0001-01-01T00:00:00', Unchecked: objCarerProfile.StatgeDates.Stage2StartDate==null || objCarerProfile.StatgeDates.Stage2StartDate=='0001-01-01T00:00:00'}" >
+                           <span class="cut-with-dots">Stage 2 Start Date : <b *ngIf="objCarerProfile.StatgeDates && objCarerProfile.StatgeDates.Stage2StartDate!='0001-01-01T00:00:00'">{{objCarerProfile.StatgeDates.Stage2StartDate |dateFormat:'dd/MM/yyyy'}}</b></span>
+                         </li>
+                         <li [ngClass]="{checked: objCarerProfile.StatgeDates.Stage2EndDate != null && objCarerProfile.StatgeDates.Stage2EndDate!='0001-01-01T00:00:00', Unchecked: objCarerProfile.StatgeDates.Stage2EndDate==null || objCarerProfile.StatgeDates.Stage2EndDate=='0001-01-01T00:00:00'}" >
+                           <span class="cut-with-dots">Stage 2 End Date : <b *ngIf="objCarerProfile.StatgeDates && objCarerProfile.StatgeDates.Stage2EndDate!='0001-01-01T00:00:00'">{{objCarerProfile.StatgeDates.Stage2EndDate |dateFormat:'dd/MM/yyyy'}}</b></span>
+                         </li>
+                         <li *ngIf="objApprovalDetails" [ngClass]="{checked: objApprovalDetails.ApprovalDate, Unchecked: !objApprovalDetails.ApprovalDate}" >
+                           <span class="cut-with-dots">Approval Date : <b>{{objApprovalDetails.ApprovalDate |dateFormat:'dd/MM/yyyy'}}</b></span>
+                         </li>
+                         <li [ngClass]="{checked: objHealthandSafety.length>0, Unchecked: objHealthandSafety.length==0}" >
+                           <span class="cut-with-dots">Health and Safety Date : <b *ngIf="objHealthandSafety.length>0 && objHealthandSafety[0].FieldValue">{{objHealthandSafety[0].FieldValue |dateFormat:'dd/MM/yyyy'}}</b></span>
+                         </li>
+                         <li [ngClass]="{checked: objSafeCareStrategies.length>0, Unchecked: objSafeCareStrategies.length==0}" >
+                           <span class="cut-with-dots">Safe Care Policy Date : <b *ngIf="objSafeCareStrategies.length>0 && objSafeCareStrategies[0].FieldValue">{{objSafeCareStrategies[0].FieldValue |dateFormat:'dd/MM/yyyy'}}</b></span>
+                         </li>
+                         <!-- <li [ngClass]="{checked: objPetQuestionnaire.length>0, Unchecked: objPetQuestionnaire.length==0}" >
+                           <span class="cut-with-dots">Pet Questionnaire Date : <b *ngIf="objPetQuestionnaire.length>0 && objPetQuestionnaire[0].FieldValue">{{objPetQuestionnaire[0].FieldValue |dateFormat:'dd/MM/yyyy'}}</b></span>
+                         </li> -->
+                         <li [ngClass]="{checked: objCarerProfile.ReviewDate !='0001-01-01T00:00:00', Unchecked: objCarerProfile.ReviewDate =='0001-01-01T00:00:00'}" >
+                           <span class="cut-with-dots">Review Date : <b *ngIf="objCarerProfile.ReviewDate !='0001-01-01T00:00:00'">{{objCarerProfile.ReviewDate |dateFormat:'dd/MM/yyyy'}}</b></span>
+                         </li>
+                         <li [ngClass]="{checked: objCarerProfile.NextReviewDate !='0001-01-01T00:00:00', Unchecked: objCarerProfile.NextReviewDate =='0001-01-01T00:00:00'}" >
+                           <span class="cut-with-dots">Next Review Date : <b *ngIf="objCarerProfile.NextReviewDate !='0001-01-01T00:00:00'">{{objCarerProfile.NextReviewDate |dateFormat:'dd/MM/yyyy'}}</b></span>
+                         </li>
+                         <li [ngClass]="{checked: objSupervisoryHomeVisit.length>0, Unchecked: objSupervisoryHomeVisit.length==0}" >
+                           <span class="cut-with-dots">SHV Date : <b *ngIf="objSupervisoryHomeVisit.length>0 && objSupervisoryHomeVisit[0].FieldValue">{{objSupervisoryHomeVisit[0].FieldValue |dateFormat:'dd/MM/yyyy'}}</b></span>
+                         </li>
+                     </ul>
+                 </div>
+             </div>
+           </div>
+         </div>
+     </div>
+   </div>
+
+  </div>
+  <div class="row" *ngIf="objCarerProfile" style="margin-top: 10px;">
+      <!-- SC Carer Info -->
+    <div class="col-lg-4 col-md-12" *ngIf="objSCCarerProfile" >
+        <div widget class="datamap card"  style="margin-top: 10px; ">
+          <div class="card-header card-info" style="background-color: #f79a17;">
+            <span>Second Applicant</span>
+            <div class="widget-controls">
+                <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+              </div>
+          </div>
+          <div class="card-body widget-body" *ngIf="objSCCarerProfile" style="min-height: 480px;">
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-8">
+                  <img class="card-img-top w-100 img-thumbnail rounded" [attr.src]="scsrcPath" height="120px" alt="user">
+                </div>
+                <div class="col-md-2"></div>
+            </div>
+
+              <h5 class="card-title text-center"> {{objSCCarerProfile.PersonalInfo.Title}}
+                {{objSCCarerProfile.PersonalInfo.FirstName}} {{objSCCarerProfile.PersonalInfo.lastName}} <br>
+                 ({{objCarerProfile.CarerCode}})</h5>
+
+                 <p class="card-text text-justify" *ngIf="objCarerProfile.ContactInfo">
+                    <b> Address	 :</b>
+                    <span *ngIf="objCarerProfile.ContactInfo">
+                        {{objCarerProfile.ContactInfo.AddressLine1}}<br />
+                       <span *ngIf="objCarerProfile.ContactInfo.AddressLine2"> {{objCarerProfile.ContactInfo.AddressLine2}}<br /></span>
+                        {{objCarerProfile.ContactInfo.City}}, {{objCarerProfile.ContactInfo.County}}<br />
+                        {{objCarerProfile.ContactInfo.PostalCode}}<br />
+                        <b *ngIf="objCarerProfile.ContactInfo.HomePhone">P : {{objCarerProfile.ContactInfo.HomePhone}}<br /></b>
+                        <b *ngIf="objSCCarerProfile.ContactInfo.MobilePhone">M : {{objSCCarerProfile.ContactInfo.MobilePhone}}<br /></b>
+                        <b *ngIf="objSCCarerProfile.ContactInfo.EmailId">E : {{objSCCarerProfile.ContactInfo.EmailId}}</b>
+                    </span>
+                  </p>
+                  <br>
+              <div class="dropdown-divider w-100"></div>
+
+             <div class="row">
+                <div class="col-md-12 text-left">D.O.B : <strong class="d-inline-block" *ngIf="objSCCarerProfile && objSCCarerProfile.PersonalInfo">{{ objSCCarerProfile.PersonalInfo.DateOfBirth | dateFormat :'dd/MM/yyyy'}}</strong></div>
+              </div>
+              <div class="row">
+                <div class="col-md-12 text-left">Gender : <strong class="d-inline-block" *ngIf="objSCCarerProfile && objSCCarerProfile.PersonalInfo">
+                  {{ objSCCarerProfile.PersonalInfo.GenderId==1?'Male':objSCCarerProfile.PersonalInfo.GenderId==2?'Female':objSCCarerProfile.PersonalInfo.GenderId==5?'Transgender Male':objSCCarerProfile.PersonalInfo.GenderId==6?'Transgender Female':objSCCarerProfile.PersonalInfo.GenderId==7?'Gender Variant/Non-Conforming':''}}
+                </strong>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12 text-left">Religion : <strong class="d-inline-block">{{objSCCarerProfile.Religion}}</strong></div>
+              </div>
+              <div class="row">
+                <div class="col-md-12 text-left">Ethnicity : <strong class="d-inline-block"> {{objSCCarerProfile.Ethinicity}}</strong></div>
+              </div>
+
+              <div class="dropdown-divider w-100"></div>
+          </div>
+        </div>
+    </div>
+      <!-- Placement Details -->
+      <div [ngClass]="{'col-xl-4 col-lg-6 col-12 bottom-30': objSCCarerProfile, 'col-xl-6 col-lg-6 col-12 bottom-30': !objSCCarerProfile}"  style="margin-top: 10px;" *ngIf="objQeryVal.mid==3">
+        <div widget class=" datamap card" >
+            <div class="card-header" style="background-color: #024a88;">
+                <span>Current Placements</span>
+                <div class="widget-controls">
+                  <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                  <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+              </div>
+            </div>
+            <div class="card-body widget-body" style="min-height: 480px;">
+                <ul class="list-group pt-2 w-100" *ngIf="lstPlacedChild.length>0">
+                  <li class="list-group-item" *ngFor="let subItem of lstPlacedChild">
+                      <div class="media mt-3">
+                          <img class="d-flex mr-3 rounded  img-fluid" [attr.src]="fnSetImage(subItem.ImageString)" width="70" height="70" alt="Generic placeholder image">
+                          <div class="media-body">
+                              <h6 class="media-heading"><b>{{subItem.FullName}}</b></h6>
+                              DOB : <b>{{subItem.DateOfBirth|date:'dd/MM/yyyy'}} </b> Age:<b> {{subItem.Age}}</b><br />
+                              Child Identifier : <b>{{subItem.ChildIdentifier}}</b><br />
+                              Placement Date : <b>{{subItem.PlacementDate| dateFormat:'dd/MM/yyyy hh:mm'}}</b><br>
+                              Placement Type : <b>{{subItem.PlacementType}}</b><br>
+                              <span *ngIf="subItem.BackupCarerName&&subItem.PlacementStartTypeId==2"> Backup Carer : <b>{{subItem.BackupCarerName}}</b><br> </span>
+                              Social Worker Name : <b>{{ subItem.SocialWorkerName}}</b>
+                            </div>
+                      </div>
+                  </li>
+              </ul>
+              <ul class="list-group pt-2 w-100" *ngIf="lstPlacedChild.length==0">
+                <li class="list-group-item">No Record Found</li>
+            </ul>
+            </div>
+        </div>
+      </div>
+
+    <!-- Current Approval Details -->
+    <div [ngClass]="{'col-xl-4 col-lg-6 col-12 bottom-30': objSCCarerProfile, 'col-xl-6 col-lg-6 col-12 bottom-30': !objSCCarerProfile}" style="margin-top: 10px;" *ngIf="objApprovalDetails">
+      <div widget class=" datamap card">
+          <div class="card-header" style="background-color:darkcyan">
+              <span>Current Approval Details</span>
+              <div class="widget-controls">
+                <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+            </div>
+          </div>
+          <div class="card-body widget-body">
+              <ul class="list-group">
+                  <li class="list-group-item">Category Of Approval : <b>{{objApprovalDetails.CategoryofApprovalName}}</b></li>
+                  <li class="list-group-item">Date Of Approval : <b> {{objApprovalDetails.ApprovalDate |dateFormat:'dd/MM/yyyy'}}</b></li>
+                  <li class="list-group-item">Is Sibling Group Acceptable? : <b>
+                    {{objApprovalDetails.IsSiblingGroupAcceptible==1?'Yes':objApprovalDetails.IsSiblingGroupAcceptible==0?'No':''}}</b></li>
+                  <li class="list-group-item">Age Range : <b>{{objApprovalDetails.AgeRangeMin}} - {{objApprovalDetails.AgeRangeMax}}</b></li>
+                  <li class="list-group-item">Number of Children : <b>{{objApprovalDetails.NoOfVacancy}}</b></li>
+                  <li class="list-group-item">Gender : <b>{{objApprovalDetails.Gender==1?'Male':objApprovalDetails.Gender==2?'Female':'Any'}}</b></li>
+                  <li class="list-group-item">Ethnicity : <b>{{objApprovalDetails.Ethnicity}}</b></li>
+                  <li class="list-group-item">Religion : <b>{{objApprovalDetails.Religion}}</b></li>
+                  <li class="list-group-item">Disability : <b>{{objApprovalDetails.Disability}}</b></li>
+                  <li class="list-group-item">Immigration Status : <b>{{objApprovalDetails.Immigrations}}</b></li>
+                  <li class="list-group-item">Placement Type : <b>{{objApprovalDetails.PlacementType}}</b></li>
+              </ul>
+
+          </div>
+      </div>
+    </div>
+      <!-- Statutory Check -->
+      <div class="col-xl-6 col-lg-6 col-12 bottom-30 w-100" style="margin-top: 10px;">
+        <div widget class=" datamap card">
+            <div class="card-header" style="background-color:#248dad;">
+                <span>Statutory Check</span>
+                <div class="widget-controls">
+                  <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                  <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+              </div>
+            </div>
+            <div class="card-body widget-body" *ngIf="objCarerProfile">
+
+              <div class="form-group" *ngIf="PrimaryCheckVisi || SecondCheckVisi ||CarerFamilyCheckVisi||BackupCarerCheckVisi||BackupCarerFamilyCheckVisi">
+
+                <!--Primary Carer Statutory Checks-->
+                <div class="changeColor" style="padding-top:20px" *ngIf="PrimaryCheckVisi&&globalPrimaryCheckList.length>0">
+                    <div widget class="card">
+                        <div class="card-header">
+                            <span class="text-uppercase"> Primary Carer Statutory Checks</span>
+                        </div>
+                        <div class="card-body widget-body">
+                            <div class="table-responsive datatable"
+                                 *ngIf="globalObjStatutoryCheckList">
+                                <div *ngFor="let item of globalPrimaryCheckList;let i=index">
+                                    <table class="table table-striped table-hover table-sm">
+                                        <thead>
+                                            <tr>
+                                                <th *ngFor="let item of globalPrimaryCheckList[i]|slice:0:1" class="tdWidth">Check Name</th>
+                                                <th *ngFor="let item of globalPrimaryCheckList[i]|slice:0:3" class="tdWidth">
+                                                    {{item.DisplayName}}
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody *ngIf="PrimaryCheckVisi">
+                                            <tr>
+                                                <td *ngFor="let item of globalPrimaryCheckList[i]|slice:0:1">
+                                                    {{item.CheckName}}
+                                                </td>
+
+                                                <td *ngFor="let subitem of globalPrimaryCheckList[i]|slice:0:3">
+                                                    <span *ngIf="subitem.FieldDataTypeName=='date'">
+                                                        {{subitem.FieldValue | dateFormat:'dd/MM/yyyy'}}
+                                                    </span>
+                                                    <span *ngIf="subitem.FieldDataTypeName =='Dropdown'">
+                                                        {{subitem.FieldValueText}}
+                                                    </span>
+                                                    <span *ngIf="subitem.FieldDataTypeName =='bit'
+                                          || subitem.FieldDataTypeName =='radio'">
+                                                        {{subitem.FieldValue==1?'Yes':'No'}}
+                                                    </span>
+                                                    <span *ngIf="subitem.FieldDataTypeName !='date' &&subitem.FieldDataTypeName !='Dropdown' && subitem.FieldDataTypeName !='bit' &&
+                                          subitem.FieldDataTypeName !='radio'">
+                                                        {{subitem.FieldValue}}
+                                                    </span>
+
+
+                                                </td>
+
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                  </div>
+
+                <!--Second Carer Statutory Checks-->
+                <div class="changeColor" style="padding-top:20px" *ngIf="SecondCheckVisi">
+                    <div widget class="card">
+                        <div class="card-header">
+                            <span class="text-uppercase"> Second Carer Statutory Checks</span>
+                        </div>
+                        <div class="card-body widget-body">
+                            <div class="table-responsive datatable">
+                                <div *ngFor="let item of globalSecondCheckList;let i=index">
+                                    <table class="table table-striped table-hover table-sm">
+                                        <thead>
+                                            <tr>
+                                                <th *ngFor="let item of globalSecondCheckList[i]|slice:0:1" class="tdWidth">Check Name</th>
+                                                <th *ngFor="let item of globalSecondCheckList[i]|slice:0:3" class="tdWidth">
+                                                    {{item.DisplayName}}
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td *ngFor="let item of globalSecondCheckList[i]|slice:0:1">
+                                                    {{item.CheckName}}
+                                                </td>
+
+                                                <td *ngFor="let subitem of globalSecondCheckList[i]|slice:0:3">
+                                                    <span *ngIf="subitem.FieldDataTypeName=='date'">
+                                                        {{subitem.FieldValue | dateFormat:'dd/MM/yyyy'}}
+                                                    </span>
+                                                    <span *ngIf="subitem.FieldDataTypeName =='Dropdown'">
+                                                        {{subitem.FieldValueText}}
+                                                    </span>
+                                                    <span *ngIf="subitem.FieldDataTypeName !='date' &&subitem.FieldDataTypeName !='Dropdown'">
+                                                        {{subitem.FieldValue}}
+                                                    </span>
+                                                </td>
+
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                  </div>
+
+                <!--Carer Family Check-->
+                <div class="changeColor" style="padding-top:20px" *ngIf="CarerFamilyCheckVisi">
+                    <div widget class="card">
+                        <div class="card-header">
+                            <span class="text-uppercase">Carer Family Checks</span>
+                        </div>
+                        <div class="card-body widget-body">
+                            <div class="table-responsive datatable">
+                                <div *ngFor="let item of globalCarerFamilyCheckList;let i=index">
+                                    <table class="table table-striped table-hover table-sm">
+                                        <thead>
+                                            <tr>
+                                                <th *ngFor="let subitem of globalCarerFamilyCheckList[i]|slice:0:1" class="tdWidth">
+                                                Family Member Name</th>
+                                                <th *ngFor="let item of globalCarerFamilyCheckList[i]|slice:0:1" class="tdWidth">Check Name</th>
+                                                <th *ngFor="let item of globalCarerFamilyCheckList[i]|slice:0:3" class="tdWidth">
+                                                    {{item.DisplayName}}
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td *ngFor="let item of globalCarerFamilyCheckList[i]|slice:0:1">
+                                                    {{item.MemberName}}
+                                                </td>
+                                                <td *ngFor="let item of globalCarerFamilyCheckList[i]|slice:0:1">
+                                                    {{item.CheckName}}
+                                                </td>
+
+                                                <td *ngFor="let subitem of globalCarerFamilyCheckList[i]|slice:0:3">
+                                                    <span *ngIf="subitem.FieldDataTypeName=='date'">
+                                                        {{subitem.FieldValue | dateFormat:'dd/MM/yyyy'}}
+                                                    </span>
+                                                    <span *ngIf="subitem.FieldDataTypeName =='Dropdown'">
+                                                        {{subitem.FieldValueText}}
+                                                    </span>
+                                                    <span *ngIf="subitem.FieldDataTypeName !='date' &&subitem.FieldDataTypeName !='Dropdown'">
+                                                        {{subitem.FieldValue}}
+                                                    </span>
+                                                </td>
+
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--Backup Carer Checks-->
+                <div class="changeColor" style="padding-top:20px" *ngIf="BackupCarerCheckVisi">
+                    <div widget class="card">
+                        <div class="card-header">
+                            <span class="text-uppercase">Backup Carer Checks</span>
+                        </div>
+                        <div class="card-body widget-body">
+                            <div class="table-responsive datatable">
+                                <div *ngFor="let item of globalBackupCarerCheckList;let i=index">
+                                    <table class="table table-striped table-hover table-sm">
+                                        <thead>
+                                            <tr>
+                                                <th *ngFor="let item of globalBackupCarerCheckList[i]|slice:0:1" class="tdWidth">Backup Carer Name</th>
+                                                <th *ngFor="let item of globalBackupCarerCheckList[i]|slice:0:1" class="tdWidth">Check Name</th>
+                                                <th *ngFor="let item of globalBackupCarerCheckList[i]|slice:0:3" class="tdWidth">
+                                                    {{item.DisplayName}}
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td *ngFor="let item of globalBackupCarerCheckList[i]|slice:0:1">
+                                                    {{item.MemberName}}
+                                                </td>
+                                                <td *ngFor="let item of globalBackupCarerCheckList[i]|slice:0:1">
+                                                    {{item.CheckName}}
+                                                </td>
+
+                                                <td *ngFor="let subitem of globalBackupCarerCheckList[i]|slice:0:3">
+                                                    <span *ngIf="subitem.FieldDataTypeName=='date'">
+                                                        {{subitem.FieldValue | dateFormat:'dd/MM/yyyy'}}
+                                                    </span>
+                                                    <span *ngIf="subitem.FieldDataTypeName =='Dropdown'">
+                                                        {{subitem.FieldValueText}}
+                                                    </span>
+                                                    <span *ngIf="subitem.FieldDataTypeName !='date' &&subitem.FieldDataTypeName !='Dropdown'">
+                                                        {{subitem.FieldValue}}
+                                                    </span>
+                                                </td>
+
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--Backup Carer Family Checks-->
+                <div class="changeColor" style="padding-top:20px" *ngIf="BackupCarerFamilyCheckVisi">
+                    <div widget class="card">
+                        <div class="card-header">
+                            <span class="text-uppercase">Backup Carer Family Checks</span>
+                        </div>
+                        <div class="card-body widget-body">
+                            <div class="table-responsive datatable">
+                                <div *ngFor="let item of globalBackupCarerFamilyCheckList;let i=index">
+                                    <table class="table table-striped table-hover table-sm" >
+                                        <thead>
+                                            <tr>
+                                                <th *ngFor="let item of globalBackupCarerFamilyCheckList[i]|slice:0:1" class="tdWidth">Backup Carer Name</th>
+                                                <th *ngFor="let item of globalBackupCarerFamilyCheckList[i]|slice:0:1" class="tdWidth">Family Member Name</th>
+                                                <th *ngFor="let item of globalBackupCarerFamilyCheckList[i]|slice:0:1" class="tdWidth">Check Name</th>
+                                                <th *ngFor="let item of globalBackupCarerFamilyCheckList[i]|slice:0:3" class="tdWidth">
+                                                    {{item.DisplayName}}
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                               <td *ngFor="let item of globalBackupCarerFamilyCheckList[i]|slice:0:1">
+                                                    {{item.BackupCarerName}}
+                                                </td>
+                                                <td *ngFor="let item of globalBackupCarerFamilyCheckList[i]|slice:0:1">
+                                                    {{item.MemberName}}
+                                                </td>
+                                                <td *ngFor="let item of globalBackupCarerFamilyCheckList[i]|slice:0:1">
+                                                    {{item.CheckName}}
+                                                </td>
+
+                                                <td *ngFor="let subitem of globalBackupCarerFamilyCheckList[i]|slice:0:3">
+                                                    <span *ngIf="subitem.FieldDataTypeName=='date'">
+                                                        {{subitem.FieldValue | dateFormat:'dd/MM/yyyy'}}
+                                                    </span>
+                                                    <span *ngIf="subitem.FieldDataTypeName =='Dropdown'">
+                                                        {{subitem.FieldValueText}}
+                                                    </span>
+                                                    <span *ngIf="subitem.FieldDataTypeName !='date' &&subitem.FieldDataTypeName !='Dropdown'">
+                                                        {{subitem.FieldValue}}
+                                                    </span>
+                                                </td>
+
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group" *ngIf="!PrimaryCheckVisi && !SecondCheckVisi && !CarerFamilyCheckVisi && !BackupCarerCheckVisi && !BackupCarerFamilyCheckVisi">
+                <ul class="list-group pt-2 w-100" >
+                    <li class="list-group-item">No Record Found</li>
+                </ul>
+            </div>
+
+            </div>
+        </div>
+      </div>
+
+      <!-- Carer Training Profile -->
+      <div class="col-lg-6 col-6 bottom-30" style="margin-top: 10px;">
+        <div widget class=" datamap card">
+            <div class="card-header" style="background-color: #f79a17;">
+                <span>Training Details</span>
+                <div class="widget-controls">
+                  <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                  <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+              </div>
+            </div>
+            <div class="card-body widget-body">
+              <table class="table table-striped table-hover table-sm">
+                <tbody *ngIf="carerTrainingProfileList.length==0">
+                  <tr>
+                      <td colspan="3" style="text-align: center;">No Record Found</td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="table-responsive datatable" *ngIf="carerTrainingProfileList.length!=0">
+                  <ngx-datatable [rows]="carerTrainingProfileList" style="font-size: smalll;"
+                          class="bootstrap"
+                          rowHeight="auto"
+                          [columnMode]="'force'"
+                          [scrollbarH]="true"
+                          [footerHeight]="50"
+                          [limit]="TPLimit"
+                          [messages] = "footerMessage"
+                          >
+                          <ngx-datatable-column name="Carer" prop="CreatedUserName" [sortable]="false" width="100">
+                              <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                              {{value}}
+                              </ng-template>
+                          </ngx-datatable-column>
+                          <ngx-datatable-column name="Courses" prop="CourseAttended" [sortable]="false" width="140">
+                              <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                                  {{ row.PPDPCompleted == 1 ? 'PERSONAL AND PROFESSIONAL DEVELOPMENT PLAN': value }}
+                              </ng-template>
+                          </ngx-datatable-column>
+                          <ngx-datatable-column name="Date - Status"  [sortable]="false" width="70">
+                              <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                              <span *ngFor="let subitem1 of row.TrainingCourseDate| groupBy:'SequenceNo';let i=index">
+                                  <span *ngFor="let subitem of subitem1.value | filter :'FieldName': 'CourseAttendedDate'">{{ subitem.FieldValue|dateFormat:'dd/MM/yyyy'  }}</span>
+                                  <span *ngFor="let subitem of subitem1.value | filter :'FieldName': 'CourseStatusId'">&nbsp;-&nbsp;{{ fnGetCourseStatusValue(subitem.FieldValue) }}</span>
+                                  <br>
+                              </span>
+                              </ng-template>
+                          </ngx-datatable-column>
+                  </ngx-datatable>
+              </div><br>
+              <div *ngIf="carerTrainingProfileList.length>10"><PageSize (childPageSizeEvent) ="setPageSize($event)"></PageSize></div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+
+<div style="margin-top: 200px;" *ngIf="!objCarerProfile">
+  <ngx-spinner type="ball-scale-multiple"></ngx-spinner>
+</div>
+<div style="text-align: center;font-size: 20px;padding-top: 10px;" *ngIf="!objCarerProfile">
+    <br>
+    Please Wait..
+</div>
+
+
+
+
+
+

@@ -1,0 +1,23 @@
+<div class="col-xl-12 col-lg-12 col-12 bottom-30">
+    <Child-Header></Child-Header>
+    <div widget class="card">
+        <div class="card-header">
+            <span>Child Event Gallery</span>
+            <div class="widget-controls">
+                <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+                <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+                <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a>
+            </div>
+        </div>
+
+        <div class="card-body widget-body">
+            <Upload-Gallery #upload
+                              [ChildId]="ChildId" (SuccessUpload)="fnSuccessUpload()"
+                              [BtnAccessFormCnfgId]="formId"></Upload-Gallery>
+                              <!-- [IsUpload] [formbuilder] -->
+
+        </div>
+    </div>
+</div>

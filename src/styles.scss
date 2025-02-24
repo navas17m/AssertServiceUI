@@ -1,0 +1,458 @@
+//@import url('https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i');
+$icon-font-path: "../node_modules/bootstrap-sass/assets/fonts/bootstrap/";
+@import "../node_modules/bootstrap/scss/bootstrap";
+@import "../node_modules/font-awesome/css/font-awesome.min.css";
+@import "../node_modules/dragula/dist/dragula.min.css";
+@import "../node_modules/ngx-toastr/toastr.css";
+@import "../node_modules/metrojs/release/MetroJs.Full/MetroJs.css";
+@import "../node_modules/pace/themes/pace-theme-flash.css";
+@import "../node_modules/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css";
+@import "../node_modules/dropzone/dist/min/dropzone.min.css";
+@import "../node_modules/@swimlane/ngx-datatable/themes/bootstrap.css";
+@import "../node_modules/@swimlane/ngx-datatable/assets/icons.css";
+@import "../node_modules/fullcalendar/dist/fullcalendar.min.css";
+@import "../node_modules/leaflet/dist/leaflet.css";
+@import '../node_modules/ngx-bar-rating/themes/br-movie-theme';
+
+@import "app/theme/styles/variables";
+@import "app/theme/styles/mixins";
+@import "app/theme/styles/bootstrap-override";
+@import "app/theme/styles/libs-override";
+@import "app/theme/styles/base";
+
+@import "../node_modules/ladda/dist/ladda.min.css";
+
+@-webkit-keyframes spin-cubeGridScaleDelay {
+  0%, 70%, 100% {
+    -webkit-transform: scale3D(1, 1, 1);
+  }
+  35% {
+    -webkit-transform: scale3D(0, 0, 1);
+  }
+}
+
+@-moz-keyframes spin-cubeGridScaleDelay {
+  0%, 70%, 100% {
+    -moz-transform: scale3D(1, 1, 1);
+  }
+  35% {
+    -moz-transform: scale3D(0, 0, 1);
+  }
+}
+
+@keyframes spin-cubeGridScaleDelay {
+  0%, 70%, 100% {
+    transform: scale3D(1, 1, 1);
+  }
+  35% {
+    transform: scale3D(0, 0, 1);
+  }
+}
+
+.spin-outer {
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    z-index: -1;
+}
+.spin-container {
+    height:100%;
+    width:100%;
+    display:table;
+}
+.spin-inner {
+    vertical-align:middle;
+    height:100%;
+    display:table-cell;
+}
+.spin-cube-grid {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto;
+    .spin-cube {
+        width: 33%;
+        height: 33%;
+        background-color: #fff;
+        float: left;
+        -webkit-animation: spin-cubeGridScaleDelay 1.3s infinite ease-in-out;
+        -moz-animation: spin-cubeGridScaleDelay 1.3s infinite ease-in-out;
+        animation: spin-cubeGridScaleDelay 1.3s infinite ease-in-out;
+    }
+    .spin-cube1 {
+        -webkit-animation-delay: 0.2s;
+        -moz-animation-delay: 0.2s;
+        animation-delay: 0.2s;
+    }
+    .spin-cube2 {
+        -webkit-animation-delay: 0.3s;
+        -moz-animation-delay: 0.3s;
+        animation-delay: 0.3s;
+    }
+    .spin-cube3 {
+        -webkit-animation-delay: 0.4s;
+        -moz-animation-delay: 0.4s;
+        animation-delay: 0.4s;
+    }
+    .spin-cube4 {
+        -webkit-animation-delay: 0.1s;
+        -moz-animation-delay: 0.1s;
+        animation-delay: 0.1s;
+    }
+    .spin-cube5 {
+        -webkit-animation-delay: 0.2s;
+        -moz-animation-delay: 0.2s;
+        animation-delay: 0.2s;
+    }
+    .spin-cube6 {
+        -webkit-animation-delay: 0.3s;
+        -moz-animation-delay: 0.3s;
+        animation-delay: 0.3s;
+    }
+    .spin-cube7 {
+        -webkit-animation-delay: 0s;
+        -moz-animation-delay: 0s;
+        animation-delay: 0s;
+    }
+    .spin-cube8 {
+        -webkit-animation-delay: 0.1s;
+        -moz-animation-delay: 0.1s;
+        animation-delay: 0.1s;
+    }
+    .spin-cube9 {
+        -webkit-animation-delay: 0.2s;
+        -moz-animation-delay: 0.2s;
+        animation-delay: 0.2s;
+    }
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+::-webkit-scrollbar-button {
+    width: 0px;
+    height: 0px;
+}
+::-webkit-scrollbar-thumb {
+    background: #e1e1e1;
+    border: 0px none #ffffff;
+    border-radius: 0px;
+    &:hover{
+        background: #cccccc;
+    }
+    &:active{
+        background: #888888;
+    }
+}
+::-webkit-scrollbar-track {
+    background: #666666;
+    border: 0px none #ffffff;
+    border-radius: 0px;
+    &:hover{
+        background: #666666;
+    }
+    &:active{
+        background: #333333;
+    }
+}
+::-webkit-scrollbar-corner {
+     background: transparent;
+}
+
+
+ng-scrollbar {
+    --scrollbar-size: 4px !important;
+    --scrollbar-thumb-color: rgba(204,204,204,0.4) !important;
+    --scrollbar-thumb-hover-color: #ccc !important;
+    --scrollbar-border-radius: 4px !important;
+    --scrollbar-hover-size: 8px !important;
+    --scrollbar-padding: 2px !important;
+}
+
+
+[required] {
+    border-left: 5px solid blue;
+}
+.ng-valid[required],
+.ng-valid.required {
+    border-left: 5px solid #42A948;
+}
+.ng-invalid:not(form) {
+    border-left: 5px solid #a94442;
+}
+.tableOne {
+  margin:auto;
+}
+
+
+.ngx-datatable.bootstrap .datatable-header .datatable-header-cell .datatable-header-cell-label{
+  font-weight:bold;
+}
+.ngx-datatable .datatable-header .datatable-header-cell .datatable-header-cell-template-wrap{
+  font-weight:bold;
+}
+
+.p-multiselect{
+    height: 40px;
+    font-size: 1em;
+}
+.p-multiselect .p-multiselect-label{
+    padding: 8px;
+}
+
+
+.ngx-datatable .datatable-body-cell a {
+    color: unset   !important;
+}
+
+
+.ngx-datatable .datatable-body-cell a:hover{
+    color: unset !important;
+}
+
+input[type="date"], input[type="datetime"], input[type="datetime-local"], .form-control-date, .form-control-datetime {
+  background-position: right;
+  background-image: url(assets/img/app/fa-calender.png);
+  background-repeat: no-repeat;
+  background-size: 21px;
+  max-width: 180px;
+}
+.ngx-datatable .datatable-footer .datatable-footer-inner {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  flex-wrap: wrap;
+  flex-direction: column;
+  align-content: space-between;
+}
+.ngx-datatable.bootstrap .datatable-footer {
+  background-color: #344154;
+}
+
+@media (min-width: 992px) {
+  .modal-lg {
+      max-width: 1100px;
+  }
+}
+.br-default .br-units {
+align-items: center;
+}
+
+.br-default .br-unit {
+margin-right: 5px;
+font-size: 23px;
+height: 18px;
+width: 18px;
+}
+
+.br-default .br-unit:after {
+content: "\2605";
+color: #d2d2d2;
+}
+
+.br-default .br-selected:after {
+color: #EDB867;
+}
+
+.br-default .br-active:after {
+color: #EDB867;
+}
+
+.br-fontawesome-o .br-unit {
+align-items: center;
+}
+
+.br-fontawesome-o .br-unit {
+font: normal normal normal 20px/1 FontAwesome;
+margin-right: 2px;
+}
+
+.br-fontawesome-o .br-unit:after {
+content: '\f006';
+color: #d2d2d2;
+}
+
+.br-fontawesome-o .br-selected:after {
+content: '\f005';
+color: #50E3C2;
+}
+
+.br-fontawesome-o .br-active:after {
+content: '\f005';
+color: #50E3C2;
+}
+
+.br-fontawesome-o .br-fraction:after {
+content: '\f123';
+}
+
+.br-movie .br-units {
+margin: 15px 0;
+}
+
+.br-movie .br-unit {
+display: block;
+width: 60px;
+height: 8px;
+float: left;
+background-color: #bbcefb;
+margin: 1px;
+}
+
+.br-movie .br-unit.br-active, .br-movie .br-unit.br-selected {
+background-color: #4278F5;
+}
+
+.br-movie.br-readonly .br-active, .br-movie.br-readonly .br-selected {
+background-color: #729bf8;
+}
+
+.br-movie .br-text {
+letter-spacing: 2px;
+font-size: 16px;
+clear: both;
+width: 240px;
+text-align: center;
+font-weight: 600;
+display: block;
+padding: .5em 0;
+color: #4278F5;
+}
+
+.br-vertical {
+display: flex;
+flex-direction: column;
+align-items: center;
+}
+
+.br-vertical .br-units {
+width: 120px;
+flex-direction: column-reverse;
+margin: 10px 0;
+}
+
+.br-vertical .br-unit {
+display: block;
+width: 120px;
+height: 5px;
+background-color: #fbedd9;
+margin-top: 1px;
+}
+
+.br-vertical .br-unit.br-active, .br-vertical .br-unit.br-selected {
+    background-color: #EDB867;
+}
+
+.br-vertical.br-readonly .br-active,
+.br-vertical.br-readonly .br-selected {
+border: 2px solid #729bf8;
+color: #729bf8;
+}
+
+.br-vertical .br-text {
+font-size: 18px;
+font-weight: 600;
+color: #EDB867;
+}
+
+/* multiselect overlap style*/
+.overflow-container {
+overflow-x: visible !important;
+overflow-y: visible !important;
+}
+
+.xdsoft_datetimepicker {
+z-index: 1000000;
+}
+
+
+.th, mfDynamicTableSorter a {
+font-weight: bold;
+}
+
+
+
+.xdsoft_datetimepicker {
+box-shadow: 0 5px 15px -5px rgba(0,0,0,0.506);
+background: #fff;
+border-bottom: 1px solid #bbb;
+border-left: 1px solid #ccc;
+border-right: 1px solid #ccc;
+border-top: 1px solid #ccc;
+color: #333;
+font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+padding: 8px;
+padding-left: 0;
+padding-top: 2px;
+position: absolute;
+z-index: 100000;
+box-sizing: border-box;
+display: none;
+}
+.custom-control {
+position: relative;
+display: inline-flex;
+min-height: 1.5rem;
+padding-left: 1.5rem;
+margin-right: 1rem;
+cursor: pointer;
+}
+
+.custom-control-indicator {
+display: block;
+position: absolute;
+top: 0.25rem;
+left: 0;
+display: block;
+width: 1rem;
+height: 1rem;
+pointer-events: none;
+-webkit-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+background-color: #ddd;
+background-repeat: no-repeat;
+background-position: center center;
+background-size: 50% 50%;
+border: none;
+}
+
+.custom-control.custom-checkbox .custom-control-input.checkbox-primary:checked ~ .custom-control-indicator {
+background-color: #024a88;
+border: none;
+}
+.btn{
+margin-left: 5px;
+line-height: 1.25;
+}
+.abc-radio{
+padding-left: 10px;
+}
+.abc-radio input[type=radio]{
+margin-left: 10px;
+}
+.form-control-date:read-only, .form-control-datetime:read-only {
+background-color: #fff;
+color: black;
+}
+
+
+ul.pagination {display: inline-flex !important;}
+
+
+.input-group-addon{
+border: 1px solid rgba(0,0,0,.15);
+background-color: #eceeef;
+height: 31px;
+}
+
+.circle-progress{
+width: 160px !important;
+height: 160px !important;
+min-width: 160px !important;
+min-height: 160px !important;
+}
+

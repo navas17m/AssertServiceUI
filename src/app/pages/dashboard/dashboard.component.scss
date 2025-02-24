@@ -1,0 +1,220 @@
+@import "../../theme/styles/variables";
+//@import "../../../../node_modules/bootstrap/scss/_variables";
+//@import "../../../../node_modules/bootstrap/scss/mixins";
+
+/*.table th, .table td {
+        padding: 0.75rem;
+        vertical-align: top;
+        border-top: 0px solid #eceeef;
+    }*/
+
+
+    .tablborder tr {
+        padding: 0.75rem;
+        vertical-align: top;
+        border-bottom: 1px solid #eceeef;
+    }
+
+    .tablborder tr:last-child {
+        padding: 0.75rem;
+        vertical-align: top;
+        border-bottom: 0px solid #eceeef;
+    }
+
+    .tablborder th, .tablborder td {
+        padding: 5px;
+        vertical-align: top;
+        border-top: 0px solid #eceeef;
+        width: 100px;
+        text-align: left;
+    }
+
+
+
+      .badge-pill1 {
+        min-width: 30px;
+        text-align: center;
+        border-radius: 5px;
+        vertical-align: top;
+    }
+
+.datamap{
+    // top: -68px;
+    h3{
+        color: $text-color;
+        font-weight: $font-light;
+    }
+    h6{
+        color: $text-color;
+        font-weight: $font-light;
+        font-size: 12px;
+        margin: 0 0 3px 0;
+        .badge{
+            line-height: 1;
+        }
+    }
+    p{
+        color: $text-color;
+        font-weight: $font-normal;
+    }
+    .progress{
+        background-color: #fff;
+        margin-bottom: 1rem;
+        height: 8px;
+    }
+}
+
+.year-control{
+    margin-bottom: 20px;
+    canvas{
+        margin-bottom: 12px;
+        cursor:pointer;
+    }
+    input{
+        outline: none;
+    }
+}
+
+.stats{
+    position: absolute;
+    z-index: 1;
+    top:45px;
+    left:0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 12px;
+    color: rgba($main-color, 0.9);
+    .custom-control + .custom-control {
+        margin-left: 0.7rem;
+    }
+    .custom-control-indicator{
+        width: 0.7rem;
+        height: 0.7rem;
+    }
+    .custom-control-description{
+        margin-left: -8px;
+    }
+}
+
+.hoverinfo{
+    background-color: rgba($main-color, .7) !important;
+    color: $default-color;
+    font-weight: $font-thin;
+    letter-spacing: 0.02em;
+}
+
+#datamap svg{
+    overflow: visible !important;
+}
+.info-box{
+    color: $default-color;
+    .card-block{
+        padding: 1rem;
+    }
+    .info-box-icon{
+        display: flex;
+        font-size: 50px;
+        opacity: 0.9;
+    }
+    h2, h6, span, p{
+        font-weight: $font-light;
+        letter-spacing: 0.03em;
+    }
+    h6{
+        white-space: nowrap;
+        font-size: 14px;
+    }
+    p{
+        font-size: 14px;
+        line-height: 1;
+    }
+}
+
+.small-info-box{
+    padding: 8px;
+    color: $default-color;
+    background-color: $info-color;
+    div.media{
+        align-items: center;
+    }
+    i{
+        font-size: 28px;
+    }
+    h6, span{
+        font-weight: $font-normal;
+    }
+    h6{
+        font-size: 14px;
+    }
+}
+
+.user-info-box{
+    .card-body{
+        padding: 3px;
+        img{
+            width: 80px;
+        }
+        h6{
+            display: block;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            font-weight: 300;
+        }
+        a{
+            font-size: 20px;
+            color: $default-color;
+        }
+    }
+}
+
+
+.live-tile{
+    margin: 0;
+    width: 100%;
+    color: inherit;
+}
+
+
+.weather{
+    h2, p{
+        font-weight: 300;
+        color: $default-color;
+    }
+    span{
+        color: $default-color;
+    }
+    .current-temperature{
+        font-size: 70px;
+        color: $default-color;
+        display: inline-block;
+    }
+    .degree{
+        color: $default-color;
+        display: inline-block;
+        vertical-align: top;
+        margin-top: 20px;
+        font-size: 20px;
+    }
+    .card-body{
+        padding: 0;
+        canvas{
+            display: inline-block;
+            vertical-align: middle;
+        }
+    }
+    .line{
+        padding: 5px 15px;
+        border-bottom: 1px solid rgba($main-color,0.2);
+        &:last-child{
+            border:none;
+        }
+    }
+}
+
+
+.card-body.feed{
+    padding: 0;
+}
+

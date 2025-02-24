@@ -1,0 +1,188 @@
+<az-navbar></az-navbar>
+<div class="container-fluid">
+    <div class="row">
+        <az-menu></az-menu>
+        <div class="main-wrapper"  [ngClass]="{'menu-collapsed': isMenuCollapsed}">
+            <div class="az-overlay" *ngIf="!isMenuCollapsed" (click)="hideMenu()"></div>
+
+            <div class="main dx-viewport">
+                <az-breadcrumb></az-breadcrumb>
+                <router-outlet></router-outlet>
+            </div>
+
+
+            <button id="btnSuccessModel" #btnSuccessModel type="button" [hidden]="true" class="btn btn-success" data-toggle="modal" data-target="#success-modal">Success</button>
+            <div class="modal fade" id="success-modal" tabindex="-1" role="dialog" aria-labelledby="modal-success-label" style="display: none;">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header state modal-success">
+                            <h4 class="modal-title" id="modal-success-label"><i class="fa fa-check"></i>{{headerMessage==null?'Message':headerMessage}}</h4>
+                            <button type="button" class="close closebtn" data-dismiss="modal" aria-label="Close">x</button>
+                        </div>
+                        <div class="modal-body">
+                            {{alertMessage}}
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-success closebtn" data-dismiss="modal">Ok</button>
+                            <!--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button id="btnInfoModel" #btnInfoModel [hidden]="true" type="button" class="btn btn-info" data-toggle="modal" data-target="#info-modal">Info</button>
+            <div class="modal fade" id="info-modal" tabindex="-1" role="dialog" aria-labelledby="modal-info-label">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header state modal-info">
+                            <h4 class="modal-title" id="modal-info-label"><i class="fa fa-info"></i>{{headerMessage==null?'Message':headerMessage}}</h4>
+                            <button type="button" class="close closebtn" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                        </div>
+                        <div class="modal-body">
+                            {{alertMessage}}
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-info closebtn" data-dismiss="modal">Ok</button>
+                            <!--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button  id="btnWarningModel" #btnWarningModel [hidden]="true" type="button" class="btn btn-warning" data-toggle="modal" data-target="#warning-modal">Warning</button>
+            <div class="modal fade" id="warning-modal" tabindex="-1" role="dialog" aria-labelledby="modal-warning-label">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header state modal-warning">
+                            <h4 class="modal-title" id="modal-warning-label"><i class="fa fa-exclamation"></i>{{headerMessage==null?'Message':headerMessage}}</h4>
+                            <button type="button" class="close closebtn" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                        </div>
+                        <div class="modal-body">
+                            {{alertMessage}}
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-warning closebtn" data-dismiss="modal">Ok</button>
+                            <!--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button id="btnDangerModel" #btnDangerModel [hidden]="true" type="button" class="btn btn-danger" data-toggle="modal" data-target="#error-modal">Danger</button>
+            <div (click)="closeDangerAlert()" class="modal fade" id="error-modal" tabindex="-1" role="dialog" aria-labelledby="modal-error-label">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header state modal-danger">
+                            <h4 class="modal-title" id="modal-error-label"><i class="fa fa-warning"></i>{{headerMessage==null?'Message':headerMessage}}</h4>
+                            <button type="button" class="close closebtn" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                        </div>
+                        <div class="modal-body">
+                            {{alertMessage}}
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger closebtn" data-dismiss="modal" (click)="closeDangerAlert()">Ok</button>
+                            <!--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--User Session-->
+            <button id="btnUserSessionModel" #btnUserSessionModel [hidden]="true" type="button" class="btn btn-danger" data-toggle="modal" data-target="#UserSessionerror-modal">Danger</button>
+            <div  class="modal fade" id="UserSessionerror-modal" tabindex="-1" role="dialog" aria-labelledby="modal-error-label" (click)="clickContinueUserSession()">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header state modal-danger">
+                            <h4 class="modal-title" id="modal-error-label"><i class="fa fa-warning"></i>Session Expire Warning</h4>
+                            <span style="float:right;padding-right:10px"><Timer [RunCountDown]="runCountDown" (TimeOut)="fnTimeOut($event)"></Timer> </span>
+
+                        </div>
+                        <div class="modal-body">
+                            Your session is about to expire due to inactivity,
+                            Do you want to continue the session?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-success closebtn" data-dismiss="modal" (click)="clickContinueUserSession()">Continue</button>
+                            <button id="btnlogout" type="button" class="btn btn-danger closebtn" data-dismiss="modal"
+                                     (click)="clickCloseUserSession()">Logout</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--Page Loading-->
+            <button id="btnPageLoadingModel" #btnPageLoadingModel [hidden]="true" type="button" class="btn btn-danger" data-toggle="modal" data-target="#pageloding-error-modal">Page Loading</button>
+            <div class="modal fade" id="pageloding-error-modal" tabindex="-1" role="dialog" aria-labelledby="modal-error-label">
+                <div class="modal-dialog" role="document" style="text-align: center;margin-top:12%;">
+                    <div class="modal-content1" style="color:white;font-size:50px">
+                        <i *ngIf="pageloading" class="fa fa-spinner fa-spin"></i>
+                        <div *ngIf="pageloading" style="font-size:15px">Loading...</div>
+                        <a data-dismiss="modal" *ngIf="!pageloading">
+                            <i  class="fa fa fa-hand-o-up"></i>
+                            <div style="font-size:20px">Click</div>
+                        </a>
+                        <button id="btnPageLoadingStopModel" #btnPageLoadingStopModel [hidden]="true" type="button" class="btn btn-danger closebtn" data-dismiss="modal">Page Loading Stop</button>
+                        <!--<div class="modal-header state modal-danger">
+                            <h4 class="modal-title" id="modal-error-label"><i class="fa fa-warning"></i>{{headerMessage==null?'Message':headerMessage}}</h4>
+                            <button type="button" class="close closebtn" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                        </div>
+                        <div class="modal-body">
+                            {{alertMessage}}
+                        </div>
+                        <div class="modal-footer">
+
+                        </div>-->
+                    </div>
+                </div>
+            </div>
+
+            <!--Page Help F1-->
+            <button id="btnPageHelpF1" #btnPageHelpF1 [hidden]="true" type="button" class="btn btn-info" data-toggle="modal" data-target="#PageHelpF1-modal">Help</button>
+            <div class="modal fade" id="PageHelpF1-modal" tabindex="-1" role="dialog" aria-labelledby="modal-info-label">
+                <style>
+                        img {
+                            vertical-align: middle;
+                            max-width: 100%;
+                        }
+
+                </style>
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content" *ngIf="insPageHelpF1">
+                        <div class="modal-header state modal-primary">
+                            <h4 class="modal-title" id="modal-info-label"><i class="fa fa-question-circle"></i> {{insPageHelpF1.FormName}}</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                        </div>
+                        <div class="modal-body">
+                            <div [innerHTML]="insPageHelpF1.Content"></div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <footer class="footer text-center clearfix">
+                <div class="footer-main pull-left  clearfix">
+                    <div class="copyright pull-left">&copy; <a class="font-weight-bold" href="http://starlight.inc/"></a> 2024</div>
+                    <!--<ul class="share clearfix pull-left">
+                        <li><a href="https://www.facebook.com/Health-and-Social-Ecare-Solutions-1550088001977452" target="_blank"><i class="socicon socicon-facebook transition"></i></a></li>
+                        <li><a href="https://twitter.com/HASECSUK" target="_blank"><i class="socicon socicon-twitter transition"></i></a></li>
+                    </ul>-->
+                </div>
+
+
+                <!--<div class="pull-right created">Created with <i class="fa fa-heart"></i></div>-->
+
+            </footer>
+
+            <az-back-top position="200"></az-back-top>
+
+        </div>
+    </div>
+</div>
+
+<style>
+    .card {
+    overflow:visible;
+    }
+
+    mfdynamictablesorter a {
+    font-weight: bold;
+}
+</style>

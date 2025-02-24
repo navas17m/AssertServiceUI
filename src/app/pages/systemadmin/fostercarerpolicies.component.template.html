@@ -1,0 +1,32 @@
+﻿<form [formGroup]="_Form">
+    <div class="row bottom-30">
+        <div class="col">
+            <div widget class="card">
+                <div class="card-header">
+                    <span>{{headerText}}</span>
+                    <div class="widget-controls">
+                        <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                        <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                        <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+                        <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+                        <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a>
+                    </div>
+                </div>
+                <div class="card-body widget-body">
+                    <div class="form-group">
+                        <label class=""><b>Category </b></label>
+                        <select *ngIf="lstCategorys.length>0" #Category formControlName="CategoryId" (change)="ChangeCategory(Category.value)" class="form-control" [(ngModel)]="CategoryId">
+                            <option [attr.selected]="CategoryId == null ? true : null" value="">Select Category</option>
+                            <option *ngFor="let op of lstCategorys" value="{{op.FormCnfg.FormCnfgId}}">
+                                {{op.FormCnfg.FormName}}
+                            </option>
+                        </select>
+                    </div>
+                    <div [hidden]="docVisible">
+                        <UploadAdmin-Documents #uploads [formCnfgId]="formConfigId" [isAdmin]="isAdmin" [gridHeader]="headerText"></UploadAdmin-Documents>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

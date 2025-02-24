@@ -1,0 +1,9 @@
+﻿
+<form [formGroup]="_Form">
+    <div  class="col-md-12" style="padding-bottom:10px">
+        <a [routerLink]="['/pages/recruitment/backupcarerlist',objQeryVal.mid]" class="btn btn-warning">Back</a>
+    </div>
+
+        <Familyinfo #Familyinfo [CarerId]="CarerId" [IsAllowInsert]="true"></Familyinfo>
+   
+</form>

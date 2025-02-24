@@ -1,0 +1,45 @@
+﻿<div class="row bottom-30">
+    <div class="col">
+        <div widget class="card">
+            <div class="card-header">
+                <span> MODULE CONFIG </span>
+                <div class="widget-controls">
+                    <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                    <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                    <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+                    <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+                    <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a>
+                </div>
+            </div>
+            <div class="card-body widget-body">
+                <form [formGroup]="_modulecnfgForm">
+                    <div>
+                        <div class="form-group">
+                            <label class="">Module Name</label>
+                            <select *ngIf="parentModule != null" formControlName="ParentModuleId" class="form-control" required [(ngModel)]="objModuleCons.ParentModuleId">
+                                <option value="" [attr.selected]="objModuleCons.ParentModuleId == null ? true : null">Select a Module Name</option>
+                                <option *ngFor="let item of parentModule" value="{{item.ModuleCnfgId}}">
+                                    {{item.ModuleName}}
+                                </option>
+                            </select>
+                            <div class="alert alert-danger" *ngIf="(!_modulecnfgForm.controls.ParentModuleId.valid && submitted && _modulecnfgForm.controls.ParentModuleId.errors.required)">
+                                Please Select a Parent module name
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="">Module Name</label>
+                            <input formControlName="ModuleName" type="text" class="form-control" [(ngModel)]="objModuleCons.ModuleName"
+                                   required />
+                            <div class="alert alert-danger" *ngIf="(!_modulecnfgForm.controls.ModuleName.valid && submitted && _modulecnfgForm.controls.ModuleName.errors.required)">
+                                Please enter module name
+                            </div>
+                        </div>
+                        <button type="button" id="btnModuleConfig" class="btn btn-primary" (click)="moduleconfigSubmit(_modulecnfgForm)">Submit</button>
+
+                        <button (click)="goBack()" class="btn btn-warning">Back</button>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div></div>

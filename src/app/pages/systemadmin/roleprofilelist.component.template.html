@@ -1,0 +1,78 @@
+﻿<div>
+    <AddButton FormCnfgId="16" (Click)="fnAddData()"></AddButton>
+</div>
+<div class="row" style="padding-top:10px">
+    <div class="col">
+        <div widget class="card">
+            <div class="card-header">
+                <span class="text-uppercase">Role Profile List</span>
+                <div class="widget-controls">
+                    <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                    <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                    <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+                    <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+                    <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a>
+                </div>
+            </div>
+            <div class="card-body widget-body">
+                <table class="table table-striped table-hover table-sm">
+                    <tbody *ngIf="returnVal.length==0">
+                        <tr>
+                            <th *ngIf="!loading" colspan="9" class="text-center">
+                                No Records found.
+                            </th>
+                            <th *ngIf="loading" colspan="9" class="text-center">
+                                <i class="fa fa-spinner fa-spin"></i> Loading please wait...
+                            </th>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="w-200 pull-right bottom-15">
+                    <div class="input-group input-group-sm">
+                        <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                        <input class="form-control" id="table-search-input" [(ngModel)]="searchText" type="text" placeholder="Search...">
+                    </div>
+                </div>
+                <div class="table-responsive datatable">
+                <ngx-datatable [rows]="returnVal | SearchFilter : 'RoleName,AgencyProfile.AgencyName': searchText"
+                        class="bootstrap"
+                        [columnMode]="'force'"
+                        [limit]="limitPerPage"
+                        rowHeight="auto"
+                        [scrollbarH]="true"
+                        [footerHeight]="50"
+                        [messages] = footerMessage
+                        >
+                        <ngx-datatable-column name="Roll Name" sortable="true" width="200">
+                            <ng-template let-row="row" ngx-datatable-cell-template>
+                                {{row.RoleName}}
+                            </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column name="Agency Name" sortable="true" width="100">
+                            <ng-template let-row="row" ngx-datatable-cell-template>
+                                {{row.AgencyProfile.AgencyName}}
+                            </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column name="Edit"  width="60">
+                            <ng-template let-row="row" ngx-datatable-cell-template>
+                                <EditButton FormCnfgId="16" (Click)="editRoleProfile(row.RoleProfileId)"></EditButton>
+                            </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column name="View"  width="60">
+                            <ng-template let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                                <ViewButton FormCnfgId="16" (Click)="editRoleProfile(row.RoleProfileId)"></ViewButton>
+                            </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column name="Delete"  width="60">
+                            <ng-template let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                                <DeleteButton *ngIf="row.IsPublic" FormCnfgId="16" (Click)="deleteRoleProfile(row.RoleProfileId)"
+                                                      [SequenceNo]="row.RoleProfileId"></DeleteButton>
+                            </ng-template>
+                        </ngx-datatable-column>
+                </ngx-datatable>
+                </div>
+            </div>
+            <PageSize (childPageSizeEvent)="setPageSize($event)"></PageSize>
+        </div>
+    </div>
+</div>

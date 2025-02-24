@@ -1,0 +1,14 @@
+﻿<!--<form [formGroup]="_ListForm">-->
+
+
+<div>
+
+   
+    <select #select multiple (change)="change($event.target.options)" class="form-control"  [required]="lstoption.IsMandatory"
+             [ngStyle]="{'border-left':color}">
+        <option *ngFor="let op of lstoption.ConfigTableValues" [value]="op.CofigTableValuesId">{{op.Value}}</option>
+    </select>
+
+    
+</div>
+<!--</form>-->

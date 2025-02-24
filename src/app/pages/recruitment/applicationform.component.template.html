@@ -1,0 +1,771 @@
+﻿
+<style>
+    ul li:nth-child(7) {
+        clear: left;
+    }
+
+    div .pure-menu-list {
+        columns: 2;
+        -webkit-columns: 2;
+        -moz-columns: 2;
+        list-style-position: inside;
+        text-align: center;
+    }
+
+    .div pure-menu-horizontal {
+        width: 50%;
+        white-space: initial;
+    }
+</style>
+
+<div class="col-xl-12 col-lg-12 col-12 bottom-30">
+    <!-- <div style="text-align:right" *ngIf="showAutoSave">
+        <b>{{saveDraftText}}  {{draftSavedTime | date: 'hh:mm'}}</b>
+    </div>            -->
+    <AutoSavedMessage [Text]="saveDraftText" [Time]="draftSavedTime" [Visible]="showAutoSave"></AutoSavedMessage>
+    <ApprovedCarerHeader *ngIf="objQeryVal.mid == 3"></ApprovedCarerHeader>
+    <CarerHeader *ngIf="objQeryVal.mid == 13" #header [ApplicantProfile]="objApplicantProfileVal">
+    </CarerHeader>
+    <div widget class="card">
+        <div class="card-header">
+            <span>APPLICATION FORM</span>
+            <div class="widget-controls">
+                <i class="fa fa-file-pdf-o" (click)="fnDonloadPDF()" style="font-size:18px;color:white;cursor:pointer;" title="Download PDF"></i>
+                <i class="fa fa-file-word-o" (click)="fnDonloadWord()" style="font-size:18px;color:white;cursor:pointer;padding-left:5px;" title="Download Word"></i>
+                <i class="fa fa-print" (click)="fnPrint()" style="font-size:18px;color:white;cursor:pointer;padding-left:5px;padding-right:5px" title="Print"></i>
+                <i class="fa fa-envelope-open" (click)="fnShowEmail()" style="font-size:18px;color:white;cursor:pointer;" title="Email"></i>
+            </div>
+        </div>
+        <div class="card-body widget-body">
+            <div class="row mbm-20">
+                <div class="col-lg-12 col-12 bottom-30">
+                    <div class="clearfix pure-menu-horizontal">
+                        <ul class="nav nav-tabs top pull-left w-100p ">
+                            <li class="nav-item" (click)="fnTabActive(1)">
+                                <a class="nav-link {{tabActive1}}" data-toggle="tab" href="#PCarer">Primary Applicant</a>
+                            </li>
+                            <li class="nav-item" (click)="fnTabActive(5)">
+                                <a class="nav-link {{tabActive5}}" data-toggle="tab" href="#Contact">Contact</a>
+                            </li>
+                            <li class="nav-item" (click)="fnTabActive(7)">
+                                <a class="nav-link {{tabActive7}}" data-toggle="tab" href="#Family">Family</a>
+                            </li>
+                            <li class="nav-item" (click)="fnTabActive(2)">
+                                <a class="nav-link {{tabActive2}}" data-toggle="tab" href="#Reference">Reference</a>
+                            </li>
+                            <li class="nav-item" (click)="fnTabActive(4)">
+                                <a class="nav-link {{tabActive4}}" data-toggle="tab" href="#Employers">Employers</a>
+                            </li>
+                            <li class="nav-item" (click)="fnTabActive(8)">
+                                <a class="nav-link {{tabActive8}}" data-toggle="tab" href="#OtherDetail">Other Info</a>
+                            </li>
+                            <li class="nav-item" (click)="fnTabActive(3)">
+                                <a class="nav-link {{tabActive3}}" data-toggle="tab" href="#ExPartners">Ex-Partners</a>
+                            </li>
+
+
+                            <li class="nav-item" (click)="fnTabActive(6)">
+                                <a class="nav-link {{tabActive6}}" data-toggle="tab" href="#kop">Placement Preferences</a>
+                            </li>
+
+
+                            <li class="nav-item" (click)="fnTabActive(9)">
+                                <a class="nav-link {{tabActive9}}" data-toggle="tab" href="#UploadDoc">Upload Documents</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="clearfix" [hidden]="!Jointapplicant" style="border-top:1px  solid white">
+                        <ul class="nav nav-tabs   pull-left w-100p">
+                            <li class="nav-item" (click)="fnTabActive(10)">
+                                <a class="nav-link {{tabActive10}}" data-toggle="tab" href="#SCarer">Second Applicant</a>
+                            </li>
+                            <li class="nav-item" (click)="fnTabActive(11)">
+                                <a class="nav-link {{tabActive11}}" data-toggle="tab" href="#sReference">Reference</a>
+                            </li>
+                            <li class="nav-item" (click)="fnTabActive(13)">
+                                <a class="nav-link {{tabActive13}}" data-toggle="tab" href="#sEmployers">Employers</a>
+                            </li>
+                            <li class="nav-item" (click)="fnTabActive(14)">
+                                <a class="nav-link {{tabActive14}}" data-toggle="tab" href="#sOtherDetail">Other Info</a>
+                            </li>
+                            <li class="nav-item" (click)="fnTabActive(12)">
+                                <a class="nav-link {{tabActive12}}" data-toggle="tab" href="#sExPartners">Ex-Partners</a>
+                            </li>
+
+
+                        </ul>
+                    </div>
+
+                    <div class="tab-content top">
+
+                        <!--Primary Carer-->
+                        <div class="tab-pane {{tabActive1}}" id="PCarer">
+                            <form [formGroup]="_Form">
+                                <div class="row">
+
+                                    <div class="form-group col-md-6">
+                                        <label class="">Area Office </label>
+                                        <ng-select #ngSelect *ngIf="areaOfficeList != null" formControlName="AreaOfficeid" class="form-control" required [(ngModel)]="objCarerInfo.AreaOfficeid"
+                                            [items]="areaOfficeList" bindLabel="AreaOfficeName" bindValue="AreaOfficeProfileId" placeholder="Select an Area Office">
+                                        </ng-select>
+                                        <div *ngIf="(!_Form.controls.AreaOfficeid.valid && submitted && _Form.controls.AreaOfficeid.errors )" class="alert alert-danger">
+                                            Please select a Area Office
+                                        </div>
+                                    </div>
+
+
+                                    <!--Personalinfo-->
+                                    <div class="form-group col-md-12">
+                                        <personalinfo #PCPersonalinfo [personalinfoval1]="objCarerInfo.PersonalInfo" [formbuilder]="submitted" [Visible]="objPersonalInfoVisible" [SaveasDraft]="SaveasDraft"></personalinfo>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label class="">National Insurance No</label>
+                                        <input id="NationalInsurenceNumber" formControlName="NationalInsurenceNumber" type="text" class="form-control" [(ngModel)]="objCarerInfo.NationalInsurenceNumber" />
+                                    </div>
+
+                                    <!--<div class="form-group">
+                                        <label class="">Job Title </label>
+                                        <select *ngIf="jobTitleList.length>0" formControlName="JobTitleId" class="form-control" [(ngModel)]="objCarerInfo.JobTitleId">
+                                            <option value="" [attr.selected]="objCarerInfo.JobTitleId == null ? true : null">Select a Job Title </option>
+                                            <option *ngFor="let op of jobTitleList" value="{{op.CofigTableValuesId}}">
+                                                {{op.Value}}
+                                            </option>
+                                        </select>
+                                    </div>-->
+                                    <div class="form-group col-md-6">
+                                        <label class="">Ethnicity</label>
+                                        <ng-select #ngSelect *ngIf="ethinicityList.length>0"  formControlName="EthinicityId" class="form-control" required [(ngModel)]="objCarerInfo.EthinicityId"
+                                            [items]="ethinicityList" bindValue="CofigTableValuesId" bindLabel="Value" placeholder="Select an Ethnicity">
+                                        </ng-select>
+                                        <div *ngIf="(!_Form.controls.EthinicityId.valid && submitted && _Form.controls.EthinicityId.errors )" class="alert alert-danger">
+                                            Please select a Ethnicity
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label class="">Ofsted Ethnicity</label>
+                                        <ng-select #ngSelect *ngIf="OfstedethinicityList.length>0" formControlName="OfstedEthinicityId" class="form-control" required [(ngModel)]="objCarerInfo.OfstedEthinicityId"
+                                            [items]="OfstedethinicityList" bindValue="CofigTableValuesId" bindLabel="Value" placeholder="Select an Ofsted Ethnicity">
+                                        </ng-select>
+                                        <div *ngIf="(!_Form.controls.OfstedEthinicityId.valid && submitted && _Form.controls.OfstedEthinicityId.errors )" class="alert alert-danger">
+                                            Please select a Ofsted Ethnicity
+                                        </div>
+
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label class="">Religion</label>
+                                        <ng-select #ngSelect *ngIf="religionList.length>0" formControlName="ReligionId" class="form-control" required [(ngModel)]="objCarerInfo.ReligionId"
+                                            [items]="religionList" bindValue="CofigTableValuesId" bindLabel="Value" placeholder="Select a Religion">
+                                        </ng-select>
+                                        <div *ngIf="(!_Form.controls.ReligionId.valid && submitted && _Form.controls.ReligionId.errors )" class="alert alert-danger">
+                                            Please select a Religion
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label class="">Mobile</label>
+                                        <input formControlName="pcMobileNo" type="text" class="form-control" [(ngModel)]="objCarerInfo.ContactInfo.MobilePhone" pattern="[0-9\s]*" required />
+
+                                        <div *ngIf="(!_Form.controls.pcMobileNo.valid && submitted && _Form.controls.pcMobileNo.errors)">
+                                            <div class="alert alert-danger" *ngIf="_Form.controls.pcMobileNo.errors.required">Please enter Mobile number</div>
+                                            <div class="alert alert-danger" *ngIf="_Form.controls.pcMobileNo.errors.pattern">Mobile should be only numbers</div>
+                                            <div class="alert alert-danger" *ngIf="_Form.controls.pcMobileNo.errors.minlength ||_Form.controls.pcMobileNo.errors.maxlength">Mobile number will be allowed in 10 to 20 max digit</div>
+
+                                        </div>
+
+                                        <!--<div *ngIf="(!_Form.controls.pcMobileNo.valid && submitted && _Form.controls.pcMobileNo.errors && _Form.controls.pcMobileNo.errors.minlength ||_Form.controls.pcMobileNo.errors.maxlength)" class="alert alert-danger">
+                                            Phone number will be allowed in 8 to 14 max digit
+                                        </div>-->
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label class="">Email</label>
+                                        <input formControlName="pcEmail" type="text" class="form-control" [(ngModel)]="objCarerInfo.ContactInfo.EmailId" />
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label class="">Languages spoken </label>
+                                        <ListBoxUC #languagesSpoken [listoptions]="languagesSpokenList" [SelectedValue]="objCarerInfo.LanguagesSpokenIds"></ListBoxUC>
+                                    </div>
+                                    <div class="form-group  col-md-6">
+                                        <label class="">Relationship Type  </label>
+                                        <select *ngIf="ExPartnerRelationshipList.length>0" #select (change)="RelationshipTypeChange(select.value)"
+                                                formControlName="PartnershipTypeId" class="form-control" [(ngModel)]="objCarerInfo.CarerOtherInformation.PartnershipTypeId">
+                                            <option value="" [attr.selected]="objCarerInfo.CarerOtherInformation.PartnershipTypeId == null ? true : null">Select Partnership Type</option>
+                                            <option *ngFor="let op of ExPartnerRelationshipList" value="{{op.CofigTableValuesId}}">
+                                                {{op.Value}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group  col-md-6" *ngIf="insPartnershipTypeId==1">
+                                        <label class="">Date of Marriage </label>
+                                        <input type="text" placeholder="DD/MM/YYYY" readonly class="form-control form-control-date" formControlName="DateOfMarriage" [(ngModel)]="objCarerInfo.CarerOtherInformation.DateOfMarriage"  [value]="objCarerInfo.CarerOtherInformation.DateOfMarriage" datepicker />
+                                    </div>
+                                    <div class="form-group  col-md-6" *ngIf="insPartnershipTypeId==1">
+                                        <label class="">Place of Marriage</label>
+                                        <input type="text" formControlName="PlaceOfMarriage" [(ngModel)]="objCarerInfo.CarerOtherInformation.PlaceOfMarriage" class="form-control" />
+                                    </div>
+                                    <div class="form-group  col-md-6" *ngIf="insPartnershipTypeId==2">
+                                        <label class="">Date of Registration</label>
+                                        <input type="text" placeholder="DD/MM/YYYY" readonly class="form-control form-control-date" formControlName="DateofRegistration" [(ngModel)]="objCarerInfo.CarerOtherInformation.DateofRegistration"  [value]="objCarerInfo.CarerOtherInformation.DateofRegistration" datepicker />
+                                    </div>
+                                    <div class="form-group  col-md-6" *ngIf="insPartnershipTypeId==2">
+                                        <label class="">Place of Registration</label>
+                                        <input type="text" formControlName="PlaceofRegistration" [(ngModel)]="objCarerInfo.CarerOtherInformation.PlaceofRegistration" class="form-control" />
+                                    </div>
+                                    <div class="form-group  col-md-6" *ngIf="insPartnershipTypeId==3">
+                                        <label class="">Date set up Home Together</label>
+                                        <input type="text" placeholder="DD/MM/YYYY" readonly class="form-control form-control-date" formControlName="DateSetUpHomeTogether" [(ngModel)]="objCarerInfo.CarerOtherInformation.DateSetUpHomeTogether"  [value]="objCarerInfo.CarerOtherInformation.DateSetUpHomeTogether" datepicker />
+                                    </div>
+
+                                    <div class="form-group  col-md-6">
+                                        <label class="">Has Disability?</label>
+                                        <input formControlName="HasDisability" type="radio" [value]="true" [(ngModel)]="objCarerInfo.HasDisability">Yes
+                                        <input formControlName="HasDisability" type="radio" [value]="false" [(ngModel)]="objCarerInfo.HasDisability">No
+                                    </div>
+                                    <div class="form-group col-md-6" [hidden]="!objCarerInfo.HasDisability">
+                                        <label class="">Disability</label><br>
+                                        <p-multiSelect class="p-0" [style]="{'width':'100%'}" placeholder="Select" filterPlaceHolder="Search"  
+                                        [maxSelectedLabels]="3" selectedItemsLabel="{0} items selected" [options]="arrayDisability" 
+                                        optionLabel="name" optionValue="id" [(ngModel)]="selectedDisabilities"
+                                        [ngModelOptions]="{standalone:true}"></p-multiSelect>
+                                    </div>
+                                    <div class="form-group  col-md-6">
+                                        <label class="">Sexual Orientation</label>
+                                        <select formControlName="HasSexualorientation" class="form-control"  [(ngModel)]="objCarerInfo.HasSexualorientation">
+                                            <option value="" [attr.selected]="objCarerInfo.HasSexualorientation == null ? true : null">Select Sexual Orientation</option>
+                                            <option value="1">Heterosexual</option>
+                                            <option value="2">Homosexual</option>
+                                            <option value="3">Bisexual</option>
+                                        </select>
+                                        <div *ngIf="(!_Form.controls.HasSexualorientation.valid && submitted && _Form.controls.HasSexualorientation.errors )" class="alert alert-danger">
+                                            Please select a Sexual Orientation
+                                        </div>
+                                    </div>
+                                    <div class="form-group  col-md-6">
+                                        <label class="">Have you ever been convicted of any criminal or civil offence? Have you got any cautions or outstanding court orders?</label>
+                                        <input formControlName="HaveCriminalOffenseConviction" type="radio" [value]="true" [(ngModel)]="objCarerInfo.HaveCriminalOffenseConviction">Yes
+                                        <input formControlName="HaveCriminalOffenseConviction" type="radio" [value]="false" [(ngModel)]="objCarerInfo.HaveCriminalOffenseConviction">No
+
+                                    </div>
+                                    <div class="form-group  col-md-12" *ngIf="objCarerInfo.HaveCriminalOffenseConviction">
+                                        <label class="">If yes, please give details. Please note that there are no "Spent" convictions in relation to work with children- All convictions must be disclosed.</label>
+                                        <textarea formControlName="CriminalOffenceConvictionDetail" class="form-control" [(ngModel)]="objCarerInfo.CriminalOffenceConvictionDetail"></textarea>
+                                    </div>
+                                    <div class="form-group  col-md-12">
+                                        <label class="">Provide details of any current or pending medical conditions, treatment or appointments below</label>
+                                        <textarea formControlName="MedicalTreatmentDetails" class="form-control" [(ngModel)]="objCarerInfo.MedicalTreatmentDetails"></textarea>
+                                    </div>
+                                    <div class="form-group  col-md-6">
+                                        <label class="">Do you have your Own vehicle </label>
+                                        <input formControlName="DoYouHaveYourOwnVehicle" type="radio" [value]="true" [(ngModel)]="objCarerInfo.DoYouHaveYourOwnVehicle">Yes
+                                        <input formControlName="DoYouHaveYourOwnVehicle" type="radio" [value]="false" [(ngModel)]="objCarerInfo.DoYouHaveYourOwnVehicle">No
+                                    </div>
+                                    <div class="form-group  col-md-6">
+                                        <label class="">Does the Carer Drive the car?</label>
+                                        <input formControlName="DoesCarerDriveCar" type="radio" [value]="true" [(ngModel)]="objCarerInfo.DoesCarerDriveCar">Yes
+                                        <input formControlName="DoesCarerDriveCar" type="radio" [value]="false" [(ngModel)]="objCarerInfo.DoesCarerDriveCar">No
+                                    </div>
+                                    <div class="form-group  col-md-6">
+                                        <label class="">Vehicle Registration Number </label>
+                                        <input type="text" formControlName="VehicleRegistrationNumber" [(ngModel)]="objCarerInfo.VehicleRegistrationNumber"
+                                         class="form-control" />
+                                    </div>
+                                    <div class="form-group  col-md-6">
+                                        <label class="">Driving Licence Number  </label>
+                                        <input type="text" formControlName="DrivingLicenceNumber" [(ngModel)]="objCarerInfo.DrivingLicenceNumber" class="form-control" />
+                                    </div>
+                                    <div class="form-group  col-md-6">
+                                        <label class="">Application Filled Date</label>
+                                        <input type="text" placeholder="DD/MM/YYYY"  class="form-control form-control-date" required formControlName="ApplicationFilledDate"  [(ngModel)]="objCarerInfo.ApplicationFilledDate"
+                                               [value]="objCarerInfo.ApplicationFilledDate" datepicker />
+                                        <div *ngIf="(!_Form.controls.ApplicationFilledDate.valid && submitted && _Form.controls.ApplicationFilledDate.errors )" class="alert alert-danger">
+                                            Please select  Application Filled Date
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <!--Primary Carer Reference-->
+                        <div class="tab-pane {{tabActive2}}" id="Reference">
+                            <CarerReferences #PCReference [ReferenceInfo]="lstCarerReferenceInfoPC" [IsCopyRefVisible]="Jointapplicant"
+                                             (OnCopyReftoSecondCarer)="fnAddCopyReftoSecondCarer($event)" [ChangeStatus]="insExPartEmpRefEmployerChangeStatus" [FormCnfgId]="FormCnfgId"
+                                             [Dirty]="insPCReferenceDirty"
+                                             [MemberTypeId]='1'></CarerReferences>
+                        </div>
+                        <!--Primary Ex-Partners-->
+                        <div class="tab-pane {{tabActive3}}" id="ExPartners">
+                            <label class="">
+                                If you have previously had a significant relationship
+                                (which has involved being married, having children and or co-habiting
+                                with a partner) – please give details as references will be requested.
+                            </label>
+                            <CarerExPartnerInfo #PCExPartners [ExPartnerinfo]="lstCarerExPartnerInfoPC" [ChangeStatus]="insExPartEmpRefEmployerChangeStatus" [FormCnfgId]="FormCnfgId"
+                                                [Dirty]="insPCExPartnersDirty"></CarerExPartnerInfo>
+                        </div>
+                        <!-- Primary Employers-->
+                        <div class="tab-pane {{tabActive4}}" id="Employers">
+                            <label>Please give details of your employer(s)</label><br />
+                            First Applicant Employer
+                            <CarerEmployerInfo #PCEmployerInfo [EmployerInfo]="lstCarerEmployerInfoPC" [ChangeStatus]="insExPartEmpRefEmployerChangeStatus" [FormCnfgId]="FormCnfgId"
+                                               [Dirty]="insPCEmployerInfoDirty"></CarerEmployerInfo>
+                        </div>
+                        <!--Contact-->
+                        <div class="tab-pane {{tabActive5}}" id="Contact">
+
+                            <contact #PCConatactInfo   [contactval1]="objCarerInfo.ContactInfo" [formbuilder]="submitted" [Visible]="objContactVisible"></contact>
+                        </div>
+                        <!--Kind of Placement-->
+                        <div class="tab-pane {{tabActive6}}" id="kop">
+                            <form [formGroup]="_Form">
+                                <div class="row">
+
+                                    <div class="form-group col-md-6">
+                                        <label class="">Age Range</label>
+                                        <div class="row">
+                                            <div class="clo col-md-3">
+                                                <select *ngIf="ageCount.length>0" formControlName="AgeRangeFrom" class="form-control" [(ngModel)]="objCarerInfo.CarerKOP.AgeRangeFrom">
+                                                    <option value="0" [attr.selected]="objCarerInfo.CarerKOP.AgeRangeFrom == null ? true : null">0</option>
+                                                    <option *ngFor="let op of ageCount" value="{{op}}">
+                                                        {{op}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <div class="clo col-md-1">
+                                                -
+                                            </div>
+                                            <div class="clo col-md-3">
+
+                                                <select *ngIf="ageCount.length>0" formControlName="AgeRangeTo" class="form-control " [(ngModel)]="objCarerInfo.CarerKOP.AgeRangeTo">
+                                                    <option value="0" [attr.selected]="objCarerInfo.CarerKOP.AgeRangeTo == null ? true : null">0</option>
+                                                    <option *ngFor="let op of ageCount" value="{{op}}">
+                                                        {{op}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <div class="clo col-md-7">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label class="">Number of children</label>
+                                        <select formControlName="NumberOfChirldren" required class="form-control" [(ngModel)]="objCarerInfo.CarerKOP.NumberOfChirldren">
+                                            <option value="" [attr.selected]="objCarerInfo.CarerKOP.NumberOfChirldren == null ? true : null">Select a Number of children</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="6">6</option>
+                                            <option value="7">7</option>
+                                            <option value="8">8</option>
+                                            <option value="9">9</option>
+                                            <option value="10">10</option>
+                                        </select>
+                                        <div *ngIf="(!_Form.controls.NumberOfChirldren.valid && submitted && _Form.controls.NumberOfChirldren.errors )" class="alert alert-danger">
+                                            Please Select the Number of children
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label class="">Gender</label>
+                                        <select formControlName="Gender" class="form-control" required [(ngModel)]="objCarerInfo.CarerKOP.Gender">
+                                            <option value="" [attr.selected]="objCarerInfo.CarerKOP.Gender == null ? true : null">Select a Gender</option>
+                                            <option value="1">Male</option>
+                                            <option value="2">Female</option>
+                                            <option value="4">Either</option>
+                                            <option value="3">All</option>
+                                        </select>
+                                        <div *ngIf="(!_Form.controls.Gender.valid && submitted && _Form.controls.Gender.errors )" class="alert alert-danger">
+                                            Please Select the Gender
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label class="">Sibling group acceptable?</label>
+                                        <select formControlName="HasBlingGroupAcceptable" class="form-control" [(ngModel)]="objCarerInfo.CarerKOP.HasBlingGroupAcceptable">
+                                            <option value="" [attr.selected]="objCarerInfo.CarerKOP.HasBlingGroupAcceptable == null ? true : null">Select</option>
+                                            <option value="true">Yes</option>
+                                            <option value="false">No</option>
+                                        </select>
+
+                                    </div>
+                                    <label class=""><b>Please select from the following placement type lists, the placement types you are NOT able to or DO NOT want to take.  Please be honest, this will be discussed in further detail later in the process. </b> </label>
+                                    <div class="form-group col-md-6">
+                                        <label class="">Ethnicity </label>
+                                        <ListBoxUC #KOPEthinList [listoptions]="ethinicityList" [SelectedValue]="objCarerInfo.CarerKOP.KOPEthnicityIds"></ListBoxUC>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label class="">Nationality </label>
+                                        <ListBoxUC #KOPNationality [listoptions]="NationalityList" [SelectedValue]="objCarerInfo.CarerKOP.KOPNationalityIds"></ListBoxUC>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label class="">Religion </label>
+                                        <ListBoxUC #KOPReligion [listoptions]="religionList" [SelectedValue]="objCarerInfo.CarerKOP.KOPReligionIds"></ListBoxUC>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label class="">Immigration Status </label>
+                                        <ListBoxUC #KOPImmigration [listoptions]="ImmigrationStatusList" [SelectedValue]="objCarerInfo.CarerKOP.KOPImmigrationStatusIds"></ListBoxUC>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label class="">Disability </label>
+                                        <ListBoxUC #KOPDisability [listoptions]="DisabilityList" [SelectedValue]="objCarerInfo.CarerKOP.KOPDisabilityIds"></ListBoxUC>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label class="">Placement Type </label>
+                                        <ListBoxUC #KOPPlacementType [listoptions]="PlacementTypeList" [SelectedValue]="objCarerInfo.CarerKOP.KOPPlacementTypeIds"></ListBoxUC>
+                                    </div>
+
+                                    <!--list box is pending-->
+
+                                    <div class="form-group col-md-12">
+                                        <label class="">Please state why you are interested in fostering</label>
+                                        <textarea formControlName="StateFosteringInterest" class="form-control" [(ngModel)]="objCarerInfo.CarerOtherInformation.StateFosteringInterest"></textarea>
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <label class="">Please tell us of any child behaviour you would not accept (Example: stealing)</label>
+                                        <textarea formControlName="ChildBehaviourNotAccept" class="form-control" [(ngModel)]="objCarerInfo.CarerOtherInformation.ChildBehaviourNotAccept"></textarea>
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <label class="">Please describe your household in your own words (i.e. details of children living at home or elsewhere who are likely to be visiting your home regularly)</label>
+                                        <textarea formControlName="HouseholdInfo" class="form-control" [(ngModel)]="objCarerInfo.CarerOtherInformation.HouseholdInfo"></textarea>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <!--Family-->
+                        <div class="tab-pane {{tabActive7}}" id="Family" *ngIf="this.CarerParentId">
+                            <Familyinfo #Familyinfo [CarerId]="objCarerInfo.CarerId" [IsAllowInsert]="false"></Familyinfo>
+                        </div>
+                        <!--Other Details-->
+                        <div class="tab-pane {{tabActive8}}" id="OtherDetail">
+                            <form [formGroup]="_Form">
+                                <div class="row">
+                                    <div class="form-group col-md-6">
+                                        <label class="">Which Local Authority do you live in?</label>
+                                        <ng-select #ngSelect *ngIf="LocalAuthorityList" formControlName="LivingLocalAuthorityId" class="form-control" required [(ngModel)]="objCarerInfo.CarerOtherInformation.LivingLocalAuthorityId"
+                                            [items]="LocalAuthorityList" bindLabel="LocalAuthorityName" bindValue="LocalAuthorityId" placeholder="Select a Local Authority">
+                                        </ng-select>
+                                        <div *ngIf="(!_Form.controls.LivingLocalAuthorityId.valid && submitted && _Form.controls.LivingLocalAuthorityId.errors )" class="alert alert-danger">
+                                            Please Select the Local Authority
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label class="">Are you presently fostering for a local authority or agency?</label>
+                                        <input formControlName="HavePresentlyFostering" type="radio" [value]="true" [(ngModel)]="objCarerInfo.CarerOtherInformation.HavePresentlyFostering">Yes
+                                        <input formControlName="HavePresentlyFostering" type="radio" [value]="false" [(ngModel)]="objCarerInfo.CarerOtherInformation.HavePresentlyFostering">No
+
+                                    </div>
+                                    <div class="form-group col-md-12" *ngIf="objCarerInfo.CarerOtherInformation.HavePresentlyFostering">
+                                        <label class="">If yes, please give details</label>
+                                        <textarea formControlName="PresentlyFosteringDetails" class="form-control" [(ngModel)]="objCarerInfo.CarerOtherInformation.PresentlyFosteringDetails"></textarea>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label class="">Have you ever applied to be a foster carer or child minder? </label>
+                                        <input formControlName="HaveAppliedToFosterCarer" type="radio" [value]="true" [(ngModel)]="objCarerInfo.CarerOtherInformation.HaveAppliedToFosterCarer">Yes
+                                        <input formControlName="HaveAppliedToFosterCarer" type="radio" [value]="false" [(ngModel)]="objCarerInfo.CarerOtherInformation.HaveAppliedToFosterCarer">No
+
+                                    </div>
+                                    <div class="form-group col-md-12" *ngIf="objCarerInfo.CarerOtherInformation.HaveAppliedToFosterCarer">
+                                        <label class="">If yes, please give details</label>
+                                        <textarea formControlName="AppliedToFosterCarerDetail" class="form-control" [(ngModel)]="objCarerInfo.CarerOtherInformation.AppliedToFosterCarerDetail"></textarea>
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <h6 style="font-weight:bold">Family Doctor Details</h6>
+                                    </div>
+                                    <div class="form-group col-md-6" *ngIf="Jointapplicant">
+                                        <label class="">Do you want to copy Family Doctor Details to second carer?</label>
+                                        <input type="checkbox" formControlName="PCFamilyGPCopytoSC" [(ngModel)]="IsPCFamilyGPCopytoSC"
+                                                 />
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <personalinfo #OtherPerInfo [personalinfoval1]="objCarerInfo.FamilyGPPersonalInfo" [Visible]="objOtherPersonalInfoVisible" [formbuilder]="submitted"></personalinfo>
+
+                                        <contact #OtherConInfo [contactval1]="objCarerInfo.FamilyGPContactInfo" [formbuilder]="submitted" [Visible]="objContactVisibleOther"></contact>
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <label class="">Who would you rely on for support (i.e. baby-sitting- Please state name and address)?</label>
+                                        <textarea formControlName="RelyonSupport" class="form-control" [(ngModel)]="objCarerInfo.CarerOtherInformation.RelyonSupport"></textarea>
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <label class="">Do you need the training about the issues involved in fostering?</label>
+                                        <textarea formControlName="FosteringIssuesTrainingNeeds" class="form-control" [(ngModel)]="objCarerInfo.CarerOtherInformation.FosteringIssuesTrainingNeeds"></textarea>
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <label class="">Do you have the comments or suggestions about the support you will need from us?</label>
+                                        <textarea formControlName="SupportNeedComments" class="form-control" [(ngModel)]="objCarerInfo.CarerOtherInformation.SupportNeedComments"></textarea>
+                                    </div>
+
+                                </div>
+                            </form>
+                        </div>
+                        <!--Upload Document-->
+                        <div class="tab-pane {{tabActive9}}" id="UploadDoc">
+                            Upload Documents
+
+
+                            <div class="tab-pane" id="tb">
+                                <Upload-Documents #uploads [formCnfgId]="formId" [primaryKeyId]="tblPrimaryKey"
+                                                   [submittedUpload]="submittedUpload"
+                                                  [userTypeCnfgId]="4" [typeId]="TypeId"></Upload-Documents>
+                            </div>
+                        </div>
+
+                        <!--Second Carer-->
+                        <div class="tab-pane {{tabActive10}}" id="SCarer" [hidden]="!Jointapplicant">
+                            <form [formGroup]="_FormSA">
+                                <div class="row">
+                                    <div class="form-group col-md-12">
+                                        <!--Personalinfo-->
+                                        <personalinfo #SCPersonalinfo [personalinfoval1]="objCarerInfoSA.PersonalInfo" [Visible]="objPersonalInfoVisible" [formbuilder]="submitted" [SaveasDraft]="SaveasDraft"></personalinfo>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label class="">National Insurance No</label>
+                                        <input formControlName="NationalInsurenceNumberSA" type="text" class="form-control" [(ngModel)]="objCarerInfoSA.NationalInsurenceNumber" />
+                                    </div>
+
+                                    <!--<div class="form-group">
+                                        <label class="">Job Title </label>
+                                        <select *ngIf="jobTitleList.length>0" formControlName="JobTitleIdSA" class="form-control" [(ngModel)]="objCarerInfoSA.JobTitleId">
+                                            <option value="" [attr.selected]="objCarerInfoSA.AreaOfficeid == null ? true : null">Select a Job Title </option>
+                                            <option *ngFor="let op of jobTitleList" value="{{op.CofigTableValuesId}}">
+                                                {{op.Value}}
+                                            </option>
+                                        </select>
+                                    </div>-->
+                                    <div class="form-group col-md-6">
+                                        <label class="">Ethnicity</label>
+                                        <ng-select #ngSelectSA *ngIf="ethinicityList.length>0" formControlName="EthinicityIdSA" class="form-control" [required]="SAValidator" [(ngModel)]="objCarerInfoSA.EthinicityId"
+                                            [items]="ethinicityList" bindValue="CofigTableValuesId" bindLabel="Value" placeholder="Select an Ethnicity">
+                                        </ng-select>
+                                        <div *ngIf="(!_FormSA.controls.EthinicityIdSA.valid && submitted && _FormSA.controls.EthinicityIdSA.errors )" class="alert alert-danger">
+                                            Please select an Ethnicity
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label class="">Ofsted Ethnicity</label>
+                                        <ng-select #ngSelectSA *ngIf="OfstedethinicityList.length>0" formControlName="OfstedEthinicityIdSA" class="form-control" [required]="SAValidator" [(ngModel)]="objCarerInfoSA.OfstedEthinicityId"
+                                            [items]="OfstedethinicityList" bindValue="CofigTableValuesId" bindLabel="Value" placeholder="Select an Ofsted Ethnicity" >
+                                        </ng-select>
+                                        <div *ngIf="(!_FormSA.controls.OfstedEthinicityIdSA.valid && submitted && _FormSA.controls.OfstedEthinicityIdSA.errors )" class="alert alert-danger">
+                                            Please select an Ofsted Ethnicity
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label class="">Religion</label>
+                                        <ng-select #ngSelectSA *ngIf="religionList.length>0" formControlName="ReligionIdSA" class="form-control" [required]="SAValidator" [(ngModel)]="objCarerInfoSA.ReligionId"
+                                            [items]="religionList" bindValue="CofigTableValuesId" bindLabel="Value" placeholder="Select a Religion">
+                                        </ng-select>
+                                        <div *ngIf="(!_FormSA.controls.ReligionIdSA.valid && submitted && _FormSA.controls.ReligionIdSA.errors )" class="alert alert-danger">
+                                            Please select a Religion
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label class="">Mobile</label>
+                                        <input formControlName="scMobileNo" type="text" class="form-control"
+                                               [(ngModel)]="objCarerInfoSA.ContactInfo.MobilePhone" pattern="[0-9\s]*" />
+
+                                        <div *ngIf="(!_FormSA.controls.scMobileNo.valid && submitted && _FormSA.controls.scMobileNo.errors)">
+                                            <div class="alert alert-danger" *ngIf="_FormSA.controls.scMobileNo.errors.required">Please enter Mobile number</div>
+                                            <div class="alert alert-danger" *ngIf="_FormSA.controls.scMobileNo.errors.pattern">Mobile should be only numbers</div>
+                                            <div class="alert alert-danger" *ngIf="_FormSA.controls.scMobileNo.errors.minlength ||_FormSA.controls.scMobileNo.errors.maxlength">Mobile number will be allowed in 10 to 20 max digit</div>
+
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label class="">Email</label>
+                                        <input formControlName="scEmail" type="text" class="form-control"
+                                               [(ngModel)]="objCarerInfoSA.ContactInfo.EmailId" />
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label class="">Languages spoken </label>
+                                        <ListBoxUC #languagesSpokenSA [listoptions]="languagesSpokenList" [SelectedValue]="objCarerInfoSA.LanguagesSpokenIds"></ListBoxUC>
+                                    </div>
+                                    <!--<div class="form-group">
+                                        <label class="">If Married, Date of Marriage</label>
+                                        <input type="date" formControlName="DateOfMarriageSA" [(ngModel)]="objCarerInfoSA.CarerOtherInformation.DateOfMarriage" class="form-control" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="">Place of Marriage</label>
+                                        <input type="text" formControlName="PlaceOfMarriageSA" [(ngModel)]="objCarerInfoSA.CarerOtherInformation.PlaceOfMarriage" class="form-control" />
+                                    </div>-->
+
+                                    <div class="form-group col-md-6">
+                                        <label class="">Has Disability?</label>
+                                        <input formControlName="HasDisabilitySA" type="radio" [value]="true" [(ngModel)]="objCarerInfoSA.HasDisability">Yes
+                                        <input formControlName="HasDisabilitySA" type="radio" [value]="false" [(ngModel)]="objCarerInfoSA.HasDisability">No
+
+                                    </div>
+                                     <div class="form-group col-md-6" [hidden]="!objCarerInfoSA.HasDisability">
+                                        <label class="">Disability</label><br>
+                                        <p-multiSelect class="p-0" [style]="{'width':'100%'}" placeholder="Select" filterPlaceHolder="Search"  
+                                        [maxSelectedLabels]="3" selectedItemsLabel="{0} items selected" [options]="arrayDisability" 
+                                        optionLabel="name" optionValue="id" [(ngModel)]="selectedDisabilitiesSA"
+                                        [ngModelOptions]="{standalone:true}"></p-multiSelect>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label class="">Sexual Orientation</label>
+                                        <select formControlName="HasSexualorientationSA" class="form-control"  [(ngModel)]="objCarerInfoSA.HasSexualorientation">
+                                            <option value="" [attr.selected]="objCarerInfoSA.HasSexualorientation == null ? true : null">Select Sexual Orientation</option>
+                                            <option value="1">Heterosexual</option>
+                                            <option value="2">Homosexual</option>
+                                            <option value="3">Bisexual</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label class="">Have you ever been convicted of any criminal or civil offence? Have you got any cautions or outstanding court orders?</label>
+                                        <input formControlName="HaveCriminalOffenseConvictionSA" type="radio" [value]="true" [(ngModel)]="objCarerInfoSA.HaveCriminalOffenseConviction">Yes
+                                        <input formControlName="HaveCriminalOffenseConvictionSA" type="radio" [value]="false" [(ngModel)]="objCarerInfoSA.HaveCriminalOffenseConviction">No
+
+                                    </div>
+                                    <div class="form-group col-md-12" *ngIf="objCarerInfoSA.HaveCriminalOffenseConviction">
+                                        <label class="">If yes, please give details. Please note that there are no "Spent" convictions in relation to work with children- All convictions must be disclosed.</label>
+                                        <textarea formControlName="CriminalOffenceConvictionDetailSA" class="form-control" [(ngModel)]="objCarerInfoSA.CriminalOffenceConvictionDetail"></textarea>
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <label class="">Provide details of any current or pending medical conditions, treatment or appointments below</label>
+                                        <textarea formControlName="MedicalTreatmentDetailsSA" class="form-control" [(ngModel)]="objCarerInfoSA.MedicalTreatmentDetails"></textarea>
+                                    </div>
+                                    <div class="form-group  col-md-6">
+                                        <label class="">Do you have your Own vehicle </label>
+                                        <input formControlName="DoYouHaveYourOwnVehicleSA" type="radio" [value]="true" [(ngModel)]="objCarerInfoSA.DoYouHaveYourOwnVehicle">Yes
+                                        <input formControlName="DoYouHaveYourOwnVehicleSA" type="radio" [value]="false" [(ngModel)]="objCarerInfoSA.DoYouHaveYourOwnVehicle">No
+                                    </div>
+                                    <div class="form-group  col-md-6">
+                                        <label class="">Does the Carer Drive the car?</label>
+                                        <input formControlName="DoesCarerDriveCarSA" type="radio" [value]="true" [(ngModel)]="objCarerInfoSA.DoesCarerDriveCar">Yes
+                                        <input formControlName="DoesCarerDriveCarSA" type="radio" [value]="false" [(ngModel)]="objCarerInfoSA.DoesCarerDriveCar">No
+                                    </div>
+                                    <div class="form-group  col-md-6">
+                                        <label class="">Vehicle Registration Number </label>
+                                        <input type="text" formControlName="VehicleRegistrationNumberSA" [(ngModel)]="objCarerInfoSA.VehicleRegistrationNumber"
+                                         class="form-control" />
+                                    </div>
+                                    <div class="form-group  col-md-6">
+                                        <label class="">Driving Licence Number  </label>
+                                        <input type="text" formControlName="DrivingLicenceNumberSA" [(ngModel)]="objCarerInfoSA.DrivingLicenceNumber" class="form-control" />
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <!--Second Carer Reference-->
+                        <div class="tab-pane {{tabActive11}}" id="sReference" [hidden]="!Jointapplicant">
+                            <CarerReferences #SCReference [ReferenceInfo]="lstCarerReferenceInfoSC" [FillCopyRefToSecondCarer]="insCopyRefToSecondCarerData" [ChangeStatus]="insExPartEmpRefEmployerChangeStatus"
+                                             [FormCnfgId]="FormCnfgId" [Dirty]="insSCReferenceDirty"
+                                             [MemberTypeId]='2'></CarerReferences>
+                        </div>
+                        <!--Second Ex-Partners-->
+                        <div class="tab-pane {{tabActive12}}" id="sExPartners" [hidden]="!Jointapplicant">
+                            <label class="">
+                                If you have previously had a significant relationship
+                                (which has involved being married, having children and or co-habiting
+                                with a partner) – please give details as references will be requested.
+                            </label>
+                            <CarerExPartnerInfo #SCExPartners [ExPartnerinfo]="lstCarerExPartnerInfoSC" [ChangeStatus]="insExPartEmpRefEmployerChangeStatus" [FormCnfgId]="FormCnfgId"
+                                                [Dirty]="insSCExPartnersDirty"></CarerExPartnerInfo>
+                        </div>
+                        <!-- Second Employers-->
+                        <div class="tab-pane {{tabActive13}}" id="sEmployers" [hidden]="!Jointapplicant">
+                            <label>Please give details of your employer(s)</label><br />
+                            Second Applicant Employer
+                            <CarerEmployerInfo #SCEmployerInfo [EmployerInfo]="lstCarerEmployerInfoSC" [ChangeStatus]="insExPartEmpRefEmployerChangeStatus" [FormCnfgId]="FormCnfgId"
+                                               [Dirty]="insSCEmployerInfoDirty"></CarerEmployerInfo>
+                        </div>
+
+                        <div class="tab-pane {{tabActive14}}" id="sOtherDetail" [hidden]="!Jointapplicant">
+                            <h6>Family Doctor Details </h6>
+                            <personalinfo #scOtherPerInfo [personalinfoval1]="objCarerInfoSA.FamilyGPPersonalInfo" [Visible]="objOtherPersonalInfoVisible" [formbuilder]="submitted"></personalinfo>
+
+                            <contact #scOtherConInfo [contactval1]="objCarerInfoSA.FamilyGPContactInfo" [formbuilder]="submitted" [Visible]="objContactVisibleOther"></contact>
+
+                        </div>
+                        <div  class="form-group col-md-12">
+                            <EmailNotification #Notification [FormCnfgId]="formId" ></EmailNotification>
+                        </div>
+                        <div class="form-group col-lg-5">
+                            <!--Familyinfo.familyinfoval,-->
+                            <!--<button class="btn btn-success" >
+                                Save
+                            </button>-->
+                            <button *ngIf="showbtnSaveDraft && accessAutoSave" [ladda]="isLoadingSAD" #btnSaveDraft (click)="fnSaveDraft(_Form,PCPersonalinfo.personalinfoval1,PCPersonalinfo.formbuilder,SCPersonalinfo.personalinfoval1,
+                    SCPersonalinfo.formbuilder, PCConatactInfo.contactval1,PCConatactInfo.formbuilder,
+                    KOPEthinList.SelectedValue,KOPNationality.SelectedValue,KOPReligion.SelectedValue,
+                    KOPImmigration.SelectedValue,KOPDisability.SelectedValue,KOPPlacementType.SelectedValue,
+
+                    PCReference.ReferenceInfo,SCReference.ReferenceInfo,
+                    PCExPartners.ExPartnerinfo,SCExPartners.ExPartnerinfo,
+                    PCEmployerInfo.EmployerInfo,SCEmployerInfo.EmployerInfo,
+                    OtherPerInfo.personalinfoval1,OtherPerInfo.formbuilder,OtherConInfo.contactval1,OtherConInfo.formbuilder,
+                    languagesSpoken.SelectedValue,languagesSpokenSA.SelectedValue,
+                        uploads.UploadDocIds,
+                        uploads.IsUpload,
+                        uploads.formbuilder,
+                        scOtherPerInfo.personalinfoval1,scOtherPerInfo.formbuilder,
+                        scOtherConInfo.contactval1,scOtherConInfo.formbuilder,
+                                    PCReference.Dirty,SCReference.Dirty,
+                                    PCExPartners.Dirty,SCExPartners.Dirty,
+                                     PCEmployerInfo.Dirty,SCEmployerInfo.Dirty)" class="btn btn-primary expand-right">{{saveAsDraftText}}
+                            </button>
+                            <SubmitButton #btnSubmit1 [FormCnfgId]="FormCnfgId" (Click)="Submit(_Form,PCPersonalinfo.personalinfoval1,PCPersonalinfo.formbuilder,SCPersonalinfo.personalinfoval1,
+                    SCPersonalinfo.formbuilder, PCConatactInfo.contactval1,PCConatactInfo.formbuilder,PCConatactInfo.countyElement, PCConatactInfo.countryElement,
+                    KOPEthinList.SelectedValue,KOPNationality.SelectedValue,KOPReligion.SelectedValue,
+                    KOPImmigration.SelectedValue,KOPDisability.SelectedValue,KOPPlacementType.SelectedValue,
+
+                    PCReference.ReferenceInfo,SCReference.ReferenceInfo,
+                    PCExPartners.ExPartnerinfo,SCExPartners.ExPartnerinfo,
+                    PCEmployerInfo.EmployerInfo,SCEmployerInfo.EmployerInfo,
+                    OtherPerInfo.personalinfoval1,OtherPerInfo.formbuilder,OtherConInfo.contactval1,OtherConInfo.formbuilder,
+                    languagesSpoken.SelectedValue,languagesSpokenSA.SelectedValue,
+                        uploads.UploadDocIds,
+                        uploads.IsUpload,
+                        uploads.formbuilder,
+                        scOtherPerInfo.personalinfoval1,scOtherPerInfo.formbuilder,
+                        scOtherConInfo.contactval1,scOtherConInfo.formbuilder,
+                         PCReference.Dirty,SCReference.Dirty,
+                         PCExPartners.Dirty,SCExPartners.Dirty,
+                         PCEmployerInfo.Dirty,SCEmployerInfo.Dirty,Notification.AddtionalEmailIds,Notification.EmailIds)" [IsLoading]="IsLoading" [IsDiasable]="isLoadingSAD" [Text]="submitText">
+                            </SubmitButton>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div>
+    <button #btnPrint type="button" [hidden]="true" class="btn btn-primary" data-toggle="modal" data-target="#lg-modal1">Large</button>
+    <div class="modal fade" id="lg-modal1" tabindex="-1" role="dialog" aria-labelledby="modal-large-label" style="display: none;">
+        <div class="modal-dialog modal-lg" role="document">
+            <form [formGroup]="_FormPrint">
+                <div class="modal-content">
+                    <div class="modal-header state modal-primary">
+                        <h4 class="modal-title" id="modal-large-label">
+                            <i class="fa fa-print"></i>Email
+                        </h4>
+                        <div *ngIf="IsLoading"><i class="fa fa-spinner fa-spin"></i> Sending email please wait...</div>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="form-group">
+                            Enter Email Subject:
+                            <input type="text" [(ngModel)]="subject" class="form-control" formControlName="subject" required />
+                            <div *ngIf="(!_FormPrint.controls.subject.valid && submittedprint && _FormPrint.controls.subject.errors.required )" class="alert alert-danger">
+                                Please enter Email Subject
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            Enter Email Address(es):
+                            <textarea [(ngModel)]="eAddress" class="form-control" formControlName="eAddress" required></textarea>
+                            <div *ngIf="(!_FormPrint.controls.eAddress.valid && submittedprint && _FormPrint.controls.eAddress.errors.required )" class="alert alert-danger">
+                                Please enter Email Address(es)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <!--<button type="button" class="btn btn-success" (click)="fnPrint()">Print</button>-->
+                        <button type="button" class="btn btn-success" (click)="fnEmail(_FormPrint)" [disabled]="IsLoading">Email</button>
+                        <button #btnCancel type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,132 @@
+﻿<div class="row bottom-30">
+    <div class="col">
+        <div widget class="card">
+            <div class="card-header">
+                <span> Compliance Check Type Config </span>
+                <div class="widget-controls">
+                    <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                    <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                    <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+                    <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+                    <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a>
+                </div>
+            </div>
+            <div class="card-body widget-body">
+                <form [formGroup]="_Form"><ViewDisable></ViewDisable>
+                    <div>
+                        <div class="form-group">
+                            <label class="">Agency Name</label>
+                            <select *ngIf="agencyList" formControlName="AgencyProfileId" class="form-control" required [(ngModel)]="objCCTC.AgencyProfileId">
+                                <option value="" [attr.selected]="objCCTC.AgencyProfileId == null ? true : null">Select a Agency</option>
+                                <option *ngFor="let item of agencyList" value="{{item.AgencyProfileId}}">
+                                    {{item.AgencyName}}
+                                </option>
+                            </select>
+                            <div class="alert alert-danger" *ngIf="(!_Form.controls.AgencyProfileId.valid && submitted && _Form.controls.AgencyProfileId.errors.required)">
+                                Please Select a Agency
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="">Check Name </label>
+                            <input id="CheckName" type="text" formControlName="CheckName" [(ngModel)]="objCCTC.CheckName" required class="form-control" />
+                            <div class="alert alert-danger" *ngIf="(!_Form.controls.CheckName.valid && submitted && _Form.controls.CheckName.errors.required)">
+                                Please Enter Check Name
+                            </div>
+                            <div *ngIf="_Form.controls.CheckName.pending">Checking Check Name...</div>
+                            <div class="alert alert-danger" *ngIf="IsAvailCheckName">
+                                Check Name Already Exists
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div *ngIf="compliancechecktypeList">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th> <!--<input formControlName="chcekAll" type="checkbox" [(ngModel)]="checkAll" />-->Select</th>
+                                            <th>Order By</th>
+                                            <th>Grid Order By</th>
+                                            <th>Field Name</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody *ngIf="compliancechecktypeList">
+                                        <tr *ngFor="let item of compliancechecktypeList">
+                                            <td width="100px">
+                                                <input type="checkbox" [value]="item.CofigTableValuesId"
+                                                       [checked]="exists(item.CofigTableValuesId,item)" (change)="updateChecked($event,item)" />
+
+                                            </td>
+                                            <td width="100px">
+                                                <input #orderBy type="number"  class="form-control" min="0" max="30" width="30" style="width:70px" [value]="item.ComplianceCheckFieldOrderMapping.OrderBy" (change)="changeOrderBy(orderBy.value,item)" />
+                                            </td>
+                                            <td width="130px">
+                                                <input #gridorderBy type="number" class="form-control" min="0" max="30" width="30" style="width:80px" [value]="item.ComplianceCheckFieldOrderMapping.GridOrderBy" (change)="changeGridOrderBy(gridorderBy.value,item)"  />
+                                            </td>
+                                            <td>{{item.Value}}</td>
+                                            
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="">Member Type</label>
+                            <select *ngIf="membertype" formControlName="MemberTypeId" class="form-control" required [(ngModel)]="objCCTC.MemberTypeId">
+                                <option value="" [attr.selected]="objCCTC.MemberTypeId == null ? true : null">Select Member Type</option>
+                                <option *ngFor="let item of membertype" value="{{item.MemberTypeId}}">
+                                    {{item.MemberTypeName}}
+                                </option>
+                            </select>
+                            <div class="alert alert-danger" *ngIf="(!_Form.controls.MemberTypeId.valid && submitted && _Form.controls.MemberTypeId.errors.required)">
+                                Please Select the Member Type
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="">Source Field </label>
+                            <select *ngIf="lstSourceTargetField.length==0" formControlName="SourceFieldName" class="form-control" [(ngModel)]="objCCTC.SourceFieldName">
+                                <option value="" [attr.selected]="objCCTC.SourceFieldName == null ? true : null">Select Source Field</option>
+                            </select>
+                            <select *ngIf="lstSourceTargetField.length>0" formControlName="SourceFieldName" class="form-control" [(ngModel)]="objCCTC.SourceFieldName">
+                                <option value="" [attr.selected]="objCCTC.SourceFieldName == null ? true : null">Select Source Field</option>
+                                <option *ngFor="let item of lstSourceTargetField" value="{{item.FieldName}}">
+                                    {{item.DisplayName}}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="">Target Field </label>
+                            <select *ngIf="lstSourceTargetField.length==0" formControlName="TargetFieldName" class="form-control" [(ngModel)]="objCCTC.TargetFieldName">
+                                <option value="" [attr.selected]="objCCTC.TargetFieldName == null ? true : null">Select Target Field</option>
+                            </select>
+                            <select *ngIf="lstSourceTargetField.length>0" formControlName="TargetFieldName" class="form-control" [(ngModel)]="objCCTC.TargetFieldName">
+                                <option value="" [attr.selected]="objCCTC.TargetFieldName == null ? true : null">Select Target Field</option>
+                                <option *ngFor="let item of lstSourceTargetField" value="{{item.FieldName}}">
+                                    {{item.DisplayName}}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="">Renewal Days Different </label>
+                            <input type="number" formControlName="RenewalDaysDifferent" [(ngModel)]="objCCTC.RenewalDaysDifferent"  class="form-control" />
+                        </div>
+                        <div class="form-group">
+
+                            <input type="checkbox" formControlName="IsAnnualReview" [(ngModel)]="objCCTC.IsAnnualReview" />
+                            <label class="">Is Annual Review</label>
+                        </div>
+                        <div class="form-group">
+                            <div class="alert alert-danger" *ngIf="(submitted && IsErrorVisible)">
+                                Please Select Field Name
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <SubmitButton (Click)="compliancechecktypecnfgSubmit(_Form)" [IsLoading]="isLoading"></SubmitButton>
+                            <BackButton></BackButton>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

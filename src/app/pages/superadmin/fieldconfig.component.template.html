@@ -1,0 +1,75 @@
+﻿
+<div class="row bottom-30">
+    <div class="col">
+        <div widget class="card">
+            <div class="card-header">
+                <span>Fielg Config </span>
+                <div class="widget-controls">
+                    <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                    <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                    <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+                    <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+                    <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a>
+                </div>
+            </div>
+            <div class="card-body widget-body">
+                <form [formGroup]="_FieldcnfgForm">
+                    <div>
+                        <div class="form-group">
+                            <label class="">Form Name</label>
+                            <select *ngIf="parentForm != null" formControlName="FormCnfgId" class="form-control" required [(ngModel)]="objFieldCon.FormCnfg.FormCnfgId">
+                                <option value="" [attr.selected]="objFieldCon.FormCnfg.FormCnfgId == null ? true : null">Select a Form Name</option>
+                                <option *ngFor="let item of parentForm" value="{{item.FormCnfgId}}">
+                                    {{item.FormName}}
+                                </option>
+                            </select>
+                            <div class="alert alert-danger" *ngIf="(!_FieldcnfgForm.controls.FormCnfgId.valid && submitted && _FieldcnfgForm.controls.FormCnfgId.errors.required)">
+                                Please Select a Form name
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="">Field Name</label>
+                            <input formControlName="FieldName" type="text" class="form-control" [(ngModel)]="objFieldCon.FieldName"
+                                   required />
+                            <div class="alert alert-danger" *ngIf="(!_FieldcnfgForm.controls.FieldName.valid && submitted && _FieldcnfgForm.controls.FieldName.errors.required)">
+                                Please enter field name
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="">Display Name</label>
+                            <input formControlName="DisplayName" type="text" class="form-control" [(ngModel)]="objFieldCon.DisplayName" />
+                            <div class="alert alert-danger" *ngIf="(!_FieldcnfgForm.controls.DisplayName.valid && submitted && _FieldcnfgForm.controls.DisplayName.errors.required)">
+                                Please enter display name
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="">Field Data Type</label>
+
+                            <select *ngIf="parentForm != null" class="form-control" formControlName="FieldDataTypeCnfgId" required [(ngModel)]="objFieldCon.FieldDataTypeCnfg.FieldDataTypeCnfgId">
+                                <option value="" [attr.selected]="objFieldCon.FieldDataTypeCnfg.FieldDataTypeCnfgId == null ? true : null">Select a Field Data Type</option>
+                                <option *ngFor="let item of returnFieldDataType" value="{{item.FieldDataTypeCnfgId}}">
+                                    {{item.Name}}
+                                </option>
+                            </select>
+                            <div class="alert alert-danger" *ngIf="(!_FieldcnfgForm.controls.FieldDataTypeCnfgId.valid && submitted && _FieldcnfgForm.controls.FieldDataTypeCnfgId.errors.required)">
+                                Please Select a Field Data Type
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            <label class="">Field Length</label>
+                            <input formControlName="FieldLength" type="text" class="form-control" [(ngModel)]="objFieldCon.FieldLength" />
+                            <!--<div class="alert alert-danger" *ngIf="(!_FieldcnfgForm.controls.FieldLength.valid && submitted && _FieldcnfgForm.controls.FieldLength.errors.required)">
+                                Please enter Field Length
+                            </div>-->
+                        </div>
+                   
+                        <SubmitButton (click)="fieldconfigSubmit(_FieldcnfgForm)" [IsLoading]="IsLoading"></SubmitButton>
+                        <BackButton></BackButton>
+                        <ViewDisable></ViewDisable>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

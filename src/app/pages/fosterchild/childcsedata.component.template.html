@@ -1,0 +1,28 @@
+﻿<div class="col-xl-12 col-lg-12 col-12 bottom-30">
+    <ViewDisable></ViewDisable>
+    <Child-Header></Child-Header>
+    <div>
+        <div widget class="card">
+            <div class="card-header">
+                <span>CSE </span>
+                <div class="widget-controls">
+                    <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                    <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                    <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+                    <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+                    <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a>
+                </div>
+            </div>
+            <div class="card-body widget-body">
+                <form [formGroup]="_Form">
+                    <Dynamic-Form #dynamic [dynamicformcontrols]="dynamicformcontrol" [formbuilder]="_Form" [submitted]="submitted"></Dynamic-Form>
+                    <div class="form-group">
+                        <SubmitButton (Click)="clicksubmit(_Form,dynamic.dynamicformcontrols,dynamic.formbuilder)" [IsLoading]="isLoading"></SubmitButton>
+                        <BackButton></BackButton>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

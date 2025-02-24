@@ -1,0 +1,83 @@
+<form [formGroup]="_Form">
+    <div class="row bottom-30">
+        <div class="col">
+            <div widget class="card">
+                <div class="card-header">
+                    <span>Staff Area</span>
+                    <div class="widget-controls">
+                        <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                        <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                        <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+                        <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+                        <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a>
+                    </div>
+                </div>
+                <div class="card-body widget-body">
+                    <!-- <div class="form-group col-md-12" >
+                         <label *ngIf="IsVisibleBack"><b (click)="fnBack()"  style="cursor:pointer;font-size:20px ;"><i class="fa fa-arrow-left">&nbsp; Back</i>   </b></label>
+                        <br>
+                       
+                        
+                        <div class="row" *ngIf="lstCategorys.length>0">
+                            <div class="col-md-3 col-sm-6 bottom-30" *ngFor="let op of lstCategorys" (click)="ChangeCategory(op.StaffAreaCategoryCnfgId)"  style="cursor:pointer;border-radius: 10;">
+                                <div class="media-body text-center" 
+                                [ngClass]="op.IsActive==true?'clsActive':''" >
+                                    <img src="assets/img/icons8-folder-240.png" width="100px">
+                                      <h6 class="media-heading no-margin"> 
+                                        {{op.Category}}
+                                    </h6>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <table width="50%"  >
+                                <tr>
+                                    <td>
+                                        From Date :
+                                        <input  type="text" placeholder="DD/MM/YYYY" 
+                                        class="form-control form-control-date"
+                                         formControlName="fromDate"
+                                            [(ngModel)]="insFormDate"
+                                            [value]="insFormDate"
+                                                 datepicker>
+                                    </td>
+                                    <td>
+                                        To Date :
+                                        <input  type="text" placeholder="DD/MM/YYYY"  class="form-control form-control-date"
+                                        formControlName="toDate"
+                                            [(ngModel)]="insToDate"
+                                            [value]="insToDate"
+                                                datepicker>
+                                    </td>
+                                    <td style="padding-top:25px ;">
+                                        <button class="btn btn-success"
+                                        (click)="fnSearch()">
+                                            Search
+                                        </button>
+                                    </td>
+                                    <td style="padding-top:25px ;">
+                                        <button type="button"  class="btn btn-warning"
+                                        (click)="fnClear()">
+                                            Clear
+                                          </button>
+                                    </td>
+                                </tr>
+                            </table>
+                         </div>
+                         <br>
+                    </div>  -->
+                    <div >
+                        <StaffArea-Upload-Documents #uploads [gridHeader]="'Staff Area Documents'" [formCnfgId]="formConfigId" [AccessFormCnfgId]="AccessFormCnfgId" [isAdmin]="isAdmin" [gridHeader]="headerText"></StaffArea-Upload-Documents>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<style>
+    .clsActive {
+        border:1px solid #4d94ff;
+        background-color: #e6f0ff;
+}
+</style>

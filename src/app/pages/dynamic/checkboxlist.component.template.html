@@ -1,0 +1,18 @@
+﻿
+
+
+    <!--<input type="checkbox" (change)="checkAll($event)" />Check/UnCheck Al-->
+
+    <div *ngFor="let op of checkboxvalue.ConfigTableValues"  class="abc-checkbox">
+      
+            <input type="checkbox" [value]="op.CofigTableValuesId"
+                   [checked]="exists(op.CofigTableValuesId)" (change)="updateChecked($event)"
+                    [id]="op.CofigTableValuesId" />
+            <label [for]="op.CofigTableValuesId">  {{op.Value}}</label>
+        
+    </div>
+
+
+
+
+

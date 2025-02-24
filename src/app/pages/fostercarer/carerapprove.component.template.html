@@ -1,0 +1,237 @@
+﻿<form [formGroup]="_Form">
+    <style>
+        .class1 {
+            font-weight: bold;
+        }
+    </style>
+    <div class="col-xl-12 col-lg-12 col-12 bottom-30">
+        <ApprovedCarerHeader [CarerProfile]="objCarerProfileVal"></ApprovedCarerHeader>
+        <div widget class="card">
+            <div class="card-header">
+                <span>Approve Carer</span>
+                <div class="widget-controls">
+                    <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                    <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                    <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+                    <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+                    <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a>
+                </div>
+            </div>
+            <div class="card-body widget-body">
+                <div class="row mbm-20">
+                    <div class="col-lg-12 col-12 bottom-30">
+                        <div class="clearfix">
+                            <ul class="nav nav-tabs top pull-left w-100p">
+                                <li class="nav-item" (click)="fnChangeApproval()">
+                                    <a class="nav-link {{ChangeApprovalActive}}" data-toggle="tab" href="#CarerApprovalDetails">
+                                        Carer Approval Details
+                                    </a>
+                                </li>
+                                <li class="nav-item" (click)="fnDocumentDetail()">
+                                    <a class="nav-link {{DocumentActive}}" data-toggle="tab" href="#UploadDocuments">Upload Documents</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="tab-content top">
+                            <div class="tab-pane {{ChangeApprovalActive}}" id="CarerApprovalDetails">
+                                <div class="row col-md-12">
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label class="class1">Carer Code :</label>
+                                            <label class="">  {{objCarerInfo.CarerCode}}</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-lg-6">
+                                        <label class="class1">Primary Carer Name :</label>
+                                        <label class="">  {{objCarerInfo.PersonalInfo.FirstName}} {{objCarerInfo.PersonalInfo.lastName}}</label>
+
+                                    </div>
+                                    <div class="form-group col-lg-6">
+                                        <label class="class1">Date of Birth :</label>
+                                        <label class="">  {{objCarerInfo.PersonalInfo.DateOfBirth |dateFormat:'dd/MM/yyyy'}}</label>
+                                    </div>
+                                    <div class="form-group col-lg-6" *ngIf="IsVisibleSC">
+                                        <label class="class1">Second Carer Name :</label>
+                                        <label class="">  {{objCarerInfoSA.PersonalInfo.FirstName}} {{objCarerInfoSA.PersonalInfo.lastName}}</label>
+                                    </div>
+                                    <div class="form-group col-lg-6" *ngIf="IsVisibleSC">
+                                        <label class="class1">Date of Birth :</label>
+                                        <label class="">  {{objCarerInfoSA.PersonalInfo.DateOfBirth |dateFormat:'dd/MM/yyyy'}}</label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-md-6">
+                                        <label class="">Category of Approval :</label>
+                                        <select *ngIf="CategoryOfApprovalList.length > 0" formControlName="CategoryofApprovalId" class="form-control" required [(ngModel)]="objCarerApproveDTO.CategoryofApprovalId">
+                                            <option value="" [attr.selected]="CarerStatusId == null ? true : null">Select a Category</option>
+                                            <option *ngFor="let op of CategoryOfApprovalList" value="{{op.CofigTableValuesId}}">
+                                                {{op.Value}}
+                                            </option>
+                                        </select>
+                                        <div *ngIf="(!_Form.controls.CategoryofApprovalId.valid && submitted && _Form.controls.CategoryofApprovalId.errors )" class="alert alert-danger">
+                                            Please select a Category of Approval
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label class="">Approval Date  :</label>
+                                        <input formControlName="ApprovalDate" readonly  type="text" placeholder="DD/MM/YYYY"  class="form-control form-control-date" required [(ngModel)]="objCarerApproveDTO.ApprovalDate" disabled [value]="objCarerApproveDTO.ApprovalDate" datepicker/>
+                                        <div *ngIf="(!_Form.controls.ApprovalDate.valid && submitted && _Form.controls.ApprovalDate.errors.required )" class="alert alert-danger">
+                                            Please Enter Approval Date
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label class="">Age Range  :</label>
+                                        <div class="row">
+                                            <div class="clo col-md-3">
+                                                <select formControlName="AgeRangeFrom" class="form-control" [(ngModel)]="objCarerApproveDTO.AgeRangeMin">
+                                                    <option value="0" [attr.selected]="objCarerApproveDTO.AgeRangeMin == null ? true : null">0</option>
+                                                    <option *ngFor="let op of ageCount" value="{{op}}">
+                                                        {{op}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <div class="clo col-md-1">                                                -
+                                            </div>
+                                            <div class="clo col-md-3">
+                                                <select formControlName="AgeRangeTo" class="form-control " [(ngModel)]="objCarerApproveDTO.AgeRangeMax">
+                                                    <option value="0" [attr.selected]="objCarerApproveDTO.AgeRangeMax == null ? true : null">0</option>
+                                                    <option *ngFor="let op of ageCount" value="{{op}}">
+                                                        {{op}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <div class="clo col-md-7">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label class="">Number of Vacancy</label>
+                                        <select #NoOfVacancy formControlName="NoOfVacancy" required class="form-control" [(ngModel)]="objCarerApproveDTO.NoOfVacancy" (change)="CheckVacancyAvailability(NoOfVacancy.value)">
+                                            <option value="" [attr.selected]="objCarerApproveDTO.NoOfVacancy == null ? true : null">Select a Number of Vacancy</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="6">6</option>
+                                            <option value="7">7</option>
+                                            <option value="8">8</option>
+                                            <option value="9">9</option>
+                                            <option value="10">10</option>
+                                        </select>
+                                        <div *ngIf="(!_Form.controls.NoOfVacancy.valid && submitted && _Form.controls.NoOfVacancy.errors )" class="alert alert-danger">
+                                            Please Select the Number of children
+                                        </div>
+
+                                        <div *ngIf="(IsShowVacancyAvailabilityError)" class="alert alert-danger">
+                                            Approved places already filled.if you want to reduce the approved places, please discharge the child.
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label class="">Gender</label>
+                                        <select formControlName="Gender" class="form-control" required [(ngModel)]="objCarerApproveDTO.Gender">
+                                            <option value="" [attr.selected]="objCarerApproveDTO.Gender == null ? true : null">Select a Gender</option>
+                                            <option value="1">Male</option>
+                                            <option value="2">Female</option>
+                                            <option value="3">Any</option>
+                                        </select>
+                                        <div *ngIf="(!_Form.controls.Gender.valid && submitted && _Form.controls.Gender.errors )" class="alert alert-danger">
+                                            Please Select the Gender
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label class="">Sibling group acceptable?</label>
+                                        <select formControlName="HasBlingGroupAcceptable" class="form-control" [(ngModel)]="objCarerApproveDTO.IsSiblingGroupAcceptible">
+                                            <option value="0" [attr.selected]="objCarerApproveDTO.IsSiblingGroupAcceptible == null ? true : null">Select Sibling group</option>
+                                            <option value="1">Yes</option>
+                                            <option value="2">No</option>
+                                        </select>
+
+                                    </div>
+                                    <div class="col-md-12">
+                                        <Dynamic-Form #SectionBDynamicA
+                                                      [dynamicformcontrols]="dynamicformcontrol"
+                                                      [formbuilder]="_Form" [submitted]="submitted">
+                                        </Dynamic-Form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane {{DocumentActive}}" id="UploadDocuments">
+                                <div class="tab-pane" id="tb">
+                                    <!--<Upload-Documents #uploads [formCnfgId]="formId" [primaryKeyId]="tblPrimaryKey"
+                                                       [submittedUpload]="submittedUpload"
+                                                      [userTypeCnfgId]="4" [typeId]="TypeId"></Upload-Documents>-->
+                                    <Upload-Documents #uploads [formCnfgId]="formId" [primaryKeyId]="tblPrimaryKey"
+                                                       [submittedUpload]="submittedUpload"
+                                                      [userTypeCnfgId]="5" [typeId]="TypeId"></Upload-Documents>
+
+                                </div>
+                            </div>
+                            <div class="form-group col-md-12">
+                                <SubmitButton FormCnfgId="65" (Click)="clicksubmit(_Form,SectionBDynamicA.dynamicformcontrols,SectionBDynamicA.formbuilder,
+                                 uploads.UploadDocIds,
+                                 uploads.IsUpload,
+                                  uploads.formbuilder)" [IsLoading]="isLoading"></SubmitButton>
+                                <button class="btn btn-warning" (click)="ShowPreviousApprove()">Show Previous Approval</button>
+                            </div>
+                        </div>
+                        <div *ngIf="PreviousVisible" class="col-md-12">
+
+                            <div class="changeColor" style="padding-top:20px">
+                                <div widget class="card">
+                                    <div class="card-header">
+                                        <span class="text-uppercase">Change of Approval History</span>
+                                    </div>
+                                    <div class="card-body widget-body">
+                                      <div class="table-responsive datatable">
+                                          <ngx-datatable [rows]="PreviousCarerApprove"
+                                                  class="bootstrap"
+                                                  rowHeight="auto"
+                                                  [columnMode]="'force'"
+                                                  [limit]="10"
+                                                  [scrollbarH]="true"
+                                                  [footerHeight]="50"
+                                                  [messages]="footerMessage"
+                                                 >
+                                                  <ngx-datatable-column name="Carer Name" prop="PCFullName" width="100" [sortable]="true">
+                                                      <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                                                        <span>{{insCarerDetails.PCFullName}}{{insCarerDetails.SCFullName}} ({{insCarerDetails.CarerCode}}) </span>
+                                                      </ng-template>
+                                                  </ngx-datatable-column>
+                                                  <ngx-datatable-column name="Approval Date" prop="ApprovalDate" [sortable]="true" width="60">
+                                                      <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                                                        {{value | dateFormat:'dd/MM/yyyy'}}
+                                                      </ng-template>
+                                                  </ngx-datatable-column>
+                                                  <ngx-datatable-column name="Category" prop="CategoryofApprovalName" [sortable]="true" width="150">
+                                                      <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                                                        {{value}}
+                                                      </ng-template>
+                                                  </ngx-datatable-column>
+                                                  <ngx-datatable-column name="No Of Vacancy" prop="NoOfVacancy" [sortable]="true" width="100">
+                                                      <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                                                          {{value}}
+                                                      </ng-template>
+                                                  </ngx-datatable-column>
+                                                  <ngx-datatable-column name="Approved by & Date" prop="CreatedBy" [sortable]="true" width="150">
+                                                      <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                                                        {{row.CreateBy}} on {{row.CreateDate|dateFormat:'dd/MM/yyyy'}}
+                                                      </ng-template>
+                                                  </ngx-datatable-column>
+                                          </ngx-datatable>
+
+                                      </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

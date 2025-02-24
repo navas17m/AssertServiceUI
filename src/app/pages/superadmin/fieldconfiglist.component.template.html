@@ -1,0 +1,33 @@
+﻿
+<div>
+
+    <div>
+        <AddButton FormCnfgId="6" (click)="fnAdd()"></AddButton>
+
+    </div>
+    <br />
+
+
+    <div class="row">
+        <div class="col">
+            <div widget class="card">
+                <div class="card-header">
+                    <span class="text-uppercase">Field Config List</span>
+                    <div class="widget-controls">
+                        <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                        <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                        <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+                        <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+                        <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a>
+                    </div>
+                </div>
+                <div class="card-body widget-body">
+                    <div class="table-responsive datatable" *ngIf="fieldConfigList.length>0">
+                            <ngxdatatable [rows]="fieldConfigList" formCnfgId="6" [columns]="columns" searchFilter="true" searchFields="FieldName,FormCnfg.FormName,FieldDataTypeCnfg.Name" (onEdit)="onEdit($event)" (onDelete)="onDelete($event)"></ngxdatatable>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

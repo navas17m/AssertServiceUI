@@ -1,0 +1,115 @@
+﻿
+<form [formGroup]="_Form">
+    <div style="border: 2px solid #979aa0;padding:10px;background-color:#edf1f7">
+
+        <br />
+        <div class="row col-lg-12">
+            <div class="col-lg-12 form-group">
+                <label class="">  Review of Approval Recommendation relating to Terms of Approval</label>
+            </div>
+            <div class="col-lg-2 form-group">
+                <label class="">No of Children</label>
+                <input formControlName="NoOfChildren" required type="text" class="form-control" [(ngModel)]="objAnnualReviewApprovalRecomDTO.NoOfChildren"  /><!--pattern="[0-9]*"-->
+                <div *ngIf="(!_Form.controls.NoOfChildren.valid && submitted && _Form.controls.NoOfChildren.errors )" class="alert alert-danger">
+                    <div *ngIf="_Form.controls.NoOfChildren.errors.required"> Please Enter the No Of Children</div>
+                    <!--<div *ngIf="_Form.controls.NoOfChildren.errors.pattern">should be only numbers</div>-->
+                </div>
+            </div>
+            <div class="col-lg-2 form-group">
+                <label class="">Age Range</label>
+                <input formControlName="Age" type="text" class="form-control" [(ngModel)]="objAnnualReviewApprovalRecomDTO.Age" />
+                <div *ngIf="(!_Form.controls.Age.valid && submitted && _Form.controls.Age.errors )" class="alert alert-danger">
+                    <!---<div class="alert alert-danger" *ngIf="_Form.controls.NoOfChildren.errors.required"> Please Enter the No Of Children</div>-->
+                    <!--<div *ngIf="_Form.controls.Age.errors.pattern">should be only numbers</div>-->
+                </div>
+            </div>
+            <div class="col-lg-2 form-group">
+                <label class="">Gender</label><br />
+                <input formControlName="Gender" required type="radio" [value]="1" [(ngModel)]="objAnnualReviewApprovalRecomDTO.Gender">Male<br />
+                <input formControlName="Gender" required type="radio" [value]="2" [(ngModel)]="objAnnualReviewApprovalRecomDTO.Gender">Female<br/>
+                <input formControlName="Gender" required type="radio" [value]="3" [(ngModel)]="objAnnualReviewApprovalRecomDTO.Gender">Any
+                <div *ngIf="(!_Form.controls.Gender.valid && submitted && _Form.controls.Gender.errors.required )" class="alert alert-danger">
+                    Please Select a Gender
+                </div>
+            </div>
+
+            <div class="col-lg-3  form-group">
+                <label class="">Ethnicity</label>
+                <select *ngIf="ethinicityList != null" #Ethnicity formControlName="Ethnicity" class="form-control" required [(ngModel)]="objAnnualReviewApprovalRecomDTO.Ethnicity" (change)="EthnicityChange(Ethnicity.value)">
+                    <option value="" [attr.selected]="objAnnualReviewApprovalRecomDTO.Ethnicity == null ? true : null">
+                        Select a Ethnicity
+                    </option>
+                    <option *ngFor="let op of ethinicityList" value="{{op.CofigTableValuesId}}">
+                        {{op.Value}}
+                    </option>
+                </select>
+                <div *ngIf="(!_Form.controls.Ethnicity.valid && submitted && _Form.controls.Ethnicity.errors )" class="alert alert-danger">
+                    Please select a Ethnicity
+                </div>
+            </div>
+            <div class="col-lg-3 form-group">
+                <label class="">Religion</label>
+                <select *ngIf="religionList != null" #Religion formControlName="Religion" class="form-control" required [(ngModel)]="objAnnualReviewApprovalRecomDTO.Religion" (change)="ReligionChange(Religion.value)">
+                    <option value="" [attr.selected]="objAnnualReviewApprovalRecomDTO.Religion == null ? true : null">Select a Religion</option>
+                    <option *ngFor="let op of religionList" value="{{op.CofigTableValuesId}}">
+                        {{op.Value}}
+                    </option>
+                </select>
+                <div *ngIf="(!_Form.controls.Religion.valid && submitted && _Form.controls.Religion.errors )" class="alert alert-danger">
+                    Please select a Religion
+                </div>
+            </div>
+
+        </div>
+        <div class="" style="padding:20px">
+            <button *ngIf="!isEdit" type="button" id="btnModuleConfig" class="btn btn-primary" (click)="SubmitApprovalRecom(objAnnualReviewApprovalRecomDTO,_Form)">
+                Add
+            </button>
+            <button *ngIf="isEdit" type="button" id="btnUpdate" class="btn btn-primary"
+                    (click)="UpdateApprovalRecom(_Form)">
+                Update
+            </button>
+            <button type="button" id="btnCancel" class="btn btn-primary" (click)="SubmitCancel()">
+                Cancel
+            </button>
+            <br />
+            <div class="changeColor" style="border: 1px solid #ccc;padding:20px;margin-top:10px">
+                <div widget class="card">
+                    <div class="card-header">
+                        <span class="text-uppercase"> Existing Approval Recommendation(s) Details</span>
+                    </div>
+                    <div class="card-body widget-body">
+                        <div class="table-responsive datatable">
+                            <table class="table table-striped table-hover table-sm" >
+                                <thead>
+                                    <tr>
+                                        <th> No of Children</th>
+                                        <th>Age</th>
+                                        <th>Gender</th>
+                                        <th>Ethnicity</th>
+                                        <th>Religion</th>
+                                        <th>Edit</th>
+                                        <th>Delete</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of objAnnualReviewApprovalRecomInfoList;let i=index">
+                                        <td *ngIf="item.IsActive">{{item.NoOfChildren}}</td>
+                                        <td *ngIf="item.IsActive">{{item.Age}}</td>
+                                        <td *ngIf="item.IsActive">{{item.Gender==1?'Male': item.Gender==2?'Female':'Any'}}</td>
+                                        <td *ngIf="item.IsActive">{{item.EthnicityName}}</td>
+                                        <td *ngIf="item.IsActive">{{item.ReligionName}}</td>
+                                        <td *ngIf="item.IsActive"><button class="btn  btn-warning" (click)="EditData(item,i)"><i style="font-size:20px" class="fa  fa fa-edit"></i></button></td>
+                                        <td *ngIf="item.IsActive"><button *ngIf="deletbtnAccess" class="btn  btn-danger" (click)="DeleteData(item)"><i style="font-size:20px" class="fa fa-trash-o"></i></button></td>
+                                    </tr>
+                                </tbody>
+
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

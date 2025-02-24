@@ -1,0 +1,221 @@
+﻿<form [formGroup]="_Form">
+    <ViewDisable></ViewDisable>
+    <div class="col-xl-12 col-lg-12 col-12 bottom-30">
+        <Child-Header></Child-Header>
+        <div widget class="card">
+            <div class="card-header">
+                <span>Child Young Person (YP) Report</span>
+                <div class="widget-controls">
+                    <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                    <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                    <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+                    <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+                    <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a>
+                </div>
+            </div>
+            <div class="card-body widget-body">
+                <div class="row mbm-20">
+                    <div class="col-lg-12 col-12 bottom-30">
+
+                        <div class="clearfix">
+                            <ul class="nav nav-tabs top pull-left w-100p">
+                                <li class="nav-item" (click)="fnYpReportActive()">
+                                    <a class="nav-link {{insypReportActive}}" data-toggle="tab" href="#CarerApprovalDetails">
+                                        Child Young Person (YP)
+                                    </a>
+                                </li>
+                                <li class="nav-item" (click)="fnDocumentActive()">
+                                    <a class="nav-link {{insDocumentActive}}" data-toggle="tab" href="#UploadDocuments">Upload Documents</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="tab-content top">
+                            <div class="tab-pane {{insypReportActive}}" id="CarerApprovalDetails">
+
+                        <Dynamic-Form #dynamicDefault [dynamicformcontrols]="dynamicformcontroldata | filter : 'ControlLoadFormat':'Default'"
+                        (OnValChange)="DynamicDefaultOnValChange($event)"  [formbuilder]="_Form" [submitted]="submitted">
+                        </Dynamic-Form>
+                        <div style="border: 2px solid #979aa0;padding:10px;background-color:#edf1f7" [hidden]="dynamicformcontroldataHealth.length==0">
+                            <Dynamic-Form #dynamicHealth [dynamicformcontrols]="dynamicformcontroldataHealth"
+                                          [formbuilder]="_Form" [submitted]="submittedHealth">
+                            </Dynamic-Form>
+
+
+                            <button *ngIf="!isEdit" (click)="AddYpHealthDetails(dynamicHealth.dynamicformcontrols,dynamicHealth.formbuilder)" class="btn btn-success">Add</button>
+                            <div *ngIf="isEdit">
+                                <button (click)="UpdateYpHealthDetails(dynamicHealth.dynamicformcontrols,dynamicHealth.formbuilder)" class="btn btn-success">Update</button>
+                                <button (click)="CancelEdit()" class="btn btn-danger">Cancel</button>
+                            </div>
+                            <div class="changeColor" style="padding-top:20px" *ngIf="globalObjChildYPRHealthList.length>0">
+                                <div widget class="card">
+                                    <div class="card-header">
+                                        <span class="text-uppercase">  Existing Details</span>
+                                    </div>
+                                    <div class="card-body widget-body">
+                                        <div class="table table-responsive">
+                                            <ngx-datatable [rows]="ypHealthList"
+                                                class="bootstrap"
+                                                rowHeight="auto"
+                                                [columnMode]="'force'"
+                                                [limit]="limit"
+                                                rowHeight="auto"
+                                                [scrollbarH]="true"
+                                                [footerHeight]="50"
+                                                [messages]="footerMessage">
+                                                <ngx-datatable-column *ngFor="let col of ypHealthColumns; let i = index" [name]="col.name" [prop]="col.prop">
+                                                    <ng-template ngx-datatable-header-template >{{ col.name }}</ng-template>
+                                                    <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                                                    <div>{{value}}</div>
+                                                    </ng-template>
+                                                </ngx-datatable-column>
+                                                <ngx-datatable-column name="Edit" [sortable]=false>
+                                                    <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+                                                        <div *ngIf="row.StatusId==3">
+                                                            <button disabled class="btn  btn-warning"><i style="font-size:20px" class="fa fa-trash-o"></i></button>
+                                                        </div>
+
+                                                        <div *ngIf="row.StatusId != 3">
+                                                            <button *ngIf="YPReportHealthId !=rowIndex" class="btn  btn-warning"
+                                                                    (click)="EditYpHealtList(rowIndex)">
+                                                                <i style="font-size:20px" class="fa  fa fa-edit"></i>
+                                                            </button>
+
+                                                            <button disabled *ngIf="YPReportHealthId ==rowIndex"
+                                                                    class="btn  btn-warning">
+                                                                <i style="font-size:20px" class="fa  fa fa-edit"></i>
+                                                            </button>
+                                                        </div>
+
+                                                    </ng-template>
+                                                </ngx-datatable-column>
+                                                <ngx-datatable-column name="Delete" [sortable]=false>
+                                                    <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+                                                <div *ngIf="row.StatusId==3">
+                                                    <button *ngIf="deletbtnAccess" disabled class="btn  btn-danger" title="Deleted"><i style="font-size:20px" class="fa fa-trash-o"></i></button>
+                                                </div>
+                                                <div *ngIf="row.StatusId != 3">
+                                                    <button  *ngIf="deletbtnAccess"  [disabled]="YPReportHealthId != null"
+                                                            class="btn  btn-danger"
+                                                            (click)="DeleteYpHealtList (rowIndex)">
+                                                        <i style="font-size:20px" class="fa fa-trash-o"></i>
+                                                    </button>
+                                                </div>
+                                            </ng-template>
+                                                </ngx-datatable-column>
+                                                </ngx-datatable>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <Dynamic-Form #dynamicDefault2 [dynamicformcontrols]="dynamicformcontroldata | filter : 'ControlLoadFormat':'Default2'"
+                                      [formbuilder]="_Form" [submitted]="submitted"></Dynamic-Form>
+                        <div style="border: 2px solid #979aa0;padding:10px;background-color:#edf1f7" [hidden]="dynamicformcontroldataFinance.length==0">
+                            <Dynamic-Form #dynamicFinance [dynamicformcontrols]="dynamicformcontroldataFinance"
+                                          [formbuilder]="_Form" [submitted]="submittedFinance">
+                            </Dynamic-Form>
+
+
+                            <button *ngIf="!isEditFinance" (click)="AddYpFinanceDetails(dynamicFinance.dynamicformcontrols,dynamicFinance.formbuilder)" class="btn btn-success">Add</button>
+                            <div *ngIf="isEditFinance">
+                                <button (click)="UpdateYpFinanceDetails(dynamicFinance.dynamicformcontrols,dynamicFinance.formbuilder)" class="btn btn-success">Update</button>
+                                <button (click)="CancelFinanceEdit()" class="btn btn-danger">Cancel</button>
+                            </div>
+                            <div class="changeColor" style="padding-top:20px" *ngIf="globalObjChildYPRFinanceList.length>0">
+                                <div widget class="card">
+                                    <div class="card-header">
+                                        <span class="text-uppercase">  Existing Details</span>
+                                    </div>
+
+                                    <div class="card-body widget-body">
+                                        <div class="table table-responsive">
+                                            <ngx-datatable [rows]="ypFinanceList"
+                                                class="bootstrap"
+                                                rowHeight="auto"
+                                                [columnMode]="'force'"
+                                                [limit]="limit"
+                                                rowHeight="auto"
+                                                [scrollbarH]="true"
+                                                [footerHeight]="50"
+                                                [messages]="footerMessage">
+                                                <ngx-datatable-column *ngFor="let col of ypFinanceColumns; let i = index" [name]="col.name" [prop]="col.prop">
+                                                    <ng-template ngx-datatable-header-template >{{ col.name }}</ng-template>
+                                                    <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                                                    <div>{{value}}</div>
+                                                    </ng-template>
+                                                </ngx-datatable-column>
+                                                <ngx-datatable-column name="Edit" [sortable]=false>
+                                                    <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+                                                        <div *ngIf="row.StatusId==3">
+                                                            <button disabled class="btn  btn-warning"><i style="font-size:20px" class="fa fa-trash-o"></i></button>
+                                                        </div>
+
+                                                        <div *ngIf="row.StatusId != 3">
+                                                            <button *ngIf="YPReportFinanceId !=rowIndex" class="btn  btn-warning"
+                                                                    (click)="EditYpFinanceList(rowIndex)">
+                                                                <i style="font-size:20px" class="fa  fa fa-edit"></i>
+                                                            </button>
+
+                                                            <button disabled *ngIf="YPReportFinanceId ==rowIndex"
+                                                                    class="btn  btn-warning">
+                                                                <i style="font-size:20px" class="fa  fa fa-edit"></i>
+                                                            </button>
+                                                        </div>
+
+                                                    </ng-template>
+                                                </ngx-datatable-column>
+                                                <ngx-datatable-column name="Delete" [sortable]=false>
+                                                    <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+                                                <div *ngIf="row.StatusId==3">
+                                                    <button *ngIf="deletbtnAccess" disabled class="btn  btn-danger" title="Deleted"><i style="font-size:20px" class="fa fa-trash-o"></i></button>
+                                                </div>
+                                                <div *ngIf="row.StatusId != 3">
+                                                    <button  *ngIf="deletbtnAccess"  [disabled]="YPReportFinanceId != null"
+                                                            class="btn  btn-danger"
+                                                            (click)="DeleteYpFinanceList (rowIndex)">
+                                                        <i style="font-size:20px" class="fa fa-trash-o"></i>
+                                                    </button>
+                                                </div>
+                                            </ng-template>
+                                                </ngx-datatable-column>
+                                                </ngx-datatable>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <Dynamic-Form #dynamicDefault3 [dynamicformcontrols]="dynamicformcontroldata | filter : 'ControlLoadFormat':'Default3'"
+                                      [formbuilder]="_Form" [submitted]="submitted"></Dynamic-Form>
+
+                                        <EmailNotification #Notification [FormCnfgId]="187" ></EmailNotification>
+                                        <!-- [AddtionalEmailIds] [EmailIds] -->
+                        </div>
+                        <div class="tab-pane {{insDocumentActive}}" id="UploadDocuments">
+                            <div class="tab-pane" id="tb">
+                                <Upload-Documents #uploads [formCnfgId]="formId" [primaryKeyId]="tblPrimaryKey"  [submittedUpload]="submittedUpload"
+                                [userTypeCnfgId]="5" [typeId]="TypeId"></Upload-Documents>
+                                <!-- [IsUpload] [formbuilder] -->
+
+                            </div>
+                        </div>
+
+                        <div class="form-group col-lg-5">
+                            <SubmitButton (Click)="clicksubmitdata(_Form,dynamicDefault.dynamicformcontrols,dynamicDefault.formbuilder,
+                                   dynamicDefault2.dynamicformcontrols,dynamicDefault2.formbuilder,
+                                    dynamicDefault3.dynamicformcontrols,dynamicDefault3.formbuilder,
+                                    uploads.UploadDocIds,uploads.IsUpload,uploads.formbuilder,
+                                    Notification.AddtionalEmailIds,Notification.EmailIds
+                                    )" [IsLoading]="isLoading"></SubmitButton>
+                            <BackButton></BackButton>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

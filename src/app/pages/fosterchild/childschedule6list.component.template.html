@@ -1,0 +1,224 @@
+﻿
+
+<div class="col-xl-12 col-lg-12 col-12 bottom-30">
+    <Child-Header></Child-Header>
+    <div>
+
+        <AddButton FormCnfgId="362" (click)="fnAdd()"></AddButton>
+    </div>
+    <br />
+    <div widget class="card">
+        <div class="card-header">
+            <span class="text-uppercase">Schedule 6</span>
+            <div class="widget-controls">
+                <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+                <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+                <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a>
+            </div>
+        </div>
+        <div class="card-body widget-body">
+            <table class="table table-striped table-hover table-sm">
+              <tbody *ngIf="lstChildSchedule6.length==0">
+                  <tr>
+                      <th *ngIf="!loading" colspan="9" class="text-center">
+                          No Records found.
+                      </th>
+                      <th *ngIf="loading" colspan="9" class="text-center">
+                          <i class="fa fa-spinner fa-spin"></i> Loading please wait...
+                      </th>
+                  </tr>
+              </tbody>
+              </table>
+              <div class="table-responsive datatable" *ngIf="lstChildSchedule6.length>0">
+                  <ngxdatatable [rows]="lstChildSchedule6" [columns]="columns" formCnfgId="362" searchFilter="true" searchFields="EventType,EvenDate,NatureOfEvent"
+                  (onEdit)="onEdit($event)" (onDelete)="onDelete($event)"></ngxdatatable>
+              </div>
+            <!-- <div class="table-responsive datatable">
+                <table class="table table-striped table-hover table-sm">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Event Type</th>
+                            <th>Event Date</th>
+                            <th>Nature Of Event</th>
+
+                            <th>Status</th>
+                            <th>Edit</th>
+                            <th>View</th>
+                            <th>Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody *ngIf="lstSchedule6.length==0">
+                        <tr>
+                            <th colspan="8" class="text-center"> No Records found.</th>
+                        </tr>
+                    </tbody>
+                    <tbody *ngIf="lstSchedule6.length>0">
+                        <tr *ngFor="let item of lstSchedule6">
+                            <td width="10px">
+                                <span style="font-size:20px" *ngIf="item.value[0].IsDocumentExist" class="fa fa-paperclip"></span>
+                            </td>
+                            <td *ngFor="let subitem of item.value | filter : 'FieldName':'EventTypeId'">{{ subitem.hasOwnProperty('DynamicValue')?subitem.FieldValue:subitem.FieldValue!=""?subitem.FieldValueText:"" }}</td>
+
+                            <td *ngFor="let subitem of item.value | filter : 'FieldName':'EventDate'">{{ subitem.FieldValue |dateFormat:'dd/MM/yyyy hh:mm'}}</td>
+                            <td *ngFor="let subitem of item.value | filter : 'FieldName':'NatureOfEventId'">
+                                <div style="display: block;width: 500px;
+                                    overflow: hidden;white-space: nowrap;
+                                    text-overflow: ellipsis;">
+                                    {{ subitem.hasOwnProperty('DynamicValue')?subitem.FieldValue:subitem.FieldValue!=""?subitem.FieldValueText:"" }}
+
+                                </div>
+                            </td>
+                            <td *ngFor="let subitem of item.value | filter : 'FieldName':'SaveAsDraftStatus'">{{ subitem.FieldValue==0?'Submitted':'Saved as Draft' }}</td>
+                           <td>
+                                <EditButton FormCnfgId="362"
+                                            (click)="editSchedule6(item.value[0].SequenceNo,item.value[0].hasOwnProperty('FieldValueText'))">
+
+                                </EditButton>
+                            </td>
+                            <td>
+                                <ViewButton FormCnfgId="362"
+                                            (click)="editSchedule6(item.value[0].SequenceNo,item.value[0].hasOwnProperty('FieldValueText'))">
+
+                                </ViewButton>
+                            </td>
+                            <td *ngFor="let subitem of item.value | filter : 'FieldName':'IsActive'">
+
+                                <DeleteButton [FormCnfgId]="362" (Click)="deleteSchedule6(item.value[0].SequenceNo,subitem.UniqueID,item.value[0].hasOwnProperty('FieldValueText'))" [SequenceNo]="item.value[0].SequenceNo">
+                                </DeleteButton>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="12">
+
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div> -->
+        </div>
+    </div>
+</div>
+
+<div class="form-group col-md-5">
+    <a (click)="fnShowTaggedAllegation()" class="btn btn-warning" style="color: white;"><i class="fa fa-tags"></i>
+     {{IsShowTaggedAllegation==true?'Hide Tag/Link Carer Schedule 6':'Show Tag/Link Carer Schedule 6'}}   </a>
+   </div>
+   <div class="col-xl-12 col-lg-12 col-12 bottom-30" *ngIf="IsShowTaggedAllegation">
+       <div widget class="card">
+           <div class="card-header">
+               <span class="text-uppercase"><i class="fa fa-tags"></i> Tag/Link Carer Schedule 6</span>
+               <div class="widget-controls">
+                   <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                   <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                   <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+                   <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+                   <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a>
+               </div>
+           </div>
+           <div class="card-body widget-body">
+               <div class="w-200 pull-right bottom-15">
+                   <div class="input-group input-group-sm">
+                       <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                       <input class="form-control" id="table-search-input" type="text" [(ngModel)]="searchTextTag" placeholder="Search...">
+                   </div>
+               </div>
+               <div class="table-responsive datatable">
+                   <table class="table table-striped table-hover table-sm">
+                       <thead>
+                           <tr>
+                               <th>Carer Name</th>
+                               <th>Event Type </th>
+                               <th>Event Date</th>
+                               <th>Nature Of Event</th>
+                               <th>Details</th>
+                           </tr>
+                       </thead>
+                       <tbody *ngIf="lstTagCarerAllegationInfo.length==0">
+                           <tr>
+                               <th colspan="7" class="text-center"> No Records found.</th>
+                           </tr>
+                       </tbody>
+                       <tbody *ngIf="lstTagCarerAllegationInfo.length>0">
+                           <tr *ngFor="let item of lstTagCarerAllegationInfo | groupBy:'SequenceNo' | SearchDynamicFilter : 'CreatedUserId,EventDate,EventTypeId,NatureOfEventId': searchTextTag">
+                               <td *ngFor="let subitem of item.value | filter : 'FieldName':'CreatedUserId'">{{ subitem.FieldValue}}</td>
+                               <td *ngFor="let subitem of item.value | filter : 'FieldName':'EventTypeId'">{{ subitem.FieldValue}}</td>
+                               <td *ngFor="let subitem of item.value | filter : 'FieldName':'EventDate'">{{ subitem.FieldValue |dateFormat:'dd/MM/yyyy HH:mm'}}</td>
+                               <td *ngFor="let subitem of item.value | filter : 'FieldName':'NatureOfEventId'">{{ subitem.FieldValue}}</td>
+                               <td>
+                                   <button (click)="fnViewChildAllegationtHistory(item.value[0].SequenceNo)" style="cursor:pointer" class="btn btn-warning ">
+                                       View
+                                   </button>
+                               </td>
+                           </tr>
+                       </tbody>
+                       <tfoot>
+                           <tr>
+                               <td colspan="12">
+
+                               </td>
+                           </tr>
+                       </tfoot>
+                   </table>
+               </div>
+           </div>
+       </div>
+
+       <div>
+           <button #btnViewTaggedCarerAllegation type="button" [hidden]="true" class="btn btn-primary" data-toggle="modal" data-target="#lg-modal2">Large</button>
+           <div class="modal fade" id="lg-modal2" tabindex="-1" role="dialog" aria-labelledby="modal-large-label" style="display: none;">
+               <div class="modal-dialog modal-lg" role="document">
+                   <div class="modal-content">
+                       <div class="modal-header state modal-primary">
+                           <h4 class="modal-title" id="modal-large-label">
+                               <i class="fa fa-tags"></i> Tag/Link Carer Schedule 6
+                           </h4>
+                           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                       </div>
+                       <!--start-->
+                       <div class="row mbm-20">
+                           <div class="col-lg-12 col-12 bottom-30">
+                                <div class="card-body widget-body">
+                                   <div class="table-responsive datatable">
+                                           <table class="table table-striped table-hover table-sm">
+                                               <tbody>
+                                                   <tr>
+                                                       <td width="30%">Carer Name</td>
+                                                       <td width="70%">:<b> {{hisCarerName}} </b></td>
+                                                   </tr>
+                                                   <tr *ngFor="let item of hisTaggedCarerAllegation">
+                                                       <td width="30%">
+                                                               <label [innerHTML]="''+item.DisplayName+''"></label>
+                                                       </td>
+                                                        <td width="70%">
+                                                               <span *ngIf="item.FieldDataTypeName=='date'">
+                                                                   :<b> {{item.FieldValue | dateFormat:'dd/MM/yyyy'}}</b>
+                                                               </span>
+                                                               <span *ngIf="item.FieldDataTypeName=='datetime'">
+                                                                   :<b> {{item.FieldValue | dateFormat:'dd/MM/yyyy HH:mm'}}</b>
+                                                               </span>
+                                                               <span *ngIf="item.FieldDataTypeName =='radio'">
+                                                                   :<b> {{item.FieldValue==1?'Yes':'No'}}</b>
+                                                               </span>
+                                                               <span *ngIf="item.FieldDataTypeName !='date' && item.FieldDataTypeName !='datetime' && item.FieldDataTypeName !='radio'">
+                                                                   :<b> {{item.FieldValue}}</b>
+                                                               </span>
+                                                       </td>
+                                                   </tr>
+                                               </tbody>
+                                           </table>
+                                       </div>
+                                </div>
+                           </div>
+                       </div>
+                       <!--end-->
+                   </div>
+               </div>
+           </div>
+       </div>
+
+   </div>
