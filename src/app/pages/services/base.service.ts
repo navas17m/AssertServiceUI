@@ -13,7 +13,8 @@ export class Base {
         let Token = Common.GetSession("Token");
          //headers.append('Authorization', 'Basic ' + btoa(LoginId + ':' + pwd + ':' + agencyId));
          //Basic
-         let headers = new HttpHeaders({ 'Content-Type': 'application/json', 'AgencyID': '' + agencyId + '', 'UserId': '' + userId + '', 'CarerParentId': '' + carerparentId + '', 'Authorization': 'Basic ' + btoa(LoginId + ':' + pwd + ':' + agencyId) });
+         let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+         //let headers = new HttpHeaders({ 'Content-Type': 'application/json', 'AgencyID': '' + agencyId + '', 'UserId': '' + userId + '', 'CarerParentId': '' + carerparentId + '', 'Authorization': 'Basic ' + btoa(LoginId + ':' + pwd + ':' + agencyId) });
         //jwt
         //let headers = new HttpHeaders({ 'Content-Type': 'application/json', 'AgencyID': '' + agencyId + '', 'UserId': '' + userId + '', 'CarerParentId': '' + carerparentId + '', 'Authorization': 'Bearer ' +Token });
 

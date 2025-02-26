@@ -1,0 +1,62 @@
+﻿<div>
+    <button style="cursor:pointer;"  class="btn btn-success " (click)="fnGo()" >يضيف</button>
+</div>
+
+<div class="row" style="padding-top:10px">
+    <div class="col">
+        <div widget class="card">
+            <div class="card-header">
+                <span>نموذج تسجيل الأصول</span>              
+            </div>
+            <div class="card-body widget-body">
+                <div class="w-200 pull-right bottom-15">
+                    <div class="input-group input-group-sm">
+                        <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                        <input class="form-control" id="table-search-input" [(ngModel)]="searchText" type="text" placeholder="..يبحث">
+                    </div>
+                </div>
+                <div class="table-responsive datatable" >
+                    <ngx-datatable [rows]="lstAssertRegister"
+                    class="bootstrap"
+                    rowHeight="auto"
+                    [columnMode]="'force'"
+                    [limit]="25"
+                    [scrollbarH]="true"
+                    [footerHeight]="50"
+                    >
+                    <ngx-datatable-column name="اسم البلدية" prop="IdentificationNumber" width="80" [sortable]="false">
+                        <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                          <div style="text-align: right;"> {{value}} </div> 
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="موقع المنشأ" prop="LocationOfOrigin" width="100" [sortable]="false">
+                        <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                            <div style="text-align: right;"> {{value}}</div> 
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="تاريخ الشراء" prop="DateOfPurchase" width="100" [sortable]="false">
+                        <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                            <div style="text-align: right;">{{value | dateFormat:'dd/MM/yyyy' }}</div> 
+                        </ng-template>
+                    </ngx-datatable-column>    
+                    <ngx-datatable-column name="يحرر" prop="assertRegisterId" width="100" [sortable]="false">
+                        <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                            <div style="text-align: right;">  <button style="cursor:pointer;"  data-animation="false"
+                            data-placement="bottom" title="Edit" (click)="fnEdit(row.AssertRegisterId)"   class="btn btn-warning btn-xs" ><i style="font-size:20px" class="fa  fa fa-edit"></i></button></div>
+                        </ng-template>
+                    </ngx-datatable-column>    
+                    <ngx-datatable-column name="يمسح" prop="assertRegisterId" width="100" [sortable]="false">
+                        <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                            <div style="text-align: right;">  <button style="cursor:pointer;" (click)="fnDelete(row.AssertRegisterId)" title="Delete"  class="btn btn-danger btn-xs"><i style="font-size:20px" class="fa fa-trash-o"></i></button> </div>
+                        </ng-template>
+                    </ngx-datatable-column>                   
+                   
+            </ngx-datatable>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

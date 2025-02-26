@@ -17,7 +17,7 @@
                                 </svg>
 
                                 <input autofocus formControlName="username" class="login__input name"
-                                    placeholder="اسم المستخدم" [(ngModel)]="objLogin.LoginId" type="text">
+                                    placeholder="اسم المستخدم" [(ngModel)]="objUser.UserName" type="text">
                                 <span style="font-size: 16px;color: #ffee00;" class="help-block"
                                     *ngIf="submitted && form.get('username').hasError('required')">User Name is
                                     required</span>
@@ -27,12 +27,12 @@
                                     <path d="M0,20 20,20 20,8 0,8z M10,13 10,16z M4,8 a6,8 0 0,1 12,0" />
                                 </svg>
 
-                                <input formControlName="password" [(ngModel)]="objLogin.Password"
+                                <input formControlName="password" [(ngModel)]="objUser.Password"
                                     class="login__input pass" placeholder="كلمة المرور" [type]="show_button ? 'text' : 'password'">
-
-                                <i [title]="show_eye?'hide password':'show password'" 
+                                   
+                                <!-- <i [title]="show_eye?'hide password':'show password'" 
                                     style="font-size: 30px;color: aliceblue;float: right;cursor: pointer;"
-                                     [class]="show_eye ? 'fa fa-eye' : 'fa fa-eye-slash'" (click)="showPassword()"></i>
+                                     [class]="show_eye ? 'fa fa-eye' : 'fa fa-eye-slash'" (click)="showPassword()"></i> -->
        
                                 <span style="font-size: 16px;color: #ffee00;" class="help-block"
                                     *ngIf="submitted && form.get('password').hasError('required')">Password is
@@ -40,6 +40,16 @@
                                 <span style="font-size: 16px;color: #ffee00;" class="help-block "
                                     *ngIf="submitted && form.get('password').hasError('minlength')">Password isn't long
                                     enough, minimum of 6 characters</span>
+                            </div>
+                            <div class="login__row">     
+                                {{objUser.MunicipalId}}
+                                    <select  formControlName="MunicipalId" required class="form-control"  [(ngModel)]="objUser.MunicipalId">
+                                        <option *ngFor="let op of lstAgencyProfile" value="{{op.MunicipalId}}">
+                                            {{op.MunicipalName}}
+                                        </option>
+                                    </select> 
+                                    <!-- <span style="font-size: 16px;color: #ffee00;" class="help-block"
+                                    *ngIf="submitted && form.get('MunicipalId').hasError('required')">Please select Municipal to proceed</span>                               -->
                             </div>
                             <div *ngIf="errorMessage && !form.get('password').hasError('required')
                                && !form.get('password').hasError('required') && !form.get('password').hasError('minlength') "
@@ -124,226 +134,8 @@
                 </div>
 
             </div>
-        </div>
-        <div class="col-xl-4 col-md-6 col-10 offset-xl-4 offset-md-3 offset-1" *ngIf="agencyVisible">
-            <div class="row" style="padding-top:10px">
-                <div class="col">
-                    <div widget class="card">
-                        <div class="card-body text-center">
-                            <div class="card-header">
-                                <span class="text-uppercase" style="font-size:20px">Agency List</span>
-                            </div>
-                            <!-- <div class="card-body widget-body">
-                              <div class="w-200 pull-right bottom-15">
-                                  <div class="input-group input-group-sm">
-                                      <span class="input-group-addon"><i class="fa fa-search"></i></span>
-                                      <input class="form-control" id="table-search-input" [(ngModel)]="searchText" type="text" placeholder="Search Agency Name...">
-                                  </div>
-                              </div>
-                              <div class="table-responsive datatable">
-                                  <table class="table table-striped table-hover table-sm" [mfData]="lstAgencyProfile | SearchFilter : 'AgencyName': searchText" #mf="mfDataTable" [mfRowsOnPage]="10">
-                                      <thead>
-                                          <tr style="font-size:17px">
-                                              <th>Select</th>
-                                              <th>Agency Name</th>
-
-                                          </tr>
-                                      </thead>
-                                      <tbody>
-                                          <tr *ngFor="let item of mf.data" style="cursor:pointer;font-size:15px" [ngStyle]="{'background-color': item.IsSelected?'#248DAD':'white','color': item.IsSelected?'white':'black'}" >
-                                              <td align="left">
-                                                  <button class="btn btn-warning btn-xs">
-                                                      Select
-                                                  </button>
-                                              </td>
-                                              <td align="left">{{item.AgencyName}}</td>
-                                          </tr>
-                                          <tr *ngIf="(mf.data | filter : searchText).length === 0" style="font-size:15px">
-                                              <td colspan="2">
-                                                  No matches
-                                              </td>
-                                          </tr>
-                                      </tbody>
-                                      <tfoot>
-                                          <tr>
-                                              <td colspan="12">
-                                                  <mfBootstrapPaginator [rowsOnPageSet]="[10, 25, 50, 100]"></mfBootstrapPaginator>
-                                              </td>
-                                          </tr>
-                                      </tfoot>
-                                  </table>
-                              </div>
-                              <div *ngIf="showErrorMsg" style="color:red;text-align:center">
-                                  Please select any one agency to login..
-                              </div>
-                          </div> -->
-                            <div class="card-body widget-body">
-                                <div class="w-200 pull-right bottom-15">
-                                    <div class="input-group input-group-sm">
-                                        <span class="input-group-addon"><i class="fa fa-search"></i></span>
-                                        <input class="form-control" id="table-search-input" (keyup)='searchAgency($event.target.value)'
-                                            formControlName="searchText" type="text"
-                                            placeholder="Search Agency Name...">
-                                    </div>
-                                </div>
-                                <div class="table-responsive datatable" *ngIf="lstAgencyProfile?.length!=0">
-                                    <ngx-datatable [rows]="filteredList"
-                                        class="bootstrap" rowHeight="auto" [columnMode]="'force'"
-                                        [rowClass]="getRowNewClass">
-                                        <ngx-datatable-column name="Select" [sortable]="false">
-                                            <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex"
-                                                ngx-datatable-cell-template>
-                                                <span>
-                                                    <button class="btn btn-warning btn-xs"
-                                                        (click)="fnSelect(row.AgencyProfileId,row.LogoString)">Select</button>
-                                                </span>
-                                            </ng-template>
-                                        </ngx-datatable-column>
-                                        <ngx-datatable-column name="Agency Name" prop="AgencyName" [sortable]="false">
-                                            <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
-
-                                                {{value}}
-
-                                            </ng-template>
-                                        </ngx-datatable-column>
-                                    </ngx-datatable>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <button class="btn btn-main btn-block" style="color:white" type="button"
-                                    (click)="fnGo()">Go</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-xl-6 col-md-6 col-10 offset-xl-3 offset-md-3 offset-1" *ngIf="secretQuestionVisible">
-            <div class="row" style="padding-top:10px">
-                <div class="col">
-                    <div widget class="card">
-                        <div class="card-body text-center any4question-wrapper">
-                            <div class="card-header">
-                                <span class="text-uppercase" style="font-size:12px">Answer any 4 questions to
-                                    continue.</span>
-                            </div>
-                            <div class="card-body widget-body">
-                                <div class="table-responsive datatable">
-                                    <table class="table">
-                                        <tbody>
-                                            <tr *ngFor="let item of lstSecretQuestions" style="font-size:12px">
-                                                <td align="left">{{item.SecretQustion}}</td>
-                                                <td><input class="form-control" name="sec-{{item.SecretQustionId}}"
-                                                        [(ngModel)]="item.SecretQustionAnswer" type="text" /></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div *ngIf="showErrorMsg" style="color:red;text-align:center;font-size:12px">
-                                    Please enter minimum 4 security questions..
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <button class="btn btn-main btn-block" [ladda]="isLoadingValueSaveSecretQuestio" type="button"
-                                    (click)="fnSaveSecretQuestion()">Save & Sign in</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-xl-4 col-md-6 col-10 offset-xl-4 offset-md-3 offset-1" *ngIf="securityQuestionVisible">
-            <div class="row" style="padding-top:10px">
-                <div class="col">
-                    <div widget class="card">
-                        <div class="card-body text-center">
-                            <div class="card-header">
-                                <span class="text-uppercase" style="font-size:12px">Security Question</span>
-                            </div>
-                            <div class="table-responsive datatable">
-                                <table class="table" style="font-size:12px">
-                                    <tbody>
-                                        <tr>
-                                            <td>{{securityQuestion}}</td>
-                                        </tr>
-                                        <tr>
-                                            <td><input class="form-control" (keyup.enter)="fnSaveSecurityQuestion();"
-                                                    [(ngModel)]="securityAnswer" type="text" /></td>
-                                        </tr>
-                                        <tr>
-                                            <td><input [(ngModel)]="rememberQuestion" type="checkbox" /> Do you want to
-                                                remember this question?</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="form-group">
-                                <button class="btn btn-main btn-block" [ladda]="isLoadingValueSecurityQuestion" type="button"
-                                    (click)="fnSaveSecurityQuestion()">Sign in</button>
-                            </div>
-                            <div *ngIf="showErrorMsg" style="color:red;text-align:center;font-size:12px">
-                                Your answer is wrong. Please enter correct answer.
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-xl-4 col-md-6 col-10 offset-xl-4 offset-md-3 offset-1"
-            *ngIf="IsPwdChangeNeeded && IsPwdChangeNeededVisible">
-            <form [formGroup]="formChangePwd">
-                <div class="row" style="padding-top:10px">
-                    <div class="col">
-                        <div widget class="card">
-                            <div class="card-body text-center">
-                                <div class="card-header">
-                                    <span class="text-uppercase" style="font-size:12px">Change Password</span>
-                                </div>
-
-                                <div class="form-group ">
-                                    <label class="" style="font-size:12px">Password:</label>
-                                    <input formControlName="Password" required class="form-control" type="password"
-                                        [(ngModel)]="objLogin.Password">
-                                    <div *ngIf="(!formChangePwd.controls.Password.valid && submittedChangePwd && formChangePwd.controls.Password.errors.required )"
-                                        class="alert alert-danger" style="font-size:12px">
-                                        Please Enter the Password
-                                    </div>
-                                    <div *ngIf="!formChangePwd.controls.Password.valid && submittedChangePwd && formChangePwd.controls.Password.errors.NotValidPassword"
-                                        class="alert alert-danger">
-                                        Password must be min 6 to max 20 characters, including at least one uppercase,
-                                        one lowercase, one special character, and one number.
-                                    </div>
-                                </div>
-                                <div class="form-group ">
-                                    <label class="" style="font-size:12px">Confirm Password:</label>
-                                    <input formControlName="ConfirmPassword" required class="form-control"
-                                        type="password" [(ngModel)]="objLogin.ConfirmPassword">
-                                    <div *ngIf="(!formChangePwd.controls.ConfirmPassword.valid && submittedChangePwd && formChangePwd.controls.ConfirmPassword.errors.required )"
-                                        class="alert alert-danger" style="font-size:12px">
-                                        Please Enter the Confirm Password
-                                    </div>
-                                    <div *ngIf="( submittedChangePwd && (objLogin.Password !=objLogin.ConfirmPassword))"
-                                        class="alert alert-danger" style="font-size:12px">
-                                        New Password and Confirm Password Does Not Match.
-                                    </div>
-                                </div>
-                                <div class="form-group ">
-                                    <button class="btn btn-main btn-block" [ladda]="isLoadingValueChangePassword" type="button"
-                                        (click)="fnChangePassword(formChangePwd)">Change Password</button>
-
-
-                                </div>
-
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </div>
+        </div>   
+       
     </div>
 </div>
 <footer *ngIf="IsAgencyVisible" class="login-footer">

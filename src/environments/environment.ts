@@ -8,10 +8,10 @@ export const environment = {
   production: false,
 
   get photonotavail_url(): string { return './assets/img/app/Photonotavail.png'; },
-  get api_downloadurl(): string { return 'http://localhost:52622/api/UploadDocuments/GetFile/'; },
-  get api_uploadurl(): string { return 'http://localhost:52622/api/UploadDocuments/Upload'; },
-  get api_url(): string { return 'http://localhost:52622'; },
-  get api_uploadeventsgalleryurl(): string { return 'http://localhost:52622/api/EventsGallery/Upload'; },
+  get api_downloadurl(): string { return 'https://localhost:7065/api/UploadDocuments/GetFile/'; },
+  get api_uploadurl(): string { return 'https://localhost:7065/api/UploadDocuments/Upload'; },
+  get api_url(): string { return 'https://localhost:7065'; },
+  get api_uploadeventsgalleryurl(): string { return 'https://localhost:7065/api/EventsGallery/Upload'; },
 
   // //https://fostering.starlight.inc/starlighttestapi
   //get api_downloadurl(): string { return 'https://fostering.starlight.inc/starlighttestapi/api/UploadDocuments/GetFile/'; },

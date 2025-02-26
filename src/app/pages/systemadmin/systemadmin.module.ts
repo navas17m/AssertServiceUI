@@ -64,8 +64,12 @@ import { CustomerPriceDetails } from './customerpricedetails.component';
 import { CustomerInvoiceDetails } from './customerinvoicedetails.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { CustomerPriceDetailsList }  from './customerpricedetailslist.component';
+import { AssertRegisterList } from './assertregisterlist.component';
+import { AssertRegisterComponent } from './assertregister.component';
 export const routes:any = [
     { path: '', redirectTo: 'agencyformmapping/1', pathMatch: 'full' },
+    { path: 'assertregisterlist/:mid', component: AssertRegisterList, data: { breadcrumb: 'تسجيل الأصول' } },
+    { path: 'assertregister/:id', component: AssertRegisterComponent, data: { breadcrumb: 'تسجيل الأصول' } },
     //{ path: 'modulecnfgdata', component: ModuleConfigComponet, data: { breadcrumb: 'Module Config Entry' } },
     //{ path: 'fieldcnfgdata/:id', component: FieldConfigComponet, data: { breadcrumb: 'Field Config' } },
     { path: 'userprofiledata/:id', component: UserProfileComponet, data: { breadcrumb: 'User Profile' } },
@@ -134,7 +138,8 @@ export const routes:any = [
         DropdownComponet, UserCarerMappingComponent, CarerSocialWorkerMappingComponent, UserChildMappingComponent, FormNotificationComponent,
         SchedulerNotificationComponent, HandBookComponent, CarerFinancialGuidelinesComponent, FosterCarerPoliciesComponent,
         OrganizationalPoliciesComponent, PanelGuidelinesComponent,UserNotificationInfo,GDPRNotification,CustomerDetailsComponent,
-        StaffAreaComponent,CustomerPriceDetails,CustomerInvoiceDetails,CustomerPriceDetailsList
+        StaffAreaComponent,CustomerPriceDetails,CustomerInvoiceDetails,CustomerPriceDetailsList,
+        AssertRegisterList,AssertRegisterComponent
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     exports: []

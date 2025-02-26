@@ -1,5 +1,5 @@
 /// <reference path="../pages.component.ts" />
-import { HttpClient } from '@angular/common/http';
+import { HttpClient,HttpHeaders  } from '@angular/common/http';
 import { Injectable,OnInit } from '@angular/core';
 import { json } from 'd3';
 //import 'rxjs/add/operator/toPromise';
@@ -26,18 +26,17 @@ export class APICallService implements OnInit {
     resetTimer() {
         APICallService.invokeEvent.next({ some: "from service" });
     }
-
-    get(controllerName: string, functionName: string, Id?) {
-
-        this.resetTimer();
-        if (Id == null) {
-            return this._http.get(Base.GetUrl() + "/api/" + controllerName + "/" + functionName, Base.GetHeader())
+    // return this._http.post(Base.GetUrl() + "/api/UserDetails", _login)
+    get(controllerName: string, functionName: string, id?) {
+       
+        if (id == null) {
+            return this._http.get(Base.GetUrl() + "/api/" + controllerName + "/" + functionName)
                 .toPromise()
                 .then()
                 .catch(this.handleError);
         }
         else {
-                return this._http.get(Base.GetUrl() + "/api/" + controllerName + "/" + functionName + "/" + Id, Base.GetHeader())
+                return this._http.get(Base.GetUrl() + "/api/" + controllerName + "/" + functionName + "/" + id)
                 .toPromise()
                 .then(this.handleResponse)
                 .catch(this.handleError);
@@ -45,6 +44,42 @@ export class APICallService implements OnInit {
 
 
     }
+    put(controllerName: string, functionName: string, parameter)
+    {
+        //var json = JsonSerializer.Serialize(requestBody);
+        return this._http.put(Base.GetUrl() + "/api/" + controllerName + "/" + functionName, JSON.stringify(parameter), Base.GetHeader())
+                    .toPromise()
+                    .then(this.handleResponse)
+                    .catch(this.handleError);
+    }
+
+    testPost() {       
+        const headers = new HttpHeaders({
+          'Content-Type': 'application/json'
+        });
+    
+        const body = {
+            IdentificationNumber: 'string',
+            locationOfOrigin: 'string',
+            coordinatesX: 0,
+            coordinatesY: 0,
+            googleMapsLink: 'string',
+            dateOfPurchase: '2025-02-25T12:40:20.399Z',
+            departmentName: 'string',
+            dateOfLastInspection: '2025-02-25T12:40:20.399Z',
+            accidentLog: true,
+            strategyLastMaintenanceId: 0,
+            assetStatusId: 0,
+            utilizationRateId: 0,
+            frequentProblems: 'string',
+            historicalCostsOfMaintenance: 'string',
+            guaranteeExpiryDate: '2025-02-25T12:40:20.399Z',
+            priorityId: 0,
+            maintenanceContractForAsset: 'string'
+        };
+    
+        return this._http.post("https://localhost:7065/api/AssertRegister/TestPost", body, { headers });
+      }
     post(controllerName: string, functionName: string, parameter?) {
 
         if(navigator.onLine)
@@ -75,6 +110,8 @@ export class APICallService implements OnInit {
           Common.SetSession("OfflineServerRequests",JSON.stringify(temp));
         }
     }
+    
+
     save(controllerName: string, parameter, type) {
         if(navigator.onLine)
         {
@@ -105,11 +142,18 @@ export class APICallService implements OnInit {
           Common.SetSession("OfflineServerRequests",JSON.stringify(temp));
         }
     }
-    delete(controllerName: string, parameter) {
+    deleteAssert(controllerName: string,actionName :string ,parameter) {
 
-        this.resetTimer();
+        return this._http.delete(Base.GetUrl() + "/api/" + controllerName + "/"+ actionName +"/" + parameter, Base.GetHeader())
+        .toPromise()
+        .then(this.handleResponse)
+        .catch(this.handleError);       
+        
+    }
+    delete(controllerName: string,parameter) {       
+        
         if (typeof parameter === 'number') {
-                return this._http.delete(Base.GetUrl() + "/api/" + controllerName + "/Save/" + parameter, Base.GetHeader())
+                return this._http.delete(Base.GetUrl() + "/api/" + controllerName + "/DeleteAssertRegister/" + parameter, Base.GetHeader())
                     .toPromise()
                     .then(this.handleResponse)
                     .catch(this.handleError);

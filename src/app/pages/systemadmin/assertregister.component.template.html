@@ -1,0 +1,117 @@
+﻿<div class="col-xl-12 col-lg-12 col-12 bottom-30">
+    <div widget class="card overflow-container">
+        <div class="card-header">
+            <span>نموذج تسجيل الأصول</span>
+          
+        </div>
+        <div class="card-body widget-body">
+            <form [formGroup]="_Form">
+                <div style="min-height:300px">                   
+                    <div class="form-group">
+                        <label class="">رقم الهوية </label>
+                        <input formControlName="IdentificationNumber" type="text" class="form-control" 
+                               required [(ngModel)]="objAssertRegisterDTO.IdentificationNumber"/>                      
+                    </div>
+                    <div class="form-group">
+                        <label class="">موقع المنشأ</label>
+                        <input formControlName="Locationoforigin" type="text" class="form-control" 
+                        [(ngModel)]="objAssertRegisterDTO.LocationOfOrigin" />                      
+                    </div>
+                    <div class="form-group">
+                        <label class="">إحداثيات X</label>
+                        <input formControlName="CoordinateX" type="number" class="form-control" 
+                        [(ngModel)]="objAssertRegisterDTO.CoordinatesX" />                      
+                    </div>
+                    <div class="form-group">
+                        <label class="">إحداثيات Y </label>
+                        <input formControlName="CoordinateY" type="number" class="form-control" 
+                        [(ngModel)]="objAssertRegisterDTO.CoordinatesY" />                      
+                    </div>
+                    <div class="form-group">
+                        <label class=""> رابط خرائط جوجل</label>
+                        <input formControlName="GoogleMapslink" type="text" class="form-control" 
+                        [(ngModel)]="objAssertRegisterDTO.GoogleMapsLink" />                      
+                    </div>
+                    <div class="form-group">
+                        <label class="">تاريخ الشراء</label>
+                        <input formControlName="Dateofpurchase"  type="text" placeholder="DD/MM/YYYY" readonly class="form-control form-control-date" [(ngModel)]="objAssertRegisterDTO.DateOfPurchase" [value]="objAssertRegisterDTO.DateOfPurchase" datepicker/>
+                    </div>
+                    <div class="form-group">
+                        <label class=""> اسم القسم</label>
+                        <input formControlName="Departmentname" type="text" class="form-control" [(ngModel)]="objAssertRegisterDTO.DepartmentName"/>                      
+                    </div>
+                    <div class="form-group">
+                        <label class=""> تاريخ التفتيش الأخير</label>
+                        <input formControlName="Dateoflastinspection"  type="text" placeholder="DD/MM/YYYY" readonly class="form-control form-control-date" [(ngModel)]="objAssertRegisterDTO.DateOfLastInspection" [value]="objAssertRegisterDTO.DateOfLastInspection" datepicker/>
+                    </div>
+                    <div class="form-group">
+                        <label class=""> سجل الحوادث </label>
+                        <input formControlName="AccidentLog" type="text" class="form-control"  [(ngModel)]="objAssertRegisterDTO.AccidentLog"/>                      
+                    </div>
+                    <div class="form-group">
+                        <label class="">استراتيجية الصيانة الأخيرة</label>
+                        <select *ngIf="lstStrategyLastMaintenance.length>0" formControlName="StrategyLastMaintenance" class="form-control"  [(ngModel)]="objAssertRegisterDTO.StrategyLastMaintenanceId">
+                            <!-- <option value="" [attr.selected]="objAssertRegisterDTO.StrategyLastMaintenanceId== null ? true : null">
+                                استراتيجية الصيانة الأخيرة
+                            </option> -->
+                            <option *ngFor="let op of lstStrategyLastMaintenance" value="{{op.LastMaintenanceStrategyId}}">
+                                {{op.LastMaintenanceStrategyName}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="">حالة الأصول</label>
+                        <select *ngIf="lstAssetstatus.length>0" formControlName="Assetstatus" class="form-control"  [(ngModel)]="objAssertRegisterDTO.AssetStatusId">
+                            <!-- <option value="" [attr.selected]="objAssertRegisterDTO.AssetStatusId== null ? true : null">
+                                حالة الأصول                  </option> -->
+                            <option *ngFor="let op of lstAssetstatus" value="{{op.AssetStatusId}}">
+                                {{op.AssetStatusName}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class=""> معدل الاستخدام</label>
+                        <select *ngIf="lstUtilizationrate.length>0" formControlName="Utilizationrate" class="form-control"  [(ngModel)]="objAssertRegisterDTO.UtilizationRateId">
+                            <!-- <option value="" [attr.selected]="objAssertRegisterDTO.UtilizationRatesId== null ? true : null">
+                                معدل الاستخدام                 </option> -->
+                            <option *ngFor="let op of lstUtilizationrate" value="{{op.UtilizationRatesId}}">
+                                {{op.UtilizationRate}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="">   المشاكل/الأعطال المتكررة</label>
+                        <input formControlName="Frequentproblems" type="text" class="form-control" [(ngModel)]="objAssertRegisterDTO.FrequentProblems" />                        
+                    </div>
+                    <div class="form-group">
+                        <label class="">   التكاليف التاريخية للصيانة </label>
+                        <input formControlName="Historicalcostsofmaintenance" type="text" class="form-control"  [(ngModel)]="objAssertRegisterDTO.HistoricalCostsOfMaintenance"/>                        
+                    </div>
+                    <div class="form-group">
+                        <label class="">   تاريخ انتهاء الضمان </label>
+                        <input formControlName="GuaranteeExpiryDate"  type="text" placeholder="DD/MM/YYYY" readonly class="form-control form-control-date" [(ngModel)]="objAssertRegisterDTO.GuaranteeExpiryDate" [value]="objAssertRegisterDTO.GuaranteeExpiryDate" datepicker/>
+                    </div>
+                    <div class="form-group">
+                        <label class="">  الأولوية (الأصول الهامة)</label>
+                        <select *ngIf="lstPriority.length>0" formControlName="Priority" class="form-control"  [(ngModel)]="objAssertRegisterDTO.PriorityId">
+                            <!-- <option value="" [attr.selected]="objAssertRegisterDTO.PriorityId== null ? true : null">
+                                الأولوية (الأصول الهامة)                 </option> -->
+                            <option *ngFor="let op of lstPriority" value="{{op.PriorityId}}">
+                                {{op.PriorityName}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class=""> عقد صيانة للأصل </label>
+                        <input formControlName="Maintenancecontractforasset" [(ngModel)]="objAssertRegisterDTO.MaintenanceContractForAsset" type="text" class="form-control"  />                        
+                    </div>
+                    <div class="form-group">
+                        <!-- <SubmitButton (Click)="Submit(_Form,ddCarerList.BindValue)" [IsLoading]="isLoading" [Text]="'Assign'"></SubmitButton> -->
+                        <button  (click)="Submit(_Form)"  id="btnSubmit"  class="btn btn-success expand-right">يُقدِّم'</button>
+                        <button style="cursor:pointer;" id="BackBtn" (click)="fnBack()"  class="btn btn-warning BackBtn">واضح</button>
+                    </div>                    
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -9,6 +9,7 @@ export class LoginService {
 
     constructor(public _http: HttpClient) { }
 
+    
     UserAccountLock(_login) {
         return this._http.get(Base.GetUrl() + "/api/UserProfile/UserAccountLock/"+ _login, Base.GetHeader()) // URL to web api
             .toPromise()
@@ -61,13 +62,13 @@ export class LoginService {
 
     }
 
-    getAgencyList() {
-        return this._http.get(Base.GetUrl() + "/api/AgencyProfile/getall", Base.GetHeader())
+    getMunicipalList() {       
+        return this._http.get(Base.GetUrl() + "/api/Municipal")
             .toPromise()
             .then(this.handleResponse)
             .catch(this.handleError);
 
-    }
+    }  
     GetAllSecretQuestions() {
         return this._http.get(Base.GetUrl() + "/api/UserProfile/GetAllSecretQuestions", Base.GetHeader())
             .toPromise()
@@ -114,7 +115,7 @@ export class LoginService {
     getLoginValue(_login) {
 
         // console.log(Base.GetUrl());
-        return this._http.post(Base.GetUrl() + "/api/UserProfile/UserLogin", _login, Base.GetHeader()) // URL to web api
+        return this._http.post(Base.GetUrl() + "/api/UserDetails", _login) // URL to web api
             .toPromise()
             .then(this.handleResponse)
             .catch(this.handleError);

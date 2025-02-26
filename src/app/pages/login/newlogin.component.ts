@@ -44,6 +44,7 @@ export class LoginComponent {
     objUserAuditHistoryDTO: UserAuditHistoryDTO = new UserAuditHistoryDTO();
     errorMessage = false; showErrorMsg = false;
     objLogin: Login = new Login();
+    objUser: UserDetails = new UserDetails();
     loginVisible = true; agencyVisible = false; lstAgencyProfile;
     errorMessageString; showCaptcha = false; attempts: number = 0;
     publicKey = environment.captchaPublicKey;
@@ -94,7 +95,9 @@ export class LoginComponent {
         this.form = fb.group({
             //'username': ['', Validators.compose([Validators.required, emailValidator])],
             'username': ['', Validators.compose([Validators.required])],
-            'password': ['', Validators.compose([Validators.required])]
+            'password': ['', Validators.compose([Validators.required])],
+            // 'MunicipalId': ['0',Validators.required]
+            
         });
 
         this.formForgotPwd = fb.group({
@@ -105,10 +108,13 @@ export class LoginComponent {
 
         this.formChangePwd = fb.group({
             'Password': ['', [Validators.required,ContactValidator.validatePassowrd]],
-            'ConfirmPassword': ['', Validators.required]
+            'ConfirmPassword': ['', Validators.required],
+            
         });
-
-        //loService.getAgencyList().then(data => { this.lstAgencyProfile = data });
+        
+        loService.getMunicipalList().then(data => { this.lstAgencyProfile = data       
+           //console.log(this.lstAgencyProfile);
+        });
         Common.IsUserLogin.next(false);
         Common.ClearSession();
         Common.SetSession("pagelength", window.history.length);
@@ -219,20 +225,24 @@ export class LoginComponent {
     public onSubmit(values: Object): void {
         this.submitted = true;
         this.errorMessageNewVisi = false;
-
-        if (this.form.valid) {
-            this.router.navigate(['pages/dashboard']);
-            //   console.log(this.objLogin);
-            // /  this.errorMessage = true;
-            //if (this.username.value == 'admin' && this.password.value == 'admin') {
-            //    // console.log('asd');
-            //    this.router.navigate(['pages/dashboard']);
-            //}
-            //else {
-            //    this.router.navigate(['pages/dashboard']);
-            //    this.errorMessage = true;
-            //    //  console.log('invalid');
-            //}
+        //console.log(this.objUser);
+        if (this.form.valid) {           
+            this.loService.getLoginValue(this.objUser).then(data => {   
+                //console.log(data);           
+                if(data.UserDetailsId>0)
+                {
+                    Common.SetSession("userDetailsId", data.UserDetailsId);
+                    Common.SetSession("municipalId", "1");
+                    Common.SetSession("UserName", data.UserName);
+                    this.router.navigate(['pages/dashboard']);
+                }
+                else
+                {
+                    alert("Please enter valid user name and password.");
+                    //this.errorMessageString = "Please enter valid user name and password.";
+                }
+             });           
+           
         }
     }
     captchaSuccess;
@@ -254,8 +264,8 @@ export class LoginComponent {
             this._cookieService.delete("Token");
             this._cookieService.set("Token", data.Token);
 
-            if (data.UserProfileId == 1)
-                this.loService.getAgencyList().then(data => { this.lstAgencyProfile = data;this.filteredList=data; });
+            // if (data.UserProfileId == 1)
+            //     this.loService.getAgencyList().then(data => { this.lstAgencyProfile = data;this.filteredList=data; });
 
             this.loService.GetAllSecretQuestions().then(data => { this.lstSecretQuestions = data; });
 
@@ -498,6 +508,14 @@ export class Login {
     AgencyProfileId: number;
 
 }
+
+export class UserDetails {
+    UserDetailsId: number;
+    UserName: string;
+    Password: string;    
+    MunicipalId: number;      
+}
+
 
 
 
