@@ -11,48 +11,36 @@ import * as moment from 'moment';
 import { Router } from '@angular/router';
 
 @Component({
-    selector: 'AssertRegisterList',
-    templateUrl: './assertregisterlist.component.template.html',
+    selector: 'budgetapprovallist',
+    templateUrl: './budgetapprovallist.component.template.html',
 })
 
-export class AssertRegisterList {
-    public searchText: string = "";
-    public returnVal:any[];
-    _Form: FormGroup;
-    arrayCarerList = [];
-    objUserCarerMappingDTO: UserCarerMappingDTO = new UserCarerMappingDTO();
-    lstUserList = [];
-    submitted = false;
-    AssignedCarerList = [];
-    lstAssertRegister=[];
-    isLoading: boolean = false;
-    controllerName = "AssertRegister";
-    assignedCarers = [];
-    carerIds;
-  
+export class BudgetApprovalList {
+    public searchText: string = ""; 
+    lstBudgetApproval=[];    
+    controllerName = "budgetapproval";  
        
     constructor(private apiService: APICallService, private _router: Router, private _formBuilder: FormBuilder, private pComponent: PagesComponent) {
          
-       this.BindAssert();
+       this.BindBudgetApproval();
     }
     fnGo()
     {
-        this._router.navigate(['/pages/systemadmin/assertregister/0']);
+        this._router.navigate(['/pages/systemadmin/budgetapproval/0']);
     }
     fnDelete(id)
     {
-        this.apiService.deleteAssert(this.controllerName, "DeleteAssertRegister",id).then(data => {this.Respone(data)});
+        this.apiService.deleteAssert(this.controllerName, "DeleteBudgetApproval",id).then(data => {this.Respone(data)});
         
     }
     fnEdit(id)
     {
-        this._router.navigate(['/pages/systemadmin/assertregister/'+ id]);
+        this._router.navigate(['/pages/systemadmin/budgetapproval/'+ id]);
     }
-    BindAssert() {
-        this.apiService.get(this.controllerName, "GetAssertRegisters",parseInt(Common.GetSession("MunicipalId"))).then(data => {
-             this.lstAssertRegister = data;           
+    BindBudgetApproval() {
+        this.apiService.get(this.controllerName, "GetBudgetApprovals", parseInt(Common.GetSession("MunicipalId"))).then(data => { 
+            this.lstBudgetApproval = data;           
          })
-        //this.services.getAll().then(data => { this.lstUserList = data; })
     } 
      private Respone(data) {      
             if (data == false) {
@@ -60,7 +48,7 @@ export class AssertRegisterList {
             }
             else if (data == true) {            
                 this.pComponent.alertSuccess(Common.GetDeleteSuccessfullMsg);
-                this.BindAssert();
+                this.BindBudgetApproval();
                
             }
         }

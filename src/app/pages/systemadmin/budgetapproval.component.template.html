@@ -1,0 +1,65 @@
+﻿<div class="col-xl-12 col-lg-12 col-12 bottom-30">
+    <div widget class="card overflow-container">
+        <div class="card-header">
+            <span>الموافقة على الميزانية </span>
+          
+        </div>
+        <div class="card-body widget-body">
+            <form [formGroup]="_Form">
+                <div style="min-height:300px">                   
+                    <div class="form-group">
+                        <label class=""> الموافقة على الميزانية </label>
+                        <input formControlName="BudgetApprovals"  required type="radio" [value]="false" [(ngModel)]="objBudgetApprovalDTO.BudgetApprovals">Yes
+                        <input formControlName="BudgetApprovals" required type="radio" [value]="true" [(ngModel)]="objBudgetApprovalDTO.BudgetApprovals" >No                  
+                    </div>
+                    <div class="form-group" *ngIf="objBudgetApprovalDTO.BudgetApprovals==false">
+                        <label class="">سبب الموافقة على الميزانية </label>
+                        <input formControlName="BudgetApprovalReason" type="text" class="form-control" 
+                        [(ngModel)]="objBudgetApprovalDTO.BudgetApprovalReason" />                      
+                    </div>
+                    <div class="form-group">
+                        <label class="">مراقبة تنفيذ الميزانية  </label>
+                        <input formControlName="MonitoringBudgetImplementation" type="text" class="form-control" 
+                        [(ngModel)]="objBudgetApprovalDTO.MonitoringBudgetImplementation" />                      
+                    </div>
+                    <div class="form-group">
+                        <label class="">التقارير الدورية  </label>
+                        <input formControlName="PeriodicReports" type="text" class="form-control" 
+                        [(ngModel)]="objBudgetApprovalDTO.PeriodicReports" />                      
+                    </div>
+                    <div class="form-group">
+                        <label class=""> التعديلات الطارئة</label>
+                        <input formControlName="EmergencyModifications"  required type="radio" [value]="false" [(ngModel)]="objBudgetApprovalDTO.EmergencyModifications">Yes
+                        <input formControlName="EmergencyModifications" required type="radio" [value]="true" [(ngModel)]="objBudgetApprovalDTO.EmergencyModifications" >No                                     
+                    </div>
+                    <div class="form-group" *ngIf="objBudgetApprovalDTO.EmergencyModifications">
+                        <label class="">  سبب التعديلات الطارئة</label>
+                        <input formControlName="EmergencyModificationReason" type="text" class="form-control" 
+                        [(ngModel)]="objBudgetApprovalDTO.EmergencyModificationReason" />                      
+                    </div>
+                    <div class="form-group">
+                        <label class="">  التفاوت في الميزانية</label>
+                        <input formControlName="BudgetDisparity" type="text" class="form-control" 
+                        [(ngModel)]="objBudgetApprovalDTO.BudgetDisparity"/>                      
+                    </div>                    
+                                
+                    <div class="form-group">
+                        <label class="">  إجراءات معالجة التفاوت في الميزانية  </label> 
+                        <input formControlName="BudgetDisparityAction"  required type="radio" [value]="false" [(ngModel)]="objBudgetApprovalDTO.BudgetDisparityAction">Yes
+                        <input formControlName="BudgetDisparityAction" required type="radio" [value]="true" [(ngModel)]="objBudgetApprovalDTO.BudgetDisparityAction" >No
+                    </div>
+                    <div class="form-group" *ngIf="objBudgetApprovalDTO.BudgetDisparityAction">
+                        <label class="">   وصف التفاوت في الميزانية</label>
+                        <input formControlName="BudgetDisparityDescription" type="text"
+                         class="form-control"  [(ngModel)]="objBudgetApprovalDTO.BudgetDisparityDescription"/>                        
+                    </div>                 
+                    <div class="form-group">
+                        <!-- <SubmitButton (Click)="Submit(_Form,ddCarerList.BindValue)" [IsLoading]="isLoading" [Text]="'Assign'"></SubmitButton> -->
+                        <button  (click)="Submit(_Form)"  id="btnSubmit"  class="btn btn-success expand-right">يُقدِّم'</button>
+                        <button style="cursor:pointer;" id="BackBtn" (click)="fnBack()"  class="btn btn-warning BackBtn">واضح</button>
+                    </div>                    
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

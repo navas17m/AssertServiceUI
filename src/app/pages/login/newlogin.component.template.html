@@ -41,8 +41,7 @@
                                     *ngIf="submitted && form.get('password').hasError('minlength')">Password isn't long
                                     enough, minimum of 6 characters</span>
                             </div>
-                            <div class="login__row">     
-                                {{objUser.MunicipalId}}
+                            <div class="login__row">    
                                     <select  formControlName="MunicipalId" required class="form-control"  [(ngModel)]="objUser.MunicipalId">
                                         <option *ngFor="let op of lstAgencyProfile" value="{{op.MunicipalId}}">
                                             {{op.MunicipalName}}
@@ -141,6 +140,6 @@
 <footer *ngIf="IsAgencyVisible" class="login-footer">
     <div class="login-footer-main">
         <div class="copyright">&copy; <a class="font-weight-bold" target="_blank"
-                href="http://starlight.inc/">Starlight</a> 2024</div>
+                href="http://AssertSystem.inc/">AssertSystem</a> 2024</div>
     </div>
 </footer>

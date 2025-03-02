@@ -66,12 +66,32 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { CustomerPriceDetailsList }  from './customerpricedetailslist.component';
 import { AssertRegisterList } from './assertregisterlist.component';
 import { AssertRegisterComponent } from './assertregister.component';
+import { BudgetPlanList } from './budgetplanlist.component';
+import { BudgetPlanComponent } from './budgetplan.component';
+import { BudgetApprovalList } from './budgetapprovallist.component';
+import { BudgetApprovalComponent } from './budgetapproval.component';
+import { KeyPerformanceIndicatorList } from './keyperformanceindicatorlist.component';
+import { KeyPerformanceIndicatorComponent } from './keyperformanceindicator.component';
+import { WorkforceManagementList } from './workforcemanagementlist.component';
+import { WorkforceManagementComponent } from './workforcemanagement.component';
+import { ComplianceAndRegulatoryList } from './complianceandregulatorylist.component';
+import { ComplianceAndRegulatoryComponent } from './complianceandregulatory.component';
+
 export const routes:any = [
     { path: '', redirectTo: 'agencyformmapping/1', pathMatch: 'full' },
     { path: 'assertregisterlist/:mid', component: AssertRegisterList, data: { breadcrumb: 'تسجيل الأصول' } },
     { path: 'assertregister/:id', component: AssertRegisterComponent, data: { breadcrumb: 'تسجيل الأصول' } },
-    //{ path: 'modulecnfgdata', component: ModuleConfigComponet, data: { breadcrumb: 'Module Config Entry' } },
-    //{ path: 'fieldcnfgdata/:id', component: FieldConfigComponet, data: { breadcrumb: 'Field Config' } },
+    { path: 'budgetplanlist/:mid', component: BudgetPlanList, data: { breadcrumb: 'خطة الميزاني' } },
+    { path: 'budgetplan/:id', component: BudgetPlanComponent, data: { breadcrumb: 'خطة الميزانية' } },
+    { path: 'budgetapprovallist/:mid', component: BudgetApprovalList, data: { breadcrumb: 'الموافقة على الميزانية' } },
+    { path: 'budgetapproval/:id', component: BudgetApprovalComponent, data: { breadcrumb: 'الموافقة على الميزانية' } },
+    { path: 'keyperformanceindicatorlist/:mid', component: KeyPerformanceIndicatorList, data: { breadcrumb: 'مؤشرات الأداء الرئيسية' } },
+    { path: 'keyperformanceindicator/:id', component: KeyPerformanceIndicatorComponent, data: { breadcrumb: 'مؤشرات الأداء الرئيسية' } },
+    { path: 'workforcemanagementlist/:mid', component: WorkforceManagementList, data: { breadcrumb: 'إدارة القوى العاملة' } },
+    { path: 'workforcemanagement/:id', component: WorkforceManagementComponent, data: { breadcrumb: 'إدارة القوى العاملة' } },
+    { path: 'complianceandregulatorylist/:mid', component: ComplianceAndRegulatoryList, data: { breadcrumb: 'متطلبات الامتثال والتنظيم' } },
+    { path: 'complianceandregulatory/:id', component: ComplianceAndRegulatoryComponent, data: { breadcrumb: 'متطلبات الامتثال والتنظيم' } },
+    
     { path: 'userprofiledata/:id', component: UserProfileComponet, data: { breadcrumb: 'User Profile' } },
     //{ path: 'agencysetup/:id', component: AgencySetupComponet, data: { breadcrumb: 'Agency Setup' } },
     //{ path: 'agencylist/:mid', component: AgencyListComponet, data: { breadcrumb: 'Agency List' } },
@@ -117,6 +137,7 @@ export const routes:any = [
     { path: 'customerpricedetails/:id', component: CustomerPriceDetails, data: { breadcrumb: 'Customer Price Details' } },
     { path: 'customerinvoicedetails/:mid', component: CustomerInvoiceDetails, data: { breadcrumb: 'Invoice Details' } },
     { path: 'customerpricedetailslist/:mid', component: CustomerPriceDetailsList, data: { breadcrumb: 'Customer Price Details' } },
+    { path: 'customerpricedetailslist/:mid', component: CustomerPriceDetailsList, data: { breadcrumb: 'Customer Price Details' } },
 ];
 
 @NgModule({
@@ -139,7 +160,9 @@ export const routes:any = [
         SchedulerNotificationComponent, HandBookComponent, CarerFinancialGuidelinesComponent, FosterCarerPoliciesComponent,
         OrganizationalPoliciesComponent, PanelGuidelinesComponent,UserNotificationInfo,GDPRNotification,CustomerDetailsComponent,
         StaffAreaComponent,CustomerPriceDetails,CustomerInvoiceDetails,CustomerPriceDetailsList,
-        AssertRegisterList,AssertRegisterComponent
+        AssertRegisterList,AssertRegisterComponent,BudgetPlanComponent,BudgetPlanList,BudgetApprovalList,BudgetApprovalComponent,
+        KeyPerformanceIndicatorList,KeyPerformanceIndicatorComponent,WorkforceManagementList,WorkforceManagementComponent,
+        ComplianceAndRegulatoryList,ComplianceAndRegulatoryComponent
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     exports: []

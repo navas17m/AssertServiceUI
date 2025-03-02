@@ -19,4 +19,5 @@
     GuaranteeExpiryDate:Date=null;
     PriorityId:number=0;
     MaintenanceContractForAsset:string;    
+    IsActive:boolean;
 }

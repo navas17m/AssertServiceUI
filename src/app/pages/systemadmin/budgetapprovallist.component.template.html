@@ -6,7 +6,7 @@
     <div class="col">
         <div widget class="card">
             <div class="card-header">
-                <span>نموذج تسجيل الأصول</span>              
+                <span> الموافقة على الميزانية </span>              
             </div>
             <div class="card-body widget-body">
                 <div class="w-200 pull-right bottom-15">
@@ -16,7 +16,7 @@
                     </div>
                 </div>
                 <div class="table-responsive datatable" >
-                    <ngx-datatable [rows]="lstAssertRegister | SearchFilter : 'IdentificationNumber,LocationOfOrigin': searchText"
+                    <ngx-datatable [rows]="lstBudgetApproval | SearchFilter : 'MonitoringBudgetImplementation,PeriodicReports': searchText"
                     class="bootstrap"
                     rowHeight="auto"
                     [columnMode]="'force'"
@@ -24,33 +24,32 @@
                     [scrollbarH]="true"
                     [footerHeight]="50"
                     >
-                    <ngx-datatable-column name="اسم البلدية" prop="IdentificationNumber" width="80" [sortable]="true">
+                    <ngx-datatable-column name="الموافقة على الميزانية" prop="BudgetApprovals" width="80" [sortable]="false">
                         <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
-                          <div style="text-align: right;"> {{value}} </div> 
+                          <div style="text-align: right;"> {{value==true?"Yes":"No"}} </div> 
                         </ng-template>
                     </ngx-datatable-column>
-                    <ngx-datatable-column name="موقع المنشأ" prop="LocationOfOrigin" width="100" [sortable]="true">
+                    <ngx-datatable-column name="مراقبة تنفيذ الميزانية" prop="MonitoringBudgetImplementation" width="100" [sortable]="true">
                         <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
                             <div style="text-align: right;"> {{value}}</div> 
                         </ng-template>
                     </ngx-datatable-column>
-                    <ngx-datatable-column name="تاريخ الشراء" prop="DateOfPurchase" width="100" [sortable]="false">
+                    <ngx-datatable-column name="التقارير الدورية" prop="PeriodicReports" width="100" [sortable]="true">
                         <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
-                            <div style="text-align: right;">{{value | dateFormat:'dd/MM/yyyy' }}</div> 
+                            <div style="text-align: right;">{{value }}</div> 
                         </ng-template>
-                    </ngx-datatable-column>    
-                    <ngx-datatable-column name="يحرر" prop="assertRegisterId" width="100" [sortable]="false">
+                    </ngx-datatable-column>   
+                    <ngx-datatable-column name="يحرر" prop="MaterialCosts" width="100" [sortable]="false">
                         <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
                             <div style="text-align: right;">  <button style="cursor:pointer;"  data-animation="false"
-                            data-placement="bottom" title="Edit" (click)="fnEdit(row.AssertRegisterId)"   class="btn btn-warning btn-xs" ><i style="font-size:20px" class="fa  fa fa-edit"></i></button></div>
+                            data-placement="bottom" title="يحرر" (click)="fnEdit(row.BudgetApprovalId)"   class="btn btn-warning btn-xs" ><i style="font-size:20px" class="fa  fa fa-edit"></i></button></div>
                         </ng-template>
                     </ngx-datatable-column>    
-                    <ngx-datatable-column name="يمسح" prop="assertRegisterId" width="100" [sortable]="false">
+                    <ngx-datatable-column name="يمسح" prop="EquipmentCosts" width="100" [sortable]="false">
                         <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
-                            <div style="text-align: right;">  <button style="cursor:pointer;" (click)="fnDelete(row.AssertRegisterId)" title="Delete"  class="btn btn-danger btn-xs"><i style="font-size:20px" class="fa fa-trash-o"></i></button> </div>
+                            <div style="text-align: right;"><button style="cursor:pointer;" (click)="fnDelete(row.BudgetApprovalId)" title="يمسح"  class="btn btn-danger btn-xs"><i style="font-size:20px" class="fa fa-trash-o"></i></button> </div>
                         </ng-template>
-                    </ngx-datatable-column>                   
-                   
+                    </ngx-datatable-column> 
             </ngx-datatable>
                 </div>
             </div>

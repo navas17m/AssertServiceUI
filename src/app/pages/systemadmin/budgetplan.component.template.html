@@ -1,0 +1,77 @@
+﻿<div class="col-xl-12 col-lg-12 col-12 bottom-30">
+    <div widget class="card overflow-container">
+        <div class="card-header">
+            <span>خطة الميزانية</span>
+          
+        </div>
+        <div class="card-body widget-body">
+            <form [formGroup]="_Form">
+                <div style="min-height:300px">                   
+                    <div class="form-group">
+                        <label class="">أسلوب إدارة الصيانة</label>
+                        <input formControlName="MaintenanceManagementStyle" type="text" class="form-control" 
+                               required [(ngModel)]="objBudgetPlanDTO.MaintenanceManagementStyle"/>                      
+                    </div>
+                    <div class="form-group">
+                        <label class="">استراتيجية الصيانة</label>
+                        <input formControlName="MaintenanceStrategy" type="text" class="form-control" 
+                        [(ngModel)]="objBudgetPlanDTO.MaintenanceStrategy" />                      
+                    </div>
+                    <div class="form-group">
+                        <label class="">تكاليف الموارد البشرية</label>
+                        <input formControlName="HRCosts" type="number" class="form-control" 
+                        [(ngModel)]="objBudgetPlanDTO.HRCosts" />                      
+                    </div>
+                    <div class="form-group">
+                        <label class="">تكاليف المواد </label>
+                        <input formControlName="MaterialCosts" type="number" class="form-control" 
+                        [(ngModel)]="objBudgetPlanDTO.MaterialCosts" />                      
+                    </div>
+                    <div class="form-group">
+                        <label class="">تكاليف المعدات</label>
+                        <input formControlName="EquipmentCosts" type="number" class="form-control" 
+                        [(ngModel)]="objBudgetPlanDTO.EquipmentCosts" />                      
+                    </div>
+                    <div class="form-group">
+                        <label class=""> التكاليف الإدارية</label>
+                        <input formControlName="AdministrativeCosts" type="number" class="form-control" 
+                        [(ngModel)]="objBudgetPlanDTO.AdministrativeCosts" />                      
+                    </div>
+                    <div class="form-group">
+                        <label class=""> تكاليف التشغيل</label>
+                        <input formControlName="OperationalCosts" type="number" class="form-control" 
+                        [(ngModel)]="objBudgetPlanDTO.OperationalCosts"/>                      
+                    </div>                    
+                    <div class="form-group">
+                        <label class="">  تخصيص ميزانية الطوارئ </label>
+                        <input formControlName="AllocationEmergencyEudget" type="text" class="form-control" 
+                         [(ngModel)]="objBudgetPlanDTO.AllocationEmergencyEudget"/>                      
+                    </div>                   
+                    <div class="form-group">
+                        <label class="">  مراجعة البيانات التاريخية</label> 
+                        <input formControlName="ReviewGistoricalData"  required type="radio" [value]="false" [(ngModel)]="objBudgetPlanDTO.ReviewGistoricalData">Yes
+                        <input formControlName="ReviewGistoricalData" required type="radio" [value]="true" [(ngModel)]="objBudgetPlanDTO.ReviewGistoricalData" >No
+                        <!-- <div class="custom-control custom-radio custom-control-inline">
+                            <input id="radio1" type="radio" name="radioInline" class="custom-control-input" checked>
+                            <label class="custom-control-label" for="radio1">Yes</label>
+                        </div>
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input id="radio2" type="radio" name="radioInline" class="custom-control-input">
+                            <label class="custom-control-label" for="radio2">No</label>
+                        </div>   -->
+                    </div>
+                    <div class="form-group">
+                        <label class="">تقدير عقود الصيانة (3 سنوات)</label>
+                        <input formControlName="EstimationOfMaintenance" type="text"
+                         class="form-control"  [(ngModel)]="objBudgetPlanDTO.EstimationOfMaintenance"/>                        
+                    </div>                 
+                    <div class="form-group">
+                        <!-- <SubmitButton (Click)="Submit(_Form,ddCarerList.BindValue)" [IsLoading]="isLoading" [Text]="'Assign'"></SubmitButton> -->
+                        <button  (click)="Submit(_Form)"  id="btnSubmit"  class="btn btn-success expand-right">يُقدِّم'</button>
+                        <button style="cursor:pointer;" id="BackBtn" (click)="fnBack()"  class="btn btn-warning BackBtn">واضح</button>
+                    </div>                    
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

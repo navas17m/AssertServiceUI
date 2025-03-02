@@ -46,6 +46,10 @@ export class AssertRegisterComponent {
                 this.objAssertRegisterDTO.GuaranteeExpiryDate=this.pComponent.GetDateEditFormat(this.objAssertRegisterDTO.GuaranteeExpiryDate);
             });
         }
+        else
+        {
+            this.objAssertRegisterDTO.AccidentLog=true;
+        }
         
         this._Form = _formBuilder.group({
             IdentificationNumber: ['', Validators.required],
@@ -80,8 +84,7 @@ export class AssertRegisterComponent {
            
          })
     } 
-   
-   
+       
     IsShowError = false;
     Submit(form) {
         this.submitted = true;
@@ -118,11 +121,13 @@ export class AssertRegisterComponent {
             this.objAssertRegisterDTO.DateOfPurchase=  this.pComponent.GetDateSaveFormat(this.objAssertRegisterDTO.DateOfPurchase);
             this.objAssertRegisterDTO.DateOfLastInspection= this.pComponent.GetDateSaveFormat(this.objAssertRegisterDTO.DateOfLastInspection);
             this.objAssertRegisterDTO.GuaranteeExpiryDate=this.pComponent.GetDateSaveFormat(this.objAssertRegisterDTO.GuaranteeExpiryDate);
-            this.objAssertRegisterDTO.AccidentLog=true;
+           
             if(this.type=="save")
             {               
-                console.log(this.objAssertRegisterDTO);               
-                this.objAssertRegisterDTO.MunicipalId=1; //parseInt(Common.GetSession("MunicipalId"));
+                //console.log(this.objAssertRegisterDTO);  
+                this.objAssertRegisterDTO.UserId=parseInt(Common.GetSession("UserId"));
+                this.objAssertRegisterDTO.MunicipalId=parseInt(Common.GetSession("MunicipalId"));  
+                this.objAssertRegisterDTO.IsActive=true;           
                 this.apiService.post(this.controllerName, "AddAssertRegister", this.objAssertRegisterDTO).then(data => {this.Respone("save")});
             }
             else

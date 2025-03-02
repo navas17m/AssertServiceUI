@@ -1,0 +1,46 @@
+﻿<div class="col-xl-12 col-lg-12 col-12 bottom-30">
+    <div widget class="card overflow-container">
+        <div class="card-header">
+            <span> متطلبات الامتثال والتنظيم</span>
+          
+        </div>
+        <div class="card-body widget-body">
+            <form [formGroup]="_Form">
+                <div style="min-height:300px">  
+                    <div class="form-group">
+                        <label class=""> نشاط</label>
+                        <input formControlName="Activity" type="text" class="form-control" 
+                        [(ngModel)]="objComplianceAndRegulatoryDTO.Activity" required/>  
+                        <div class="alert alert-danger" *ngIf="(!_Form.controls.Activity.valid && submitted && _Form.controls.Activity.errors.required)">
+                            الرجاء إدخال النشاط
+                        </div>                    
+                    </div>  
+                    <div class="form-group">
+                        <label class="">وصف </label>
+                        <textarea [(ngModel)]="objComplianceAndRegulatoryDTO.Description" class="form-control" 
+                        formControlName="Description"></textarea>
+                    </div>               
+                    <div class="form-group">
+                        <input formControlName="YesOrNo"  required type="radio" [value]="true" [(ngModel)]="objComplianceAndRegulatoryDTO.YesOrNo">نعم (وصف موجز)
+                        <input formControlName="YesOrNo" required type="radio" [value]="false" [(ngModel)]="objComplianceAndRegulatoryDTO.YesOrNo" >لا (ذكر الأسباب)                  
+                    </div>
+                    <div class="form-group" *ngIf="objComplianceAndRegulatoryDTO.YesOrNo">
+                        <label class="">وصف موجز </label>
+                        <textarea [(ngModel)]="objComplianceAndRegulatoryDTO.BriefDescription" class="form-control" 
+                        formControlName="BriefDescription"></textarea>                    
+                    </div>
+                    <div class="form-group" *ngIf="objComplianceAndRegulatoryDTO.YesOrNo==false">
+                        <label class="">ذكر الأسباب </label>
+                        <textarea [(ngModel)]="objComplianceAndRegulatoryDTO.CitingReasons" class="form-control" 
+                        formControlName="CitingReasons"></textarea>                    
+                    </div>                                  
+                    <div class="form-group">
+                        <!-- <SubmitButton (Click)="Submit(_Form,ddCarerList.BindValue)" [IsLoading]="isLoading" [Text]="'Assign'"></SubmitButton> -->
+                        <button  (click)="Submit(_Form)"  id="btnSubmit"  class="btn btn-success expand-right">يُقدِّم'</button>
+                        <button style="cursor:pointer;" id="BackBtn" (click)="fnBack()"  class="btn btn-warning BackBtn">واضح</button>
+                    </div>                    
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

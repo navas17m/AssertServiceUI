@@ -46,7 +46,9 @@
                     </div>
                     <div class="form-group">
                         <label class=""> سجل الحوادث </label>
-                        <input formControlName="AccidentLog" type="text" class="form-control"  [(ngModel)]="objAssertRegisterDTO.AccidentLog"/>                      
+                        <input formControlName="AccidentLog"  required type="radio" [value]="false" [(ngModel)]="objAssertRegisterDTO.AccidentLog">None
+                        <input formControlName="AccidentLog" required type="radio" [value]="true" [(ngModel)]="objAssertRegisterDTO.AccidentLog" >Yes
+                        <!-- <input formControlName="AccidentLog" type="text" class="form-control"  [(ngModel)]="objAssertRegisterDTO.AccidentLog"/>                       -->
                     </div>
                     <div class="form-group">
                         <label class="">استراتيجية الصيانة الأخيرة</label>
@@ -104,7 +106,7 @@
                     <div class="form-group">
                         <label class=""> عقد صيانة للأصل </label>
                         <input formControlName="Maintenancecontractforasset" [(ngModel)]="objAssertRegisterDTO.MaintenanceContractForAsset" type="text" class="form-control"  />                        
-                    </div>
+                    </div>                   
                     <div class="form-group">
                         <!-- <SubmitButton (Click)="Submit(_Form,ddCarerList.BindValue)" [IsLoading]="isLoading" [Text]="'Assign'"></SubmitButton> -->
                         <button  (click)="Submit(_Form)"  id="btnSubmit"  class="btn btn-success expand-right">يُقدِّم'</button>

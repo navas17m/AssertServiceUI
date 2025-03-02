@@ -1,0 +1,54 @@
+﻿<div class="col-xl-12 col-lg-12 col-12 bottom-30">
+    <div widget class="card overflow-container">
+        <div class="card-header">
+            <span>مؤشرات الأداء الرئيسية </span>
+          
+        </div>
+        <div class="card-body widget-body">
+            <form [formGroup]="_Form">
+                <div style="min-height:300px">                   
+                    <div class="form-group">
+                        <label class=""> فئة مؤشر الأداء الرئيسي </label>                       
+                        <select *ngIf="lstKeyPerformanceIndicatorCategory.length>0" required formControlName="KeyPerformanceIndicatorCategory" class="form-control"  
+                            [(ngModel)]="objKeyPerformanceIndicatorDTO.KeyPerformanceIndicatorCategoryId">
+                            <option *ngFor="let op of lstKeyPerformanceIndicatorCategory" value="{{op.KeyPerformanceIndicatorCategoryId}}">
+                                {{op.KeyPerformanceIndicatorCategoryName}}
+                            </option>
+                        </select>
+                        <div class="alert alert-danger" *ngIf="(!_Form.controls.KeyPerformanceIndicatorCategory.valid && submitted && _Form.controls.KeyPerformanceIndicatorCategory.errors.required)">
+                            حدد فئة مؤشر الأداء الرئيسي
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="">اسم مؤشر الأداء الرئيسي</label>
+                        <input formControlName="KeyPerformanceIndicatorName" required type="text" class="form-control" 
+                        [(ngModel)]="objKeyPerformanceIndicatorDTO.KeyPerformanceIndicatorName" />  
+                        <div *ngIf="(!_Form.controls.KeyPerformanceIndicatorName.valid && submitted && _Form.controls.KeyPerformanceIndicatorName.errors.required )" class="alert alert-danger">
+                            أدخل اسم مؤشر الأداء الرئيسي
+                        </div>                    
+                    </div>
+                    <div class="form-group">
+                        <label class="">وصف </label>
+                        <textarea [(ngModel)]="objKeyPerformanceIndicatorDTO.Description" class="form-control" 
+                        formControlName="Description"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="">خط الأساس</label>
+                        <input formControlName="Baseline" type="text" class="form-control" 
+                        [(ngModel)]="objKeyPerformanceIndicatorDTO.Baseline" />                      
+                    </div>
+                    <div class="form-group">
+                        <label class="">قادم من خلال </label>
+                        <input formControlName="ComingThrough" type="text" class="form-control" 
+                        [(ngModel)]="objKeyPerformanceIndicatorDTO.ComingThrough" />                      
+                    </div>                             
+                    <div class="form-group">
+                        <!-- <SubmitButton (Click)="Submit(_Form,ddCarerList.BindValue)" [IsLoading]="isLoading" [Text]="'Assign'"></SubmitButton> -->
+                        <button  (click)="Submit(_Form)"  id="btnSubmit"  class="btn btn-success expand-right">يُقدِّم'</button>
+                        <button style="cursor:pointer;" id="BackBtn" (click)="fnBack()"  class="btn btn-warning BackBtn">واضح</button>
+                    </div>                    
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

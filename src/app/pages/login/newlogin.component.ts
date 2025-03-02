@@ -11,6 +11,7 @@ import { ContactValidator } from '../validator/contact.validator';
 declare var window: any;
 import { CookieService } from 'ngx-cookie-service';
 import { UserAuditHistoryDTO } from '../common';
+import { stringify } from 'querystring';
 //Commit check
 @Component({
     selector: 'eCarelogin',
@@ -96,7 +97,7 @@ export class LoginComponent {
             //'username': ['', Validators.compose([Validators.required, emailValidator])],
             'username': ['', Validators.compose([Validators.required])],
             'password': ['', Validators.compose([Validators.required])],
-            // 'MunicipalId': ['0',Validators.required]
+            'MunicipalId': ['0']
             
         });
 
@@ -231,8 +232,9 @@ export class LoginComponent {
                 //console.log(data);           
                 if(data.UserDetailsId>0)
                 {
-                    Common.SetSession("userDetailsId", data.UserDetailsId);
-                    Common.SetSession("municipalId", "1");
+                   
+                    Common.SetSession("UserId", data.UserDetailsId);
+                    Common.SetSession("MunicipalId", this.objUser.MunicipalId.toString());
                     Common.SetSession("UserName", data.UserName);
                     this.router.navigate(['pages/dashboard']);
                 }
