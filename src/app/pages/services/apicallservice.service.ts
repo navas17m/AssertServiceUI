@@ -22,7 +22,11 @@ export class APICallService implements OnInit {
      {
 
      }
-
+     uploadFile(file: File): Observable<any> {
+        const formData = new FormData();
+        formData.append('file', file);    
+        return this._http.post(Base.GetUrl() + "/api/FileUpload" , formData);
+      }
     resetTimer() {
         APICallService.invokeEvent.next({ some: "from service" });
     }

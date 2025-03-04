@@ -47,8 +47,8 @@
                                             {{op.MunicipalName}}
                                         </option>
                                     </select> 
-                                    <!-- <span style="font-size: 16px;color: #ffee00;" class="help-block"
-                                    *ngIf="submitted && form.get('MunicipalId').hasError('required')">Please select Municipal to proceed</span>                               -->
+                                    <span style="font-size: 16px;color: #ffee00;" class="help-block"
+                                    *ngIf="submitted && form.get('MunicipalId').hasError('required')">Select Municipal to proceed</span>                              
                             </div>
                             <div *ngIf="errorMessage && !form.get('password').hasError('required')
                                && !form.get('password').hasError('required') && !form.get('password').hasError('minlength') "
@@ -68,7 +68,7 @@
                             </div>
                             <div class="login__row">
                                 <button type="button" [ladda]="isLoadingValue"  (click)="onSubmit(form.value)" class="login__submit">تسجيل الدخول</button>
-                                <p class="login__signup"><a (click)="fnCancel()">نسيت كلمة السر.؟</a></p>
+                                <!-- <p class="login__signup"><a (click)="fnCancel()">نسيت كلمة السر.؟</a></p> -->
                             </div>
                         </div>
                     </form>
@@ -139,7 +139,7 @@
 </div>
 <footer *ngIf="IsAgencyVisible" class="login-footer">
     <div class="login-footer-main">
-        <div class="copyright">&copy; <a class="font-weight-bold" target="_blank"
-                href="http://AssertSystem.inc/">AssertSystem</a> 2024</div>
+       <div class="copyright">&copy; <a class="font-weight-bold" target="_blank"
+                href="http://AssertSystem.inc/">AssertSystem</a> 2025</div> 
     </div>
 </footer>

@@ -97,7 +97,7 @@ export class LoginComponent {
             //'username': ['', Validators.compose([Validators.required, emailValidator])],
             'username': ['', Validators.compose([Validators.required])],
             'password': ['', Validators.compose([Validators.required])],
-            'MunicipalId': ['0']
+            'MunicipalId': ['0',Validators.compose([Validators.required])]
             
         });
 

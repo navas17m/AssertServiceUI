@@ -1,0 +1,50 @@
+﻿<div class="col-xl-12 col-lg-12 col-12 bottom-30">
+    <div widget class="card overflow-container">
+        <div class="card-header">
+            <span> دارة المخاطر وخطط الطوارئ</span>
+          
+        </div>
+        <div class="card-body widget-body">
+            <form [formGroup]="_Form">
+                <div style="min-height:300px">  
+                    <div class="form-group">
+                        <label class=""> متطلبات</label>
+                        <input formControlName="Requirement" type="text" class="form-control" 
+                        [(ngModel)]="objRiskManagementandContingencyPlanDTO.Requirement" required/>  
+                        <div class="alert alert-danger" *ngIf="(!_Form.controls.Requirement.valid && submitted && _Form.controls.Requirement.errors.required)">
+                            الرجاء متطلبات
+                        </div>                    
+                    </div>  
+                    <div class="form-group">
+                        <label class="">وصف </label>
+                        <textarea [(ngModel)]="objRiskManagementandContingencyPlanDTO.Description" class="form-control" 
+                        formControlName="Description"></textarea>
+                    </div>               
+                    <div class="form-group">
+                        <label class="">تحميل الملف</label>
+                        <select *ngIf="lstYesPartiallyNo.length>0" formControlName="YesPartiallyNo" class="form-control"  [(ngModel)]="objRiskManagementandContingencyPlanDTO.YesPartiallyNo">
+                            <option *ngFor="let op of lstYesPartiallyNo" value="{{op.YesPartiallyNoId}}">
+                                {{op.YesPartiallyNo}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group" *ngIf="objRiskManagementandContingencyPlanDTO.YesPartiallyNo==1 || objRiskManagementandContingencyPlanDTO.YesPartiallyNo==3">
+                        <label class=""> إرفاق سجل المخاطر</label>
+                        <input class="form-control"  type="file" (change)="onFileSelected($event)"> 
+                        <!-- <button (click)="onUpload()">Upload</button>                                      -->
+                    </div>
+                    <div class="form-group" *ngIf="objRiskManagementandContingencyPlanDTO.YesPartiallyNo==2">
+                        <label class="">الأسباب</label>
+                        <textarea [(ngModel)]="objRiskManagementandContingencyPlanDTO.Reasons" class="form-control" 
+                        formControlName="Reasons"></textarea>                    
+                    </div>                                  
+                    <div class="form-group">
+                        <!-- <SubmitButton (Click)="Submit(_Form,ddCarerList.BindValue)" [IsLoading]="isLoading" [Text]="'Assign'"></SubmitButton> -->
+                        <button  (click)="Submit(_Form)"  id="btnSubmit"  class="btn btn-success expand-right">يُقدِّم'</button>
+                        <button style="cursor:pointer;" id="BackBtn" (click)="fnBack()"  class="btn btn-warning BackBtn">واضح</button>
+                    </div>                    
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -10,7 +10,10 @@
                     <div class="form-group">
                         <label class="">أسلوب إدارة الصيانة</label>
                         <input formControlName="MaintenanceManagementStyle" type="text" class="form-control" 
-                               required [(ngModel)]="objBudgetPlanDTO.MaintenanceManagementStyle"/>                      
+                               required [(ngModel)]="objBudgetPlanDTO.MaintenanceManagementStyle"/>  
+                    <div *ngIf="(!_Form.controls.MaintenanceManagementStyle.valid && submitted && _Form.controls.MaintenanceManagementStyle.errors.required )" class="alert alert-danger">
+                        أدخل أسلوب إدارة الصيانة
+                    </div>                             
                     </div>
                     <div class="form-group">
                         <label class="">استراتيجية الصيانة</label>

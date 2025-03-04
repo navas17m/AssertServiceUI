@@ -10,7 +10,10 @@
                     <div class="form-group">
                         <label class="">رقم الهوية </label>
                         <input formControlName="IdentificationNumber" type="text" class="form-control" 
-                               required [(ngModel)]="objAssertRegisterDTO.IdentificationNumber"/>                      
+                               required [(ngModel)]="objAssertRegisterDTO.IdentificationNumber"/>  
+                        <div *ngIf="(!_Form.controls.IdentificationNumber.valid && submitted && _Form.controls.IdentificationNumber.errors.required )" class="alert alert-danger">
+                            أدخل رقم الهوية
+                    </div>                         
                     </div>
                     <div class="form-group">
                         <label class="">موقع المنشأ</label>

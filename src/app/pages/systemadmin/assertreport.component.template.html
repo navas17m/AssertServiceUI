@@ -1,0 +1,183 @@
+﻿<div class="row" style="padding-top:10px">         
+    <div class="col">  
+        <div class="row">
+            <div class="col"><select  class="form-control"  [(ngModel)]="MunicipalId">
+                <option *ngFor="let op of lstMunicipal" value="{{op.MunicipalId}}">
+                    {{op.MunicipalName}}
+                </option>
+            </select> </div>
+            <div class="col"> <button style="cursor:pointer;"  class="btn btn-warning " (click)="getReport()" >عرض التقرير</button></div>
+        </div>   
+        <div class="row" style="padding-top:10px" *ngIf="lstAssertRegister.length>0">
+            <div class="col">
+                <div widget class="card">
+                    <div class="card-header">
+                        <span><b>تقرير سجل الأصول</b> </span>              
+                    </div>
+                <div widget class="card">
+                    <ngx-datatable [rows]="lstAssertRegister"            
+                    class="bootstrap"
+                    rowHeight="40" 
+                    [columnMode]="'force'"
+                    [limit]="5"
+                    [scrollbarH]="true"                   
+                    [footerHeight]="40">
+                    <ngx-datatable-column name="اسم البلدية" prop="IdentificationNumber" width="80" [sortable]="false">
+                        <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                        <div style="text-align: right;"> {{value}} </div> 
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="موقع المنشأ" prop="LocationOfOrigin" width="100" [sortable]="false">
+                        <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                            <div style="text-align: right;"> {{value}}</div> 
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="تاريخ الشراء" prop="DateOfPurchase" width="100" [sortable]="false">
+                        <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                            <div style="text-align: right;">{{value | dateFormat:'dd/MM/yyyy' }}</div> 
+                        </ng-template>
+                    </ngx-datatable-column>       
+                    <ngx-datatable-column name="موقع المنشأ" prop="CoordinatesX" width="100" [sortable]="false">
+                        <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                            <div style="text-align: right;"> {{value}}</div> 
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="موقع المنشأ" prop="CoordinatesY" width="100" [sortable]="false">
+                        <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                            <div style="text-align: right;"> {{value}}</div> 
+                        </ng-template>
+                    </ngx-datatable-column>
+                        
+                </ngx-datatable>
+                </div>   
+    </div>
+    </div>
+        </div>
+        <div class="row" style="padding-top:10px" *ngIf="lstBudgetPlan.length>0">
+            <div class="col">
+                <div widget class="card">
+                    <div class="card-header">
+                        <span><b>تقرير خطة الميزانية </b> </span>              
+                    </div>
+                <div widget class="card">
+                    <div class="table-responsive datatable" >
+                        <ngx-datatable [rows]="lstBudgetPlan"
+                        class="bootstrap"
+                        rowHeight="40"
+                        [columnMode]="'force'"
+                        [limit]="5"
+                        [scrollbarH]="true"
+                        [footerHeight]="40"
+                        >
+                        <ngx-datatable-column name="أسلوب إدارة الصيانة" prop="MaintenanceManagementStyle" width="80" [sortable]="false">
+                            <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                              <div style="text-align: right;"> {{value}} </div> 
+                            </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column name="استراتيجية الصيانة" prop="MaintenanceStrategy" width="100" [sortable]="false">
+                            <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                                <div style="text-align: right;"> {{value}}</div> 
+                            </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column name="تكاليف الموارد البشرية" prop="HRCosts" width="100" [sortable]="false">
+                            <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                                <div style="text-align: right;">{{value }}</div> 
+                            </ng-template>
+                        </ngx-datatable-column>    
+                        <ngx-datatable-column name="تكاليف المواد" prop="MaterialCosts" width="100" [sortable]="false">
+                            <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                                <div style="text-align: right;">{{value }}</div> 
+                            </ng-template>
+                        </ngx-datatable-column>    
+                        <ngx-datatable-column name="تكاليف المعدات" prop="EquipmentCosts" width="100" [sortable]="false">
+                            <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                                <div style="text-align: right;">{{value }}</div> 
+                            </ng-template>
+                        </ngx-datatable-column>        
+                                   
+                </ngx-datatable>
+                    </div>
+                </div>   
+    </div>
+    </div>
+        </div>
+        <div class="row" style="padding-top:10px" *ngIf="lstBudgetApproval.length>0">
+            <div class="col">
+                <div widget class="card">
+                    <div class="card-header">
+                        <span><b> تقرير الموافقة على الميزانية </b> </span>              
+                    </div>
+                <div widget class="card">
+                    <div class="table-responsive datatable" >
+                        <ngx-datatable [rows]="lstBudgetApproval"
+                        class="bootstrap"
+                        rowHeight="40"
+                        [columnMode]="'force'"
+                        [limit]="5"
+                        [scrollbarH]="true"
+                        [footerHeight]="40"
+                        >
+                        <ngx-datatable-column name="الموافقة على الميزانية" prop="BudgetApprovals" width="80" [sortable]="false">
+                            <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                              <div style="text-align: right;"> {{value==true?"Yes":"No"}} </div> 
+                            </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column name="مراقبة تنفيذ الميزانية" prop="MonitoringBudgetImplementation" width="100" [sortable]="false">
+                            <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                                <div style="text-align: right;"> {{value}}</div> 
+                            </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column name="التقارير الدورية" prop="PeriodicReports" width="100" [sortable]="false">
+                            <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                                <div style="text-align: right;">{{value }}</div> 
+                            </ng-template>
+                        </ngx-datatable-column>                            
+                </ngx-datatable>
+                    </div>
+                </div>   
+    </div>
+    </div>
+        </div>
+
+        <div class="row" style="padding-top:10px" *ngIf="lstKeyPerformanceIndicator.length>0">
+            <div class="col">
+                <div widget class="card">
+                    <div class="card-header">
+                        <span><b> تقرير مؤشر الأداء الرئيسي</b> </span>              
+                    </div>
+                <div widget class="card">
+                    <div class="table-responsive datatable" >
+                        <ngx-datatable [rows]="lstKeyPerformanceIndicator"
+                        class="bootstrap"
+                        rowHeight="40"
+                        [columnMode]="'force'"
+                        [limit]="5"
+                        [scrollbarH]="true"
+                        [footerHeight]="40"
+                        >
+                        <ngx-datatable-column name="فئة مؤشر الأداء الرئيسي" prop="KeyPerformanceIndicatorCategorylName" width="80" [sortable]="true">
+                            <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                              <div style="text-align: right;"> {{value}} </div> 
+                            </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column name="اسم مؤشر الأداء الرئيسي" prop="KeyPerformanceIndicatorName" width="100" [sortable]="true">
+                            <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                                <div style="text-align: right;"> {{value}}</div> 
+                            </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column name="وصف" prop="Description" width="100" [sortable]="true">
+                            <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                                <div style="text-align: right;">{{value }}</div> 
+                            </ng-template>
+                        </ngx-datatable-column>                          
+                </ngx-datatable>
+                    </div>
+                </div>   
+    </div>
+    </div>
+        </div>
+    </div>
+</div>
+
+
+

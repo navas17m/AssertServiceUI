@@ -1,0 +1,109 @@
+﻿<div class="col-xl-12 col-lg-12 col-12 bottom-30">
+    <div widget class="card overflow-container">
+        <div class="card-header">
+            <span>نشاط الصيانة</span>
+          
+        </div>
+        <div class="card-body widget-body">
+            <form [formGroup]="_Form">
+                <div style="min-height:300px">                   
+                    <div class="form-group">
+                        <label class="">أسلوب إدارة الصيانة</label>
+                        <input formControlName="Maintenancemanagementstyle"  required type="radio" [value]="false" [(ngModel)]="objMaintenanceActivityDTO.Maintenancemanagementstyle">العقود 
+                        <input formControlName="Maintenancemanagementstyle" required type="radio" [value]="true" [(ngModel)]="objMaintenanceActivityDTO.Maintenancemanagementstyle" >الجهود الذاتية                    
+                    </div>
+                    <div class="form-group">
+                        <label class="">رقم أمر العمل</label>
+                        <input formControlName="Workordernumber" required type="text" class="form-control" 
+                        [(ngModel)]="objMaintenanceActivityDTO.Workordernumber" />   
+                        <div *ngIf="(!_Form.controls.Workordernumber.valid && submitted && _Form.controls.Workordernumber.errors.required )" class="alert alert-danger">
+                            أدخل رقم أمر العمل
+                        </div>                        
+                    </div>
+                    <div class="form-group">
+                        <label class="">نوع الصيانة المجدولة</label>                         
+                          <select *ngIf="lstTypeofScheduledMaintenances.length>0" formControlName="TypeofscheduledmaintenanceId" class="form-control"  [(ngModel)]="objMaintenanceActivityDTO.TypeofscheduledmaintenanceId">
+                            <option *ngFor="let op of lstTypeofScheduledMaintenances" value="{{op.TypeofScheduledMaintenanceId}}">
+                                {{op.TypeofScheduledMaintenanceName}}
+                            </option>
+                        </select>                      
+                    </div>
+                    <div class="form-group">
+                        <label class="">تاريخ آخر صيانة</label>
+                        <input formControlName="Dateoflastmaintenance"  type="text" placeholder="DD/MM/YYYY" readonly class="form-control form-control-date" [(ngModel)]="objMaintenanceActivityDTO.Dateoflastmaintenance" [value]="objMaintenanceActivityDTO.Dateoflastmaintenance" datepicker/>
+                    </div>
+                    <div class="form-group">
+                        <label class="">موعد الصيانة القادم</label>
+                        <input formControlName="Nextmaintenancedate"  type="text" placeholder="DD/MM/YYYY" readonly class="form-control form-control-date" [(ngModel)]="objMaintenanceActivityDTO.Nextmaintenancedate" [value]="objMaintenanceActivityDTO.Nextmaintenancedate" datepicker/>
+                    </div>
+                    <div class="form-group">
+                        <label class="">الصيانة الدورية</label>
+                        <select *ngIf="lstPeriodicMaintenances.length>0" formControlName="PeriodicmaintenanceId" class="form-control"  [(ngModel)]="objMaintenanceActivityDTO.PeriodicmaintenanceId">
+                            <option *ngFor="let op of lstPeriodicMaintenances" value="{{op.PeriodicMaintenanceId}}">
+                                {{op.PeriodicMaintenanceName}}
+                            </option>
+                        </select>                       
+                    </div>
+                    <div class="form-group">
+                        <label class="">تاريخ إصدار أمر العمل  </label>
+                        <input formControlName="Workorderissuedate"  type="text" placeholder="DD/MM/YYYY" readonly class="form-control form-control-date" [(ngModel)]="objMaintenanceActivityDTO.Workorderissuedate" [value]="objMaintenanceActivityDTO.Workorderissuedate" datepicker/>
+                    </div>
+                    <div class="form-group">
+                        <label class="">تاريخ بدء الصيانة  </label>
+                        <input formControlName="Maintenancestartdate"  type="text" placeholder="DD/MM/YYYY" readonly class="form-control form-control-date" [(ngModel)]="objMaintenanceActivityDTO.Maintenancestartdate" [value]="objMaintenanceActivityDTO.Maintenancestartdate" datepicker/>
+                    </div>
+                    <div class="form-group">
+                        <label class="">تاريخ الانتهاء من الصيانة  </label>
+                        <input formControlName="Maintenancecompletiondate"  type="text" placeholder="DD/MM/YYYY" readonly class="form-control form-control-date" [(ngModel)]="objMaintenanceActivityDTO.Maintenancecompletiondate" [value]="objMaintenanceActivityDTO.Maintenancecompletiondate" datepicker/>
+                    </div>
+                    <div class="form-group">
+                        <label class="">اولوية العمل</label>
+                        <select *ngIf="lstPriorityOfWorks.length>0" formControlName="PriorityofworkId" class="form-control"  [(ngModel)]="objMaintenanceActivityDTO.PriorityofworkId">
+                            <option *ngFor="let op of lstPriorityOfWorks" value="{{op.PriorityOfWorkId}}">
+                                {{op.PriorityOfWorkName}}
+                            </option>
+                        </select>                       
+                    </div>
+                    <div class="form-group">
+                        <label class="">وصف </label>
+                        <textarea [(ngModel)]="objMaintenanceActivityDTO.Description" class="form-control" 
+                        formControlName="Description"></textarea>
+                    </div>    
+                    <div class="form-group">
+                        <label class="">موارد </label>
+                        <textarea [(ngModel)]="objMaintenanceActivityDTO.Resources" class="form-control" 
+                        formControlName="Resources"></textarea>
+                    </div>                          
+                    <div class="form-group">
+                        <label class="">تقدير تكاليف العمالة </label>
+                        <input formControlName="Estimatinglaborcosts" type="text" class="form-control" 
+                        [(ngModel)]="objMaintenanceActivityDTO.Estimatinglaborcosts" />                      
+                    </div>
+                    <div class="form-group">
+                        <label class="">الموافقات </label>
+                        <input formControlName="Approvals"  required type="radio" [value]="false" [(ngModel)]="objMaintenanceActivityDTO.Approvals">نعم 
+                        <input formControlName="Approvals" required type="radio" [value]="true" [(ngModel)]="objMaintenanceActivityDTO.Approvals" >لا                     
+                    </div>
+                    <div class="form-group">
+                        <label class=""> حالة أمر العمل</label>
+                        <select *ngIf="lstWorkOrderStatuses.length>0" formControlName="WorkorderstatusId" class="form-control"  [(ngModel)]="objMaintenanceActivityDTO.WorkorderstatusId">
+                            <option *ngFor="let op of lstWorkOrderStatuses" value="{{op.WorkOrderStatusId}}">
+                                {{op.WorkOrderStatusName}}
+                            </option>
+                        </select>                       
+                    </div>
+                    <div class="form-group">
+                        <label class="">ما بعد الصيانة   </label>
+                        <input formControlName="Postmaintenance" type="text" class="form-control" 
+                        [(ngModel)]="objMaintenanceActivityDTO.Postmaintenance" />                      
+                    </div>
+                    <div class="form-group">
+                        <!-- <SubmitButton (Click)="Submit(_Form,ddCarerList.BindValue)" [IsLoading]="isLoading" [Text]="'Assign'"></SubmitButton> -->
+                        <button  (click)="Submit(_Form)"  id="btnSubmit"  class="btn btn-success expand-right">يُقدِّم'</button>
+                        <button style="cursor:pointer;" id="BackBtn" (click)="fnBack()"  class="btn btn-warning BackBtn">واضح</button>
+                    </div>                    
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

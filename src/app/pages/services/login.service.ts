@@ -63,7 +63,7 @@ export class LoginService {
     }
 
     getMunicipalList() {       
-        return this._http.get(Base.GetUrl() + "/api/Municipal")
+        return this._http.get(Base.GetUrl() + "/api/Municipal/GetMunicipal")
             .toPromise()
             .then(this.handleResponse)
             .catch(this.handleError);
