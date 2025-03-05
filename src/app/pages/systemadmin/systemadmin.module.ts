@@ -15,18 +15,10 @@ import { PersonalInfoModule } from '../personalinfo/personalinfo.module';
 import { PipesCustomModule } from '../pipes/pipes.module';
 import { APICallService } from '../services/apicallservice.service';
 import { UploadDocumentsModule } from '../uploaddocument/uploaddocuments.module';
-import { LocalAuthoritySWInfoDataComponent } from './localauthorityswInfodata.component';
-import { LocalAuthoritySWInfoListComponent } from './localauthorityswInfolist.component';
-import { OrganizationalPoliciesComponent } from './organizationalpolicies.component';
-import { PanelGuidelinesComponent } from './panelguidelines.component';
-
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 //import {SelectModule} from 'ng2-select';
-
 import { MultiSelectModule } from 'primeng/multiselect';
-
 import { NgSelectModule } from '@ng-select/ng-select';
-
 import { AssertRegisterList } from './assertregisterlist.component';
 import { AssertRegisterComponent } from './assertregister.component';
 import { BudgetPlanList } from './budgetplanlist.component';
@@ -68,13 +60,7 @@ export const routes:any = [
     { path: 'qualityplanandcontinuousimprovement/:id', component: QualityPlanandContinuousImprovementComponent, data: { breadcrumb: 'خطة الجودة والتحسين المستمر' } },
     { path: 'qualityplanandcontinuousimprovementlist/:mid', component: QualityPlanandContinuousImprovementList, data: { breadcrumb: 'خطة الجودة والتحسين المستمر' } },
     { path: 'assertreport', component: AssertReport, data: { breadcrumb: 'تقرير التأكيد' } },
- 
     
-    { path: 'localauthoritysw/:Id', component: LocalAuthoritySWInfoDataComponent, data: { breadcrumb: 'Local Authority Social Worker' } },
-    { path: 'localauthorityswlist/:mid', component: LocalAuthoritySWInfoListComponent, data: { breadcrumb: 'Local Authority Social Worker List' } },
-   
-   
-   
 ];
 
 @NgModule({
@@ -87,9 +73,7 @@ export const routes:any = [
         NgxDatatableModule,MultiSelectModule,NgSelectModule
     ],
     providers: [APICallService],
-    declarations: [LocalAuthoritySWInfoDataComponent, LocalAuthoritySWInfoListComponent,       
-        OrganizationalPoliciesComponent, PanelGuidelinesComponent,
-        AssertRegisterList,AssertRegisterComponent,BudgetPlanComponent,BudgetPlanList,BudgetApprovalList,BudgetApprovalComponent,
+    declarations: [AssertRegisterList,AssertRegisterComponent,BudgetPlanComponent,BudgetPlanList,BudgetApprovalList,BudgetApprovalComponent,
         KeyPerformanceIndicatorList,KeyPerformanceIndicatorComponent,WorkforceManagementList,WorkforceManagementComponent,
         ComplianceAndRegulatoryList,ComplianceAndRegulatoryComponent,MaintenanceActivityList,MaintenanceActivityComponent,
         RiskManagementandContingencyPlanComponent,RiskManagementandContingencyPlanList,AssertReport,

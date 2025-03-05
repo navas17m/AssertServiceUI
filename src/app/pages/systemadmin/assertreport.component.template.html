@@ -1,11 +1,16 @@
 ﻿<div class="row" style="padding-top:10px">         
     <div class="col">  
         <div class="row">
-            <div class="col"><select  class="form-control"  [(ngModel)]="MunicipalId">
+            <div class="col">
+                <div class="form-group">
+                <select *ngIf="lstMunicipal" class="form-control"  [(ngModel)]="MunicipalId">
+                <!-- <option value="0">Select a Municipal</option> -->
                 <option *ngFor="let op of lstMunicipal" value="{{op.MunicipalId}}">
                     {{op.MunicipalName}}
                 </option>
-            </select> </div>
+            </select> 
+            </div>
+        </div>
             <div class="col"> <button style="cursor:pointer;"  class="btn btn-warning " (click)="getReport()" >عرض التقرير</button></div>
         </div>   
         <div class="row" style="padding-top:10px" *ngIf="lstAssertRegister.length>0">
