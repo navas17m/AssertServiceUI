@@ -38,6 +38,7 @@ import { RiskManagementandContingencyPlanComponent } from './riskmanagementandco
 import { QualityPlanandContinuousImprovementList } from './qualityplanandcontinuousimprovementlist.component';
 import { QualityPlanandContinuousImprovementComponent } from './qualityplanandcontinuousimprovement.component';
 import { AssertReport } from './assertreport.component';
+import { AssertReports } from './assertreports.component';
 
 export const routes:any = [
     { path: '', redirectTo: 'agencyformmapping/1', pathMatch: 'full' },
@@ -60,6 +61,7 @@ export const routes:any = [
     { path: 'qualityplanandcontinuousimprovement/:id', component: QualityPlanandContinuousImprovementComponent, data: { breadcrumb: 'خطة الجودة والتحسين المستمر' } },
     { path: 'qualityplanandcontinuousimprovementlist/:mid', component: QualityPlanandContinuousImprovementList, data: { breadcrumb: 'خطة الجودة والتحسين المستمر' } },
     { path: 'assertreport', component: AssertReport, data: { breadcrumb: 'تقرير التأكيد' } },
+    { path: 'assertreports', component: AssertReports, data: { breadcrumb: 'تقرير التأكيد' } },
     
 ];
 
@@ -77,7 +79,7 @@ export const routes:any = [
         KeyPerformanceIndicatorList,KeyPerformanceIndicatorComponent,WorkforceManagementList,WorkforceManagementComponent,
         ComplianceAndRegulatoryList,ComplianceAndRegulatoryComponent,MaintenanceActivityList,MaintenanceActivityComponent,
         RiskManagementandContingencyPlanComponent,RiskManagementandContingencyPlanList,AssertReport,
-        QualityPlanandContinuousImprovementComponent,QualityPlanandContinuousImprovementList
+        QualityPlanandContinuousImprovementComponent,QualityPlanandContinuousImprovementList,AssertReports
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     exports: []

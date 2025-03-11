@@ -3,7 +3,7 @@
     <ng-scrollbar pointerEventsMethod="scrollbar">
       <li  class="sidebar-list-item">
           <a   routerLinkActive="active-link" [routerLinkActiveOptions]="{exact:true}"  class="sidebar-list-link">
-              <i class="fa fa-home"></i><span>لوحة القيادة</span>
+              <i class="fa fa-home"></i><span>بيت </span>
           </a>
       </li>
       <li  class="sidebar-list-item">
@@ -54,6 +54,11 @@
   </li>
   <li  class="sidebar-list-item">
     <a [routerLink]="['systemadmin/assertreport']"  class="sidebar-list-link">
+        <i class="fa fa-area-chart"></i><span>التقرير الكامل </span>
+    </a>
+  </li>
+  <li  class="sidebar-list-item">
+    <a [routerLink]="['systemadmin/assertreports']"  class="sidebar-list-link">
         <i class="fa fa-area-chart"></i><span>تقرير التأكيد</span>
     </a>
   </li>

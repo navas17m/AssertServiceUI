@@ -9,6 +9,8 @@ import { UserCarerMappingDTO } from './DTO/usercarermappingdto';
 import { UserAuditHistoryDetailDTO } from '../common';
 import * as moment from 'moment';
 import { Router } from '@angular/router';
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
 
 @Component({
     selector: 'assertreport',
@@ -29,7 +31,9 @@ export class AssertReport {
     controllerName = "AssertRegister";
     lstMunicipal = [];
     MunicipalId:number;   lstKeyPerformanceIndicator=[]; 
-    lstBudgetApproval=[];   lstBudgetPlan=[];    
+    lstBudgetApproval=[];   lstBudgetPlan=[];  
+    lstWorkforceManagement=[]; lstComplianceAndRegulatory=[];   lstMaintenanceActivity=[];  
+    lstriskmanagementandcontingencyplan=[];  lstQualityPlanandContinuousImprovement=[];
     constructor(private apiService: APICallService, private _router: Router, private _formBuilder: FormBuilder, private pComponent: PagesComponent) {
          
         this.apiService.get("Municipal", "GetMunicipal").then(data => {
@@ -41,6 +45,43 @@ export class AssertReport {
     {
         this.LoadReport();
     }  
+    genPDF()
+    {
+        // const element = document.getElementById("content"); // Replace with your element's ID
+        // html2canvas(element).then((canvas) => {
+        //     const imgData = canvas.toDataURL("image/png");
+        //     const pdf = new jsPDF("p", "mm", "a4");
+        //     const imgWidth = 210; // A4 width in mm
+        //     const imgHeight = (canvas.height * imgWidth) / canvas.width;
+        //    // alert(imgHeight);
+        //     pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
+        //     pdf.save("assert.pdf");
+        // });       
+        const doc = new jsPDF('p', 'mm', 'a4'); // Portrait mode, millimeters, A4 size
+        const content = document.getElementById("content");
+
+        html2canvas(content, { scale: 2 }).then(canvas => {
+            const imgData = canvas.toDataURL("image/png");
+            const imgWidth = 210; // A4 width in mm
+            const pageHeight = 297; // A4 height in mm
+            const imgHeight = (canvas.height * imgWidth) / canvas.width;
+            
+            let heightLeft = imgHeight;
+            let position = 0;
+
+            doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+            heightLeft -= pageHeight;
+
+            while (heightLeft > 0) {
+                position -= pageHeight;
+                doc.addPage();
+                doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                heightLeft -= pageHeight;
+            }
+
+            doc.save("AssertReport.pdf");
+        });
+    }    
     LoadReport() {
         this.apiService.get(this.controllerName, "GetAssertRegisters",this.MunicipalId).then(data => {
              this.lstAssertRegister = data;           
@@ -54,7 +95,21 @@ export class AssertReport {
          this.apiService.get("KeyPerformanceIndicator", "GetKeyPerformanceIndicators",  this.MunicipalId).then(data => { 
             this.lstKeyPerformanceIndicator = data;           
          })
-        //this.services.getAll().then(data => { this.lstUserList = data; })
+         this.apiService.get("WorkforceManagement", "GetWorkforceManagements", this.MunicipalId).then(data => { 
+            this.lstWorkforceManagement = data;           
+         })
+         this.apiService.get("ComplianceAndRegulatory", "GetComplianceAndRegulatorys", this.MunicipalId).then(data => { 
+            this.lstComplianceAndRegulatory = data;           
+         })
+         this.apiService.get("riskmanagementandcontingencyplan", "Getriskmanagementandcontingencyplans", this.MunicipalId).then(data => { 
+            this.lstriskmanagementandcontingencyplan = data;           
+         })
+         this.apiService.get("qualityplanandcontinuousimprovement", "Getqualityplanandcontinuousimprovements",this.MunicipalId).then(data => { 
+            this.lstQualityPlanandContinuousImprovement = data;           
+         })
+         this.apiService.get("MaintenanceActivity", "GetMaintenanceActivitys", this.MunicipalId).then(data => { 
+            this.lstMaintenanceActivity = data;           
+         })
     }    
 
 }

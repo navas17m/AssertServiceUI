@@ -42,12 +42,12 @@
                     <ngx-datatable-column name="يحرر" prop="assertRegisterId" width="100" [sortable]="false">
                         <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
                             <div style="text-align: right;">  <button style="cursor:pointer;"  data-animation="false"
-                            data-placement="bottom" title="Edit" (click)="fnEdit(row.AssertRegisterId)"   class="btn btn-warning btn-xs" ><i style="font-size:20px" class="fa  fa fa-edit"></i></button></div>
+                            data-placement="bottom" title="يحرر" (click)="fnEdit(row.AssertRegisterId)"   class="btn btn-warning btn-xs" ><i style="font-size:20px" class="fa  fa fa-edit"></i></button></div>
                         </ng-template>
                     </ngx-datatable-column>    
                     <ngx-datatable-column name="يمسح" prop="assertRegisterId" width="100" [sortable]="false">
                         <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
-                            <div style="text-align: right;">  <button style="cursor:pointer;" (click)="fnDelete(row.AssertRegisterId)" title="Delete"  class="btn btn-danger btn-xs"><i style="font-size:20px" class="fa fa-trash-o"></i></button> </div>
+                            <div style="text-align: right;">  <button style="cursor:pointer;" (click)="fnDelete(row.AssertRegisterId)" title="يمسح"  class="btn btn-danger btn-xs"><i style="font-size:20px" class="fa fa-trash-o"></i></button> </div>
                         </ng-template>
                     </ngx-datatable-column>                   
                    

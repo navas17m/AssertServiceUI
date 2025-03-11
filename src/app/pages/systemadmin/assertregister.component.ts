@@ -69,6 +69,8 @@ export class AssertRegisterComponent {
             GuaranteeExpiryDate:[],
             Priority:[],
             Maintenancecontractforasset:[],
+            AccidentDescription:[],
+            Evidence:[]
         });       
        
         //this.apiService.post(this.controllerName, "TestPost",body).then(data => {this.Respone(data, "save")});

@@ -11,51 +11,43 @@
             </select> 
             </div>
         </div>
-            <div class="col"> <button style="cursor:pointer;"  class="btn btn-warning " (click)="getReport()" >عرض التقرير</button></div>
+            <div class="col"> <button style="cursor:pointer;"  class="btn btn-warning " (click)="getReport()" >عرض التقرير</button>
+                <button style="cursor:pointer;"  class="btn btn-danger " (click)="genPDF()" > تحميل PDF </button>
+            </div>
         </div>   
+        <div id="content">
         <div class="row" style="padding-top:10px" *ngIf="lstAssertRegister.length>0">
-            <div class="col">
+            <div class="col">                
                 <div widget class="card">
                     <div class="card-header">
                         <span><b>تقرير سجل الأصول</b> </span>              
                     </div>
                 <div widget class="card">
-                    <ngx-datatable [rows]="lstAssertRegister"            
-                    class="bootstrap"
-                    rowHeight="40" 
-                    [columnMode]="'force'"
-                    [limit]="5"
-                    [scrollbarH]="true"                   
-                    [footerHeight]="40">
-                    <ngx-datatable-column name="اسم البلدية" prop="IdentificationNumber" width="80" [sortable]="false">
-                        <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
-                        <div style="text-align: right;"> {{value}} </div> 
-                        </ng-template>
-                    </ngx-datatable-column>
-                    <ngx-datatable-column name="موقع المنشأ" prop="LocationOfOrigin" width="100" [sortable]="false">
-                        <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
-                            <div style="text-align: right;"> {{value}}</div> 
-                        </ng-template>
-                    </ngx-datatable-column>
-                    <ngx-datatable-column name="تاريخ الشراء" prop="DateOfPurchase" width="100" [sortable]="false">
-                        <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
-                            <div style="text-align: right;">{{value | dateFormat:'dd/MM/yyyy' }}</div> 
-                        </ng-template>
-                    </ngx-datatable-column>       
-                    <ngx-datatable-column name="موقع المنشأ" prop="CoordinatesX" width="100" [sortable]="false">
-                        <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
-                            <div style="text-align: right;"> {{value}}</div> 
-                        </ng-template>
-                    </ngx-datatable-column>
-                    <ngx-datatable-column name="موقع المنشأ" prop="CoordinatesY" width="100" [sortable]="false">
-                        <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
-                            <div style="text-align: right;"> {{value}}</div> 
-                        </ng-template>
-                    </ngx-datatable-column>
+                    <div class="card-body widget-body">
+                        <table class="table table-bordered table-sm">
+                            <thead>
+                                <tr style="background-color: rgb(221, 217, 217);">
+                                    <th>اسم البلدية</th>
+                                    <th>موقع المنشأ</th>
+                                    <th>تاريخ الشراء</th>
+                                    <th>إحداثياتX </th>
+                                    <th>إحداثياتY </th>                                   
+                                </tr>
+                            </thead>
+                            <tbody *ngIf="lstAssertRegister.length>0">
+                                <tr *ngFor="let item of lstAssertRegister">
+                                    <td > {{item.IdentificationNumber}}</td>
+                                    <td >{{item.LocationOfOrigin}}</td>
+                                    <td >{{item.DateOfPurchase | dateFormat:'dd/MM/yyyy'}}</td>
+                                    <td >{{item.CoordinatesX}}</td>
+                                    <td >{{item.CoordinatesY}}</td>
+                                </tr>                               
+                            </tbody>
+                        </table>
                         
-                </ngx-datatable>
+                    </div>                 
                 </div>   
-    </div>
+        </div>
     </div>
         </div>
         <div class="row" style="padding-top:10px" *ngIf="lstBudgetPlan.length>0">
@@ -65,43 +57,28 @@
                         <span><b>تقرير خطة الميزانية </b> </span>              
                     </div>
                 <div widget class="card">
-                    <div class="table-responsive datatable" >
-                        <ngx-datatable [rows]="lstBudgetPlan"
-                        class="bootstrap"
-                        rowHeight="40"
-                        [columnMode]="'force'"
-                        [limit]="5"
-                        [scrollbarH]="true"
-                        [footerHeight]="40"
-                        >
-                        <ngx-datatable-column name="أسلوب إدارة الصيانة" prop="MaintenanceManagementStyle" width="80" [sortable]="false">
-                            <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
-                              <div style="text-align: right;"> {{value}} </div> 
-                            </ng-template>
-                        </ngx-datatable-column>
-                        <ngx-datatable-column name="استراتيجية الصيانة" prop="MaintenanceStrategy" width="100" [sortable]="false">
-                            <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
-                                <div style="text-align: right;"> {{value}}</div> 
-                            </ng-template>
-                        </ngx-datatable-column>
-                        <ngx-datatable-column name="تكاليف الموارد البشرية" prop="HRCosts" width="100" [sortable]="false">
-                            <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
-                                <div style="text-align: right;">{{value }}</div> 
-                            </ng-template>
-                        </ngx-datatable-column>    
-                        <ngx-datatable-column name="تكاليف المواد" prop="MaterialCosts" width="100" [sortable]="false">
-                            <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
-                                <div style="text-align: right;">{{value }}</div> 
-                            </ng-template>
-                        </ngx-datatable-column>    
-                        <ngx-datatable-column name="تكاليف المعدات" prop="EquipmentCosts" width="100" [sortable]="false">
-                            <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
-                                <div style="text-align: right;">{{value }}</div> 
-                            </ng-template>
-                        </ngx-datatable-column>        
-                                   
-                </ngx-datatable>
-                    </div>
+                    <div class="card-body widget-body">
+                        <table class="table table-bordered table-sm">
+                            <thead>
+                                <tr style="background-color: rgb(221, 217, 217);">
+                                    <th>أسلوب إدارة الصيانة</th>
+                                    <th>استراتيجية الصيانة </th>
+                                    <th>تكاليف الموارد البشرية</th>
+                                    <th>تكاليف المواد </th>
+                                    <th>تكاليف المعدات  </th>                                   
+                                </tr>
+                            </thead>
+                            <tbody *ngIf="lstBudgetPlan.length>0">
+                                <tr *ngFor="let item of lstBudgetPlan">
+                                    <td > {{item.MaintenanceManagementStyle}}</td>
+                                    <td >{{item.MaintenanceStrategy}}</td>
+                                    <td >{{item.HRCosts}}</td>
+                                    <td >{{item.MaterialCosts}}</td>
+                                    <td >{{item.EquipmentCosts}}</td>
+                                </tr>                               
+                            </tbody>
+                        </table>
+                    </div>     
                 </div>   
     </div>
     </div>
@@ -113,32 +90,26 @@
                         <span><b> تقرير الموافقة على الميزانية </b> </span>              
                     </div>
                 <div widget class="card">
-                    <div class="table-responsive datatable" >
-                        <ngx-datatable [rows]="lstBudgetApproval"
-                        class="bootstrap"
-                        rowHeight="40"
-                        [columnMode]="'force'"
-                        [limit]="5"
-                        [scrollbarH]="true"
-                        [footerHeight]="40"
-                        >
-                        <ngx-datatable-column name="الموافقة على الميزانية" prop="BudgetApprovals" width="80" [sortable]="false">
-                            <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
-                              <div style="text-align: right;"> {{value==true?"Yes":"No"}} </div> 
-                            </ng-template>
-                        </ngx-datatable-column>
-                        <ngx-datatable-column name="مراقبة تنفيذ الميزانية" prop="MonitoringBudgetImplementation" width="100" [sortable]="false">
-                            <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
-                                <div style="text-align: right;"> {{value}}</div> 
-                            </ng-template>
-                        </ngx-datatable-column>
-                        <ngx-datatable-column name="التقارير الدورية" prop="PeriodicReports" width="100" [sortable]="false">
-                            <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
-                                <div style="text-align: right;">{{value }}</div> 
-                            </ng-template>
-                        </ngx-datatable-column>                            
-                </ngx-datatable>
-                    </div>
+                    <div class="card-body widget-body">
+                        <table class="table table-bordered table-sm">
+                            <thead>
+                                <tr style="background-color: rgb(221, 217, 217);">
+                                    <th>الموافقة على الميزانية </th>
+                                    <th>مراقبة تنفيذ الميزانية</th>
+                                    <th>التقارير الدورية </th>                                                                       
+                                </tr>
+                            </thead>
+                            <tbody *ngIf="lstBudgetApproval.length>0">
+                                <tr *ngFor="let item of lstBudgetApproval">
+                                    <td > {{item.BudgetApprovals==true?"Yes":"No"}}</td>
+                                    <td >{{item.MonitoringBudgetImplementation}}</td>                                 
+                                    <td >{{item.PeriodicReports}}</td>                                    
+                                </tr>                               
+                            </tbody>
+                        </table>
+                        
+                    </div> 
+                 
                 </div>   
     </div>
     </div>
@@ -151,36 +122,191 @@
                         <span><b> تقرير مؤشر الأداء الرئيسي</b> </span>              
                     </div>
                 <div widget class="card">
-                    <div class="table-responsive datatable" >
-                        <ngx-datatable [rows]="lstKeyPerformanceIndicator"
-                        class="bootstrap"
-                        rowHeight="40"
-                        [columnMode]="'force'"
-                        [limit]="5"
-                        [scrollbarH]="true"
-                        [footerHeight]="40"
-                        >
-                        <ngx-datatable-column name="فئة مؤشر الأداء الرئيسي" prop="KeyPerformanceIndicatorCategorylName" width="80" [sortable]="true">
-                            <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
-                              <div style="text-align: right;"> {{value}} </div> 
-                            </ng-template>
-                        </ngx-datatable-column>
-                        <ngx-datatable-column name="اسم مؤشر الأداء الرئيسي" prop="KeyPerformanceIndicatorName" width="100" [sortable]="true">
-                            <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
-                                <div style="text-align: right;"> {{value}}</div> 
-                            </ng-template>
-                        </ngx-datatable-column>
-                        <ngx-datatable-column name="وصف" prop="Description" width="100" [sortable]="true">
-                            <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
-                                <div style="text-align: right;">{{value }}</div> 
-                            </ng-template>
-                        </ngx-datatable-column>                          
-                </ngx-datatable>
-                    </div>
+                    <div class="card-body widget-body">
+                        <table class="table table-bordered table-sm">
+                            <thead>
+                                <tr style="background-color: rgb(221, 217, 217);">
+                                    <th>فئة مؤشر الأداء الرئيسي</th>
+                                    <th>اسم مؤشر الأداء الرئيسي</th>
+                                    <th>وصف </th>                                                                     
+                                </tr>
+                            </thead>
+                            <tbody *ngIf="lstKeyPerformanceIndicator.length>0">
+                                <tr *ngFor="let item of lstKeyPerformanceIndicator">
+                                    <td > {{item.KeyPerformanceIndicatorCategorylName}}</td>
+                                    <td >{{item.KeyPerformanceIndicatorName}}</td>                                    
+                                    <td >{{item.Description}}</td>
+                                </tr>                               
+                            </tbody>
+                        </table>
+                        
+                    </div>   
+                 
                 </div>   
     </div>
     </div>
         </div>
+        <div class="row" style="padding-top:10px" *ngIf="lstWorkforceManagement.length>0">
+            <div class="col">
+                <div widget class="card">
+                    <div class="card-header">
+                        <span><b> إدارة القوى العاملة </b> </span>              
+                    </div>
+                <div widget class="card">
+                    <div class="card-body widget-body">
+                        <table class="table table-bordered table-sm">
+                            <thead>
+                                <tr style="background-color: rgb(221, 217, 217);">
+                                    <th>نشاط</th>                                    
+                                    <th>وصف </th>   
+                                    <th>وصف موجز</th> 
+                                    <th>ذكر الأسبا </th>                                                                   
+                                </tr>
+                            </thead>
+                            <tbody *ngIf="lstWorkforceManagement.length>0">
+                                <tr *ngFor="let item of lstWorkforceManagement">
+                                    <td > {{item.Activity}}</td>
+                                    <td >{{item.Description}}</td>                                    
+                                    <td >{{item.BriefDescription}}</td>
+                                    <td >{{item.CitingReasons}}</td>
+                                </tr>                               
+                            </tbody>
+                        </table>
+                        
+                    </div>   
+                 
+                </div>   
+    </div>
+    </div>
+        </div>
+        <div class="row" style="padding-top:10px" *ngIf="lstComplianceAndRegulatory.length>0">
+            <div class="col">
+                <div widget class="card">
+                    <div class="card-header">
+                        <span><b> متطلبات الامتثال والتنظيم</b> </span>              
+                    </div>
+                <div widget class="card">
+                    <div class="card-body widget-body">
+                        <table class="table table-bordered table-sm">
+                            <thead>
+                                <tr style="background-color: rgb(221, 217, 217);">
+                                    <th>نشاط</th>                                    
+                                    <th>وصف </th>   
+                                    <th>وصف موجز</th> 
+                                    <th>ذكر الأسبا </th>                                                                   
+                                </tr>
+                            </thead>
+                            <tbody *ngIf="lstComplianceAndRegulatory.length>0">
+                                <tr *ngFor="let item of lstComplianceAndRegulatory">
+                                    <td > {{item.Activity}}</td>
+                                    <td >{{item.Description}}</td>                                    
+                                    <td >{{item.BriefDescription}}</td>
+                                    <td >{{item.CitingReasons}}</td>
+                                </tr>                               
+                            </tbody>
+                        </table>
+                        
+                    </div>   
+                 
+                </div>   
+    </div>
+    </div>
+        </div>
+        <div class="row" style="padding-top:10px" *ngIf="lstriskmanagementandcontingencyplan.length>0">
+            <div class="col">
+                <div widget class="card">
+                    <div class="card-header">
+                        <span><b> دارة المخاطر وخطط الطوارئ  </b> </span>              
+                    </div>
+                <div widget class="card">
+                    <div class="card-body widget-body">
+                        <table class="table table-bordered table-sm">
+                            <thead>
+                                <tr style="background-color: rgb(221, 217, 217);">
+                                    <th>متطلبات</th>                                    
+                                    <th>وصف </th>   
+                                                                                                    
+                                </tr>
+                            </thead>
+                            <tbody *ngIf="lstriskmanagementandcontingencyplan.length>0">
+                                <tr *ngFor="let item of lstriskmanagementandcontingencyplan">
+                                    <td > {{item.Requirement}}</td>
+                                    <td >{{item.Description}}</td>                                    
+                                   
+                                </tr>                               
+                            </tbody>
+                        </table>
+                        
+                    </div>   
+                 
+                </div>   
+    </div>
+    </div>
+        </div>
+        <div class="row" style="padding-top:10px" *ngIf="lstQualityPlanandContinuousImprovement.length>0">
+            <div class="col">
+                <div widget class="card">
+                    <div class="card-header">
+                        <span><b> خطة الجودة والتحسين المستمر </b> </span>              
+                    </div>
+                <div widget class="card">
+                    <div class="card-body widget-body">
+                        <table class="table table-bordered table-sm">
+                            <thead>
+                                <tr style="background-color: rgb(221, 217, 217);">
+                                    <th>متطلبات</th>                                    
+                                    <th>وصف </th>   
+                                                                                                    
+                                </tr>
+                            </thead>
+                            <tbody *ngIf="lstQualityPlanandContinuousImprovement.length>0">
+                                <tr *ngFor="let item of lstQualityPlanandContinuousImprovement">
+                                    <td > {{item.Requirement}}</td>
+                                    <td >{{item.Description}}</td>                                    
+                                   
+                                </tr>                               
+                            </tbody>
+                        </table>
+                        
+                    </div>   
+                 
+                </div>   
+    </div>
+    </div>
+        </div>
+        <div class="row" style="padding-top:10px" *ngIf="lstMaintenanceActivity.length>0">
+            <div class="col">                
+                <div widget class="card">
+                    <div class="card-header">
+                        <span><b>نشاط الصيانة  </b> </span>              
+                    </div>
+                <div widget class="card">
+                    <div class="card-body widget-body">
+                        <table class="table table-bordered table-sm">
+                            <thead>
+                                <tr style="background-color: rgb(221, 217, 217);">
+                                    <th>أسلوب إدارة الصيانة </th>
+                                    <th>رقم أمر العمل </th>
+                                    <th>تاريخ آخر صيانة </th>
+                                    <th>موعد الصيانة القادم </th>                                                                       
+                                </tr>
+                            </thead>
+                            <tbody *ngIf="lstMaintenanceActivity.length>0">
+                                <tr *ngFor="let item of lstMaintenanceActivity">
+                                    <td > {{item.Maintenancemanagementstyle==true?"Yes":"No"}}</td>
+                                    <td >{{item.Workordernumber}}</td>
+                                    <td >{{item.Dateoflastmaintenance | dateFormat:'dd/MM/yyyy'}}</td>
+                                    <td >{{item.Nextmaintenancedate | dateFormat:'dd/MM/yyyy'}}</td>
+                                </tr>                               
+                            </tbody>
+                        </table>
+                        
+                    </div>                 
+                </div>   
+        </div>
+    </div>
+        </div>
+    </div>
     </div>
 </div>
 

@@ -19,5 +19,7 @@
     GuaranteeExpiryDate:Date=null;
     PriorityId:number=0;
     MaintenanceContractForAsset:string;    
+    Evidence:string;
+    AccidentDescription:string;
     IsActive:boolean;
 }
