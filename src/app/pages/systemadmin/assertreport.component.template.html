@@ -15,6 +15,7 @@
                 <button style="cursor:pointer;"  class="btn btn-danger " (click)="genPDF()" > تحميل PDF </button>
             </div>
         </div>   
+        <div *ngIf="isLoading"><i class="fa fa-spinner fa-spin"></i> ...Generating report please wait</div>
         <div id="content">
         <div class="row" style="padding-top:10px" *ngIf="lstAssertRegister.length>0">
             <div class="col">                

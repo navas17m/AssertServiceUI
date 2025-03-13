@@ -22,4 +22,6 @@
     Evidence:string;
     AccidentDescription:string;
     IsActive:boolean;
+    AssertId:number;
+    SubAssertId:number;
 }

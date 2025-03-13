@@ -1,5 +1,5 @@
 ﻿<div>
-    <button style="cursor:pointer;"  class="btn btn-success " (click)="fnGo()" >يضيف</button>
+    <button style="cursor:pointer;"  class="btn btn-success " (click)="fnGo()" >اضافة</button>
 </div>
 
 <div class="row" style="padding-top:10px">
@@ -35,15 +35,15 @@
                             <div style="text-align: right;"> {{value}}</div> 
                         </ng-template>
                     </ngx-datatable-column>                
-                    <ngx-datatable-column name="يحرر" prop="MaterialCosts" width="100" [sortable]="false">
+                    <ngx-datatable-column name="تعديل" prop="MaterialCosts" width="100" [sortable]="false">
                         <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
                             <div style="text-align: right;">  <button style="cursor:pointer;"  data-animation="false"
-                            data-placement="bottom" title="يحرر" (click)="fnEdit(row.QualityPlanandContinuousImprovementId)"   class="btn btn-warning btn-xs" ><i style="font-size:20px" class="fa  fa fa-edit"></i></button></div>
+                            data-placement="bottom" title="تعديل" (click)="fnEdit(row.QualityPlanandContinuousImprovementId)"   class="btn btn-warning btn-xs" ><i style="font-size:20px" class="fa  fa fa-edit"></i></button></div>
                         </ng-template>
                     </ngx-datatable-column>    
-                    <ngx-datatable-column name="يمسح" prop="EquipmentCosts" width="100" [sortable]="false">
+                    <ngx-datatable-column name="حذف" prop="EquipmentCosts" width="100" [sortable]="false">
                         <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
-                            <div style="text-align: right;"><button style="cursor:pointer;" (click)="fnDelete(row.QualityPlanandContinuousImprovementId)" title="يمسح"  class="btn btn-danger btn-xs"><i style="font-size:20px" class="fa fa-trash-o"></i></button> </div>
+                            <div style="text-align: right;"><button style="cursor:pointer;" (click)="fnDelete(row.QualityPlanandContinuousImprovementId)" title="حذف"  class="btn btn-danger btn-xs"><i style="font-size:20px" class="fa fa-trash-o"></i></button> </div>
                         </ng-template>
                     </ngx-datatable-column> 
             </ngx-datatable>

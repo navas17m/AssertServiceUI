@@ -31,7 +31,7 @@ export class AssertRegisterComponent {
     lstAssetstatus=[];
     lstUtilizationrate=[];lstPriority=[];
     carerIds; 
-    objQeryVal; type="save";
+    objQeryVal; type="save";lstAssert=[];lstSubAssert=[]
     constructor(private apiService: APICallService, private activatedroute: ActivatedRoute, private _router: Router, private _formBuilder: FormBuilder, private pComponent: PagesComponent) {
         //this.objUserCarerMappingDTO.ExpiryDate = null;
         this.BindDropDown();      
@@ -53,6 +53,8 @@ export class AssertRegisterComponent {
         
         this._Form = _formBuilder.group({
             IdentificationNumber: ['', Validators.required],
+            Assert:[0, Validators.required],
+            SubAssert:[0, Validators.required],   
             Locationoforigin: [],
             CoordinateX:[],
             CoordinateY:[],
@@ -75,10 +77,15 @@ export class AssertRegisterComponent {
        
         //this.apiService.post(this.controllerName, "TestPost",body).then(data => {this.Respone(data, "save")});
     }
+    fnLoadSubAssert(id)
+    {
+        this.apiService.get(this.controllerName, "GetSubAsserts",id).then(data => { this.lstSubAssert = data; })
+    }
     fnBack(){
         this._router.navigate(['/pages/systemadmin/assertregisterlist/0']);
     }
     BindDropDown() {
+        this.apiService.get(this.controllerName, "GetAsserts").then(data => { this.lstAssert = data; })
         this.apiService.get(this.controllerName, "GetLastMaintenanceStrategy").then(data => { this.lstStrategyLastMaintenance = data; })
         this.apiService.get(this.controllerName, "GetAssetStatus").then(data => { this.lstAssetstatus = data; })
         this.apiService.get(this.controllerName, "GetUtilizationRates").then(data => { this.lstUtilizationrate = data; })

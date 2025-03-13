@@ -61,8 +61,7 @@ export class LoginComponent {
     visibleSessionOutMsg = false;
     url: string;
     public searchText: string = "";
-    filteredList=[];
-
+    filteredList=[];  
     // variable
     show_button: Boolean = false;
     show_eye: Boolean = false;
@@ -124,6 +123,9 @@ export class LoginComponent {
         this.username = this.form.controls['username'];
         this.password = this.form.controls['password'];
         //  this.loService.GetAllSecretQuestions().then(data => { this.lstSecretQuestions = data; });
+
+    }
+    fnGo(){
 
     }
     IsAgencyVisible: boolean =true;
@@ -227,14 +229,20 @@ export class LoginComponent {
         this.submitted = true;
         this.errorMessageNewVisi = false;
         //console.log(this.objUser);
-        if (this.form.valid) {           
+        if (this.form.valid) {   
+            this.objUser.Municipal="";
+            this.objUser.SubMunicipal="";  
+            this.objUser.MunicipalId=0;
+            console.log(this.objUser);   
             this.loService.getLoginValue(this.objUser).then(data => {   
-                //console.log(data);           
+               
+                        
                 if(data.UserDetailsId>0)
                 {
                    
                     Common.SetSession("UserId", data.UserDetailsId);
-                    Common.SetSession("MunicipalId", this.objUser.MunicipalId.toString());
+                    Common.SetSession("MunicipalId", data.MunicipalId);
+                    Common.SetSession("SubMunicipalId", data.SubMunicipalId);
                     Common.SetSession("UserName", data.UserName);
                     this.router.navigate(['pages/dashboard']);
                 }
@@ -458,32 +466,7 @@ export class LoginComponent {
         //     }
         // }
     }
-    fnGo() {
-        //console.log(this.agencyProfileId);
-        if (this.agencyProfileId != null) {
-
-            Common.SetSession("AgencyProfileId", this.agencyProfileId);
-            Common.IsUserLogin.next(true);
-            if (!this.IsPwdChangeNeeded) {
-                Common.SetSession("IsAppAccessUser", "1");
-                Common.IsUserLogin.next(true);
-                this.objUserAuditHistoryDTO.AgencyProfileId = this.agencyProfileId;
-                this.objUserAuditHistoryDTO.UserProfileId = parseInt(Common.GetSession("UserProfileId"));
-                this.loService.SaveUserAuditHistory(this.objUserAuditHistoryDTO).then(data =>
-                  {
-                  Common.SetSession("UserAuditHistoryId",data);
-                  this.router.navigate(['pages/dashboard']);
-                });
-
-            } else {
-                this.agencyVisible = false;
-                this.IsPwdChangeNeededVisible = true;
-            }
-        }
-        else {
-            this.showErrorMsg = true;
-        }
-    }
+    
     IsSelected:number;
     getRowNewClass =(row)=>{
       //console.log('getRowNewClass');
@@ -515,7 +498,9 @@ export class UserDetails {
     UserDetailsId: number;
     UserName: string;
     Password: string;    
-    MunicipalId: number;      
+    MunicipalId: number; 
+    Municipal:string;
+    SubMunicipal:string;     
 }
 
 

@@ -34,7 +34,7 @@ export class KeyPerformanceIndicatorList {
         this._router.navigate(['/pages/systemadmin/keyperformanceindicator/'+ id]);
     }
     BindBudgetApproval() {
-        this.apiService.get(this.controllerName, "GetKeyPerformanceIndicators", parseInt(Common.GetSession("MunicipalId"))).then(data => { 
+        this.apiService.get(this.controllerName, "GetKeyPerformanceIndicators", parseInt(Common.GetSession("UserId"))).then(data => { 
             this.lstKeyPerformanceIndicator = data;           
          })
     } 

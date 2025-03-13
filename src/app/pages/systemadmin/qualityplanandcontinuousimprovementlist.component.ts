@@ -34,7 +34,7 @@ export class QualityPlanandContinuousImprovementList {
         this._router.navigate(['/pages/systemadmin/qualityplanandcontinuousimprovement/'+ id]);
     }
     BindBudgetApproval() {
-        this.apiService.get(this.controllerName, "Getqualityplanandcontinuousimprovements", parseInt(Common.GetSession("MunicipalId"))).then(data => { 
+        this.apiService.get(this.controllerName, "Getqualityplanandcontinuousimprovements", parseInt(Common.GetSession("UserId"))).then(data => { 
             this.lstQualityPlanandContinuousImprovement = data;           
          })
     } 

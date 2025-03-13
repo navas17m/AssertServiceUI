@@ -34,7 +34,7 @@ export class WorkforceManagementList {
         this._router.navigate(['/pages/systemadmin/workforcemanagement/'+ id]);
     }
     BindBudgetApproval() {
-        this.apiService.get(this.controllerName, "GetWorkforceManagements", parseInt(Common.GetSession("MunicipalId"))).then(data => { 
+        this.apiService.get(this.controllerName, "GetWorkforceManagements", parseInt(Common.GetSession("UserId"))).then(data => { 
             this.lstWorkforceManagement = data;           
          })
     } 

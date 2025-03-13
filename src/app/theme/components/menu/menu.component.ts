@@ -37,13 +37,17 @@ export class MenuComponent implements OnInit {
             this.BindMenu()
         }
     }
-
+    userName;showAdmin:boolean=false;
     constructor(private _elementRef: ElementRef,
         private _router: Router,
         private _activatedRoute: ActivatedRoute,
         private _state: AppState,
         private _allApiService: APICallService) {
-
+        this.userName=Common.GetSession("UserName");
+        if(this.userName.toLowerCase()=="admin")
+        {
+            this.showAdmin=true;
+        }
         //  this.menuItems = _menuService.getMenuItems();
 
         this.BindMenu();

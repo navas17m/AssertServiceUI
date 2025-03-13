@@ -34,7 +34,7 @@ export class RiskManagementandContingencyPlanList {
         this._router.navigate(['/pages/systemadmin/riskmanagementandcontingencyplan/'+ id]);
     }
     BindBudgetApproval() {
-        this.apiService.get(this.controllerName, "Getriskmanagementandcontingencyplans", parseInt(Common.GetSession("MunicipalId"))).then(data => { 
+        this.apiService.get(this.controllerName, "Getriskmanagementandcontingencyplans", parseInt(Common.GetSession("UserId"))).then(data => { 
             this.lstriskmanagementandcontingencyplan = data;           
          })
     } 

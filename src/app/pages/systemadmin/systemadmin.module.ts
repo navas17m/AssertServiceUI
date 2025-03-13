@@ -40,6 +40,9 @@ import { QualityPlanandContinuousImprovementComponent } from './qualityplanandco
 import { AssertReport } from './assertreport.component';
 import { AssertReports } from './assertreports.component';
 
+import { UserProfilelList } from './userprofilelist.component';
+import { UserProfileComponent } from './userprofile.component';
+
 export const routes:any = [
     { path: '', redirectTo: 'agencyformmapping/1', pathMatch: 'full' },
     { path: 'assertregisterlist/:mid', component: AssertRegisterList, data: { breadcrumb: 'تسجيل الأصول' } },
@@ -62,6 +65,8 @@ export const routes:any = [
     { path: 'qualityplanandcontinuousimprovementlist/:mid', component: QualityPlanandContinuousImprovementList, data: { breadcrumb: 'خطة الجودة والتحسين المستمر' } },
     { path: 'assertreport', component: AssertReport, data: { breadcrumb: 'تقرير التأكيد' } },
     { path: 'assertreports', component: AssertReports, data: { breadcrumb: 'تقرير التأكيد' } },
+    { path: 'userprofile/:id', component: UserProfileComponent, data: { breadcrumb: 'تفاصيل المستخدم' } },
+    { path: 'userprofilelist/:mid', component: UserProfilelList, data: { breadcrumb: 'تفاصيل المستخدم' } },
     
 ];
 
@@ -78,8 +83,8 @@ export const routes:any = [
     declarations: [AssertRegisterList,AssertRegisterComponent,BudgetPlanComponent,BudgetPlanList,BudgetApprovalList,BudgetApprovalComponent,
         KeyPerformanceIndicatorList,KeyPerformanceIndicatorComponent,WorkforceManagementList,WorkforceManagementComponent,
         ComplianceAndRegulatoryList,ComplianceAndRegulatoryComponent,MaintenanceActivityList,MaintenanceActivityComponent,
-        RiskManagementandContingencyPlanComponent,RiskManagementandContingencyPlanList,AssertReport,
-        QualityPlanandContinuousImprovementComponent,QualityPlanandContinuousImprovementList,AssertReports
+        RiskManagementandContingencyPlanComponent,RiskManagementandContingencyPlanList,AssertReport,AssertReports,
+        QualityPlanandContinuousImprovementComponent,QualityPlanandContinuousImprovementList,UserProfileComponent,UserProfilelList
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     exports: []

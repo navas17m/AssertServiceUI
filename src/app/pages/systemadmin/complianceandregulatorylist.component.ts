@@ -34,7 +34,7 @@ export class ComplianceAndRegulatoryList {
         this._router.navigate(['/pages/systemadmin/complianceandregulatory/'+ id]);
     }
     BindBudgetApproval() {
-        this.apiService.get(this.controllerName, "GetComplianceAndRegulatorys", parseInt(Common.GetSession("MunicipalId"))).then(data => { 
+        this.apiService.get(this.controllerName, "GetComplianceAndRegulatorys", parseInt(Common.GetSession("UserId"))).then(data => { 
             this.lstComplianceAndRegulatory = data;           
          })
     } 

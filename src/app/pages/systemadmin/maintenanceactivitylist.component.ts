@@ -33,7 +33,7 @@ export class MaintenanceActivityList {
         this._router.navigate(['/pages/systemadmin/maintenanceactivity/'+ id]);
     }
     BindMaintenanceActivity() {
-        this.apiService.get(this.controllerName, "GetMaintenanceActivitys", parseInt(Common.GetSession("MunicipalId"))).then(data => { 
+        this.apiService.get(this.controllerName, "GetMaintenanceActivitys", parseInt(Common.GetSession("UserId"))).then(data => { 
             this.lstMaintenanceActivity = data;           
          })
     } 

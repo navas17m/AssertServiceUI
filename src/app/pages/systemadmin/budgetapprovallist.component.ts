@@ -38,7 +38,7 @@ export class BudgetApprovalList {
         this._router.navigate(['/pages/systemadmin/budgetapproval/'+ id]);
     }
     BindBudgetApproval() {
-        this.apiService.get(this.controllerName, "GetBudgetApprovals", parseInt(Common.GetSession("MunicipalId"))).then(data => { 
+        this.apiService.get(this.controllerName, "GetBudgetApprovals", parseInt(Common.GetSession("UserId"))).then(data => { 
             this.lstBudgetApproval = data;           
          })
     } 

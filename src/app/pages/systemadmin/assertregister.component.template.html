@@ -10,6 +10,28 @@
                     <div class="row">
                         <div class="col">
                             <div class="form-group">
+                                <label class=""> حالة أمر العمل</label>
+                                <select *ngIf="lstAssert.length>0" required #Assert (change)="fnLoadSubAssert(Assert.value)" formControlName="Assert" class="form-control"  [(ngModel)]="objAssertRegisterDTO.AssertId">
+                                    <option *ngFor="let op of lstAssert" value="{{op.AssertId}}">
+                                        {{op.AssertName}}
+                                    </option>
+                                </select> 
+                                <div class="alert alert-danger" *ngIf="(!_Form.controls.Assert.valid && submitted && _Form.controls.Assert.errors.required)">
+                                    الرجاء تحديد التأكيد
+                                </div>                      
+                            </div>
+                            <div class="form-group">
+                                <label class=""> حالة أمر العمل</label>
+                                <select  formControlName="SubAssert" required class="form-control"  [(ngModel)]="objAssertRegisterDTO.SubAssertId">
+                                    <option *ngFor="let op of lstSubAssert" value="{{op.SubAssertId}}">
+                                        {{op.SubAssertName}}
+                                    </option>
+                                </select>   
+                                <div class="alert alert-danger" *ngIf="(!_Form.controls.SubAssert.valid && submitted && _Form.controls.SubAssert.errors.required)">
+                                    الرجاء تحديد التأكيد الفرعي
+                                </div>                    
+                            </div>    
+                            <div class="form-group">
                                 <label class="">رقم الهوية </label>
                                 <input formControlName="IdentificationNumber" type="text" class="form-control" 
                                        required [(ngModel)]="objAssertRegisterDTO.IdentificationNumber"/>  
@@ -49,19 +71,19 @@
                                 <label class=""> تاريخ التفتيش الأخير</label>
                                 <input formControlName="Dateoflastinspection"  type="text" placeholder="DD/MM/YYYY" readonly class="form-control form-control-date" [(ngModel)]="objAssertRegisterDTO.DateOfLastInspection" [value]="objAssertRegisterDTO.DateOfLastInspection" datepicker/>
                             </div>
-                            <div class="form-group">
-                                <label class=""> سجل الحوادث </label>
-                                <input formControlName="AccidentLog"  required type="radio" [value]="false" [(ngModel)]="objAssertRegisterDTO.AccidentLog">None
-                                <input formControlName="AccidentLog" required type="radio" [value]="true" [(ngModel)]="objAssertRegisterDTO.AccidentLog" >Yes
-                                <!-- <input formControlName="AccidentLog" type="text" class="form-control"  [(ngModel)]="objAssertRegisterDTO.AccidentLog"/>                       -->
-                            </div>
-                            <div class="form-group" *ngIf="!objAssertRegisterDTO.AccidentLog">
-                                <label class="">وصف الحادث </label>
-                                <input formControlName="AccidentDescription" type="text" class="form-control" [(ngModel)]="objAssertRegisterDTO.AccidentDescription"/>                      
-                            </div>
+                           
                         </div>
                     <div class="col">                          
-                   
+                        <div class="form-group">
+                            <label class=""> سجل الحوادث </label>
+                            <input formControlName="AccidentLog"  required type="radio" [value]="false" [(ngModel)]="objAssertRegisterDTO.AccidentLog">None
+                            <input formControlName="AccidentLog" required type="radio" [value]="true" [(ngModel)]="objAssertRegisterDTO.AccidentLog" >Yes
+                            <!-- <input formControlName="AccidentLog" type="text" class="form-control"  [(ngModel)]="objAssertRegisterDTO.AccidentLog"/>                       -->
+                        </div>
+                        <div class="form-group" *ngIf="!objAssertRegisterDTO.AccidentLog">
+                            <label class="">وصف الحادث </label>                               
+                            <textarea formControlName="AccidentDescription" class="form-control" [(ngModel)]="objAssertRegisterDTO.AccidentDescription"></textarea>                   
+                        </div>
                     <div class="form-group">
                         <label class="">استراتيجية الصيانة الأخيرة</label>
                         <select *ngIf="lstStrategyLastMaintenance.length>0" formControlName="StrategyLastMaintenance" class="form-control"  [(ngModel)]="objAssertRegisterDTO.StrategyLastMaintenanceId">
@@ -95,7 +117,7 @@
                     </div>
                     <div class="form-group">
                         <label class="">   المشاكل/الأعطال المتكررة</label>
-                        <input formControlName="Frequentproblems" type="text" class="form-control" [(ngModel)]="objAssertRegisterDTO.FrequentProblems" />                        
+                        <textarea formControlName="Frequentproblems" class="form-control" [(ngModel)]="objAssertRegisterDTO.FrequentProblems"> </textarea>                        
                     </div>
                     <div class="form-group">
                         <label class="">   التكاليف التاريخية للصيانة </label>
@@ -130,8 +152,8 @@
                                
                     <div class="form-group">
                         <!-- <SubmitButton (Click)="Submit(_Form,ddCarerList.BindValue)" [IsLoading]="isLoading" [Text]="'Assign'"></SubmitButton> -->
-                        <button  (click)="Submit(_Form)"  id="btnSubmit"  class="btn btn-success expand-right">يُقدِّم'</button>
-                        <button style="cursor:pointer;" id="BackBtn" (click)="fnBack()"  class="btn btn-warning BackBtn">واضح</button>
+                        <button  (click)="Submit(_Form)"  id="btnSubmit"  class="btn btn-success expand-right">حفظ</button>
+                        <button style="cursor:pointer;" id="BackBtn" (click)="fnBack()"  class="btn btn-warning BackBtn">الرجوع</button>
                     </div>                    
                 </div>
             </form>

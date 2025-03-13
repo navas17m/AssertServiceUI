@@ -34,7 +34,7 @@ export class BudgetPlanList {
         this._router.navigate(['/pages/systemadmin/budgetplan/'+ id]);
     }
     BindBudgetPlan() {
-        this.apiService.get(this.controllerName, "GetBudgetPlans", parseInt(Common.GetSession("MunicipalId"))).then(data => { 
+        this.apiService.get(this.controllerName, "GetBudgetPlans", parseInt(Common.GetSession("UserId"))).then(data => { 
             this.lstBudgetPlan = data;           
          })
     } 

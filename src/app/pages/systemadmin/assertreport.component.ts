@@ -1,14 +1,12 @@
-﻿import { ThisReceiver } from '@angular/compiler';
+﻿
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ItemsList } from '@ng-select/ng-select/lib/items-list';
 import { Common } from '../common';
-import { PagesComponent } from '../pages.component';
+
 import { APICallService } from '../services/apicallservice.service';
-import { UserCarerMappingDTO } from './DTO/usercarermappingdto';
-import { UserAuditHistoryDetailDTO } from '../common';
-import * as moment from 'moment';
-import { Router } from '@angular/router';
+import { UserCarerMappingDTO } from './DTO/usercarermappingdto'
+
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 
@@ -19,13 +17,8 @@ import html2canvas from "html2canvas";
 
 export class AssertReport {
     public searchText: string = "";
-    public returnVal:any[];
-    _Form: FormGroup;
-    arrayCarerList = [];
-    objUserCarerMappingDTO: UserCarerMappingDTO = new UserCarerMappingDTO();
-    lstUserList = [];
-    submitted = false;
-    AssignedCarerList = [];
+    public returnVal:any[];  
+     
     lstAssertRegister=[];
     isLoading: boolean = false;
     controllerName = "AssertRegister";
@@ -34,7 +27,7 @@ export class AssertReport {
     lstBudgetApproval=[];   lstBudgetPlan=[];  
     lstWorkforceManagement=[]; lstComplianceAndRegulatory=[];   lstMaintenanceActivity=[];  
     lstriskmanagementandcontingencyplan=[];  lstQualityPlanandContinuousImprovement=[];
-    constructor(private apiService: APICallService, private _router: Router, private _formBuilder: FormBuilder, private pComponent: PagesComponent) {
+    constructor(private apiService: APICallService) {
          
         this.apiService.get("Municipal", "GetMunicipal").then(data => {
             this.lstMunicipal = data;           
@@ -83,8 +76,11 @@ export class AssertReport {
         });
     }    
     LoadReport() {
+        this.isLoading=true;      
+       
         this.apiService.get(this.controllerName, "GetAssertRegisters",this.MunicipalId).then(data => {
-             this.lstAssertRegister = data;           
+             this.lstAssertRegister = data;   
+                   
          })
          this.apiService.get("budgetplan", "GetBudgetPlans", this.MunicipalId).then(data => { 
             this.lstBudgetPlan = data;           
@@ -108,8 +104,10 @@ export class AssertReport {
             this.lstQualityPlanandContinuousImprovement = data;           
          })
          this.apiService.get("MaintenanceActivity", "GetMaintenanceActivitys", this.MunicipalId).then(data => { 
-            this.lstMaintenanceActivity = data;           
+            this.lstMaintenanceActivity = data;  
+            this.isLoading=false;           
          })
+         
     }    
 
 }

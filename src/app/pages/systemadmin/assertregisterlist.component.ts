@@ -49,7 +49,7 @@ export class AssertRegisterList {
         this._router.navigate(['/pages/systemadmin/assertregister/'+ id]);
     }
     BindAssert() {
-        this.apiService.get(this.controllerName, "GetAssertRegisters",parseInt(Common.GetSession("MunicipalId"))).then(data => {
+        this.apiService.get(this.controllerName, "GetAssertRegisters",parseInt(Common.GetSession("UserId"))).then(data => {
              this.lstAssertRegister = data;           
          })
         //this.services.getAll().then(data => { this.lstUserList = data; })
