@@ -25,7 +25,7 @@ export class KeyPerformanceIndicatorComponent {
     controllerName = "KeyPerformanceIndicator";   
     lstStrategyLastMaintenance=[];
     lstKeyPerformanceIndicatorCategory=[];    
-    carerIds; 
+    carerIds; lstKeyPerformanceIndicatorName=[];
     objQeryVal; type="save";
     constructor(private apiService: APICallService, private activatedroute: ActivatedRoute, private _router: Router, private _formBuilder: FormBuilder, private pComponent: PagesComponent) {
         //this.objUserCarerMappingDTO.ExpiryDate = null;  
@@ -46,9 +46,12 @@ export class KeyPerformanceIndicatorComponent {
             KeyPerformanceIndicatorCategory: ['', Validators.required],
             KeyPerformanceIndicatorName:['',Validators.required],
             Description:[''],
-            Baseline:[],
-            ComingThrough:[],
+            
         });  
+    }
+    fnLoadKeyPerformanceIndicatorName(id)
+    {
+        this.apiService.get(this.controllerName, "GetKeyPerformanceIndicatorNames",id).then(data => { this.lstKeyPerformanceIndicatorName = data; })
     }
     fnBack(){
         this._router.navigate(['/pages/systemadmin/keyperformanceindicatorlist/0']);
@@ -68,7 +71,8 @@ export class KeyPerformanceIndicatorComponent {
                 this.objKeyPerformanceIndicatorDTO.IsActive=true;
                 this.objKeyPerformanceIndicatorDTO.UserId=parseInt(Common.GetSession("UserId"));
                 this.objKeyPerformanceIndicatorDTO.MunicipalId=parseInt(Common.GetSession("MunicipalId"));
-                console.log(this.objKeyPerformanceIndicatorDTO);
+                this.objKeyPerformanceIndicatorDTO.SubMunicipalId=parseInt(Common.GetSession("SubMunicipalId"));
+                
                 this.apiService.post(this.controllerName, "AddKeyPerformanceIndicator", this.objKeyPerformanceIndicatorDTO).then(data => {this.Respone("save")});
             }
             else

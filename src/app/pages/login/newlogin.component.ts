@@ -500,7 +500,8 @@ export class UserDetails {
     Password: string;    
     MunicipalId: number; 
     Municipal:string;
-    SubMunicipal:string;     
+    SubMunicipal:string; 
+    SubMunicipalId:number;    
 }
 
 

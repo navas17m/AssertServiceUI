@@ -11,8 +11,8 @@ export class AppConfig {
    constructor(){
         this.sassVariables = this.getSassVariables();
         this.config = {
-            name: 'AssertSystem',
-            title: 'AssertSystem',
+            name: 'AssetSystem',
+            title: 'AssetSystem',
             version: '3.5.0',
             colors:{
                 main: this.sassVariables['main-color'],

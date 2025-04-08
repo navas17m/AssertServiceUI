@@ -1,11 +1,1240 @@
-<div>
+<div>     
   <div>
-      
-      <!--Carer Ethnicity and Placement offer-->
-  
-    
-  </div>
+      <div class="row bottom-15">
+          <div class="col">
+              <div widget class="card">
+                  <div class="card-body widget-body">
+                      <div class="row ">
+                          <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 ">
+                              <div class="card card-outline-default p-2">
+                                  <div class="row" *ngIf="objDashbordInfoLanding">
+                                      <div class="col-12 col-md-4 col-lg-3 pt-1 pb-1"  style="cursor:pointer ;"><span class="badge badge1 badge-pill1 badge-success">{{lstDashboard.AssertRegisterCount}}</span> عدد الأصول المسجلة</div>
+                                      <div class="col-12 col-md-4 col-lg-3 pt-1 pb-1"  style="cursor:pointer ;"><span class="badge badge1 badge-pill1 badge-success">{{lstDashboard.BudgetPlanCount}}</span> خطط الميزانية</div>
+                                      <div class="col-12 col-md-4 col-lg-3 pt-1 pb-1"  style="cursor:pointer ;"><span class="badge badge1 badge-pill1 badge-info">{{lstDashboard.BudgetApprovalCount}}</span>موافقات الميزانية</div>
+                                      <div class="col-12 col-md-4 col-lg-3 pt-1 pb-1"  style="cursor:pointer ;"><span class="badge badge1 badge-pill1 badge-primary">{{lstDashboard.KPICount}}</span> مؤشرات الأداء الرئيسية</div>
 
+                                      <div class="col-12 col-md-4 col-lg-3 pt-1 pb-1"  style="cursor:pointer ;"><span class="badge badge1 badge-pill1 badge-info">{{lstDashboard.WorkforceManagementCount}}</span> إدارة القوى العاملة والتدريبات</div>
+                                      <div class="col-12 col-md-4 col-lg-3 pt-1 pb-1"  style="cursor:pointer ;"><span class="badge badge1 badge-pill1 badge-warning">{{lstDashboard.ComplianceandregulatoryCount}}</span> متطلبات الامتثال والتنظيم</div>
+                                      <div class="col-12 col-md-4 col-lg-3 pt-1 pb-1"  style="cursor:pointer ;"><span class="badge badge1 badge-pill1 badge-success">{{lstDashboard.RiskManagementCount}}</span> إدارة المخاطر وخطط الطوارئ</div>
+                                      <div class="col-12 col-md-4 col-lg-3 pt-1 pb-1"  style="cursor:pointer ;"><span class="badge badge1 badge-pill1 badge-warning">{{lstDashboard.QualityPlanCount}}</span> خطة الجودة والتحسين المستمر</div>
+                                      <div class="col-12 col-md-4 col-lg-3 pt-1 pb-1"  style="cursor:pointer ;"><span class="badge badge1 badge-pill1 badge-primary">{{lstDashboard.WorkOrderCount}}</span> أوامر العمل</div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+        
+           <!--Top  View Details-->
+       <div>
+          <button #btnViewDetails type="button" [hidden]="true" class="btn btn-primary" data-toggle="modal" data-target="#lg-btnViewDetails">Large</button>
+          <div class="modal fade" id="lg-btnViewDetails" tabindex="-1" role="dialog" aria-labelledby="modal-large-label" style="display: none;">
+              <div class="modal-dialog modal-lg" role="document">
+                  <div class="modal-content">
+                      <div class="modal-header state modal-primary">
+                          <h4 class="modal-title" id="modal-large-label">
+                              <i class="fa fa-child"></i>
+                              {{insTitle}}
+                          </h4>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                      </div>
+                      <!--start-->
+
+                      <div class="row mbm-20">
+                          <div class="col-lg-12 col-12 bottom-30">
+                              <div  widget class="card" >
+                                  <div  class="card-body widget-body">
+                                    <table class="table table-striped table-hover table-sm">
+                                        <tbody *ngIf="lstDetails.length==0">
+                                            <tr>
+                                                <th colspan="9" class="text-center" *ngIf="!loading">
+                                                    No Records found.
+                                                </th>
+                                                <th *ngIf="loading" colspan="9" class="text-center">
+                                                    <i class="fa fa-spinner fa-spin"></i> Loading please wait...
+                                                </th>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="table-responsive datatable" *ngIf="lstDetails.length>0">
+                                        <ngxdatatable [rows]="lstDetails" [columns]="popupDetailsColumns" searchFilter="true" searchFields="fullName">
+                                        </ngxdatatable>
+                                    </div>    
+                                      <!--<div class="w-200 pull-right bottom-15">
+                                          <div class="input-group input-group-sm">
+                                              <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                                              <input class="form-control" id="table-search-input" [(ngModel)]="searchText" name="searchText" type="text" placeholder="Search...">
+                                          </div>
+                                      </div>-->
+                                      <!-- <div class="table-responsive datatable">
+                                          <table class="table table-striped table-hover table-sm" [mfData]="lstDetails | SearchFilter : 'Name,SCName,Code,Details': searchText" #mf="mfDataTable" [mfRowsOnPage]="10">
+
+                                              <tbody *ngIf="lstDetails.length == 0">
+                                                  <tr>
+                                                      <th *ngIf="!loading" colspan="8" class="text-center">
+                                                          No Records found.
+                                                      </th>
+                                                      <th *ngIf="loading" colspan="8" class="text-center">
+                                                          <i class="fa fa-spinner fa-spin"></i> Loading please wait...
+                                                      </th>
+                                                  </tr>
+                                              </tbody>
+                                              <!-- Current Referral ->
+                                              <thead *ngIf="insTitle=='Current Referral'">
+                                                  <tr>
+                                                      <th><mfDefaultSorter by="Name">Child / Young person Name</mfDefaultSorter></th>
+                                                      <th><mfDefaultSorter by="ReferralDate">Referral Date</mfDefaultSorter></th>
+                                                      <th><mfDefaultSorter by="Details">Recommended Carer</mfDefaultSorter></th>
+                                                  </tr>
+                                              </thead>
+                                              <tbody *ngIf="lstDetails.length>0 && insTitle=='Current Referral'">
+                                                  <tr *ngFor="let item of mf.data">
+                                                      <td>{{item.Name}} {{item.SCName}} {{item.Code!=null? '('+item.Code+')':''}}</td>
+                                                      <td>{{item.ReferralDate|date:'dd/MM/yyyy'}}</td>
+                                                      <td >{{item.Details}}</td>
+                                                  </tr>
+                                              </tbody>
+                                               <!-- Closed Referral ->
+                                               <thead *ngIf="insTitle=='Closed Referral'">
+                                                  <tr>
+                                                      <th><mfDefaultSorter by="Name">Child / Young person Name</mfDefaultSorter></th>
+                                                      <th><mfDefaultSorter by="Details">Recommended Carer</mfDefaultSorter></th>
+                                                  </tr>
+                                              </thead>
+                                              <tbody *ngIf="lstDetails.length>0 && insTitle=='Closed Referral'">
+                                                  <tr *ngFor="let item of mf.data">
+                                                      <td>{{item.Name}} {{item.SCName}} {{item.Code!=null? '('+item.Code+')':''}}</td>
+                                                      <td >{{item.Details}}</td>
+                                                  </tr>
+                                              </tbody>
+
+                                              <!-- Placed ->
+                                              <thead *ngIf="insTitle=='Placed'">
+                                                  <tr>
+                                                      <th><mfDefaultSorter by="Name">Child / Young person Name</mfDefaultSorter></th>
+                                                      <th><mfDefaultSorter by="CarerName">Foster Carer Name</mfDefaultSorter></th>
+                                                      <th><mfDefaultSorter by="PlacementDate">Placement Date</mfDefaultSorter></th>
+                                                      <th><mfDefaultSorter by="LAName">LA Name</mfDefaultSorter></th>
+                                                      <th><mfDefaultSorter by="LASWName">LA Social Worker Name</mfDefaultSorter></th>
+                                                  </tr>
+                                              </thead>
+                                              <tbody *ngIf="lstDetails.length>0 && insTitle=='Placed'">
+                                                  <tr *ngFor="let item of mf.data">
+                                                      <td>{{item.Name}} {{item.SCName}} {{item.Code!=null? '('+item.Code+')':''}}</td>
+                                                      <td >{{item.CarerName}}</td>
+                                                      <td>{{item.PlacementDate|date:'dd/MM/yyyy'}}</td>
+                                                      <td>{{item.LAName}}</td>
+                                                      <td>{{item.LASWName}}</td>
+                                                  </tr>
+                                              </tbody>
+
+                                              <!-- Placement End ->
+                                              <thead *ngIf="insTitle=='Placement End'">
+                                                  <tr>
+                                                      <th><mfDefaultSorter by="Name">Child / Young person Name</mfDefaultSorter></th>
+                                                      <th><mfDefaultSorter by="ChildPlacement.PCCarerName">Foster Carer Name</mfDefaultSorter></th>
+                                                      <th><mfDefaultSorter by="ChildPlacement.PlacementDate">Placement Date</mfDefaultSorter></th>
+                                                      <th><mfDefaultSorter by="ChildPlacement.PlacementEndDate">Placement End Date</mfDefaultSorter></th>
+                                                  </tr>
+                                              </thead>
+                                              <tbody *ngIf="lstDetails.length>0 && insTitle=='Placement End'">
+                                                  <tr *ngFor="let item of mf.data">
+                                                      <td>{{item.Name}} {{item.Code!=null? '('+item.Code+')':''}}</td>
+                                                      <td >{{item.ChildPlacement.PCCarerName}}</td>
+                                                      <td>{{item.ChildPlacement.PlacementDate|date:'dd/MM/yyyy'}}</td>
+                                                      <td>{{item.ChildPlacement.PlacementEndDate|date:'dd/MM/yyyy'}}</td>
+                                                  </tr>
+                                              </tbody>
+
+                                              <!-- Staying Put ->
+                                              <thead *ngIf="insTitle=='Staying Put'">
+                                                  <tr>
+                                                      <th><mfDefaultSorter by="Name">Child / Young person Name</mfDefaultSorter></th>
+                                                      <th><mfDefaultSorter by="DOB">DOB</mfDefaultSorter></th>
+                                                      <th><mfDefaultSorter by="DOB">Age</mfDefaultSorter></th>
+                                                      <th><mfDefaultSorter by="CarerName">Foster Carer Name</mfDefaultSorter></th>
+                                                      <th><mfDefaultSorter by="PlacementDate">Placement Date</mfDefaultSorter></th>
+                                                  </tr>
+                                              </thead>
+                                              <tbody *ngIf="lstDetails.length>0 && insTitle=='Staying Put'">
+                                                  <tr *ngFor="let item of mf.data">
+                                                      <td>{{item.Name}} {{item.Code!=null? '('+item.Code+')':''}}</td>
+                                                      <td>{{item.DOB|date:'dd/MM/yyyy'}}</td>
+                                                      <td>{{item.Age}}</td>
+                                                      <td >{{item.CarerName}}</td>
+                                                      <td>{{item.PlacementDate|date:'dd/MM/yyyy'}}</td>
+                                                  </tr>
+                                              </tbody>
+
+                                               <!-- Applicant Enquiries ->
+                                               <thead *ngIf="insTitle=='Applicant Enquiries'">
+                                                  <tr>
+                                                      <th><mfDefaultSorter by="Name">Carer / Applicant Name</mfDefaultSorter></th>
+                                                      <th><mfDefaultSorter by="EnquiryDate">Enquiry Date</mfDefaultSorter></th>
+                                                  </tr>
+                                              </thead>
+                                              <tbody *ngIf="lstDetails.length>0 && insTitle=='Applicant Enquiries'">
+                                                  <tr *ngFor="let item of mf.data">
+                                                      <td>{{item.Name}} {{item.SCName}} ({{item.Code}})</td>
+                                                      <td>{{item.EnquiryDate|date:'dd/MM/yyyy'}}</td>
+                                                  </tr>
+                                              </tbody>
+
+                                              <!-- Applicant Stage 1 ->
+                                              <thead *ngIf="insTitle=='Applicant Stage 1'">
+                                                  <tr>
+                                                      <th><mfDefaultSorter by="Name">Carer / Applicant Name</mfDefaultSorter></th>
+                                                      <th><mfDefaultSorter by="EnquiryDate">Enquiry Date</mfDefaultSorter></th>
+                                                      <th><mfDefaultSorter by="Stage1Date">Stage 1 Date</mfDefaultSorter></th>
+                                                  </tr>
+                                              </thead>
+                                              <tbody *ngIf="lstDetails.length>0 && insTitle=='Applicant Stage 1'">
+                                                  <tr *ngFor="let item of mf.data">
+                                                      <td>{{item.Name}} {{item.SCName}} ({{item.Code}})</td>
+                                                      <td>{{item.EnquiryDate|date:'dd/MM/yyyy'}}</td>
+                                                      <td>{{item.Stage1Date|date:'dd/MM/yyyy'}}</td>
+                                                  </tr>
+                                              </tbody>
+
+                                               <!-- Applicant Stage 2 ->
+                                               <thead *ngIf="insTitle=='Applicant Stage 2'">
+                                                  <tr>
+                                                      <th><mfDefaultSorter by="Name">Carer / Applicant Name</mfDefaultSorter></th>
+                                                      <th><mfDefaultSorter by="EnquiryDate">Enquiry Date</mfDefaultSorter></th>
+                                                      <th><mfDefaultSorter by="Stage1Date">Stage 1 Date</mfDefaultSorter></th>
+                                                      <th><mfDefaultSorter by="Stage2Date">Stage 2 Date</mfDefaultSorter></th>
+                                                  </tr>
+                                              </thead>
+                                              <tbody *ngIf="lstDetails.length>0 && insTitle=='Applicant Stage 2'">
+                                                  <tr *ngFor="let item of mf.data">
+                                                      <td>{{item.Name}} {{item.SCName}} ({{item.Code}})</td>
+                                                      <td>{{item.EnquiryDate|date:'dd/MM/yyyy'}}</td>
+                                                      <td>{{item.Stage1Date|date:'dd/MM/yyyy'}}</td>
+                                                      <td>{{item.Stage2Date|date:'dd/MM/yyyy'}}</td>
+                                                  </tr>
+                                              </tbody>
+
+                                                <!-- Onhold ->
+                                                <thead *ngIf="insTitle=='Onhold'">
+                                                  <tr>
+                                                      <th><mfDefaultSorter by="Name">Carer / Applicant Name</mfDefaultSorter></th>
+                                                      <th><mfDefaultSorter by="CarerStatusChange.StatusName">Status</mfDefaultSorter></th>
+                                                      <th><mfDefaultSorter by="CarerStatusChange.ChangeDate">Date</mfDefaultSorter></th>
+                                                      <th><mfDefaultSorter by="CarerStatusChange.ReasonName">Reason</mfDefaultSorter></th>
+                                                  </tr>
+                                              </thead>
+                                              <tbody *ngIf="lstDetails.length>0 && insTitle=='Onhold'">
+                                                  <tr *ngFor="let item of mf.data">
+                                                      <td>{{item.Name}} {{item.SCName}} ({{item.Code}})</td>
+                                                      <td>{{item.CarerStatusChange.StatusName}}</td>
+                                                      <td>{{item.CarerStatusChange.ChangeDate|date:'dd/MM/yyyy'}}</td>
+                                                      <td>{{item.CarerStatusChange.ReasonName}}</td>
+                                                  </tr>
+                                              </tbody>
+
+                                               <!-- Applicant Rejected ->
+                                               <thead *ngIf="insTitle=='Applicant Rejected'">
+                                                  <tr>
+                                                      <th><mfDefaultSorter by="Name">Carer / Applicant Name</mfDefaultSorter></th>
+                                                      <th><mfDefaultSorter by="CarerStatusChange.StatusName">Status</mfDefaultSorter></th>
+                                                      <th><mfDefaultSorter by="CarerStatusChange.ChangeDate">Date</mfDefaultSorter></th>
+                                                      <th><mfDefaultSorter by="CarerStatusChange.ReasonName">Reason</mfDefaultSorter></th>
+                                                  </tr>
+                                              </thead>
+                                              <tbody *ngIf="lstDetails.length>0 && insTitle=='Applicant Rejected'">
+                                                  <tr *ngFor="let item of mf.data">
+                                                      <td>{{item.Name}} {{item.SCName}} ({{item.Code}})</td>
+                                                      <td>{{item.CarerStatusChange.StatusName}}</td>
+                                                      <td>{{item.CarerStatusChange.ChangeDate|date:'dd/MM/yyyy'}}</td>
+                                                      <td>{{item.CarerStatusChange.ReasonName}}</td>
+                                                  </tr>
+                                              </tbody>
+
+                                                <!-- Applicant Withdrawn ->
+                                                <thead *ngIf="insTitle=='Applicant Withdrawn'">
+                                                  <tr>
+                                                      <th><mfDefaultSorter by="Name">Carer / Applicant Name</mfDefaultSorter></th>
+                                                      <th><mfDefaultSorter by="CarerStatusChange.StatusName">Status</mfDefaultSorter></th>
+                                                      <th><mfDefaultSorter by="CarerStatusChange.ChangeDate">Date</mfDefaultSorter></th>
+                                                      <th><mfDefaultSorter by="CarerStatusChange.ReasonName">Reason</mfDefaultSorter></th>
+                                                  </tr>
+                                              </thead>
+                                              <tbody *ngIf="lstDetails.length>0 && insTitle=='Applicant Withdrawn'">
+                                                  <tr *ngFor="let item of mf.data">
+                                                      <td>{{item.Name}} {{item.SCName}} ({{item.Code}})</td>
+                                                      <td>{{item.CarerStatusChange.StatusName}}</td>
+                                                      <td>{{item.CarerStatusChange.ChangeDate|date:'dd/MM/yyyy'}}</td>
+                                                      <td>{{item.CarerStatusChange.ReasonName}}</td>
+                                                  </tr>
+                                              </tbody>
+
+                                              <!-- Approved Carer ->
+                                              <thead *ngIf="insTitle=='Approved Carer'">
+                                                  <tr>
+                                                      <th><mfDefaultSorter by="Name">Carer / Applicant Name</mfDefaultSorter></th>
+                                                      <th><mfDefaultSorter by="ApprovalDate">Approval Date</mfDefaultSorter></th>
+                                                      <th><mfDefaultSorter by="NumberofApproval">Approved Vacancy</mfDefaultSorter></th>
+                                                      <th><mfDefaultSorter by="AvailableVacancy">Available Vacancy</mfDefaultSorter></th>
+                                                  </tr>
+                                              </thead>
+                                              <tbody *ngIf="lstDetails.length>0 && insTitle=='Approved Carer'">
+                                                  <tr *ngFor="let item of mf.data">
+                                                      <td>{{item.Name}} {{item.SCName}} ({{item.Code}})</td>
+                                                      <td>{{item.ApprovalDate|date:'dd/MM/yyyy'}}</td>
+                                                      <td>{{item.NumberofApproval}}</td>
+                                                      <td>{{item.AvailableVacancy}}</td>
+
+                                                  </tr>
+                                              </tbody>
+
+                                              <!-- Resigned Carer ->
+                                              <thead *ngIf="insTitle=='Resigned Carer'">
+                                                  <tr>
+                                                      <th><mfDefaultSorter by="Name">Carer / Applicant Name</mfDefaultSorter></th>
+                                                      <th><mfDefaultSorter by="CarerStatusChange.StatusName">Status</mfDefaultSorter></th>
+                                                      <th><mfDefaultSorter by="CarerStatusChange.ChangeDate">Date</mfDefaultSorter></th>
+                                                      <th><mfDefaultSorter by="CarerStatusChange.ReasonName">Reason</mfDefaultSorter></th>
+                                                  </tr>
+                                              </thead>
+                                              <tbody *ngIf="lstDetails.length>0 && insTitle=='Resigned Carer'">
+                                                  <tr *ngFor="let item of mf.data">
+                                                      <td>{{item.Name}} {{item.SCName}} ({{item.Code}})</td>
+                                                      <td>{{item.CarerStatusChange.StatusName}}</td>
+                                                      <td>{{item.CarerStatusChange.ChangeDate|date:'dd/MM/yyyy'}}</td>
+                                                      <td>{{item.CarerStatusChange.ReasonName}}</td>
+                                                  </tr>
+                                              </tbody>
+
+                                              <!-- Terminated Carer ->
+                                              <thead *ngIf="insTitle=='Terminated Carer'">
+                                                  <tr>
+                                                      <th><mfDefaultSorter by="Name">Carer / Applicant Name</mfDefaultSorter></th>
+                                                      <th><mfDefaultSorter by="CarerStatusChange.StatusName">Status</mfDefaultSorter></th>
+                                                      <th><mfDefaultSorter by="CarerStatusChange.ChangeDate">Date</mfDefaultSorter></th>
+                                                      <th><mfDefaultSorter by="CarerStatusChange.ReasonName">Reason</mfDefaultSorter></th>
+                                                  </tr>
+                                              </thead>
+                                              <tbody *ngIf="lstDetails.length>0 && insTitle=='Terminated Carer'">
+                                                  <tr *ngFor="let item of mf.data">
+                                                      <td>{{item.Name}} {{item.SCName}} ({{item.Code}})</td>
+                                                      <td>{{item.CarerStatusChange.StatusName}}</td>
+                                                      <td>{{item.CarerStatusChange.ChangeDate|date:'dd/MM/yyyy'}}</td>
+                                                      <td>{{item.CarerStatusChange.ReasonName}}</td>
+                                                  </tr>
+                                              </tbody>
+
+                                               <!-- Backup Carer ->
+                                               <thead *ngIf="insTitle=='Backup Carer'">
+                                                  <tr>
+                                                      <th><mfDefaultSorter by="Name">Name</mfDefaultSorter></th>
+                                                      <th><mfDefaultSorter by="Details">Carer Name</mfDefaultSorter></th>
+                                                      <th><mfDefaultSorter by="AreChecksRequired">Are Checks Required</mfDefaultSorter></th>
+                                                  </tr>
+                                              </thead>
+                                              <tbody *ngIf="lstDetails.length>0 && insTitle=='Backup Carer'">
+                                                  <tr *ngFor="let item of mf.data">
+                                                      <td>{{item.Name}}</td>
+                                                      <td>{{item.Details}} ({{item.Code}})</td>
+                                                      <td>{{item.AreChecksRequired==true?'Yes':'No'}}</td>
+                                                  </tr>
+                                              </tbody>
+
+                                               <!-- Active Users ->
+                                               <thead *ngIf="insTitle=='Active Users'">
+                                                  <tr>
+                                                      <th><mfDefaultSorter by="Name">Name</mfDefaultSorter></th>
+                                                      <th><mfDefaultSorter by="Details">User Type</mfDefaultSorter></th>
+                                                      <th><mfDefaultSorter by="RoleName">Role</mfDefaultSorter></th>
+                                                  </tr>
+                                              </thead>
+                                              <tbody *ngIf="lstDetails.length>0 && insTitle=='Active Users'">
+                                                  <tr *ngFor="let item of mf.data">
+                                                      <td>{{item.Name}}</td>
+                                                      <td>{{item.Details}}</td>
+                                                      <td>{{item.RoleName}}</td>
+                                                  </tr>
+                                              </tbody>
+
+                                              <!-- Agency SSW ->
+                                              <thead *ngIf="insTitle=='Agency SSW'">
+                                                  <tr>
+                                                      <th><mfDefaultSorter by="Name">Name</mfDefaultSorter></th>
+
+                                                      <th><mfDefaultSorter by="AssignedFosterCarerNames">Assigned Foster Carer Name</mfDefaultSorter></th>
+                                                  </tr>
+                                              </thead>
+                                              <tbody *ngIf="lstDetails.length>0 && insTitle=='Agency SSW'">
+                                                  <tr *ngFor="let item of mf.data">
+                                                      <td>{{item.Name}}</td>
+
+                                                      <td >
+                                                         <div *ngFor="let subItem of item.LstAssignedFosterCarerNames">
+                                                          {{subItem}}
+                                                         </div>
+                                                      </td>
+                                                  </tr>
+                                              </tbody>
+
+                                              <!-- Disability Children ->
+                                              <thead *ngIf="insTitle=='Disability Child'">
+                                                  <tr>
+                                                      <th><mfDefaultSorter by="Name">Child / Young person Name</mfDefaultSorter></th>
+                                                      <th><mfDefaultSorter by="DisabilityStrIds">Disability </mfDefaultSorter></th>
+                                                  </tr>
+                                              </thead>
+                                              <tbody *ngIf="lstDetails.length>0 && insTitle=='Disability Child'">
+                                                  <tr *ngFor="let item of mf.data">
+                                                      <td>{{item.Name}} ({{item.Code}})</td>
+                                                      <td>{{item.DisabilityStrIds}}</td>
+                                                  </tr>
+                                              </tbody>
+
+                                               <!-- Child Missing Placement ->
+                                               <thead *ngIf="insTitle=='Child Missing Placement'">
+                                                  <tr>
+                                                      <th><mfDefaultSorter by="Name">Child / Young person Name</mfDefaultSorter></th>
+                                                      <th><mfDefaultSorter by="CarerName">Foster Carer Name </mfDefaultSorter></th>
+
+                                                  </tr>
+                                              </thead>
+                                              <tbody *ngIf="lstDetails.length>0 && insTitle=='Child Missing Placement'">
+                                                  <tr *ngFor="let item of mf.data">
+                                                      <td>{{item.Name}} ({{item.Code}})</td>
+                                                      <td>{{item.CarerName}}</td>
+
+                                                      <!-- <td>
+                                                          <div *ngFor="let subitem of item.MissingDate">
+                                                              {{subitem}}
+                                                          </div>
+                                                       </td> ->
+                                                  </tr>
+                                              </tbody>
+
+                                                <!-- TSD Completed Carer ->
+                                              <thead *ngIf="insTitle=='TSD Completed Carer'">
+                                                  <tr>
+                                                      <th><mfDefaultSorter by="Name">Carer / Applicant Name</mfDefaultSorter></th>
+                                                      <th><mfDefaultSorter by="DateStr">TSD Completed Date</mfDefaultSorter></th>
+
+                                                  </tr>
+                                              </thead>
+                                              <tbody *ngIf="lstDetails.length>0 && insTitle=='TSD Completed Carer'">
+                                                  <tr *ngFor="let item of mf.data">
+                                                      <td>{{item.Name}} {{item.SCName}} ({{item.Code}})</td>
+                                                      <td>{{item.DateStr|date:'dd/MM/yyyy'}}</td>
+                                                  </tr>
+                                              </tbody>
+
+
+                                              <tfoot>
+                                                  <tr>
+                                                      <td colspan="12">
+                                                          <mfBootstrapPaginator [rowsOnPageSet]="[10, 25, 50, 100]"></mfBootstrapPaginator>
+                                                      </td>
+                                                  </tr>
+                                              </tfoot>
+                                          </table>
+                                      </div> -->
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      <!--end-->
+                  </div>
+              </div>
+          </div>
+      </div>
+      <!--Top  View Details End-->
+
+      </div>
+      <div>     
+        <!--Row 3-->
+        <div widget class="card">
+          <div class="card-header">
+            <span> قيمة أمر العمل  </span>                      
+        </div>
+        <div class="card-body widget-body">
+          <div class="row" *ngIf="objDashbordInfoScroll">
+              <div class="col-lg-3 col-sm-6 bottom-30">
+                  <div class="card small-info-box card-primary ">
+                      <div class="media">
+                          
+                          <div class="media-body text-right">
+                              <h6 class="media-heading no-margin">التكلفة الإجمالية : ${{lstDashboard.TotalCost}}</h6>
+                          </div>
+                          <span class="media-left">
+                            <i class="fa fa-usd"></i>
+                        </span>
+                      </div>
+                  </div>
+              </div>
+              <div class="col-lg-3 col-sm-6 bottom-30">
+                  <div class="card small-info-box card-default ">
+                      <div class="media">                         
+                          <div class="media-body text-right">
+                              <h6 class="media-heading no-margin">تكاليف العمالة : ${{lstDashboard.HRCost}}</h6>                              
+                          </div>
+                          <span class="media-left">
+                            <i class="fa fa-usd"></i>
+                        </span>
+                      </div>
+                  </div>
+              </div>
+              <div class="col-lg-3 col-sm-6 bottom-30">
+                  <div class="card small-info-box card-success">
+                      <div class="media">
+                         
+                          <div class="media-body text-right">
+                              <h6 class="media-heading no-margin">تكاليف المواد : ${{lstDashboard.HRMaterialCost}}</h6>
+                          </div>
+                          <span class="media-left">
+                            <i class="fa fa-usd"></i>
+                        </span>
+                      </div>
+                  </div>
+              </div>
+              <div class="col-lg-3 col-sm-6 bottom-30">
+                  <div class="card small-info-box card-warning">
+                      <div class="media">                          
+                          <div class="media-body text-right">
+                              <h6 class="media-heading no-margin">التكاليف الأخرى : ${{lstDashboard.OtherCost}}</h6>
+                          </div>
+                          <span class="media-left">
+                            <i class="fa fa-usd"></i>
+                        </span>
+                      </div>
+                  </div>
+              </div>
+          </div>
+        </div>
+        </div>
+    </div>
+      <div class="row">
+          <div class="col">
+              <div widget class="card">
+                  <div class="card-header">
+                      <span>تفاصيل أمر العمل</span>                      
+                  </div>
+                  <div class="card-body widget-body">
+                      <div class="row">  
+                        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 bottom-30">
+                          <div widget class="datamap card">
+                            <div class="card-header">
+                                <span>نوع الصيانة المجدولة</span>
+                            </div>
+                            <div class="card-body widget-body" *ngIf="objTypeOfMaintance">
+                                <div *ngFor="let item of objTypeOfMaintance;let i=index">
+                                    {{item.Name}}<span class="pull-right badge badge-pill badge-{{objColor[i]}}">{{item.Count}}</span>
+                                    <div class="progress">
+                                        <div progress-animate class="progress-bar bg-{{objColor[i]}}" role="progressbar" [ngStyle]="{'width':item.Count * 10 +'%' }"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                      </div>
+                   
+                          <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 bottom-30">
+                              <div class="chart-outher">
+                                  <canvas baseChart
+                                          [type]="pieChartType"
+                                          [data]="pieChartData"
+                                          [options]="pieChartOptions"
+                                          [legend]="pieChartLegend"
+                                          (chartHover)="chartHovered($event)"
+                                          (chartClick)="chartClicked($event)">
+                                  </canvas>
+                              </div>
+                             
+                          </div>
+                      </div>
+                      <div class="col text-center">
+                          <button (click)="randomizeType()" class="btn btn-main btn-sm"> Toggle</button>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div class="row bottom-10" *ngIf="objDashbordInfo && showFinancialYear && !showAll" >
+          <div class="col">
+                  <div class="card-body widget-body">
+                      <div class="row ">
+                          <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 ">
+                              <div class="card card-outline-default p-2">
+                                  <button class="btn btn-primary btn-rounded" style="font-size: medium;" title="Click here to view other Dashboard Info" (click)="fnShowAll()">To view other Dashboard info, click here</button>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+          </div>
+      </div>
+      <div *ngIf="showAll">
+      <div class="row" *ngIf="objDashbordInfo && showFinancialYear">
+          <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 bottom-30" *ngIf="objCarerEthnicity">
+              <div widget class="card">
+                  <div class="card-header">
+                      <span>Approved Carer Ethnicity</span>
+                      <div class="widget-controls">
+                          <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                          <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                      </div>
+                  </div>
+                  <div class="card-body widget-body">
+                    <table class="table table-striped table-hover table-sm">
+                    <tbody *ngIf="objCarerEthnicity.length==0">
+                        <tr>
+                            <th colspan="9" class="text-center">
+                                No Records found.
+                            </th>
+
+                        </tr>
+                    </tbody>
+                    </table>
+                    <div class="table-responsive datatable" *ngIf="objCarerEthnicity.length>0">
+                        <ngxdatatable [rows]="objCarerEthnicity" [columns]="carerEthnicityColumns" searchFilter="false" searchFields="EthnicityName"></ngxdatatable>
+                    </div>
+                  </div>
+              </div>
+          </div>
+
+          <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 bottom-30" *ngIf="objCarerApprovedDetails">
+              <div widget class="card">
+                  <div class="card-header">
+                      <span>Approved Carer Places</span>
+                      <div class="widget-controls">
+                          <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                          <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                      </div>
+                  </div>
+                  <div class="card-body widget-body">
+                    <table class="table table-striped table-hover table-sm">
+                    <tbody *ngIf="carerApprovedDetails.length==0">
+                        <tr>
+                            <th colspan="9" class="text-center">
+                                No Records found.
+                            </th>
+
+                        </tr>
+                    </tbody>
+                    </table>
+                    <div class="table-responsive datatable" *ngIf="carerApprovedDetails.length>0">
+                        <ngxdatatable [footerHeight]=100  [rows]="carerApprovedDetails" [columns]="carerApprovalColumns" searchFilter="true" searchFields="CarerName"></ngxdatatable>
+                    </div>
+                  </div>
+              </div>
+          </div>
+
+
+          <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 bottom-30" *ngIf="objSchedule7Notification">
+              <div widget class="card">
+                  <div class="card-header">
+                      <span>Schedule7 Notification </span>
+                      <div class="widget-controls">
+                          <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                          <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                      </div>
+                  </div>
+                  <div class="card-body widget-body">
+                    <table class="table table-striped table-hover table-sm">
+                    <tbody *ngIf="objSchedule7Notification.length==0">
+                        <tr>
+                            <th colspan="9" class="text-center">
+                                No Records found.
+                            </th>
+
+                        </tr>
+                    </tbody>
+                    </table>
+                    <div class="table-responsive datatable" *ngIf="objSchedule7Notification.length>0">
+                        <ngxdatatable [rows]="objSchedule7Notification" [columns]="schedule7Columns" searchFilter="true" searchFields="EthnicityName"></ngxdatatable>
+                    </div>
+                  </div>
+              </div>
+          </div>
+
+      </div>
+
+      <div class="row " *ngIf="objDashbordInfo && showFinancialYear">
+          <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 bottom-30" *ngIf="objobjChildDisability">
+              <div widget class="card">
+                  <div class="card-header">
+                      <span>Placed Children Disability  </span>
+                      <div class="widget-controls">
+                          <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                          <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                      </div>
+                  </div>
+                  <div class="card-body widget-body">
+                    <table class="table table-striped table-hover table-sm">
+                    <tbody *ngIf="objobjChildDisability.length==0">
+                        <tr>
+                            <th colspan="9" class="text-center">
+                                No Records found.
+                            </th>
+
+                        </tr>
+                    </tbody>
+                    </table>
+                    <div class="table-responsive datatable" *ngIf="objobjChildDisability.length>0">
+                        <ngxdatatable [rows]="objobjChildDisability" [columns]="childDisabilityColumns" searchFilter="true" searchFields="EthnicityName"></ngxdatatable>
+                    </div>
+                  </div>
+              </div>
+          </div>
+
+          <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 bottom-30" *ngIf="objChildIncident">
+              <div widget class="card">
+                  <div class="card-header">
+                      <span>Placed Children Incident </span>
+                      <div class="widget-controls">
+                          <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                          <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                      </div>
+                  </div>
+                  <div class="card-body widget-body">
+                    <div class="w-200 pull-right bottom-15">
+                      <div class="input-group input-group-sm">
+                          <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                          <input class="form-control" id="table-search-input" [(ngModel)]="searchTextChildIncident" type="text" placeholder="Search...">
+                      </div>
+                  </div>
+                    <table class="table table-striped table-hover table-sm">
+                        <tbody *ngIf="objChildIncident.length==0">
+                            <tr>
+                                <th  colspan="9" class="text-center">
+                                    No Records found.
+                                </th>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="table-responsive datatable" *ngIf="objChildIncident.length!=0">
+                        <ngx-datatable [rows]="objChildIncident | SearchFilter : 'EthnicityName': searchTextChildIncident"
+                                class="bootstrap"
+                                rowHeight="auto"
+                                [columnMode]="'force'"
+                                [limit]="10"
+                                [scrollbarH]="true"
+                                [footerHeight]="50"
+                                [messages]="footerMessage">
+                                <ngx-datatable-column name="Nature of Incident" prop="EthnicityName" width="70" [sortable]="true">
+                                    <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                                      <span class="clschildIncident"><a title="Click to view more info" (click)="fnChildIncidentDetailView(row.EthnicityId)"> {{value}}</a></span>
+                                    </ng-template>
+                                </ngx-datatable-column>
+                                <ngx-datatable-column name="Open Count" prop="Count" [sortable]="true" width="10">
+                                    <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                                    {{value}}
+                                    </ng-template>
+                                </ngx-datatable-column>
+
+                        </ngx-datatable>
+
+                    </div>
+
+                </div>
+              </div>
+          </div>
+
+          <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 bottom-30"  *ngIf="objBehaviourNameWithColor">
+
+              <div widget class="datamap card">
+                  <div class="card-header">
+                      <span>Placed Children Behaviour </span>
+                      <div class="widget-controls">
+                          <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                          <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                      </div>
+                  </div>
+                  <div class="card-body widget-body ">
+                      <table class="table table-striped table-hover table-sm">
+                          <thead>
+                              <tr>
+                                  <th>Color</th>
+                                  <th>Behaviour</th>
+                                  <th>Count</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                              <tr *ngFor="let item of objBehaviourNameWithColor;let i=index">
+                                  <td style="width:17%">
+                                      <div class="progress" style="margin-top: 10px">
+                                          <div progress-animate class="progress-bar progress-bar-striped" role="progressbar" [ngStyle]="{'height':'10px','width':'100%','background-color':item.ColorCode }"></div>
+                                      </div>
+                                  </td>
+                                  <td>
+                                      <b>{{lstBehaviourType[i]}}</b><br /> ({{item.BehaviourNames}} )
+                                  </td>
+                                  <td>&nbsp; {{item.Count}}</td>
+                              </tr>
+                          </tbody>
+                      </table>
+                  </div>
+              </div>
+          </div>
+
+      </div>
+
+      <!--scrolled data bellow-->
+      <div class="row " *ngIf="!LodingOnScroll && showFinancialYear">
+          <div class="col-md-12  bottom-15">
+              <div widget  style="height:100px">
+                  <div class="col-md-12" style="text-align:center">
+                      <br />
+                      <i class="fa fa-spinner fa-spin" style="font-size: 50px;color: #024a88;"></i>
+                     <br />
+                      Loading...
+                  </div>
+
+              </div>
+          </div>
+
+      </div>
+      <div class="row " *ngIf="showFinancialYear && LodingOnScroll">
+          <div class="col-md-12  bottom-15">
+              <div widget class="card card-outline-success">
+                  <div class="col-md-12" style="text-align:center">
+                      Financial Year (April - March) <input name="FinancialYearSelecRadio" type="radio" [value]="maxYear" checked="checked" (click)="fnYearChange(maxYear)">  {{maxYear}} - {{maxYear+1}} <input name="FinancialYearSelecRadio" type="radio" [value]="minYear" (click)="fnYearChange(minYear)">  {{minYear}} - {{minYear+1}}
+                      <span style="color:red;padding-left:40px">* Below figure shows based on selected financial year.</span>
+                  </div>
+
+              </div>
+          </div>
+
+      </div>
+
+
+  
+      <!--Row 4-->
+      <div class="row" *ngIf="objDashbordInfoScroll && objDashbordInfoScroll.IsShowDashboard && LodingOnScroll">
+              <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 bottom-30">
+
+              <div widget class="datamap card">
+                  <div class="card-header">
+                      <span>Placement offer</span>
+                      <div class="widget-controls">
+                          <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                          <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                      </div>
+                  </div>
+
+                  <div class="card-body widget-body" *ngIf="objPlacementoffer">
+                      <div *ngFor="let item of objPlacementoffer;let i=index">
+                          <h6>{{item.PlacementofferName}}<span class="pull-right badge badge-pill badge-{{objColor[i]}}">{{item.Count}}</span></h6>
+                          <div class="progress">
+                              <div progress-animate class="progress-bar bg-{{objColor[i]}}" role="progressbar" [ngStyle]="{'width':((item.Count/item.TotalCount)*100) +'%' }"></div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+
+      </div>
+
+      <!--Row 5-->
+      <div class="row" *ngIf="objDashbordInfoScroll && objDashbordInfoScroll.IsShowDashboard && LodingOnScroll">
+          <div class="col-md-3 col-sm-6 bottom-30">
+              <div class="card small-info-box">
+                  <div class="media">
+                      <span class="media-left">
+                          <i class="fa fa-child"></i>
+                      </span>
+                      <div class="media-body text-right">
+                          <h6 class="media-heading no-margin">Children Placed</h6>
+                          <span counter [count]="objDashbordInfoScroll.NumberofChildrenPlaced" [increment]="0" [interval]="0"></span>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <div class="col-md-3 col-sm-6 bottom-30">
+              <div class="card small-info-box">
+                  <div class="media">
+                      <span class="media-left">
+                          <i class="fa fa-child"></i>
+                      </span>
+                      <div class="media-body text-right">
+                          <h6 class="media-heading no-margin">Placments Ended</h6>
+                          <span counter [count]="objDashbordInfoScroll.NumberofPlacmentsEnded" [increment]="0" [interval]="0"></span>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <div class="col-md-3 col-sm-6 bottom-30">
+              <div class="card small-info-box">
+                  <div class="media">
+                      <span class="media-left">
+                          <i class="fa fa-child"></i>
+                      </span>
+                      <div class="media-body text-right">
+                          <h6 class="media-heading no-margin">Staying Put</h6>
+                          <span counter [count]="objDashbordInfoScroll.StayInPutPlacedFinacialYear" [increment]="0" [interval]="0"></span>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <div class="col-md-3 col-sm-6 bottom-30">
+              <div class="card small-info-box">
+                  <div class="media">
+                      <span class="media-left">
+                          <i class="fa fa-child"></i>
+                      </span>
+                      <div class="media-body text-right">
+                          <h6 class="media-heading no-margin">Child Missing Placement</h6>
+                          <span counter [count]="objDashbordInfoScroll.ChildMissingPlacementTotal" [increment]="0" [interval]="0"></span>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+      <!--Row 6-->
+      <div class="row" *ngIf="objDashbordInfoScroll && objDashbordInfoScroll.IsShowDashboard && LodingOnScroll">
+          <div class="col-lg-3 col-sm-6 bottom-30">
+              <div class="card small-info-box card-success">
+                  <div class="media">
+                      <span class="media-left">
+                          <i class="fa fa fa-clock-o"></i>
+                      </span>
+                      <div class="media-body text-right">
+                          <h6 class="media-heading no-margin">Child Missing Placement - Less than 24 hours</h6>
+                          <span counter [count]="objDashbordInfoScroll.DurationOfTimeMissing24hrs" [increment]="0" [interval]="0"></span>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <div class="col-lg-3 col-sm-6 bottom-30">
+              <div class="card small-info-box card-primary ">
+                  <div class="media">
+                      <span class="media-left">
+                          <i class="fa fa fa-clock-o"></i>
+                      </span>
+                      <div class="media-body text-right">
+                          <h6 class="media-heading no-margin">Child Missing Placement - Between 1 to 6 days</h6>
+                          <span counter [count]="objDashbordInfoScroll.DurationOfTimeMissing1to6days" [increment]="0" [interval]="0"></span>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <div class="col-lg-3 col-sm-6 bottom-30">
+              <div class="card small-info-box card-warning">
+                  <div class="media">
+                      <span class="media-left">
+                          <i class="fa fa fa-clock-o"></i>
+                      </span>
+                      <div class="media-body text-right">
+                          <h6 class="media-heading no-margin">Child Missing Placement - Between 1 week to 28 days</h6>
+                          <span counter [count]="objDashbordInfoScroll.DurationOfTimeMissing1wkto28days" [increment]="0" [interval]="0"></span>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <div class="col-lg-3 col-sm-6 bottom-30">
+              <div class="card small-info-box card-danger">
+                  <div class="media">
+                      <span class="media-left">
+                          <i class="fa fa fa-clock-o"></i>
+                      </span>
+                      <div class="media-body text-right">
+                          <h6 class="media-heading no-margin">Child Missing Placement - More than 28 days</h6>
+                          <span counter [count]="objDashbordInfoScroll.DurationOfTimeMissingAbove28days" [increment]="0" [interval]="0"></span>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div class="row" *ngIf="objDashbordInfoScroll && objDashbordInfoScroll.IsShowDashboard && LodingOnScroll">
+          <div class="col-lg-3 col-sm-6 bottom-30">
+              <div class="card small-info-box card-default">
+                  <div class="media">
+                      <span class="media-left">
+                          <i class="fa fa fa-clock-o"></i>
+                      </span>
+                      <div class="media-body text-right">
+                          <h6 class="media-heading no-margin">No. of Times Children Went Missing From Placement - Less than 24 hours</h6>
+                          <span counter [count]="objDashbordInfoScroll.NoOfTimeMissing24hrs" [increment]="0" [interval]="0"></span>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <div class="col-lg-3 col-sm-6 bottom-30">
+              <div class="card small-info-box card-warning">
+                  <div class="media">
+                      <span class="media-left">
+                          <i class="fa fa fa-clock-o"></i>
+                      </span>
+                      <div class="media-body text-right">
+                          <h6 class="media-heading no-margin">No. of Times Children Went Missing From Placement - Between 1 to 6 days</h6>
+                          <span counter [count]="objDashbordInfoScroll.NoOfTimeMissing1to6days" [increment]="0" [interval]="0"></span>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <div class="col-lg-3 col-sm-6 bottom-30">
+              <div class="card small-info-box card-danger">
+                  <div class="media">
+                      <span class="media-left">
+                          <i class="fa fa fa-clock-o"></i>
+                      </span>
+                      <div class="media-body text-right">
+                          <h6 class="media-heading no-margin">No. of Times Children Went Missing From Placement - Between 1 week to 28 days</h6>
+                          <span counter [count]="objDashbordInfoScroll.NoOfTimeMissing1wkto28days" [increment]="0" [interval]="0"></span>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <div class="col-lg-3 col-sm-6 bottom-30">
+              <div class="card small-info-box card-success">
+                  <div class="media">
+                      <span class="media-left">
+                          <i class="fa fa fa-clock-o"></i>
+                      </span>
+                      <div class="media-body text-right">
+                          <h6 class="media-heading no-margin">No. of Times Children Went Missing From Placement - More than 28 days</h6>
+                          <span counter [count]="objDashbordInfoScroll.NOOfTimeMissingAbove28days" [increment]="0" [interval]="0"></span>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <!--Row 7-->
+      <div class="row " *ngIf="objDashbordInfoScroll && objDashbordInfoScroll.IsShowDashboard && LodingOnScroll">
+
+          <div class="col-xl-7 col-lg-7 col-md-12 col-sm-12 bottom-30">
+
+              <div widget class="datamap card">
+                  <div class="card-header">
+                      <span>Placement Type</span>
+                      <div class="widget-controls">
+                          <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                          <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                      </div>
+                  </div>
+                  <div class="card-body widget-body" *ngIf="objChildPlacementType">
+                      <div *ngFor="let item of objChildPlacementType;let i=index">
+                          <h6>{{item.PlacementofferName}}<span class="pull-right badge badge-pill badge-{{objColor[i]}}">{{item.Count}}</span></h6>
+                          <div class="progress">
+                              <div progress-animate class="progress-bar bg-{{objColor[i]}}" role="progressbar" [ngStyle]="{'width':((item.Count/item.TotalCount)*100) +'%' }"></div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <div class="col-xl-5 col-lg-5 col-md-12 col-sm-12 bottom-30" >
+              <div widget class="card">
+                  <div class="card-header">
+                      <span>Child Ethnicity</span>
+                      <div class="widget-controls">
+                          <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                          <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                      </div>
+                  </div>
+                  <div class="card-body widget-body">
+                    <table class="table table-striped table-hover table-sm">
+                    <tbody *ngIf="objChildEthnicity.length==0">
+                        <tr>
+                            <th colspan="9" class="text-center">
+                                No Records found.
+                            </th>
+
+                        </tr>
+                    </tbody>
+                    </table>
+                    <div class="table-responsive datatable" *ngIf="objChildEthnicity.length>0">
+                        <ngxdatatable [rows]="objChildEthnicity" [columns]="childEthnicityColumns" searchFilter="true" searchFields="EthnicityName"></ngxdatatable>
+                    </div>
+                  </div>
+              </div>
+          </div>
+
+      </div>
+      <!--Row 8-->
+      <!--Row 9-->
+      <!--chat-->
+
+      
+
+
+      <!--Child Incident View Details-->
+      <div>
+          <button #btnViewChildIncidentDetails type="button" [hidden]="true" class="btn btn-primary" data-toggle="modal" data-target="#lg-modal2">Large</button>
+          <div class="modal fade" id="lg-modal2" tabindex="-1" role="dialog" aria-labelledby="modal-large-label" style="display: none;">
+              <div class="modal-dialog modal-lg" role="document">
+                  <div class="modal-content">
+                      <div class="modal-header state modal-primary">
+                          <h4 class="modal-title" id="modal-large-label">
+                              <i class="fa fa-child"></i>
+                              Child Incident
+                          </h4>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                      </div>
+                      <!--start-->
+                      <div class="row mbm-20">
+                          <div class="col-lg-12 col-12 bottom-30">
+                              <div class="clearfix">
+                                  <div  widget class="card" >
+                                      <div  class="card-body widget-body">
+                                          <div class="w-200 pull-right bottom-15">
+                                              <div class="input-group input-group-sm">
+                                                  <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                                                  <input class="form-control" id="table-search-input" [(ngModel)]="searchTextIncide" name="searchText" type="text" placeholder="Search...">
+                                              </div>
+                                          </div>
+
+                                  <div *ngIf="lstIncidentInfo.length>0">
+                                      <div class="table-responsive datatable">
+                                          <table class="table table-striped table-hover table-sm" >
+                                              <thead>
+                                                  <tr>
+                                                      <th>Child / Young person Name (Code)</th>
+                                                      <th>Nature Of Incident</th>
+                                                      <th>Date of Incident</th>
+                                                  </tr>
+                                              </thead>
+                                              <tbody *ngIf="lstIncidentInfo.length>0">
+                                                  <tr *ngFor="let item of lstIncidentInfo | groupBy:'SequenceNo' | SearchDynamicFilter : 'IncidentDate,NatureOfIncidentId,CreatedUserId': searchTextIncide">
+                                                      <td *ngFor="let subitem of item.value | filter : 'FieldName':'CreatedUserId'">{{ subitem.FieldValue}}</td>
+                                                      <td *ngFor="let subitem of item.value | filter : 'FieldName':'NatureOfIncidentId'">{{ subitem.hasOwnProperty('DynamicValue')?subitem.FieldValue:subitem.FieldValue!=""?subitem.FieldValueText:"" }}</td>
+                                                      <td *ngFor="let subitem of item.value | filter : 'FieldName':'IncidentDate'">{{ subitem.FieldValue |dateFormat:'dd/MM/yyyy HH:mm'}}</td>
+                                                  </tr>
+                                              </tbody>
+
+                                          </table>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                              </div>
+                          </div>
+                      </div>
+                      <!--end-->
+                  </div>
+              </div>
+          </div>
+      </div>
+      <!--Child Incident Details View End-->
+
+       <!--Grid  View Details-->
+       <div>
+          <button #btnViewGridDetails type="button" [hidden]="true" class="btn btn-primary" data-toggle="modal"
+           data-target="#lg-btnViewGridDetails">Large</button>
+          <div class="modal fade" id="lg-btnViewGridDetails" tabindex="-1" role="dialog"
+           aria-labelledby="modal-large-label" style="display: none;">
+              <div class="modal-dialog modal-lg" role="document">
+                  <div class="modal-content">
+                      <div class="modal-header state modal-primary">
+                          <h4 class="modal-title" id="modal-large-label">
+                              <i class="fa fa fa-user"></i>
+                              {{insGridTitle}}
+                          </h4>
+                          <button type="button" class="close" data-dismiss="modal"
+                           aria-label="Close"><span aria-hidden="true">x</span></button>
+                      </div>
+                      <!--start-->
+
+                      <div class="row mbm-20">
+                          <div class="col-lg-12 col-12 bottom-30">
+                              <div  widget class="card" >
+                                  <div  class="card-body widget-body">
+                                      <div class="w-200 pull-right bottom-15">
+                                          <div class="input-group input-group-sm">
+                                              <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                                              <input class="form-control" id="table-search-input" [(ngModel)]="searchTextGrid"
+                                               name="searchText" type="text" placeholder="Search...">
+                                          </div>
+                                      </div>
+                                      <!-- <div class="table-responsive datatable">
+                                          <table class="table table-striped table-hover table-sm"
+                                           [mfData]="lstGridDetails | SearchFilter : 'Name,SCName,Code,Details': searchTextGrid"
+                                           #mf="mfDataTable" [mfRowsOnPage]="10">
+
+                                              <tbody *ngIf="lstGridDetails.length == 0">
+                                                  <tr>
+                                                      <th *ngIf="!loadingGrid" colspan="8" class="text-center">
+                                                          No Records found.
+                                                      </th>
+                                                      <th *ngIf="loadingGrid" colspan="8" class="text-center">
+                                                          <i class="fa fa-spinner fa-spin"></i> Loading please wait...
+                                                      </th>
+                                                  </tr>
+                                              </tbody>
+                                              <!-- ApprovedCarerEthnicity ->
+                                              <thead *ngIf="insGridTitle=='Approved Carer Ethnicity'">
+                                                  <tr>
+                                                      <th><mfDefaultSorter by="Name">	Foster Carer Name</mfDefaultSorter></th>
+                                                      <th><mfDefaultSorter by="CarerTypeName">Type</mfDefaultSorter></th>
+
+                                                  </tr>
+                                              </thead>
+                                              <tbody *ngIf="lstGridDetails.length>0 && insGridTitle=='Approved Carer Ethnicity'">
+                                                  <tr *ngFor="let item of mf.data">
+                                                      <td>{{item.Name}} {{item.SCName}} {{item.Code!=null? '('+item.Code+')':''}}</td>
+                                                      <td>{{item.CarerTypeName}}</td>
+                                                  </tr>
+                                              </tbody>
+
+                                              <!-- Approved Carer Places ->
+                                              <thead *ngIf="insGridTitle=='Approved Carer Places'">
+                                                  <tr>
+                                                      <th><mfDefaultSorter by="CarerName">	Foster Carer Name</mfDefaultSorter></th>
+                                                      <th><mfDefaultSorter by="Name">Child / Young person Name</mfDefaultSorter></th>
+                                                      <th><mfDefaultSorter by="Name">	Placement Date</mfDefaultSorter></th>
+                                                      <th><mfDefaultSorter by="Ethnicity">LA Name</mfDefaultSorter></th>
+                                                      <th><mfDefaultSorter by="Ethnicity">LA Social Worker Name</mfDefaultSorter></th>
+                                                  </tr>
+                                              </thead>
+                                              <tbody *ngIf="lstGridDetails.length>0 && insGridTitle=='Approved Carer Places'">
+                                                  <tr *ngFor="let item of mf.data">
+                                                      <td >{{item.CarerName}}</td>
+                                                      <td>{{item.Name}} {{item.Code!=null? '('+item.Code+')':''}}</td>
+                                                      <td>{{item.PlacementDate|date:'dd/MM/yyyy'}}</td>
+                                                      <td>{{item.LAName}}</td>
+                                                      <td>{{item.LASWName}}</td>
+                                                  </tr>
+                                              </tbody>
+
+                                              <!-- Placed Children Disability ->
+                                              <thead *ngIf="insGridTitle=='Placed Children Disability'">
+                                                  <tr>
+                                                      <th><mfDefaultSorter by="Name">Child / Young person Name</mfDefaultSorter></th>
+                                                      <th><mfDefaultSorter by="CarerName">	Foster Carer Name</mfDefaultSorter></th>
+                                                      <th><mfDefaultSorter by="PlacementDate">	Placement Date</mfDefaultSorter></th>
+                                                      <th><mfDefaultSorter by="LAName">LA Name</mfDefaultSorter></th>
+                                                      <th><mfDefaultSorter by="LASWName">LA Social Worker Name</mfDefaultSorter></th>
+                                                  </tr>
+                                              </thead>
+                                              <tbody *ngIf="lstGridDetails.length>0 && insGridTitle=='Placed Children Disability'">
+                                                  <tr *ngFor="let item of mf.data">
+                                                      <td>{{item.Name}} {{item.Code!=null? '('+item.Code+')':''}}</td>
+                                                      <td >{{item.CarerName}}</td>
+                                                      <td>{{item.PlacementDate|date:'dd/MM/yyyy'}}</td>
+                                                      <td>{{item.LAName}}</td>
+                                                      <td>{{item.LASWName}}</td>
+                                                  </tr>
+                                              </tbody>
+
+                                              <tfoot>
+                                                  <tr>
+                                                      <td colspan="12">
+                                                          <mfBootstrapPaginator [rowsOnPageSet]="[10, 25, 50, 100]"></mfBootstrapPaginator>
+                                                      </td>
+                                                  </tr>
+                                              </tfoot>
+                                          </table>
+                                      </div> -->
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      <!--end-->
+                  </div>
+              </div>
+          </div>
+      </div>
+      <!--Top  View Details End-->
+
+
+  </div>
+ 
 </div>
 
 <style>

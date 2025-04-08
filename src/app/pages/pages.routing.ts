@@ -15,7 +15,7 @@ export const routes: Routes = [
            
             //Our routing code start
             { path: 'carerinterestinfo', component: CarerInterestInfoComponet, data: { breadcrumb: 'Carer Interest Info' } },
-            { path: 'systemadmin', loadChildren: () => import('./systemadmin/systemadmin.module').then(m => m.SystemAdminModule), data: { breadcrumb: 'تسجيل الأصول' } },
+            { path: 'systemadmin', loadChildren: () => import('./systemadmin/systemadmin.module').then(m => m.SystemAdminModule), data: { breadcrumb: '' } },
             //{ path: 'referral', loadChildren: 'app/pages/child/child.module#ChildModule', data: { breadcrumb: 'Referral' } },
             //End
            

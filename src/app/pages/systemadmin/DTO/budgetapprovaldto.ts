@@ -1,6 +1,7 @@
 ﻿export class BudgetApprovalDTO {
     BudgetApprovalId: number;
     MunicipalId: number;
+    SubMunicipalId:number;
     UserId: number;    
     BudgetApprovals: boolean;
     BudgetApprovalReason: string;
@@ -12,4 +13,5 @@
     BudgetDisparityAction: boolean;
     BudgetDisparityDescription: string;  
     IsActive: boolean;  
+    UploadId:number;
 }

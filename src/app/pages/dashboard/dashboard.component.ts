@@ -94,6 +94,11 @@ export class DashboardComponent implements OnInit {
     PlacedFinacialYear: number = 0;
     DischargedFinacialYear: number = 0;
 
+    WorkOrderOpenCount: number = 0;
+    WorkOrderInProgressCount: number = 0;
+    WorkOrderPendingCount: number = 0;
+    WorkOrderClosedCount: number = 0;
+
     currentFinancialYear: number;
     showFinancialYear = false;
     showAll=false;
@@ -104,6 +109,8 @@ export class DashboardComponent implements OnInit {
     areaOfficeList = [];
     LodingOnScroll = false;
     IsScrolled = false;
+    objTypeOfMaintance;
+    lstDashboard;
     @HostListener('window:scroll')
     _onWindowScroll(): void {
         if (window.scrollY > 550 && this.IsScrolled == false) {
@@ -113,8 +120,22 @@ export class DashboardComponent implements OnInit {
     }
     constructor(private apiService: APICallService, private modal: PagesComponent, rs: DashboardResolver,
         private route: ActivatedRoute, private _appConfig: AppConfig, private renderer: Renderer2) {
-        // this.config = this._appConfig.config;
-        // this.configFn = this._appConfig;
+       
+         this.config = this._appConfig.config;
+         this.configFn = this._appConfig;
+         this.apiService.get("Dashboard", "GetDashboard",parseInt(Common.GetSession("UserId"))).then(data => {
+            this.lstDashboard = data;
+            this.WorkOrderOpenCount=data.WorkOrderOpenCount;
+            this.WorkOrderInProgressCount=data.WorkOrderInProgressCount;
+            this.WorkOrderPendingCount=data.WorkOrderPendingCount;
+            this.WorkOrderClosedCount=data.WorkOrderClosedCount;   
+            this.objTypeOfMaintance=data.TypeOfMaintance;
+            this.fnLoadChart();     
+        })
+        
+        //  this.objTypeOfMaintance=[{ "name": "وقائية", "count": 10 },
+        //     { "name": "دورية", "count": 20 },
+        //     { "name": "تصحيحية ", "count": 15 }];
         // this.IsScrolled = false;
         // this.LodingOnScroll = false;
         // this.UserTypeId = parseInt(Common.GetSession("UserTypeId"));
@@ -140,6 +161,7 @@ export class DashboardComponent implements OnInit {
         //      if(PasswordExpiryDateCount<30 && PasswordExpiryDateCount>0)
         //          this.modal.showInfo("Your password is going to expire in "+PasswordExpiryDateCount+ " day(s)");
         // }
+        
     }
 
     fnShowAll()
@@ -322,78 +344,10 @@ export class DashboardComponent implements OnInit {
         }
 
     }
-    fnLoadChart():void{
-      this.lineChartData.labels = ['April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December', 'January', 'February', 'March'];
-      this.lineChartData.datasets = [
-          {
-              data: this.chartCarerCount,
-              label: 'Carer',
-              fill: true,
-              tension: 0.5,
-              borderWidth: 2,
-              backgroundColor: this.configFn.rgba(this.config.colors.danger, 0.5),
-              borderColor: this.config.colors.danger,
-              pointBorderColor: this.config.colors.default,
-              pointHoverBorderColor:  this.config.colors.danger,
-              pointHoverBackgroundColor: this.config.colors.default,
-              hoverBackgroundColor:  this.config.colors.danger
-          },
-          {
-              data: this.chartChildCount,
-              label: 'Child',
-              fill: true,
-              tension: 0.5,
-              borderWidth: 2,
-              backgroundColor: this.configFn.rgba(this.config.colors.info, 0.5),
-              borderColor: this.config.colors.info,
-              pointBorderColor: this.config.colors.default,
-              pointHoverBorderColor:  this.config.colors.info,
-              pointHoverBackgroundColor: this.config.colors.default,
-              hoverBackgroundColor:  this.config.colors.info
-          },
-      ];
-      this.lineChartOptions = {
-          scales: {
-              y: {
-                  display: true,
-                  beginAtZero: true,
-                  ticks: {
-                      color: this.configFn.rgba(this.config.colors.gray, 0.7),
-                      stepSize: 5000
-                  },
-                  grid: {
-                      display: true,
-                      color: this.configFn.rgba(this.config.colors.gray, 0.1)
-                  }
-              },
-              x: {
-                  display: true,
-                  beginAtZero: true,
-                  ticks: {
-                      color: this.configFn.rgba(this.config.colors.gray, 0.7)
-                  },
-                  grid: {
-                      display: true,
-                      color: this.configFn.rgba(this.config.colors.gray, 0.1)
-                  }
-              }
-          },
-          plugins: {
-              legend: {
-                  display: true,
-                  labels: {
-                      color: this.configFn.rgba(this.config.colors.gray, 0.9),
-                  }
-              },
-              tooltip: {
-                  enabled: true,
-                  backgroundColor: this.configFn.rgba(this.config.colors.main, 0.7)
-              }
-          }
-      }
-      this.pieChartData.labels = ['Closed', 'Current', 'Placed', 'Discharged'];
+    fnLoadChart():void{     
+      this.pieChartData.labels = ['مفتوح لم يبدأ', 'قيد التنفيذ', 'معلق ( وجود تغييرات)', 'مغلق'];
       this.pieChartData.datasets = [{
-        data: [this.ClosedFinacialYear, this.CurrentFinacialYear, this.PlacedFinacialYear, this.DischargedFinacialYear],
+        data: [this.WorkOrderOpenCount, this.WorkOrderInProgressCount, this.WorkOrderPendingCount,this.WorkOrderClosedCount],
         backgroundColor: [
           this.configFn.rgba(this.config.colors.danger, 0.7),
           this.configFn.rgba(this.config.colors.warning, 0.7),
@@ -428,39 +382,39 @@ export class DashboardComponent implements OnInit {
     }
     fnOnInit()
     {
-        if (this.objDashbordInfo) {
-            this.objCarerEthnicity = this.objDashbordInfo.CarerEthnicity;
-          //  this.objChildEthnicity = this.objDashbordInfo.ChildEthnicity;
-            if (this.objDashbordInfo.ChildEthnicity2 != null && this.objDashbordInfo.ChildEthnicity2.length > 0) {
+        // if (this.objDashbordInfo) {
+        //     this.objCarerEthnicity = this.objDashbordInfo.CarerEthnicity;
+        //   //  this.objChildEthnicity = this.objDashbordInfo.ChildEthnicity;
+        //     if (this.objDashbordInfo.ChildEthnicity2 != null && this.objDashbordInfo.ChildEthnicity2.length > 0) {
 
-                this.objDashbordInfo.ChildEthnicity2.forEach(item => {
+        //         this.objDashbordInfo.ChildEthnicity2.forEach(item => {
 
-                    let findEthi = this.objChildEthnicity.filter(x => x.EthnicityId == item.EthnicityId);
-                    if (findEthi.length > 0) {
-                        findEthi[0].Count = findEthi[0].Count + item.Count;
-                    }
-                    else {
-                        this.objChildEthnicity.push(item);
-                    }
-                })
-            }
+        //             let findEthi = this.objChildEthnicity.filter(x => x.EthnicityId == item.EthnicityId);
+        //             if (findEthi.length > 0) {
+        //                 findEthi[0].Count = findEthi[0].Count + item.Count;
+        //             }
+        //             else {
+        //                 this.objChildEthnicity.push(item);
+        //             }
+        //         })
+        //     }
 
-           // this.objPlacementoffer = this.objDashbordInfo.CarerPlacementoffer;
-           /// this.objChildPlacementType = this.objDashbordInfo.ChildPlacementoffer;
+        //    // this.objPlacementoffer = this.objDashbordInfo.CarerPlacementoffer;
+        //    /// this.objChildPlacementType = this.objDashbordInfo.ChildPlacementoffer;
 
-            this.objSchedule7Notification = this.objDashbordInfo.Schedule7Notification;
-            this.objBehaviourNameWithColor = this.objDashbordInfo.ChildBehaviourColorMapping;
-            this.objobjChildDisability = this.objDashbordInfo.ChildDisability;
-            this.objCarerSocialWorker = this.objDashbordInfo.DashboardCarerSocialWorker;
-            this.objChildIncident = this.objDashbordInfo.ChildIncident;
-            this.objCarerApprovedDetails = this.objDashbordInfo.CarerApprovedDetails;
-            this.carerApprovedDetails = this.objCarerApprovedDetails.map(item => ({
-              ...item,CarerName : item.PCCarerName + item.SCCarerName + '(' + item.CarerCode + ')'
-            }) );
+        //     this.objSchedule7Notification = this.objDashbordInfo.Schedule7Notification;
+        //     this.objBehaviourNameWithColor = this.objDashbordInfo.ChildBehaviourColorMapping;
+        //     this.objobjChildDisability = this.objDashbordInfo.ChildDisability;
+        //     this.objCarerSocialWorker = this.objDashbordInfo.DashboardCarerSocialWorker;
+        //     this.objChildIncident = this.objDashbordInfo.ChildIncident;
+        //     this.objCarerApprovedDetails = this.objDashbordInfo.CarerApprovedDetails;
+        //     this.carerApprovedDetails = this.objCarerApprovedDetails.map(item => ({
+        //       ...item,CarerName : item.PCCarerName + item.SCCarerName + '(' + item.CarerCode + ')'
+        //     }) );
 
-            //  console.log(this.objCarerSocialWorker);
-            this.fnLoadChart();
-        }
+        //     //  console.log(this.objCarerSocialWorker);
+        //     this.fnLoadChart();
+        // }
     }
     isDefaultSortOrderVal: string;
     lstIncidentInfo = [];

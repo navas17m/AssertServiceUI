@@ -1,8 +1,9 @@
 ﻿export class ComplianceAndRegulatoryDTO {
     ComplianceAndRegulatoryId: number;
     MunicipalId: number;
+    SubMunicipalId:number;
     UserId: number;    
-    Activity: string;
+    ComplianceAndRegulatoryActivityId: number;
     Description: string;
     YesOrNo:boolean;
     BriefDescription:string;

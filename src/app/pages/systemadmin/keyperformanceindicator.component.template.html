@@ -9,7 +9,8 @@
                 <div style="min-height:300px">                   
                     <div class="form-group">
                         <label class=""> فئة مؤشر الأداء الرئيسي </label>                       
-                        <select *ngIf="lstKeyPerformanceIndicatorCategory.length>0" required formControlName="KeyPerformanceIndicatorCategory" class="form-control"  
+                        <select *ngIf="lstKeyPerformanceIndicatorCategory.length>0" #KeyPerformanceIndicatorName required 
+                            (change)="fnLoadKeyPerformanceIndicatorName(KeyPerformanceIndicatorName.value)" formControlName="KeyPerformanceIndicatorCategory" class="form-control"  
                             [(ngModel)]="objKeyPerformanceIndicatorDTO.KeyPerformanceIndicatorCategoryId">
                             <option *ngFor="let op of lstKeyPerformanceIndicatorCategory" value="{{op.KeyPerformanceIndicatorCategoryId}}">
                                 {{op.KeyPerformanceIndicatorCategoryName}}
@@ -21,8 +22,13 @@
                     </div>
                     <div class="form-group">
                         <label class="">اسم مؤشر الأداء الرئيسي</label>
-                        <input formControlName="KeyPerformanceIndicatorName" required type="text" class="form-control" 
-                        [(ngModel)]="objKeyPerformanceIndicatorDTO.KeyPerformanceIndicatorName" />  
+                        <select required   formControlName="KeyPerformanceIndicatorName" class="form-control"  [(ngModel)]="objKeyPerformanceIndicatorDTO.KeyPerformanceIndicatorNameId">
+                            <option *ngFor="let op of lstKeyPerformanceIndicatorName" value="{{op.KeyPerformanceIndicatorNameId}}">
+                                {{op.KeyPerformanceIndicator}}
+                            </option>
+                        </select> 
+                        <!-- <input formControlName="KeyPerformanceIndicatorName" required type="text" class="form-control" 
+                        [(ngModel)]="objKeyPerformanceIndicatorDTO.KeyPerformanceIndicatorName" />   -->
                         <div *ngIf="(!_Form.controls.KeyPerformanceIndicatorName.valid && submitted && _Form.controls.KeyPerformanceIndicatorName.errors.required )" class="alert alert-danger">
                             أدخل اسم مؤشر الأداء الرئيسي
                         </div>                    
@@ -31,17 +37,7 @@
                         <label class="">وصف </label>
                         <textarea [(ngModel)]="objKeyPerformanceIndicatorDTO.Description" class="form-control" 
                         formControlName="Description"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label class="">خط الأساس</label>
-                        <input formControlName="Baseline" type="text" class="form-control" 
-                        [(ngModel)]="objKeyPerformanceIndicatorDTO.Baseline" />                      
-                    </div>
-                    <div class="form-group">
-                        <label class="">قادم من خلال </label>
-                        <input formControlName="ComingThrough" type="text" class="form-control" 
-                        [(ngModel)]="objKeyPerformanceIndicatorDTO.ComingThrough" />                      
-                    </div>                             
+                    </div>                                         
                     <div class="form-group">
                         <!-- <SubmitButton (Click)="Submit(_Form,ddCarerList.BindValue)" [IsLoading]="isLoading" [Text]="'Assign'"></SubmitButton> -->
                         <button  (click)="Submit(_Form)"  id="btnSubmit"  class="btn btn-success expand-right">حفظ</button>

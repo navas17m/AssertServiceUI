@@ -1,9 +1,10 @@
 ﻿export class KeyPerformanceIndicatorDTO {
     KeyPerformanceIndicatorId: number;
     MunicipalId: number;
+    SubMunicipalId:number;
     UserId: number;    
     KeyPerformanceIndicatorCategoryId: number;
-    KeyPerformanceIndicatorName: string;
+    KeyPerformanceIndicatorNameId: string;
     Description:string;
     Baseline:string;
     ComingThrough:string;   

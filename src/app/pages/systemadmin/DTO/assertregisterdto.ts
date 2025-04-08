@@ -9,6 +9,7 @@
     GoogleMapsLink:string;
     DateOfPurchase: Date=null;
     DepartmentName:string;
+    DateOfInspection: Date=null;
     DateOfLastInspection: Date=null;
     AccidentLog: boolean;
     StrategyLastMaintenanceId: number=0;
@@ -24,4 +25,7 @@
     IsActive:boolean;
     AssertId:number;
     SubAssertId:number;
+    SubMunicipalId:number;
+    UploadEvidenseId:number;
+    UploadEvidenseId1:number;
 }

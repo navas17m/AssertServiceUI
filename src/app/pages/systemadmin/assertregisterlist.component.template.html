@@ -24,6 +24,16 @@
                     [scrollbarH]="true"
                     [footerHeight]="50"
                     >
+                    <ngx-datatable-column name="تأكيد الاسم" prop="AssertName" width="80" [sortable]="true">
+                        <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                          <div style="text-align: right;"> {{value}} </div> 
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="تأكيد الاسم الفرعي" prop="SubAssertName" width="80" [sortable]="true">
+                        <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                          <div style="text-align: right;"> {{value}} </div> 
+                        </ng-template>
+                    </ngx-datatable-column>
                     <ngx-datatable-column name="اسم البلدية" prop="IdentificationNumber" width="80" [sortable]="true">
                         <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
                           <div style="text-align: right;"> {{value}} </div> 

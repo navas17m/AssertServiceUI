@@ -27,15 +27,15 @@ export class RiskManagementandContingencyPlanComponent {
     lstYesPartiallyNo=[
         {
           "YesPartiallyNoId": 1,
-          "YesPartiallyNo": "Yes"
+          "YesPartiallyNo": "نعم"
         },
         {
           "YesPartiallyNoId": 2,
-          "YesPartiallyNo": "Partially"
+          "YesPartiallyNo": "جزئيا"
         },
         {
           "YesPartiallyNoId": 3,
-          "YesPartiallyNo": "No"
+          "YesPartiallyNo": "لا"
         }
       ];
     lstAssetstatus=[];
@@ -75,6 +75,7 @@ export class RiskManagementandContingencyPlanComponent {
                     this.objRiskManagementandContingencyPlanDTO.IsActive=true;
                     this.objRiskManagementandContingencyPlanDTO.UserId=parseInt(Common.GetSession("UserId"));
                     this.objRiskManagementandContingencyPlanDTO.MunicipalId=parseInt(Common.GetSession("MunicipalId"));
+                    this.objRiskManagementandContingencyPlanDTO.SubMunicipalId=parseInt(Common.GetSession("SubMunicipalId"));
                     this.apiService.post(this.controllerName, "AddRiskManagementandContingencyPlan", this.objRiskManagementandContingencyPlanDTO).then(data => {this.Respone("save")});
                 }
                 else
@@ -94,6 +95,7 @@ export class RiskManagementandContingencyPlanComponent {
                     this.objRiskManagementandContingencyPlanDTO.IsActive=true;
                     this.objRiskManagementandContingencyPlanDTO.UserId=parseInt(Common.GetSession("UserId"));
                     this.objRiskManagementandContingencyPlanDTO.MunicipalId=parseInt(Common.GetSession("MunicipalId"));
+                    this.objRiskManagementandContingencyPlanDTO.SubMunicipalId=parseInt(Common.GetSession("SubMunicipalId"));
                     this.apiService.post(this.controllerName, "AddRiskManagementandContingencyPlan", this.objRiskManagementandContingencyPlanDTO).then(data => {this.Respone("save")});
                 }
                 else

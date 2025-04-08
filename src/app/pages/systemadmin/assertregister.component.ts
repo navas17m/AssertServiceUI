@@ -1,4 +1,5 @@
 ﻿import { ThisReceiver } from '@angular/compiler';
+import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ItemsList } from '@ng-select/ng-select/lib/items-list';
@@ -10,6 +11,7 @@ import { UserAuditHistoryDetailDTO } from '../common';
 import * as moment from 'moment';
 import { Router,ActivatedRoute } from '@angular/router';
 import { AssertRegister } from './DTO/assertregisterdto';
+import { environment } from '../../../environments/environment';
 
 @Component({
     selector: 'AssertRegister',
@@ -32,7 +34,9 @@ export class AssertRegisterComponent {
     lstUtilizationrate=[];lstPriority=[];
     carerIds; 
     objQeryVal; type="save";lstAssert=[];lstSubAssert=[]
-    constructor(private apiService: APICallService, private activatedroute: ActivatedRoute, private _router: Router, private _formBuilder: FormBuilder, private pComponent: PagesComponent) {
+    constructor(private apiService: APICallService, private activatedroute: ActivatedRoute, 
+        private _router: Router, private _formBuilder: FormBuilder, 
+        private pComponent: PagesComponent,private http: HttpClient) {
         //this.objUserCarerMappingDTO.ExpiryDate = null;
         this.BindDropDown();      
         this.activatedroute.params.subscribe(data => { this.objQeryVal = data; });   
@@ -40,10 +44,12 @@ export class AssertRegisterComponent {
             this.type="update";
             this.apiService.get(this.controllerName, "GetAssertRegister",this.objQeryVal.id).then(data => {
                 this.objAssertRegisterDTO=data;   
-                console.log(this.objAssertRegisterDTO);  
+                this.fnLoadSubAssert(this.objAssertRegisterDTO.AssertId);
+                //console.log(this.objAssertRegisterDTO);  
                 this.objAssertRegisterDTO.DateOfPurchase=  this.pComponent.GetDateEditFormat(this.objAssertRegisterDTO.DateOfPurchase);
                 this.objAssertRegisterDTO.DateOfLastInspection= this.pComponent.GetDateEditFormat(this.objAssertRegisterDTO.DateOfLastInspection);
                 this.objAssertRegisterDTO.GuaranteeExpiryDate=this.pComponent.GetDateEditFormat(this.objAssertRegisterDTO.GuaranteeExpiryDate);
+                this.objAssertRegisterDTO.DateOfInspection=this.pComponent.GetDateEditFormat(this.objAssertRegisterDTO.DateOfInspection);
             });
         }
         else
@@ -62,6 +68,7 @@ export class AssertRegisterComponent {
             Dateofpurchase:[],
             Departmentname:[],
             Dateoflastinspection:[],
+            DateOfInspection:[],
             StrategyLastMaintenance:['0'],
             Assetstatus:[],
             AccidentLog:[],
@@ -72,7 +79,8 @@ export class AssertRegisterComponent {
             Priority:[],
             Maintenancecontractforasset:[],
             AccidentDescription:[],
-            Evidence:[]
+            Evidence:[],
+
         });       
        
         //this.apiService.post(this.controllerName, "TestPost",body).then(data => {this.Respone(data, "save")});
@@ -93,58 +101,56 @@ export class AssertRegisterComponent {
            
          })
     } 
-       
+    selectedFile!: File;
+    selectedFile1!: File;
+    onFileSelectedEvidence(event: any) {
+        this.selectedFile = event.target.files[0];
+      }
+    onFileSelectedEvidence1(event: any) {
+    this.selectedFile1 = event.target.files[0];
+    }
+   
     IsShowError = false;
-    Submit(form) {
-        this.submitted = true;
-        // if (form.valid && carerlist.length == 0)
-        //     this.IsShowError = true;
-       
+    async Submit(form) {
+        this.submitted = true;      
         if (form.valid ) {
            // console.log(this.objAssertRegisterDTO);
-            this.isLoading = true;
-            //var res= carerlist.map(item => item.id);
-            //this.objUserCarerMappingDTO.CarerParentIds = res;
-           
-            // const body = {        
-            //     AccidentLog: true,
-            //     AssetStatusId: '1',
-            //     CoordinatesX: 2,
-            //     CoordinatesY: 2,
-            //     DateOfLastInspection: '2025-02-25',
-            //     DateOfPurchase: '2025-02-25',
-            //     DepartmentName: 'ad',
-            //     FrequentProblems: 'ad',
-            //     GoogleMapsLink: 'ad',
-            //     GuaranteeExpiryDate: '2025-02-25',
-            //     HistoricalCostsOfMaintenance: 'asd',
-            //     IdentificationNumber: 'fsdf',
-            //     LocationOfOrigin: 'sfsdf',
-            //     MaintenanceContractForAsset: 'adsa',
-            //     PriorityId: '1',
-            //     StrategyLastMaintenanceId: '1',
-            //     UtilizationRatesId: '1'
-            // };
-            //this.objUserCarerMappingDTO.ExpiryDate = this.pComponent.GetDateSaveFormat(this.objUserCarerMappingDTO.ExpiryDate);
-           
+            this.isLoading = true;       
             this.objAssertRegisterDTO.DateOfPurchase=  this.pComponent.GetDateSaveFormat(this.objAssertRegisterDTO.DateOfPurchase);
             this.objAssertRegisterDTO.DateOfLastInspection= this.pComponent.GetDateSaveFormat(this.objAssertRegisterDTO.DateOfLastInspection);
             this.objAssertRegisterDTO.GuaranteeExpiryDate=this.pComponent.GetDateSaveFormat(this.objAssertRegisterDTO.GuaranteeExpiryDate);
-           
-            if(this.type=="save")
-            {               
-                //console.log(this.objAssertRegisterDTO);  
-                this.objAssertRegisterDTO.UserId=parseInt(Common.GetSession("UserId"));
-                this.objAssertRegisterDTO.MunicipalId=parseInt(Common.GetSession("MunicipalId"));  
-                this.objAssertRegisterDTO.IsActive=true;           
-                this.apiService.post(this.controllerName, "AddAssertRegister", this.objAssertRegisterDTO).then(data => {this.Respone("save")});
-            }
-            else
+            this.objAssertRegisterDTO.DateOfInspection=this.pComponent.GetDateSaveFormat(this.objAssertRegisterDTO.DateOfInspection);
+            if(this.selectedFile)
             {
-                this.apiService.put(this.controllerName, "UpdateAssertRegister", this.objAssertRegisterDTO).then(data => {this.Respone("save")});
+                const formData = new FormData();
+                formData.append('file', this.selectedFile);  
+                const response = await this.http.post<any>(environment.api_url + '/api/FileUpload', formData).toPromise();
+                this.objAssertRegisterDTO.UploadEvidenseId=response;                
+                // this.apiService.uploadFile(this.selectedFile).subscribe(response => {
+                //     this.objAssertRegisterDTO.UploadEvidenseId=response;
+                // });
             }
-            //this.services.post(this.objUserCarerMappingDTO, type).then(data => this.Respone(data, type));
-        }
+            if(this.selectedFile1)
+            {
+                const formData = new FormData();
+                formData.append('file', this.selectedFile1);  
+                const response = await this.http.post<any>(environment.api_url + '/api/FileUpload', formData).toPromise();
+                this.objAssertRegisterDTO.UploadEvidenseId1=response;              
+            }
+            if(this.type=="save")
+                {               
+                    //console.log(this.objAssertRegisterDTO);                    
+                    this.objAssertRegisterDTO.UserId=parseInt(Common.GetSession("UserId"));
+                    this.objAssertRegisterDTO.MunicipalId=parseInt(Common.GetSession("MunicipalId"));  
+                    this.objAssertRegisterDTO.SubMunicipalId=parseInt(Common.GetSession("SubMunicipalId"));
+                    this.objAssertRegisterDTO.IsActive=true;           
+                    this.apiService.post(this.controllerName, "AddAssertRegister", this.objAssertRegisterDTO).then(data => {this.Respone("save")});
+                }
+                else
+                {                    
+                    this.apiService.put(this.controllerName, "UpdateAssertRegister", this.objAssertRegisterDTO).then(data => {this.Respone("save")});
+                }      
+        }       
     }
 
     private Respone(type) {

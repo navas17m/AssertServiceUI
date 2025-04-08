@@ -46,7 +46,7 @@ export class MaintenanceActivityComponent {
             });
         }
         else
-        {
+        { 
             this.objMaintenanceActivityDTO.Maintenancemanagementstyle=false;
             this.objMaintenanceActivityDTO.Approvals=false;
         }
@@ -67,7 +67,13 @@ export class MaintenanceActivityComponent {
             Estimatinglaborcosts:[],
             Approvals:[],
             WorkorderstatusId:[],
-            Postmaintenance:[]
+            Postmaintenance:[],            
+            Actualtimetakenformaintenance:[],
+            MaintenanceCost:[],
+            HRCost:[],
+            HRMaterialCost:[],
+            OtherCost:[],
+            PercentageCompleted:[]
         });       
        
         //this.apiService.post(this.controllerName, "TestPost",body).then(data => {this.Respone(data, "save")});
@@ -126,6 +132,7 @@ export class MaintenanceActivityComponent {
                 //console.log(this.objMaintenanceActivityDTO);  
                 this.objMaintenanceActivityDTO.UserId=parseInt(Common.GetSession("UserId"));
                 this.objMaintenanceActivityDTO.MunicipalId=parseInt(Common.GetSession("MunicipalId"));  
+                this.objMaintenanceActivityDTO.SubMunicipalId=parseInt(Common.GetSession("SubMunicipalId"));
                 this.objMaintenanceActivityDTO.IsActive=true;           
                 this.apiService.post(this.controllerName, "AddMaintenanceActivity", this.objMaintenanceActivityDTO).then(data => {this.Respone("save")});
             }

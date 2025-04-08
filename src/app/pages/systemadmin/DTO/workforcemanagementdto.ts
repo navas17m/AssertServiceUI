@@ -1,8 +1,9 @@
 ﻿export class WorkforceManagementDTO {
     WorkforceManagementId: number;
     MunicipalId: number;
+    SubMunicipalId:number;
     UserId: number;    
-    Activity: string;
+    WorkforceManagementActivityId: number;
     Description: string;
     YesOrNo:boolean;
     BriefDescription:string;

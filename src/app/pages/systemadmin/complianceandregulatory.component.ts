@@ -28,10 +28,13 @@ export class ComplianceAndRegulatoryComponent {
     lstAssetstatus=[];
     lstUtilizationrate=[];lstPriority=[];
     carerIds; 
-    objQeryVal; type="save";
+    objQeryVal; type="save";lstComplianceAndRegulatoryActivity=[];
     constructor(private apiService: APICallService, private activatedroute: ActivatedRoute, private _router: Router, private _formBuilder: FormBuilder, private pComponent: PagesComponent) {
         //this.objUserCarerMappingDTO.ExpiryDate = null;         
         this.activatedroute.params.subscribe(data => { this.objQeryVal = data; });   
+        this.apiService.get(this.controllerName, "GetComplianceAndRegulatoryActivities").then(data => { 
+            this.lstComplianceAndRegulatoryActivity = data;           
+         })
         if (this.objQeryVal.id != 0 && this.objQeryVal.id != null) {
             this.type="update";
             this.apiService.get(this.controllerName, "GetComplianceAndRegulatory",this.objQeryVal.id).then(data => {
@@ -70,6 +73,7 @@ export class ComplianceAndRegulatoryComponent {
                 this.objComplianceAndRegulatoryDTO.IsActive=true;
                 this.objComplianceAndRegulatoryDTO.UserId=parseInt(Common.GetSession("UserId"));
                 this.objComplianceAndRegulatoryDTO.MunicipalId=parseInt(Common.GetSession("MunicipalId"));
+                this.objComplianceAndRegulatoryDTO.SubMunicipalId=parseInt(Common.GetSession("SubMunicipalId"));
                 this.apiService.post(this.controllerName, "AddComplianceAndRegulatory", this.objComplianceAndRegulatoryDTO).then(data => {this.Respone("save")});
             }
             else

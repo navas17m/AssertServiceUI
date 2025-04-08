@@ -27,15 +27,15 @@ export class QualityPlanandContinuousImprovementComponent {
     lstYesPartiallyNo=[
         {
           "YesPartiallyNoId": 1,
-          "YesPartiallyNo": "Yes"
+          "YesPartiallyNo": "نعم"
         },
         {
           "YesPartiallyNoId": 2,
-          "YesPartiallyNo": "Partially"
+          "YesPartiallyNo": "جزئيا"
         },
         {
           "YesPartiallyNoId": 3,
-          "YesPartiallyNo": "No"
+          "YesPartiallyNo": "لا"
         }
       ];
     lstAssetstatus=[];
@@ -75,6 +75,7 @@ export class QualityPlanandContinuousImprovementComponent {
                     this.objQualityPlanandDTO.IsActive=true;
                     this.objQualityPlanandDTO.UserId=parseInt(Common.GetSession("UserId"));
                     this.objQualityPlanandDTO.MunicipalId=parseInt(Common.GetSession("MunicipalId"));
+                    this.objQualityPlanandDTO.SubMunicipalId=parseInt(Common.GetSession("SubMunicipalId"));
                     this.apiService.post(this.controllerName, "AddQualityPlanandContinuousImprovement", this.objQualityPlanandDTO).then(data => {this.Respone("save")});
                 }
                 else
@@ -94,6 +95,7 @@ export class QualityPlanandContinuousImprovementComponent {
                     this.objQualityPlanandDTO.IsActive=true;
                     this.objQualityPlanandDTO.UserId=parseInt(Common.GetSession("UserId"));
                     this.objQualityPlanandDTO.MunicipalId=parseInt(Common.GetSession("MunicipalId"));
+                    this.objQualityPlanandDTO.SubMunicipalId=parseInt(Common.GetSession("SubMunicipalId"));
                     this.apiService.post(this.controllerName, "AddQualityPlanandContinuousImprovement", this.objQualityPlanandDTO).then(data => {this.Respone("save")});
                 }
                 else

@@ -39,9 +39,12 @@ import { QualityPlanandContinuousImprovementList } from './qualityplanandcontinu
 import { QualityPlanandContinuousImprovementComponent } from './qualityplanandcontinuousimprovement.component';
 import { AssertReport } from './assertreport.component';
 import { AssertReports } from './assertreports.component';
+import { MaintenanceActivityReports } from './maintenanceactivityreports.component';
 
 import { UserProfilelList } from './userprofilelist.component';
 import { UserProfileComponent } from './userprofile.component';
+import { UploadDocumentList } from './uploaddocumentlist.component';
+import { UploadDocumentComponent } from './uploaddocument.component';
 
 export const routes:any = [
     { path: '', redirectTo: 'agencyformmapping/1', pathMatch: 'full' },
@@ -64,9 +67,12 @@ export const routes:any = [
     { path: 'qualityplanandcontinuousimprovement/:id', component: QualityPlanandContinuousImprovementComponent, data: { breadcrumb: 'خطة الجودة والتحسين المستمر' } },
     { path: 'qualityplanandcontinuousimprovementlist/:mid', component: QualityPlanandContinuousImprovementList, data: { breadcrumb: 'خطة الجودة والتحسين المستمر' } },
     { path: 'assertreport', component: AssertReport, data: { breadcrumb: 'تقرير التأكيد' } },
-    { path: 'assertreports', component: AssertReports, data: { breadcrumb: 'تقرير التأكيد' } },
+    { path: 'assertreports', component: AssertReports, data: { breadcrumb: 'تقرير سجل الأصول' } },
     { path: 'userprofile/:id', component: UserProfileComponent, data: { breadcrumb: 'تفاصيل المستخدم' } },
     { path: 'userprofilelist/:mid', component: UserProfilelList, data: { breadcrumb: 'تفاصيل المستخدم' } },
+    { path: 'maintenanceactivityreports', component: MaintenanceActivityReports, data: { breadcrumb: 'تقرير أمر العمل' } },
+    { path: 'uploaddocumentlist/:mid', component: UploadDocumentList, data: { breadcrumb: 'تحميل المستندات' } },
+    { path: 'uploaddocument/:id', component: UploadDocumentComponent, data: { breadcrumb: 'تحميل المستندات' } },
     
 ];
 
@@ -84,7 +90,8 @@ export const routes:any = [
         KeyPerformanceIndicatorList,KeyPerformanceIndicatorComponent,WorkforceManagementList,WorkforceManagementComponent,
         ComplianceAndRegulatoryList,ComplianceAndRegulatoryComponent,MaintenanceActivityList,MaintenanceActivityComponent,
         RiskManagementandContingencyPlanComponent,RiskManagementandContingencyPlanList,AssertReport,AssertReports,
-        QualityPlanandContinuousImprovementComponent,QualityPlanandContinuousImprovementList,UserProfileComponent,UserProfilelList
+        QualityPlanandContinuousImprovementComponent,QualityPlanandContinuousImprovementList,UserProfileComponent,UserProfilelList,
+        MaintenanceActivityReports,UploadDocumentList,UploadDocumentComponent
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     exports: []

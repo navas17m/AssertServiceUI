@@ -27,11 +27,14 @@ export class WorkforceManagementComponent {
     lstStrategyLastMaintenance=[];
     lstAssetstatus=[];
     lstUtilizationrate=[];lstPriority=[];
-    carerIds; 
+    carerIds; lstWorkforceManagementActivityName=[];
     objQeryVal; type="save";
     constructor(private apiService: APICallService, private activatedroute: ActivatedRoute, private _router: Router, private _formBuilder: FormBuilder, private pComponent: PagesComponent) {
         //this.objUserCarerMappingDTO.ExpiryDate = null;         
         this.activatedroute.params.subscribe(data => { this.objQeryVal = data; });   
+        this.apiService.get(this.controllerName, "GetWorkforceManagementActivities").then(data => { 
+            this.lstWorkforceManagementActivityName = data;           
+         })
         if (this.objQeryVal.id != 0 && this.objQeryVal.id != null) {
             this.type="update";
             this.apiService.get(this.controllerName, "GetWorkforceManagement",this.objQeryVal.id).then(data => {
@@ -70,6 +73,7 @@ export class WorkforceManagementComponent {
                 this.objWorkforceManagementDTO.IsActive=true;
                 this.objWorkforceManagementDTO.UserId=parseInt(Common.GetSession("UserId"));
                 this.objWorkforceManagementDTO.MunicipalId=parseInt(Common.GetSession("MunicipalId"));
+                this.objWorkforceManagementDTO.SubMunicipalId=parseInt(Common.GetSession("SubMunicipalId"));
                 this.apiService.post(this.controllerName, "AddWorkforceManagement", this.objWorkforceManagementDTO).then(data => {this.Respone("save")});
             }
             else

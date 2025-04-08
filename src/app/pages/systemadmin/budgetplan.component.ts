@@ -28,10 +28,16 @@ export class BudgetPlanComponent {
     lstAssetstatus=[];
     lstUtilizationrate=[];lstPriority=[];
     carerIds; 
-    objQeryVal; type="save";
+    objQeryVal; type="save";lstMaintenanceManagementStyle=[];lstMaintenanceStrategy=[];
     constructor(private apiService: APICallService, private activatedroute: ActivatedRoute, private _router: Router, private _formBuilder: FormBuilder, private pComponent: PagesComponent) {
         //this.objUserCarerMappingDTO.ExpiryDate = null;         
         this.activatedroute.params.subscribe(data => { this.objQeryVal = data; });   
+        this.apiService.get(this.controllerName, "GetMaintenanceManagementStyles").then(data => { 
+            this.lstMaintenanceManagementStyle = data;           
+         })
+         this.apiService.get(this.controllerName, "GetMaintenanceStrategies").then(data => { 
+            this.lstMaintenanceStrategy = data;           
+         })
         if (this.objQeryVal.id != 0 && this.objQeryVal.id != null) {
             this.type="update";
             this.apiService.get(this.controllerName, "GetBudgetPlan",this.objQeryVal.id).then(data => {
@@ -46,12 +52,13 @@ export class BudgetPlanComponent {
         
         this._Form = _formBuilder.group({
             MaintenanceManagementStyle: ['', Validators.required],
-            MaintenanceStrategy: [],
+            MaintenanceStrategy: ['', Validators.required],
             HRCosts:[],
             MaterialCosts:[],
             EquipmentCosts:[],
             AdministrativeCosts:[],
             OperationalCosts:[],
+            TotalEstimatedCost:[],
             AllocationEmergencyEudget:[],
             EstimationOfMaintenance:[],    
             ReviewGistoricalData:[]        
@@ -60,6 +67,10 @@ export class BudgetPlanComponent {
     fnBack(){
         this._router.navigate(['/pages/systemadmin/budgetplanlist/0']);
     }  
+    selectedFile!: File;
+    onFileSelected(event: any) {
+        this.selectedFile = event.target.files[0];
+      }
     typeChange()
     {}
     IsShowError = false;
@@ -71,18 +82,42 @@ export class BudgetPlanComponent {
         if (form.valid ) {
            // console.log(this.objAssertRegisterDTO);
             this.isLoading = true;      
-          
-            if(this.type=="save")
-            {            
-                this.objBudgetPlanDTO.IsActive=true;
-                this.objBudgetPlanDTO.UserId=parseInt(Common.GetSession("UserId"));
-                this.objBudgetPlanDTO.MunicipalId=parseInt(Common.GetSession("MunicipalId"));
-                this.apiService.post(this.controllerName, "AddBudgetPlan", this.objBudgetPlanDTO).then(data => {this.Respone("save")});
-            }
-            else
-            {
-                this.apiService.put(this.controllerName, "UpdateBudgetPlan", this.objBudgetPlanDTO).then(data => {this.Respone("save")});
-            }
+            if (this.selectedFile) {
+                this.apiService.uploadFile(this.selectedFile).subscribe(response => {
+                    if(this.type=="save")
+                        {       
+                            this.objBudgetPlanDTO.UploadId=response;     
+                            this.objBudgetPlanDTO.IsActive=true;
+                            this.objBudgetPlanDTO.UserId=parseInt(Common.GetSession("UserId"));
+                            this.objBudgetPlanDTO.MunicipalId=parseInt(Common.GetSession("MunicipalId"));
+                            this.objBudgetPlanDTO.SubMunicipalId=parseInt(Common.GetSession("SubMunicipalId"));
+                            this.apiService.post(this.controllerName, "AddBudgetPlan", this.objBudgetPlanDTO).then(data => {this.Respone("save")});
+                        }
+                        else
+                        {
+                            this.objBudgetPlanDTO.UploadId=response; 
+                            this.apiService.put(this.controllerName, "UpdateBudgetPlan", this.objBudgetPlanDTO).then(data => {this.Respone("save")});
+                        }            
+                }, error => {
+                              
+                });
+              } 
+              else
+              {
+                if(this.type=="save")
+                    {            
+                        this.objBudgetPlanDTO.IsActive=true;
+                        this.objBudgetPlanDTO.UserId=parseInt(Common.GetSession("UserId"));
+                        this.objBudgetPlanDTO.MunicipalId=parseInt(Common.GetSession("MunicipalId"));
+                        this.objBudgetPlanDTO.SubMunicipalId=parseInt(Common.GetSession("SubMunicipalId"));
+                        this.apiService.post(this.controllerName, "AddBudgetPlan", this.objBudgetPlanDTO).then(data => {this.Respone("save")});
+                    }
+                    else
+                    {
+                        this.apiService.put(this.controllerName, "UpdateBudgetPlan", this.objBudgetPlanDTO).then(data => {this.Respone("save")});
+                    }
+              }
+           
             //this.services.post(this.objUserCarerMappingDTO, type).then(data => this.Respone(data, type));
         }
     }

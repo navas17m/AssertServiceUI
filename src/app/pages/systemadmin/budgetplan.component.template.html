@@ -9,16 +9,29 @@
                 <div style="min-height:300px">                   
                     <div class="form-group">
                         <label class="">أسلوب إدارة الصيانة</label>
-                        <input formControlName="MaintenanceManagementStyle" type="text" class="form-control" 
-                               required [(ngModel)]="objBudgetPlanDTO.MaintenanceManagementStyle"/>  
+                        <select *ngIf="lstMaintenanceManagementStyle.length>0" required  formControlName="MaintenanceManagementStyle" class="form-control"  [(ngModel)]="objBudgetPlanDTO.MaintenanceManagementStyleId">
+                            <option *ngFor="let op of lstMaintenanceManagementStyle" value="{{op.MaintenanceManagementStyleId}}">
+                                {{op.MaintenanceManagementStyleName}}
+                            </option>
+                        </select> 
+                        <!-- <input formControlName="MaintenanceManagementStyle" type="text" class="form-control" 
+                               required [(ngModel)]="objBudgetPlanDTO.MaintenanceManagementStyle"/>   -->
                     <div *ngIf="(!_Form.controls.MaintenanceManagementStyle.valid && submitted && _Form.controls.MaintenanceManagementStyle.errors.required )" class="alert alert-danger">
                         أدخل أسلوب إدارة الصيانة
                     </div>                             
                     </div>
                     <div class="form-group">
                         <label class="">استراتيجية الصيانة</label>
-                        <input formControlName="MaintenanceStrategy" type="text" class="form-control" 
-                        [(ngModel)]="objBudgetPlanDTO.MaintenanceStrategy" />                      
+                        <select *ngIf="lstMaintenanceStrategy.length>0" required  formControlName="MaintenanceStrategy" class="form-control"  [(ngModel)]="objBudgetPlanDTO.MaintenanceStrategyId">
+                            <option *ngFor="let op of lstMaintenanceStrategy" value="{{op.MaintenanceStrategyId}}">
+                                {{op.MaintenanceStrategyName}}
+                            </option>
+                        </select> 
+                        <div *ngIf="(!_Form.controls.MaintenanceStrategy.valid && submitted && _Form.controls.MaintenanceStrategy.errors.required )" class="alert alert-danger">
+                            أدخل استراتيجية الصيان
+                        </div>   
+                        <!-- <input formControlName="MaintenanceStrategy" type="text" class="form-control" 
+                        [(ngModel)]="objBudgetPlanDTO.MaintenanceStrategy" />                       -->
                     </div>
                     <div class="form-group">
                         <label class="">تكاليف الموارد البشرية</label>
@@ -44,7 +57,12 @@
                         <label class=""> تكاليف التشغيل</label>
                         <input formControlName="OperationalCosts" type="number" class="form-control" 
                         [(ngModel)]="objBudgetPlanDTO.OperationalCosts"/>                      
-                    </div>                    
+                    </div>   
+                    <div class="form-group">
+                        <label class=""> التكلفة الإجمالية المقدرة </label>
+                        <input formControlName="TotalEstimatedCost" type="number" class="form-control" 
+                        [(ngModel)]="objBudgetPlanDTO.TotalEstimatedCost"/>                      
+                    </div>                       
                     <div class="form-group">
                         <label class="">  تخصيص ميزانية الطوارئ </label>
                         <input formControlName="AllocationEmergencyEudget" type="text" class="form-control" 
@@ -52,22 +70,27 @@
                     </div>                   
                     <div class="form-group">
                         <label class="">  مراجعة البيانات التاريخية</label> 
-                        <input formControlName="ReviewGistoricalData"  required type="radio" [value]="false" [(ngModel)]="objBudgetPlanDTO.ReviewGistoricalData">Yes
-                        <input formControlName="ReviewGistoricalData" required type="radio" [value]="true" [(ngModel)]="objBudgetPlanDTO.ReviewGistoricalData" >No
-                        <!-- <div class="custom-control custom-radio custom-control-inline">
-                            <input id="radio1" type="radio" name="radioInline" class="custom-control-input" checked>
-                            <label class="custom-control-label" for="radio1">Yes</label>
-                        </div>
-                        <div class="custom-control custom-radio custom-control-inline">
-                            <input id="radio2" type="radio" name="radioInline" class="custom-control-input">
-                            <label class="custom-control-label" for="radio2">No</label>
-                        </div>   -->
+                        <input formControlName="ReviewGistoricalData"  required type="radio" [value]="false" [(ngModel)]="objBudgetPlanDTO.ReviewGistoricalData">نعم
+                        <input formControlName="ReviewGistoricalData" required type="radio" [value]="true" [(ngModel)]="objBudgetPlanDTO.ReviewGistoricalData" >لا
                     </div>
+                   
                     <div class="form-group">
                         <label class="">تقدير عقود الصيانة (3 سنوات)</label>
                         <input formControlName="EstimationOfMaintenance" type="text"
                          class="form-control"  [(ngModel)]="objBudgetPlanDTO.EstimationOfMaintenance"/>                        
-                    </div>                 
+                    </div>  
+                    <div class="form-group">
+                        <label class="">استراتيجية الصيانة الأخيرة</label>
+                        <select *ngIf="lstMaintenanceStrategy.length>0" formControlName="MaintenanceStrategyFinal" class="form-control"  [(ngModel)]="objBudgetPlanDTO.MaintenanceStrategyId">
+                            <option *ngFor="let op of lstMaintenanceStrategy" value="{{op.MaintenanceStrategyId}}">
+                                {{op.MaintenanceStrategyName}}
+                            </option>
+                        </select>                    
+                    </div>
+                    <div class="form-group">
+                        <label class="">شهادة ضمان  </label>
+                        <input class="form-control"  type="file" (change)="onFileSelected($event)">                                                   
+                    </div>               
                     <div class="form-group">
                         <!-- <SubmitButton (Click)="Submit(_Form,ddCarerList.BindValue)" [IsLoading]="isLoading" [Text]="'Assign'"></SubmitButton> -->
                         <button  (click)="Submit(_Form)"  id="btnSubmit"  class="btn btn-success expand-right">حفظ</button>

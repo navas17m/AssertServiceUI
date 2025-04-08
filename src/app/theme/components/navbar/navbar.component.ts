@@ -71,18 +71,18 @@ export class NavbarComponent {
 
     clickLogout() {
         //   this.loService.updateLastlogoutTime(Common.GetSession("UserProfileId")).then(data => { });
-        this.apiService.get("UserProfile", "UpdateLastlogoutTime", Common.GetSession("UserProfileId")).then(data => { });
+       // this.apiService.get("UserProfile", "UpdateLastlogoutTime", Common.GetSession("UserProfileId")).then(data => { });
         let url = this.document.location.pathname + "#/login";
         let pageLength: number = parseInt(Common.GetSession("pagelength"));
-        this.objUserAuditHistoryDetailDTO.ActionId =13;
-        this.objUserAuditHistoryDetailDTO.UserAuditHistoryId = parseInt(Common.GetSession('UserAuditHistoryId'));
-        Common.addUserAuditHistoryDetails(this.objUserAuditHistoryDetailDTO);
-        const savedOperations = sessionStorage.getItem('UserOperations');
-        let operations:UserAuditHistoryDetailDTO[] =[];
-        if(savedOperations){
-        operations = JSON.parse(savedOperations);
-        }
-        this.apiService.post("UserProfile", "SaveUserAuditHistoryDetail",operations).then(data => {});
+        // this.objUserAuditHistoryDetailDTO.ActionId =13;
+        // this.objUserAuditHistoryDetailDTO.UserAuditHistoryId = parseInt(Common.GetSession('UserAuditHistoryId'));
+        // Common.addUserAuditHistoryDetails(this.objUserAuditHistoryDetailDTO);
+        // const savedOperations = sessionStorage.getItem('UserOperations');
+        // let operations:UserAuditHistoryDetailDTO[] =[];
+        // if(savedOperations){
+        // operations = JSON.parse(savedOperations);
+        // }
+        // this.apiService.post("UserProfile", "SaveUserAuditHistoryDetail",operations).then(data => {});
         Common.IsUserLogin.next(false);
         Common.ClearSession();
 

@@ -10,7 +10,7 @@
                     <div class="row">
                         <div class="col">
                             <div class="form-group">
-                                <label class=""> حالة أمر العمل</label>
+                                <label class="">  فئة الأصل   </label>
                                 <select *ngIf="lstAssert.length>0" required #Assert (change)="fnLoadSubAssert(Assert.value)" formControlName="Assert" class="form-control"  [(ngModel)]="objAssertRegisterDTO.AssertId">
                                     <option *ngFor="let op of lstAssert" value="{{op.AssertId}}">
                                         {{op.AssertName}}
@@ -21,7 +21,7 @@
                                 </div>                      
                             </div>
                             <div class="form-group">
-                                <label class=""> حالة أمر العمل</label>
+                                <label class="">   الأصول الفرعية </label>
                                 <select  formControlName="SubAssert" required class="form-control"  [(ngModel)]="objAssertRegisterDTO.SubAssertId">
                                     <option *ngFor="let op of lstSubAssert" value="{{op.SubAssertId}}">
                                         {{op.SubAssertName}}
@@ -32,7 +32,7 @@
                                 </div>                    
                             </div>    
                             <div class="form-group">
-                                <label class="">رقم الهوية </label>
+                                <label class=""> معرف الأصل </label>
                                 <input formControlName="IdentificationNumber" type="text" class="form-control" 
                                        required [(ngModel)]="objAssertRegisterDTO.IdentificationNumber"/>  
                                 <div *ngIf="(!_Form.controls.IdentificationNumber.valid && submitted && _Form.controls.IdentificationNumber.errors.required )" class="alert alert-danger">
@@ -40,7 +40,7 @@
                             </div>                         
                             </div>
                             <div class="form-group">
-                                <label class="">موقع المنشأ</label>
+                                <label class="">موقع الأصل</label>
                                 <input formControlName="Locationoforigin" type="text" class="form-control" 
                                 [(ngModel)]="objAssertRegisterDTO.LocationOfOrigin" />                      
                             </div>
@@ -59,25 +59,26 @@
                                 <input formControlName="GoogleMapslink" type="text" class="form-control" 
                                 [(ngModel)]="objAssertRegisterDTO.GoogleMapsLink" />                      
                             </div>
-                            <div class="form-group">
-                                <label class="">تاريخ الشراء</label>
-                                <input formControlName="Dateofpurchase"  type="text" placeholder="DD/MM/YYYY" readonly class="form-control form-control-date" [(ngModel)]="objAssertRegisterDTO.DateOfPurchase" [value]="objAssertRegisterDTO.DateOfPurchase" datepicker/>
-                            </div>
+            
                             <div class="form-group">
                                 <label class=""> اسم القسم</label>
                                 <input formControlName="Departmentname" type="text" class="form-control" [(ngModel)]="objAssertRegisterDTO.DepartmentName"/>                      
                             </div>
                             <div class="form-group">
-                                <label class=""> تاريخ التفتيش الأخير</label>
-                                <input formControlName="Dateoflastinspection"  type="text" placeholder="DD/MM/YYYY" readonly class="form-control form-control-date" [(ngModel)]="objAssertRegisterDTO.DateOfLastInspection" [value]="objAssertRegisterDTO.DateOfLastInspection" datepicker/>
+                                <label class=""> تاريخ  تاريخ الشراء</label>
+                                <input formControlName="DateOfInspection"  type="text" placeholder="DD/MM/YYYY" readonly class="form-control form-control-date" [(ngModel)]="objAssertRegisterDTO.DateOfInspection" [value]="objAssertRegisterDTO.DateOfInspection" datepicker/>
+                            </div>
+                            <div class="form-group">
+                                <label class=""> تاريخ  الإستحواذ</label>
+                                <input formControlName="DateOfLastInspection"  type="text" placeholder="DD/MM/YYYY" readonly class="form-control form-control-date" [(ngModel)]="objAssertRegisterDTO.DateOfLastInspection" [value]="objAssertRegisterDTO.DateOfLastInspection" datepicker/>
                             </div>
                            
                         </div>
                     <div class="col">                          
                         <div class="form-group">
                             <label class=""> سجل الحوادث </label>
-                            <input formControlName="AccidentLog"  required type="radio" [value]="false" [(ngModel)]="objAssertRegisterDTO.AccidentLog">None
-                            <input formControlName="AccidentLog" required type="radio" [value]="true" [(ngModel)]="objAssertRegisterDTO.AccidentLog" >Yes
+                            <input formControlName="AccidentLog"  required type="radio" [value]="false" [(ngModel)]="objAssertRegisterDTO.AccidentLog">لا أحد
+                            <input formControlName="AccidentLog" required type="radio" [value]="true" [(ngModel)]="objAssertRegisterDTO.AccidentLog" >نعم
                             <!-- <input formControlName="AccidentLog" type="text" class="form-control"  [(ngModel)]="objAssertRegisterDTO.AccidentLog"/>                       -->
                         </div>
                         <div class="form-group" *ngIf="!objAssertRegisterDTO.AccidentLog">
@@ -142,9 +143,14 @@
                         <input formControlName="Maintenancecontractforasset" [(ngModel)]="objAssertRegisterDTO.MaintenanceContractForAsset" type="text" class="form-control"  />                        
                     </div>   
                     <div class="form-group">
-                        <label class="">شهادة</label>
-                        <input formControlName="Evidence" type="text" class="form-control" [(ngModel)]="objAssertRegisterDTO.Evidence" />                        
-                    </div>   
+                        <label class="">شهادة ضمان المشاريع</label>
+                        <input class="form-control"  type="file" (change)="onFileSelectedEvidence($event)">                        
+                    </div>  
+                     
+                    <div class="form-group">
+                        <label class="">شهادة ضمان المواد الموردة</label>
+                        <input class="form-control"  type="file" (change)="onFileSelectedEvidence1($event)">                       
+                    </div>  
                         </div>
                     </div>  
                 </div>

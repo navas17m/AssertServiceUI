@@ -8,7 +8,7 @@
             <form [formGroup]="_Form">
                 <div style="min-height:300px">  
                     <div class="form-group">
-                        <label class=""> متطلبات</label>
+                        <label class=""> الإسم</label>
                         <input formControlName="Requirement" type="text" class="form-control" 
                         [(ngModel)]="objRiskManagementandContingencyPlanDTO.Requirement" required/>  
                         <div class="alert alert-danger" *ngIf="(!_Form.controls.Requirement.valid && submitted && _Form.controls.Requirement.errors.required)">
@@ -16,7 +16,7 @@
                         </div>                    
                     </div>  
                     <div class="form-group">
-                        <label class="">وصف </label>
+                        <label class="">خطة التخفيف </label>
                         <textarea [(ngModel)]="objRiskManagementandContingencyPlanDTO.Description" class="form-control" 
                         formControlName="Description"></textarea>
                     </div>               

@@ -2,73 +2,86 @@
   <ul  class="nav nav-sidebar flex-column">
     <ng-scrollbar pointerEventsMethod="scrollbar">
       <li  class="sidebar-list-item">
-          <a   routerLinkActive="active-link" [routerLinkActiveOptions]="{exact:true}"  class="sidebar-list-link">
+          <!-- <a   routerLinkActive="active-link" [routerLinkActiveOptions]="{exact:true}"  class="sidebar-list-link">
               <i class="fa fa-home"></i><span>الرئيسية </span>
+          </a> -->
+            <a   routerLinkActive="active-link" [routerLink]="['dashboard']"  class="sidebar-list-link">
+              <i class="fa fa-home"></i><span>لوحة القيادة </span>
           </a>
       </li>
       <li  class="sidebar-list-item" *ngIf="!showAdmin">
-        <a [routerLink]="['systemadmin/assertregisterlist/2']"  class="sidebar-list-link">
+        <a  routerLinkActive="active-link"  [routerLink]="['systemadmin/assertregisterlist/2']"  class="sidebar-list-link">
             <i class="fa fa-address-book"></i><span>تسجيل الأصول </span>
         </a>
     </li>
     <li  class="sidebar-list-item" *ngIf="!showAdmin">
-      <a [routerLink]="['systemadmin/budgetplanlist/2']"  class="sidebar-list-link">
+      <a  routerLinkActive="active-link" [routerLink]="['systemadmin/budgetplanlist/2']"  class="sidebar-list-link">
           <i class="fa fa-money"></i><span>خطة الميزانية </span>
       </a>
   </li>
   <li  class="sidebar-list-item" *ngIf="!showAdmin">
-    <a [routerLink]="['systemadmin/budgetapprovallist/2']"  class="sidebar-list-link">
+    <a routerLinkActive="active-link" [routerLink]="['systemadmin/budgetapprovallist/2']"  class="sidebar-list-link">
         <i class="fa fa-money"></i><span>  الموافقة على الميزانية </span>
     </a>
   </li>
   <li  class="sidebar-list-item" *ngIf="!showAdmin">
-    <a [routerLink]="['systemadmin/keyperformanceindicatorlist/2']"  class="sidebar-list-link">
+    <a routerLinkActive="active-link" [routerLink]="['systemadmin/keyperformanceindicatorlist/2']"  class="sidebar-list-link">
         <i class="fa fa-key"></i><span>مؤشرات الأداء الرئيسية </span>
     </a>
   </li>
   <li  class="sidebar-list-item" *ngIf="!showAdmin">
-    <a [routerLink]="['systemadmin/workforcemanagementlist/2']"  class="sidebar-list-link">
+    <a routerLinkActive="active-link" [routerLink]="['systemadmin/workforcemanagementlist/2']"  class="sidebar-list-link">
         <i class="fa fa-building-o"></i><span>إدارة القوى العاملة </span>
     </a>
   </li>
   <li  class="sidebar-list-item" *ngIf="!showAdmin">
-    <a [routerLink]="['systemadmin/complianceandregulatorylist/2']"  class="sidebar-list-link">
+    <a routerLinkActive="active-link" [routerLink]="['systemadmin/complianceandregulatorylist/2']"  class="sidebar-list-link">
         <i class="fa fa-podcast"></i><span>متطلبات الامتثال والتنظيم</span>
     </a>
   </li>
 
   <li  class="sidebar-list-item" *ngIf="!showAdmin">
-    <a [routerLink]="['systemadmin/riskmanagementandcontingencyplanlist/2']"  class="sidebar-list-link">
+    <a routerLinkActive="active-link" [routerLink]="['systemadmin/riskmanagementandcontingencyplanlist/2']"  class="sidebar-list-link">
         <i class="fa fa-bookmark"></i><span>إدارة المخاطر وخطط الطوارئ </span>
     </a>
   </li>
   <li  class="sidebar-list-item" *ngIf="!showAdmin">
-    <a [routerLink]="['systemadmin/qualityplanandcontinuousimprovementlist/2']"  class="sidebar-list-link">
+    <a routerLinkActive="active-link" [routerLink]="['systemadmin/qualityplanandcontinuousimprovementlist/2']"  class="sidebar-list-link">
         <i class="fa fa-address-card-o"></i><span>خطة الجودة والتحسين المستمر </span>
     </a>
   </li>
   <li  class="sidebar-list-item" *ngIf="!showAdmin">
-    <a [routerLink]="['systemadmin/maintenanceactivitylist/2']"  class="sidebar-list-link">
+    <a routerLinkActive="active-link" [routerLink]="['systemadmin/maintenanceactivitylist/2']"  class="sidebar-list-link">
         <i class="fa fa-male"></i><span>نشاط الصيانة</span>
     </a>
   </li>
   <li  class="sidebar-list-item" *ngIf="!showAdmin">
-    <a [routerLink]="['systemadmin/assertreport']"  class="sidebar-list-link">
-        <i class="fa fa-area-chart"></i><span>التقرير الكامل </span>
-    </a>
-  </li>
-  <li  class="sidebar-list-item" *ngIf="!showAdmin">
-    <a [routerLink]="['systemadmin/assertreports']"  class="sidebar-list-link">
-        <i class="fa fa-area-chart"></i><span>تقارير  </span>
+    <a routerLinkActive="active-link" [routerLink]="['systemadmin/uploaddocumentlist/2']"  class="sidebar-list-link">
+        <i class="fa fa-file"></i><span>تحميل المستندات</span>
     </a>
   </li>
   <li  class="sidebar-list-item" *ngIf="showAdmin">
-    <a [routerLink]="['systemadmin/userprofilelist/2']"  class="sidebar-list-link">
+    <a routerLinkActive="active-link" [routerLink]="['systemadmin/userprofilelist/2']"  class="sidebar-list-link">
         <i class="fa fa-user"></i><span>تفاصيل المستخدم  </span>
     </a>
   </li>
-      <li class="sidebar-list-item">
-         
+  <!-- <li  class="sidebar-list-item" *ngIf="showAdmin">
+    <a [routerLink]="['systemadmin/assertreport']"  class="sidebar-list-link">
+        <i class="fa fa-area-chart"></i><span>التقرير الكامل </span>
+    </a>
+  </li> -->
+  <li  class="sidebar-list-item">
+    <a routerLinkActive="active-link" [routerLink]="['systemadmin/assertreports']"  class="sidebar-list-link">
+        <i class="fa fa-area-chart"></i><span>تقرير سجل الأصول  </span>
+    </a>
+  </li>
+  
+  <li  class="sidebar-list-item">
+    <a routerLinkActive="active-link" [routerLink]="['systemadmin/maintenanceactivityreports']"  class="sidebar-list-link">
+        <i class="fa fa-area-chart"></i><span> تقرير أمر العمل </span>
+    </a>
+  </li>
+      <li class="sidebar-list-item">         
           <ul class="sidebar-sublist">
               <li class="sidebar-sublist-item">
                   <a  style="width:auto">

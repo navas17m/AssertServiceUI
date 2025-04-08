@@ -1,6 +1,7 @@
 ﻿export class QualityPlanandContinuousImprovementDTO {
     QualityPlanandContinuousImprovementId: number;
     MunicipalId: number;
+    SubMunicipalId:number;
     UserId: number;   
     UploadId:number; 
     Requirement: string;

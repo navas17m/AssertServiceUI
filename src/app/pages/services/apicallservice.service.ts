@@ -7,6 +7,7 @@ import { Observable, Subject, throwError } from 'rxjs';
 import { Common } from '../common';
 import { PagesComponent } from '../pages.component';
 import { Base } from './base.service';
+import { promise } from 'protractor';
 
 
 @Injectable()
@@ -26,6 +27,11 @@ export class APICallService implements OnInit {
         const formData = new FormData();
         formData.append('file', file);    
         return this._http.post(Base.GetUrl() + "/api/FileUpload" , formData);
+      }
+      async uploadFileAsync(file: File): Promise<any> {
+        const formData = new FormData();
+        formData.append('file', file);    
+        return await this._http.post(Base.GetUrl() + "/api/FileUpload" , formData).toPromise();
       }
     resetTimer() {
         APICallService.invokeEvent.next({ some: "from service" });

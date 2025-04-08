@@ -41,7 +41,7 @@ export class BudgetApprovalComponent {
         }
         else
         {
-            this.objBudgetApprovalDTO.BudgetApprovals=true;
+            this.objBudgetApprovalDTO.BudgetApprovals=false;
             this.objBudgetApprovalDTO.EmergencyModifications=true;
             this.objBudgetApprovalDTO.BudgetDisparityAction=true;
         }        
@@ -58,6 +58,10 @@ export class BudgetApprovalComponent {
             BudgetDisparityDescription:[]        
         });  
     }
+    selectedFile!: File;
+    onFileSelected(event: any) {
+        this.selectedFile = event.target.files[0];
+      }
     fnBack(){
         this._router.navigate(['/pages/systemadmin/budgetapprovallist/0']);
     }     
@@ -70,19 +74,43 @@ export class BudgetApprovalComponent {
         if (form.valid ) {
            // console.log(this.objAssertRegisterDTO);
             this.isLoading = true;      
-          
-            if(this.type=="save")
-            {           
-                this.objBudgetApprovalDTO.IsActive=true;
-                this.objBudgetApprovalDTO.UserId=parseInt(Common.GetSession("UserId"));
-                this.objBudgetApprovalDTO.MunicipalId=parseInt(Common.GetSession("MunicipalId"));
-                this.apiService.post(this.controllerName, "AddBudgetApproval", this.objBudgetApprovalDTO).then(data => {this.Respone("save")});
-            }
-            else
-            {
-                this.apiService.put(this.controllerName, "UpdateBudgetApproval", this.objBudgetApprovalDTO).then(data => {this.Respone("save")});
-            }
-            //this.services.post(this.objUserCarerMappingDTO, type).then(data => this.Respone(data, type));
+            if (this.selectedFile) {
+                this.apiService.uploadFile(this.selectedFile).subscribe(response => {
+                    if(this.type=="save")
+                        {   
+                            this.objBudgetApprovalDTO.UploadId=response;        
+                            this.objBudgetApprovalDTO.IsActive=true;
+                            this.objBudgetApprovalDTO.UserId=parseInt(Common.GetSession("UserId"));
+                            this.objBudgetApprovalDTO.MunicipalId=parseInt(Common.GetSession("MunicipalId"));
+                            this.objBudgetApprovalDTO.SubMunicipalId=parseInt(Common.GetSession("SubMunicipalId"));
+                            this.apiService.post(this.controllerName, "AddBudgetApproval", this.objBudgetApprovalDTO).then(data => {this.Respone("save")});
+                        }
+                        else
+                        {
+                            this.objBudgetApprovalDTO.UploadId=response;     
+                            this.apiService.put(this.controllerName, "UpdateBudgetApproval", this.objBudgetApprovalDTO).then(data => {this.Respone("save")});
+                        }              
+                }, error => {
+                              
+                });
+              } 
+              else
+              {
+                if(this.type=="save")
+                    {           
+                        this.objBudgetApprovalDTO.IsActive=true;
+                        this.objBudgetApprovalDTO.UserId=parseInt(Common.GetSession("UserId"));
+                        this.objBudgetApprovalDTO.MunicipalId=parseInt(Common.GetSession("MunicipalId"));
+                        this.objBudgetApprovalDTO.SubMunicipalId=parseInt(Common.GetSession("SubMunicipalId"));
+                        this.apiService.post(this.controllerName, "AddBudgetApproval", this.objBudgetApprovalDTO).then(data => {this.Respone("save")});
+                    }
+                    else
+                    {
+                        this.apiService.put(this.controllerName, "UpdateBudgetApproval", this.objBudgetApprovalDTO).then(data => {this.Respone("save")});
+                    }
+              }
+           
+            
         }
     }
 

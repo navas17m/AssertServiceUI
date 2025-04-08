@@ -9,8 +9,13 @@
                 <div style="min-height:300px">  
                     <div class="form-group">
                         <label class=""> نشاط</label>
-                        <input formControlName="Activity" type="text" class="form-control" 
-                        [(ngModel)]="objComplianceAndRegulatoryDTO.Activity" required/>  
+                        <select *ngIf="lstComplianceAndRegulatoryActivity.length>0" required   formControlName="Activity" class="form-control"  [(ngModel)]="objComplianceAndRegulatoryDTO.ComplianceAndRegulatoryActivityId">
+                            <option *ngFor="let op of lstComplianceAndRegulatoryActivity" value="{{op.ComplianceAndRegulatoryActivityId}}">
+                                {{op.ComplianceAndRegulatoryActivityName}}
+                            </option>
+                        </select> 
+                        <!-- <input formControlName="Activity" type="text" class="form-control" 
+                        [(ngModel)]="objComplianceAndRegulatoryDTO.Activity" required/>   -->
                         <div class="alert alert-danger" *ngIf="(!_Form.controls.Activity.valid && submitted && _Form.controls.Activity.errors.required)">
                             الرجاء إدخال النشاط
                         </div>                    

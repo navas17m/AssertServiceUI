@@ -9,8 +9,13 @@
                 <div style="min-height:300px">  
                     <div class="form-group">
                         <label class=""> نشاط</label>
-                        <input formControlName="Activity" type="text" class="form-control" 
-                        [(ngModel)]="objWorkforceManagementDTO.Activity" required/>  
+                        <select *ngIf="lstWorkforceManagementActivityName.length>0" required   formControlName="Activity" class="form-control"  [(ngModel)]="objWorkforceManagementDTO.WorkforceManagementActivityId">
+                            <option *ngFor="let op of lstWorkforceManagementActivityName" value="{{op.WorkforceManagementActivityId}}">
+                                {{op.WorkforceManagementActivityName}}
+                            </option>
+                        </select> 
+                        <!-- <input formControlName="Activity" type="text" class="form-control" 
+                        [(ngModel)]="objWorkforceManagementDTO.Activity" required/>   -->
                         <div class="alert alert-danger" *ngIf="(!_Form.controls.Activity.valid && submitted && _Form.controls.Activity.errors.required)">
                             الرجاء إدخال النشاط
                         </div>                    
